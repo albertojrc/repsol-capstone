@@ -35,14 +35,16 @@ env/
 *.swo
 *~
 
+
 # Jupyter
 .ipynb_checkpoints/
-*.ipynb
+# *.ipynb  # Commented out - we want to track notebooks
 
 # Data (don't commit raw data or large files)
 data/raw/*
-data/processed/*
-*.csv
+# data/processed/*  # Allow processed data for team collaboration
+!data/processed/*.csv
+*.CSV
 *.xlsx
 
 # Models (don't commit trained models)
