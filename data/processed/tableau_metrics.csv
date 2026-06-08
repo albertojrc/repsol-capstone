@@ -1,0 +1,16 @@
+Target,Model,MAE,RMSE,MAPE,Rank,Mejor_Modelo,MAPE_Label,MAE_Label
+Andalucía,SARIMA,897.9,1077.0,52.5,1,True,52.5%,898 Tm
+Andalucía,Random Forest,977.8,1157.9,56.7,2,False,56.7%,978 Tm
+Andalucía,XGBoost,1050.5,1196.7,65.6,3,False,65.6%,"1,050 Tm"
+Cataluña,SARIMA,1428.6,1613.8,47.2,1,True,47.2%,"1,429 Tm"
+Cataluña,Random Forest,1789.5,1893.3,60.3,3,False,60.3%,"1,790 Tm"
+Cataluña,XGBoost,1720.3,1813.8,58.1,2,False,58.1%,"1,720 Tm"
+Madrid,SARIMA,9097.8,11968.6,318.6,3,False,318.6%,"9,098 Tm"
+Madrid,Random Forest,1844.8,1956.9,66.0,2,False,66.0%,"1,845 Tm"
+Madrid,XGBoost,1697.9,1815.9,60.3,1,True,60.3%,"1,698 Tm"
+Nacional,SARIMA,4277.6,4921.4,29.0,1,True,29.0%,"4,278 Tm"
+Nacional,Random Forest,11221.7,12173.6,58.3,2,False,58.3%,"11,222 Tm"
+Nacional,XGBoost,11476.3,12389.3,60.0,3,False,60.0%,"11,476 Tm"
+Valencia,SARIMA,573.8,661.8,57.4,1,True,57.4%,574 Tm
+Valencia,Random Forest,579.9,637.5,61.5,3,False,61.5%,580 Tm
+Valencia,XGBoost,571.9,631.7,60.6,2,False,60.6%,572 Tm

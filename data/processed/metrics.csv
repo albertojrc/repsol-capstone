@@ -1,0 +1,16 @@
+Target,Model,MAE,RMSE,MAPE
+Andalucía,SARIMA,897.9,1077.0,52.5
+Andalucía,Random Forest,977.8,1157.9,56.7
+Andalucía,XGBoost,1050.5,1196.7,65.6
+Cataluña,SARIMA,1428.6,1613.8,47.2
+Cataluña,Random Forest,1789.5,1893.3,60.3
+Cataluña,XGBoost,1720.3,1813.8,58.1
+Madrid,SARIMA,9097.8,11968.6,318.6
+Madrid,Random Forest,1844.8,1956.9,66.0
+Madrid,XGBoost,1697.9,1815.9,60.3
+Nacional,SARIMA,4277.6,4921.4,29.0
+Nacional,Random Forest,11221.7,12173.6,58.3
+Nacional,XGBoost,11476.3,12389.3,60.0
+Valencia,SARIMA,573.8,661.8,57.4
+Valencia,Random Forest,579.9,637.5,61.5
+Valencia,XGBoost,571.9,631.7,60.6

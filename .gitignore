@@ -42,10 +42,10 @@ env/
 
 # Data (don't commit raw data or large files)
 data/raw/*
-# data/processed/*  # Allow processed data for team collaboration
-!data/processed/*.csv
 *.CSV
 *.xlsx
+# Override: allow processed CSVs (must come after *.CSV to win on macOS case-insensitive FS)
+!data/processed/*.csv
 
 # Models (don't commit trained models)
 models/*.pkl

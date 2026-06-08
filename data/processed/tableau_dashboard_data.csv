@@ -1,0 +1,721 @@
+Fecha_Date,Fecha,Anyo,Mes,Trimestre,Target,Model,Type,Valor_Tm,Is_Primary
+2023-01-01,2023-01,2023,1,Q1,Andalucía,Actual,Historico,0.0,True
+2023-02-01,2023-02,2023,2,Q1,Andalucía,Actual,Historico,0.0,True
+2023-03-01,2023-03,2023,3,Q1,Andalucía,Actual,Historico,0.0,True
+2023-04-01,2023-04,2023,4,Q2,Andalucía,Actual,Historico,46.0,True
+2023-05-01,2023-05,2023,5,Q2,Andalucía,Actual,Historico,0.0,True
+2023-06-01,2023-06,2023,6,Q2,Andalucía,Actual,Historico,0.0,True
+2023-07-01,2023-07,2023,7,Q3,Andalucía,Actual,Historico,0.0,True
+2023-08-01,2023-08,2023,8,Q3,Andalucía,Actual,Historico,0.0,True
+2023-09-01,2023-09,2023,9,Q3,Andalucía,Actual,Historico,19.0,True
+2023-10-01,2023-10,2023,10,Q4,Andalucía,Actual,Historico,43.0,True
+2023-11-01,2023-11,2023,11,Q4,Andalucía,Actual,Historico,159.0,True
+2023-12-01,2023-12,2023,12,Q4,Andalucía,Actual,Historico,85.0,True
+2024-01-01,2024-01,2024,1,Q1,Andalucía,Actual,Historico,92.0,True
+2024-02-01,2024-02,2024,2,Q1,Andalucía,Actual,Historico,80.0,True
+2024-03-01,2024-03,2024,3,Q1,Andalucía,Actual,Historico,104.0,True
+2024-04-01,2024-04,2024,4,Q2,Andalucía,Actual,Historico,154.0,True
+2024-05-01,2024-05,2024,5,Q2,Andalucía,Actual,Historico,355.0,True
+2024-06-01,2024-06,2024,6,Q2,Andalucía,Actual,Historico,414.0,True
+2024-07-01,2024-07,2024,7,Q3,Andalucía,Actual,Historico,616.0,True
+2024-08-01,2024-08,2024,8,Q3,Andalucía,Actual,Historico,582.0,True
+2024-09-01,2024-09,2024,9,Q3,Andalucía,Actual,Historico,440.0,True
+2024-10-01,2024-10,2024,10,Q4,Andalucía,Actual,Historico,510.0,True
+2024-11-01,2024-11,2024,11,Q4,Andalucía,Actual,Historico,608.0,True
+2024-12-01,2024-12,2024,12,Q4,Andalucía,Actual,Historico,684.0,True
+2025-01-01,2025-01,2025,1,Q1,Andalucía,Actual,Historico_Test,590.0,True
+2025-02-01,2025-02,2025,2,Q1,Andalucía,Actual,Historico_Test,498.0,True
+2025-03-01,2025-03,2025,3,Q1,Andalucía,Actual,Historico_Test,804.0,True
+2025-04-01,2025-04,2025,4,Q2,Andalucía,Actual,Historico_Test,919.0,True
+2025-05-01,2025-05,2025,5,Q2,Andalucía,Actual,Historico_Test,1591.0,True
+2025-06-01,2025-06,2025,6,Q2,Andalucía,Actual,Historico_Test,2162.0,True
+2025-07-01,2025-07,2025,7,Q3,Andalucía,Actual,Historico_Test,2664.0,True
+2025-08-01,2025-08,2025,8,Q3,Andalucía,Actual,Historico_Test,1823.0,True
+2025-09-01,2025-09,2025,9,Q3,Andalucía,Actual,Historico_Test,1612.0,True
+2025-10-01,2025-10,2025,10,Q4,Andalucía,Actual,Historico_Test,1637.0,True
+2025-11-01,2025-11,2025,11,Q4,Andalucía,Actual,Historico_Test,1565.0,True
+2025-12-01,2025-12,2025,12,Q4,Andalucía,Actual,Historico_Test,1911.0,True
+2025-01-01,2025-01,2025,1,Q1,Andalucía,Random Forest,Prediccion_Test,463.0,False
+2025-02-01,2025-02,2025,2,Q1,Andalucía,Random Forest,Prediccion_Test,498.4,False
+2025-03-01,2025-03,2025,3,Q1,Andalucía,Random Forest,Prediccion_Test,497.6,False
+2025-04-01,2025-04,2025,4,Q2,Andalucía,Random Forest,Prediccion_Test,498.1,False
+2025-05-01,2025-05,2025,5,Q2,Andalucía,Random Forest,Prediccion_Test,513.0,False
+2025-06-01,2025-06,2025,6,Q2,Andalucía,Random Forest,Prediccion_Test,509.9,False
+2025-07-01,2025-07,2025,7,Q3,Andalucía,Random Forest,Prediccion_Test,514.7,False
+2025-08-01,2025-08,2025,8,Q3,Andalucía,Random Forest,Prediccion_Test,506.9,False
+2025-09-01,2025-09,2025,9,Q3,Andalucía,Random Forest,Prediccion_Test,512.9,False
+2025-10-01,2025-10,2025,10,Q4,Andalucía,Random Forest,Prediccion_Test,509.9,False
+2025-11-01,2025-11,2025,11,Q4,Andalucía,Random Forest,Prediccion_Test,509.8,False
+2025-12-01,2025-12,2025,12,Q4,Andalucía,Random Forest,Prediccion_Test,508.8,False
+2026-01-01,2026-01,2026,1,Q1,Andalucía,Random Forest,Forecast,503.4,False
+2026-02-01,2026-02,2026,2,Q1,Andalucía,Random Forest,Forecast,497.8,False
+2026-03-01,2026-03,2026,3,Q1,Andalucía,Random Forest,Forecast,497.1,False
+2026-04-01,2026-04,2026,4,Q2,Andalucía,Random Forest,Forecast,496.6,False
+2026-05-01,2026-05,2026,5,Q2,Andalucía,Random Forest,Forecast,504.4,False
+2026-06-01,2026-06,2026,6,Q2,Andalucía,Random Forest,Forecast,506.8,False
+2026-07-01,2026-07,2026,7,Q3,Andalucía,Random Forest,Forecast,508.4,False
+2026-08-01,2026-08,2026,8,Q3,Andalucía,Random Forest,Forecast,509.9,False
+2026-09-01,2026-09,2026,9,Q3,Andalucía,Random Forest,Forecast,510.4,False
+2026-10-01,2026-10,2026,10,Q4,Andalucía,Random Forest,Forecast,513.1,False
+2026-11-01,2026-11,2026,11,Q4,Andalucía,Random Forest,Forecast,516.0,False
+2026-12-01,2026-12,2026,12,Q4,Andalucía,Random Forest,Forecast,514.4,False
+2027-01-01,2027-01,2027,1,Q1,Andalucía,Random Forest,Forecast,503.4,False
+2027-02-01,2027-02,2027,2,Q1,Andalucía,Random Forest,Forecast,497.8,False
+2027-03-01,2027-03,2027,3,Q1,Andalucía,Random Forest,Forecast,497.1,False
+2027-04-01,2027-04,2027,4,Q2,Andalucía,Random Forest,Forecast,496.6,False
+2027-05-01,2027-05,2027,5,Q2,Andalucía,Random Forest,Forecast,504.4,False
+2027-06-01,2027-06,2027,6,Q2,Andalucía,Random Forest,Forecast,506.8,False
+2027-07-01,2027-07,2027,7,Q3,Andalucía,Random Forest,Forecast,508.4,False
+2027-08-01,2027-08,2027,8,Q3,Andalucía,Random Forest,Forecast,509.9,False
+2027-09-01,2027-09,2027,9,Q3,Andalucía,Random Forest,Forecast,510.4,False
+2027-10-01,2027-10,2027,10,Q4,Andalucía,Random Forest,Forecast,513.1,False
+2027-11-01,2027-11,2027,11,Q4,Andalucía,Random Forest,Forecast,516.0,False
+2027-12-01,2027-12,2027,12,Q4,Andalucía,Random Forest,Forecast,514.4,False
+2025-01-01,2025-01,2025,1,Q1,Andalucía,SARIMA,Prediccion_Test,683.8,True
+2025-02-01,2025-02,2025,2,Q1,Andalucía,SARIMA,Prediccion_Test,692.1,True
+2025-03-01,2025-03,2025,3,Q1,Andalucía,SARIMA,Prediccion_Test,680.0,True
+2025-04-01,2025-04,2025,4,Q2,Andalucía,SARIMA,Prediccion_Test,661.6,True
+2025-05-01,2025-05,2025,5,Q2,Andalucía,SARIMA,Prediccion_Test,623.6,True
+2025-06-01,2025-06,2025,6,Q2,Andalucía,SARIMA,Prediccion_Test,616.9,True
+2025-07-01,2025-07,2025,7,Q3,Andalucía,SARIMA,Prediccion_Test,599.7,True
+2025-08-01,2025-08,2025,8,Q3,Andalucía,SARIMA,Prediccion_Test,602.1,True
+2025-09-01,2025-09,2025,9,Q3,Andalucía,SARIMA,Prediccion_Test,614.3,True
+2025-10-01,2025-10,2025,10,Q4,Andalucía,SARIMA,Prediccion_Test,607.8,True
+2025-11-01,2025-11,2025,11,Q4,Andalucía,SARIMA,Prediccion_Test,600.3,True
+2025-12-01,2025-12,2025,12,Q4,Andalucía,SARIMA,Prediccion_Test,595.3,True
+2026-01-01,2026-01,2026,1,Q1,Andalucía,SARIMA,Forecast,2122.2,True
+2026-02-01,2026-02,2026,2,Q1,Andalucía,SARIMA,Forecast,2236.0,True
+2026-03-01,2026-03,2026,3,Q1,Andalucía,SARIMA,Forecast,2221.1,True
+2026-04-01,2026-04,2026,4,Q2,Andalucía,SARIMA,Forecast,2224.0,True
+2026-05-01,2026-05,2026,5,Q2,Andalucía,SARIMA,Forecast,2167.2,True
+2026-06-01,2026-06,2026,6,Q2,Andalucía,SARIMA,Forecast,2135.2,True
+2026-07-01,2026-07,2026,7,Q3,Andalucía,SARIMA,Forecast,2112.8,True
+2026-08-01,2026-08,2026,8,Q3,Andalucía,SARIMA,Forecast,2157.3,True
+2026-09-01,2026-09,2026,9,Q3,Andalucía,SARIMA,Forecast,2172.0,True
+2026-10-01,2026-10,2026,10,Q4,Andalucía,SARIMA,Forecast,2170.3,True
+2026-11-01,2026-11,2026,11,Q4,Andalucía,SARIMA,Forecast,2175.7,True
+2026-12-01,2026-12,2026,12,Q4,Andalucía,SARIMA,Forecast,2152.3,True
+2027-01-01,2027-01,2027,1,Q1,Andalucía,SARIMA,Forecast,2140.2,True
+2027-02-01,2027-02,2027,2,Q1,Andalucía,SARIMA,Forecast,2134.2,True
+2027-03-01,2027-03,2027,3,Q1,Andalucía,SARIMA,Forecast,2134.9,True
+2027-04-01,2027-04,2027,4,Q2,Andalucía,SARIMA,Forecast,2134.8,True
+2027-05-01,2027-05,2027,5,Q2,Andalucía,SARIMA,Forecast,2137.8,True
+2027-06-01,2027-06,2027,6,Q2,Andalucía,SARIMA,Forecast,2139.5,True
+2027-07-01,2027-07,2027,7,Q3,Andalucía,SARIMA,Forecast,2140.7,True
+2027-08-01,2027-08,2027,8,Q3,Andalucía,SARIMA,Forecast,2138.3,True
+2027-09-01,2027-09,2027,9,Q3,Andalucía,SARIMA,Forecast,2137.5,True
+2027-10-01,2027-10,2027,10,Q4,Andalucía,SARIMA,Forecast,2137.6,True
+2027-11-01,2027-11,2027,11,Q4,Andalucía,SARIMA,Forecast,2137.3,True
+2027-12-01,2027-12,2027,12,Q4,Andalucía,SARIMA,Forecast,2138.6,True
+2025-01-01,2025-01,2025,1,Q1,Andalucía,XGBoost,Prediccion_Test,318.6,False
+2025-02-01,2025-02,2025,2,Q1,Andalucía,XGBoost,Prediccion_Test,312.9,False
+2025-03-01,2025-03,2025,3,Q1,Andalucía,XGBoost,Prediccion_Test,345.8,False
+2025-04-01,2025-04,2025,4,Q2,Andalucía,XGBoost,Prediccion_Test,408.6,False
+2025-05-01,2025-05,2025,5,Q2,Andalucía,XGBoost,Prediccion_Test,436.0,False
+2025-06-01,2025-06,2025,6,Q2,Andalucía,XGBoost,Prediccion_Test,462.0,False
+2025-07-01,2025-07,2025,7,Q3,Andalucía,XGBoost,Prediccion_Test,497.5,False
+2025-08-01,2025-08,2025,8,Q3,Andalucía,XGBoost,Prediccion_Test,447.2,False
+2025-09-01,2025-09,2025,9,Q3,Andalucía,XGBoost,Prediccion_Test,467.7,False
+2025-10-01,2025-10,2025,10,Q4,Andalucía,XGBoost,Prediccion_Test,498.3,False
+2025-11-01,2025-11,2025,11,Q4,Andalucía,XGBoost,Prediccion_Test,490.6,False
+2025-12-01,2025-12,2025,12,Q4,Andalucía,XGBoost,Prediccion_Test,484.6,False
+2026-01-01,2026-01,2026,1,Q1,Andalucía,XGBoost,Forecast,322.7,False
+2026-02-01,2026-02,2026,2,Q1,Andalucía,XGBoost,Forecast,312.9,False
+2026-03-01,2026-03,2026,3,Q1,Andalucía,XGBoost,Forecast,345.8,False
+2026-04-01,2026-04,2026,4,Q2,Andalucía,XGBoost,Forecast,402.4,False
+2026-05-01,2026-05,2026,5,Q2,Andalucía,XGBoost,Forecast,436.0,False
+2026-06-01,2026-06,2026,6,Q2,Andalucía,XGBoost,Forecast,447.9,False
+2026-07-01,2026-07,2026,7,Q3,Andalucía,XGBoost,Forecast,482.3,False
+2026-08-01,2026-08,2026,8,Q3,Andalucía,XGBoost,Forecast,482.3,False
+2026-09-01,2026-09,2026,9,Q3,Andalucía,XGBoost,Forecast,473.6,False
+2026-10-01,2026-10,2026,10,Q4,Andalucía,XGBoost,Forecast,483.1,False
+2026-11-01,2026-11,2026,11,Q4,Andalucía,XGBoost,Forecast,483.1,False
+2026-12-01,2026-12,2026,12,Q4,Andalucía,XGBoost,Forecast,469.8,False
+2027-01-01,2027-01,2027,1,Q1,Andalucía,XGBoost,Forecast,322.7,False
+2027-02-01,2027-02,2027,2,Q1,Andalucía,XGBoost,Forecast,312.9,False
+2027-03-01,2027-03,2027,3,Q1,Andalucía,XGBoost,Forecast,345.8,False
+2027-04-01,2027-04,2027,4,Q2,Andalucía,XGBoost,Forecast,402.4,False
+2027-05-01,2027-05,2027,5,Q2,Andalucía,XGBoost,Forecast,436.0,False
+2027-06-01,2027-06,2027,6,Q2,Andalucía,XGBoost,Forecast,447.9,False
+2027-07-01,2027-07,2027,7,Q3,Andalucía,XGBoost,Forecast,482.3,False
+2027-08-01,2027-08,2027,8,Q3,Andalucía,XGBoost,Forecast,482.3,False
+2027-09-01,2027-09,2027,9,Q3,Andalucía,XGBoost,Forecast,473.6,False
+2027-10-01,2027-10,2027,10,Q4,Andalucía,XGBoost,Forecast,483.1,False
+2027-11-01,2027-11,2027,11,Q4,Andalucía,XGBoost,Forecast,483.1,False
+2027-12-01,2027-12,2027,12,Q4,Andalucía,XGBoost,Forecast,469.8,False
+2023-01-01,2023-01,2023,1,Q1,Cataluña,Actual,Historico,85.0,True
+2023-02-01,2023-02,2023,2,Q1,Cataluña,Actual,Historico,82.0,True
+2023-03-01,2023-03,2023,3,Q1,Cataluña,Actual,Historico,119.0,True
+2023-04-01,2023-04,2023,4,Q2,Cataluña,Actual,Historico,78.0,True
+2023-05-01,2023-05,2023,5,Q2,Cataluña,Actual,Historico,169.0,True
+2023-06-01,2023-06,2023,6,Q2,Cataluña,Actual,Historico,133.0,True
+2023-07-01,2023-07,2023,7,Q3,Cataluña,Actual,Historico,170.0,True
+2023-08-01,2023-08,2023,8,Q3,Cataluña,Actual,Historico,169.0,True
+2023-09-01,2023-09,2023,9,Q3,Cataluña,Actual,Historico,109.0,True
+2023-10-01,2023-10,2023,10,Q4,Cataluña,Actual,Historico,93.0,True
+2023-11-01,2023-11,2023,11,Q4,Cataluña,Actual,Historico,84.0,True
+2023-12-01,2023-12,2023,12,Q4,Cataluña,Actual,Historico,100.0,True
+2024-01-01,2024-01,2024,1,Q1,Cataluña,Actual,Historico,96.0,True
+2024-02-01,2024-02,2024,2,Q1,Cataluña,Actual,Historico,90.0,True
+2024-03-01,2024-03,2024,3,Q1,Cataluña,Actual,Historico,103.0,True
+2024-04-01,2024-04,2024,4,Q2,Cataluña,Actual,Historico,174.0,True
+2024-05-01,2024-05,2024,5,Q2,Cataluña,Actual,Historico,184.0,True
+2024-06-01,2024-06,2024,6,Q2,Cataluña,Actual,Historico,515.0,True
+2024-07-01,2024-07,2024,7,Q3,Cataluña,Actual,Historico,903.0,True
+2024-08-01,2024-08,2024,8,Q3,Cataluña,Actual,Historico,1036.0,True
+2024-09-01,2024-09,2024,9,Q3,Cataluña,Actual,Historico,775.0,True
+2024-10-01,2024-10,2024,10,Q4,Cataluña,Actual,Historico,1449.0,True
+2024-11-01,2024-11,2024,11,Q4,Cataluña,Actual,Historico,1843.0,True
+2024-12-01,2024-12,2024,12,Q4,Cataluña,Actual,Historico,2176.0,True
+2025-01-01,2025-01,2025,1,Q1,Cataluña,Actual,Historico_Test,1894.0,True
+2025-02-01,2025-02,2025,2,Q1,Cataluña,Actual,Historico_Test,1882.0,True
+2025-03-01,2025-03,2025,3,Q1,Cataluña,Actual,Historico_Test,2130.0,True
+2025-04-01,2025-04,2025,4,Q2,Cataluña,Actual,Historico_Test,2682.0,True
+2025-05-01,2025-05,2025,5,Q2,Cataluña,Actual,Historico_Test,3209.0,True
+2025-06-01,2025-06,2025,6,Q2,Cataluña,Actual,Historico_Test,3522.0,True
+2025-07-01,2025-07,2025,7,Q3,Cataluña,Actual,Historico_Test,3811.0,True
+2025-08-01,2025-08,2025,8,Q3,Cataluña,Actual,Historico_Test,2919.0,True
+2025-09-01,2025-09,2025,9,Q3,Cataluña,Actual,Historico_Test,2503.0,True
+2025-10-01,2025-10,2025,10,Q4,Cataluña,Actual,Historico_Test,3470.0,True
+2025-11-01,2025-11,2025,11,Q4,Cataluña,Actual,Historico_Test,3081.0,True
+2025-12-01,2025-12,2025,12,Q4,Cataluña,Actual,Historico_Test,3362.0,True
+2025-01-01,2025-01,2025,1,Q1,Cataluña,Random Forest,Prediccion_Test,1061.2,False
+2025-02-01,2025-02,2025,2,Q1,Cataluña,Random Forest,Prediccion_Test,1083.3,False
+2025-03-01,2025-03,2025,3,Q1,Cataluña,Random Forest,Prediccion_Test,1066.4,False
+2025-04-01,2025-04,2025,4,Q2,Cataluña,Random Forest,Prediccion_Test,1066.0,False
+2025-05-01,2025-05,2025,5,Q2,Cataluña,Random Forest,Prediccion_Test,1083.9,False
+2025-06-01,2025-06,2025,6,Q2,Cataluña,Random Forest,Prediccion_Test,1079.0,False
+2025-07-01,2025-07,2025,7,Q3,Cataluña,Random Forest,Prediccion_Test,1079.0,False
+2025-08-01,2025-08,2025,8,Q3,Cataluña,Random Forest,Prediccion_Test,1054.4,False
+2025-09-01,2025-09,2025,9,Q3,Cataluña,Random Forest,Prediccion_Test,1078.6,False
+2025-10-01,2025-10,2025,10,Q4,Cataluña,Random Forest,Prediccion_Test,1117.5,False
+2025-11-01,2025-11,2025,11,Q4,Cataluña,Random Forest,Prediccion_Test,1117.5,False
+2025-12-01,2025-12,2025,12,Q4,Cataluña,Random Forest,Prediccion_Test,1104.1,False
+2026-01-01,2026-01,2026,1,Q1,Cataluña,Random Forest,Forecast,1083.3,False
+2026-02-01,2026-02,2026,2,Q1,Cataluña,Random Forest,Forecast,1083.3,False
+2026-03-01,2026-03,2026,3,Q1,Cataluña,Random Forest,Forecast,1053.6,False
+2026-04-01,2026-04,2026,4,Q2,Cataluña,Random Forest,Forecast,1054.4,False
+2026-05-01,2026-05,2026,5,Q2,Cataluña,Random Forest,Forecast,1054.4,False
+2026-06-01,2026-06,2026,6,Q2,Cataluña,Random Forest,Forecast,1054.4,False
+2026-07-01,2026-07,2026,7,Q3,Cataluña,Random Forest,Forecast,1054.4,False
+2026-08-01,2026-08,2026,8,Q3,Cataluña,Random Forest,Forecast,1054.4,False
+2026-09-01,2026-09,2026,9,Q3,Cataluña,Random Forest,Forecast,1065.7,False
+2026-10-01,2026-10,2026,10,Q4,Cataluña,Random Forest,Forecast,1104.1,False
+2026-11-01,2026-11,2026,11,Q4,Cataluña,Random Forest,Forecast,1104.1,False
+2026-12-01,2026-12,2026,12,Q4,Cataluña,Random Forest,Forecast,1104.1,False
+2027-01-01,2027-01,2027,1,Q1,Cataluña,Random Forest,Forecast,1083.3,False
+2027-02-01,2027-02,2027,2,Q1,Cataluña,Random Forest,Forecast,1083.3,False
+2027-03-01,2027-03,2027,3,Q1,Cataluña,Random Forest,Forecast,1053.6,False
+2027-04-01,2027-04,2027,4,Q2,Cataluña,Random Forest,Forecast,1054.4,False
+2027-05-01,2027-05,2027,5,Q2,Cataluña,Random Forest,Forecast,1054.4,False
+2027-06-01,2027-06,2027,6,Q2,Cataluña,Random Forest,Forecast,1054.4,False
+2027-07-01,2027-07,2027,7,Q3,Cataluña,Random Forest,Forecast,1054.4,False
+2027-08-01,2027-08,2027,8,Q3,Cataluña,Random Forest,Forecast,1054.4,False
+2027-09-01,2027-09,2027,9,Q3,Cataluña,Random Forest,Forecast,1065.7,False
+2027-10-01,2027-10,2027,10,Q4,Cataluña,Random Forest,Forecast,1104.1,False
+2027-11-01,2027-11,2027,11,Q4,Cataluña,Random Forest,Forecast,1104.1,False
+2027-12-01,2027-12,2027,12,Q4,Cataluña,Random Forest,Forecast,1104.1,False
+2025-01-01,2025-01,2025,1,Q1,Cataluña,SARIMA,Prediccion_Test,2466.8,True
+2025-02-01,2025-02,2025,2,Q1,Cataluña,SARIMA,Prediccion_Test,2677.1,True
+2025-03-01,2025-03,2025,3,Q1,Cataluña,SARIMA,Prediccion_Test,2645.5,True
+2025-04-01,2025-04,2025,4,Q2,Cataluña,SARIMA,Prediccion_Test,2263.0,True
+2025-05-01,2025-05,2025,5,Q2,Cataluña,SARIMA,Prediccion_Test,2242.7,True
+2025-06-01,2025-06,2025,6,Q2,Cataluña,SARIMA,Prediccion_Test,1600.3,True
+2025-07-01,2025-07,2025,7,Q3,Cataluña,SARIMA,Prediccion_Test,1330.6,True
+2025-08-01,2025-08,2025,8,Q3,Cataluña,SARIMA,Prediccion_Test,1272.9,True
+2025-09-01,2025-09,2025,9,Q3,Cataluña,SARIMA,Prediccion_Test,1403.5,True
+2025-10-01,2025-10,2025,10,Q4,Cataluña,SARIMA,Prediccion_Test,1139.4,True
+2025-11-01,2025-11,2025,11,Q4,Cataluña,SARIMA,Prediccion_Test,1051.7,True
+2025-12-01,2025-12,2025,12,Q4,Cataluña,SARIMA,Prediccion_Test,995.1,True
+2026-01-01,2026-01,2026,1,Q1,Cataluña,SARIMA,Forecast,3497.8,True
+2026-02-01,2026-02,2026,2,Q1,Cataluña,SARIMA,Forecast,3628.5,True
+2026-03-01,2026-03,2026,3,Q1,Cataluña,SARIMA,Forecast,3754.7,True
+2026-04-01,2026-04,2026,4,Q2,Cataluña,SARIMA,Forecast,3876.1,True
+2026-05-01,2026-05,2026,5,Q2,Cataluña,SARIMA,Forecast,3987.9,True
+2026-06-01,2026-06,2026,6,Q2,Cataluña,SARIMA,Forecast,4088.8,True
+2026-07-01,2026-07,2026,7,Q3,Cataluña,SARIMA,Forecast,4181.6,True
+2026-08-01,2026-08,2026,8,Q3,Cataluña,SARIMA,Forecast,4254.5,True
+2026-09-01,2026-09,2026,9,Q3,Cataluña,SARIMA,Forecast,4324.4,True
+2026-10-01,2026-10,2026,10,Q4,Cataluña,SARIMA,Forecast,4406.3,True
+2026-11-01,2026-11,2026,11,Q4,Cataluña,SARIMA,Forecast,4465.2,True
+2026-12-01,2026-12,2026,12,Q4,Cataluña,SARIMA,Forecast,4526.6,True
+2027-01-01,2027-01,2027,1,Q1,Cataluña,SARIMA,Forecast,4581.1,True
+2027-02-01,2027-02,2027,2,Q1,Cataluña,SARIMA,Forecast,4630.7,True
+2027-03-01,2027-03,2027,3,Q1,Cataluña,SARIMA,Forecast,4675.9,True
+2027-04-01,2027-04,2027,4,Q2,Cataluña,SARIMA,Forecast,4717.1,True
+2027-05-01,2027-05,2027,5,Q2,Cataluña,SARIMA,Forecast,4754.4,True
+2027-06-01,2027-06,2027,6,Q2,Cataluña,SARIMA,Forecast,4788.3,True
+2027-07-01,2027-07,2027,7,Q3,Cataluña,SARIMA,Forecast,4819.0,True
+2027-08-01,2027-08,2027,8,Q3,Cataluña,SARIMA,Forecast,4846.7,True
+2027-09-01,2027-09,2027,9,Q3,Cataluña,SARIMA,Forecast,4871.8,True
+2027-10-01,2027-10,2027,10,Q4,Cataluña,SARIMA,Forecast,4894.7,True
+2027-11-01,2027-11,2027,11,Q4,Cataluña,SARIMA,Forecast,4915.2,True
+2027-12-01,2027-12,2027,12,Q4,Cataluña,SARIMA,Forecast,4933.9,True
+2025-01-01,2025-01,2025,1,Q1,Cataluña,XGBoost,Prediccion_Test,1081.3,False
+2025-02-01,2025-02,2025,2,Q1,Cataluña,XGBoost,Prediccion_Test,1076.4,False
+2025-03-01,2025-03,2025,3,Q1,Cataluña,XGBoost,Prediccion_Test,1104.4,False
+2025-04-01,2025-04,2025,4,Q2,Cataluña,XGBoost,Prediccion_Test,1263.4,False
+2025-05-01,2025-05,2025,5,Q2,Cataluña,XGBoost,Prediccion_Test,1128.9,False
+2025-06-01,2025-06,2025,6,Q2,Cataluña,XGBoost,Prediccion_Test,1246.4,False
+2025-07-01,2025-07,2025,7,Q3,Cataluña,XGBoost,Prediccion_Test,1249.9,False
+2025-08-01,2025-08,2025,8,Q3,Cataluña,XGBoost,Prediccion_Test,1199.7,False
+2025-09-01,2025-09,2025,9,Q3,Cataluña,XGBoost,Prediccion_Test,917.3,False
+2025-10-01,2025-10,2025,10,Q4,Cataluña,XGBoost,Prediccion_Test,1170.9,False
+2025-11-01,2025-11,2025,11,Q4,Cataluña,XGBoost,Prediccion_Test,1191.0,False
+2025-12-01,2025-12,2025,12,Q4,Cataluña,XGBoost,Prediccion_Test,1191.7,False
+2026-01-01,2026-01,2026,1,Q1,Cataluña,XGBoost,Forecast,1076.4,False
+2026-02-01,2026-02,2026,2,Q1,Cataluña,XGBoost,Forecast,1076.4,False
+2026-03-01,2026-03,2026,3,Q1,Cataluña,XGBoost,Forecast,1076.4,False
+2026-04-01,2026-04,2026,4,Q2,Cataluña,XGBoost,Forecast,1076.4,False
+2026-05-01,2026-05,2026,5,Q2,Cataluña,XGBoost,Forecast,1060.4,False
+2026-06-01,2026-06,2026,6,Q2,Cataluña,XGBoost,Forecast,1065.2,False
+2026-07-01,2026-07,2026,7,Q3,Cataluña,XGBoost,Forecast,1068.2,False
+2026-08-01,2026-08,2026,8,Q3,Cataluña,XGBoost,Forecast,1084.3,False
+2026-09-01,2026-09,2026,9,Q3,Cataluña,XGBoost,Forecast,916.4,False
+2026-10-01,2026-10,2026,10,Q4,Cataluña,XGBoost,Forecast,1084.3,False
+2026-11-01,2026-11,2026,11,Q4,Cataluña,XGBoost,Forecast,1084.3,False
+2026-12-01,2026-12,2026,12,Q4,Cataluña,XGBoost,Forecast,1084.3,False
+2027-01-01,2027-01,2027,1,Q1,Cataluña,XGBoost,Forecast,1076.4,False
+2027-02-01,2027-02,2027,2,Q1,Cataluña,XGBoost,Forecast,1076.4,False
+2027-03-01,2027-03,2027,3,Q1,Cataluña,XGBoost,Forecast,1076.4,False
+2027-04-01,2027-04,2027,4,Q2,Cataluña,XGBoost,Forecast,1076.4,False
+2027-05-01,2027-05,2027,5,Q2,Cataluña,XGBoost,Forecast,1060.4,False
+2027-06-01,2027-06,2027,6,Q2,Cataluña,XGBoost,Forecast,1065.2,False
+2027-07-01,2027-07,2027,7,Q3,Cataluña,XGBoost,Forecast,1068.2,False
+2027-08-01,2027-08,2027,8,Q3,Cataluña,XGBoost,Forecast,1084.3,False
+2027-09-01,2027-09,2027,9,Q3,Cataluña,XGBoost,Forecast,916.4,False
+2027-10-01,2027-10,2027,10,Q4,Cataluña,XGBoost,Forecast,1084.3,False
+2027-11-01,2027-11,2027,11,Q4,Cataluña,XGBoost,Forecast,1084.3,False
+2027-12-01,2027-12,2027,12,Q4,Cataluña,XGBoost,Forecast,1084.3,False
+2023-01-01,2023-01,2023,1,Q1,Madrid,Actual,Historico,26.0,True
+2023-02-01,2023-02,2023,2,Q1,Madrid,Actual,Historico,26.0,True
+2023-03-01,2023-03,2023,3,Q1,Madrid,Actual,Historico,25.0,True
+2023-04-01,2023-04,2023,4,Q2,Madrid,Actual,Historico,0.0,True
+2023-05-01,2023-05,2023,5,Q2,Madrid,Actual,Historico,0.0,True
+2023-06-01,2023-06,2023,6,Q2,Madrid,Actual,Historico,42.0,True
+2023-07-01,2023-07,2023,7,Q3,Madrid,Actual,Historico,12.0,True
+2023-08-01,2023-08,2023,8,Q3,Madrid,Actual,Historico,92.0,True
+2023-09-01,2023-09,2023,9,Q3,Madrid,Actual,Historico,26.0,True
+2023-10-01,2023-10,2023,10,Q4,Madrid,Actual,Historico,129.0,True
+2023-11-01,2023-11,2023,11,Q4,Madrid,Actual,Historico,74.0,True
+2023-12-01,2023-12,2023,12,Q4,Madrid,Actual,Historico,78.0,True
+2024-01-01,2024-01,2024,1,Q1,Madrid,Actual,Historico,78.0,True
+2024-02-01,2024-02,2024,2,Q1,Madrid,Actual,Historico,81.0,True
+2024-03-01,2024-03,2024,3,Q1,Madrid,Actual,Historico,133.0,True
+2024-04-01,2024-04,2024,4,Q2,Madrid,Actual,Historico,140.0,True
+2024-05-01,2024-05,2024,5,Q2,Madrid,Actual,Historico,331.0,True
+2024-06-01,2024-06,2024,6,Q2,Madrid,Actual,Historico,389.0,True
+2024-07-01,2024-07,2024,7,Q3,Madrid,Actual,Historico,503.0,True
+2024-08-01,2024-08,2024,8,Q3,Madrid,Actual,Historico,598.0,True
+2024-09-01,2024-09,2024,9,Q3,Madrid,Actual,Historico,980.0,True
+2024-10-01,2024-10,2024,10,Q4,Madrid,Actual,Historico,1335.0,True
+2024-11-01,2024-11,2024,11,Q4,Madrid,Actual,Historico,1635.0,True
+2024-12-01,2024-12,2024,12,Q4,Madrid,Actual,Historico,2067.0,True
+2025-01-01,2025-01,2025,1,Q1,Madrid,Actual,Historico_Test,1663.0,True
+2025-02-01,2025-02,2025,2,Q1,Madrid,Actual,Historico_Test,1640.0,True
+2025-03-01,2025-03,2025,3,Q1,Madrid,Actual,Historico_Test,2037.0,True
+2025-04-01,2025-04,2025,4,Q2,Madrid,Actual,Historico_Test,2431.0,True
+2025-05-01,2025-05,2025,5,Q2,Madrid,Actual,Historico_Test,2961.0,True
+2025-06-01,2025-06,2025,6,Q2,Madrid,Actual,Historico_Test,3747.0,True
+2025-07-01,2025-07,2025,7,Q3,Madrid,Actual,Historico_Test,3854.0,True
+2025-08-01,2025-08,2025,8,Q3,Madrid,Actual,Historico_Test,2698.0,True
+2025-09-01,2025-09,2025,9,Q3,Madrid,Actual,Historico_Test,2821.0,True
+2025-10-01,2025-10,2025,10,Q4,Madrid,Actual,Historico_Test,2617.0,True
+2025-11-01,2025-11,2025,11,Q4,Madrid,Actual,Historico_Test,3118.0,True
+2025-12-01,2025-12,2025,12,Q4,Madrid,Actual,Historico_Test,2975.0,True
+2025-01-01,2025-01,2025,1,Q1,Madrid,Random Forest,Prediccion_Test,805.4,False
+2025-02-01,2025-02,2025,2,Q1,Madrid,Random Forest,Prediccion_Test,836.0,False
+2025-03-01,2025-03,2025,3,Q1,Madrid,Random Forest,Prediccion_Test,838.1,False
+2025-04-01,2025-04,2025,4,Q2,Madrid,Random Forest,Prediccion_Test,867.2,False
+2025-05-01,2025-05,2025,5,Q2,Madrid,Random Forest,Prediccion_Test,868.5,False
+2025-06-01,2025-06,2025,6,Q2,Madrid,Random Forest,Prediccion_Test,889.9,False
+2025-07-01,2025-07,2025,7,Q3,Madrid,Random Forest,Prediccion_Test,887.4,False
+2025-08-01,2025-08,2025,8,Q3,Madrid,Random Forest,Prediccion_Test,859.8,False
+2025-09-01,2025-09,2025,9,Q3,Madrid,Random Forest,Prediccion_Test,877.2,False
+2025-10-01,2025-10,2025,10,Q4,Madrid,Random Forest,Prediccion_Test,886.8,False
+2025-11-01,2025-11,2025,11,Q4,Madrid,Random Forest,Prediccion_Test,891.3,False
+2025-12-01,2025-12,2025,12,Q4,Madrid,Random Forest,Prediccion_Test,916.5,False
+2026-01-01,2026-01,2026,1,Q1,Madrid,Random Forest,Forecast,854.5,False
+2026-02-01,2026-02,2026,2,Q1,Madrid,Random Forest,Forecast,854.5,False
+2026-03-01,2026-03,2026,3,Q1,Madrid,Random Forest,Forecast,835.8,False
+2026-04-01,2026-04,2026,4,Q2,Madrid,Random Forest,Forecast,819.5,False
+2026-05-01,2026-05,2026,5,Q2,Madrid,Random Forest,Forecast,820.8,False
+2026-06-01,2026-06,2026,6,Q2,Madrid,Random Forest,Forecast,840.9,False
+2026-07-01,2026-07,2026,7,Q3,Madrid,Random Forest,Forecast,840.9,False
+2026-08-01,2026-08,2026,8,Q3,Madrid,Random Forest,Forecast,856.4,False
+2026-09-01,2026-09,2026,9,Q3,Madrid,Random Forest,Forecast,893.1,False
+2026-10-01,2026-10,2026,10,Q4,Madrid,Random Forest,Forecast,916.5,False
+2026-11-01,2026-11,2026,11,Q4,Madrid,Random Forest,Forecast,916.5,False
+2026-12-01,2026-12,2026,12,Q4,Madrid,Random Forest,Forecast,916.5,False
+2027-01-01,2027-01,2027,1,Q1,Madrid,Random Forest,Forecast,854.5,False
+2027-02-01,2027-02,2027,2,Q1,Madrid,Random Forest,Forecast,854.5,False
+2027-03-01,2027-03,2027,3,Q1,Madrid,Random Forest,Forecast,835.8,False
+2027-04-01,2027-04,2027,4,Q2,Madrid,Random Forest,Forecast,819.5,False
+2027-05-01,2027-05,2027,5,Q2,Madrid,Random Forest,Forecast,820.8,False
+2027-06-01,2027-06,2027,6,Q2,Madrid,Random Forest,Forecast,840.9,False
+2027-07-01,2027-07,2027,7,Q3,Madrid,Random Forest,Forecast,840.9,False
+2027-08-01,2027-08,2027,8,Q3,Madrid,Random Forest,Forecast,856.4,False
+2027-09-01,2027-09,2027,9,Q3,Madrid,Random Forest,Forecast,893.1,False
+2027-10-01,2027-10,2027,10,Q4,Madrid,Random Forest,Forecast,916.5,False
+2027-11-01,2027-11,2027,11,Q4,Madrid,Random Forest,Forecast,916.5,False
+2027-12-01,2027-12,2027,12,Q4,Madrid,Random Forest,Forecast,916.5,False
+2025-01-01,2025-01,2025,1,Q1,Madrid,SARIMA,Prediccion_Test,2659.3,True
+2025-02-01,2025-02,2025,2,Q1,Madrid,SARIMA,Prediccion_Test,3398.8,True
+2025-03-01,2025-03,2025,3,Q1,Madrid,SARIMA,Prediccion_Test,4308.5,True
+2025-04-01,2025-04,2025,4,Q2,Madrid,SARIMA,Prediccion_Test,5438.9,True
+2025-05-01,2025-05,2025,5,Q2,Madrid,SARIMA,Prediccion_Test,6801.5,True
+2025-06-01,2025-06,2025,6,Q2,Madrid,SARIMA,Prediccion_Test,8481.9,True
+2025-07-01,2025-07,2025,7,Q3,Madrid,SARIMA,Prediccion_Test,10513.9,True
+2025-08-01,2025-08,2025,8,Q3,Madrid,SARIMA,Prediccion_Test,12966.0,True
+2025-09-01,2025-09,2025,9,Q3,Madrid,SARIMA,Prediccion_Test,15882.7,True
+2025-10-01,2025-10,2025,10,Q4,Madrid,SARIMA,Prediccion_Test,19370.0,True
+2025-11-01,2025-11,2025,11,Q4,Madrid,SARIMA,Prediccion_Test,23514.2,True
+2025-12-01,2025-12,2025,12,Q4,Madrid,SARIMA,Prediccion_Test,28400.3,True
+2026-01-01,2026-01,2026,1,Q1,Madrid,SARIMA,Forecast,3106.4,True
+2026-02-01,2026-02,2026,2,Q1,Madrid,SARIMA,Forecast,3234.6,True
+2026-03-01,2026-03,2026,3,Q1,Madrid,SARIMA,Forecast,3361.2,True
+2026-04-01,2026-04,2026,4,Q2,Madrid,SARIMA,Forecast,3478.4,True
+2026-05-01,2026-05,2026,5,Q2,Madrid,SARIMA,Forecast,3588.2,True
+2026-06-01,2026-06,2026,6,Q2,Madrid,SARIMA,Forecast,3691.7,True
+2026-07-01,2026-07,2026,7,Q3,Madrid,SARIMA,Forecast,3780.5,True
+2026-08-01,2026-08,2026,8,Q3,Madrid,SARIMA,Forecast,3848.3,True
+2026-09-01,2026-09,2026,9,Q3,Madrid,SARIMA,Forecast,3923.4,True
+2026-10-01,2026-10,2026,10,Q4,Madrid,SARIMA,Forecast,3987.7,True
+2026-11-01,2026-11,2026,11,Q4,Madrid,SARIMA,Forecast,4055.5,True
+2026-12-01,2026-12,2026,12,Q4,Madrid,SARIMA,Forecast,4109.4,True
+2027-01-01,2027-01,2027,1,Q1,Madrid,SARIMA,Forecast,4161.6,True
+2027-02-01,2027-02,2027,2,Q1,Madrid,SARIMA,Forecast,4209.1,True
+2027-03-01,2027-03,2027,3,Q1,Madrid,SARIMA,Forecast,4252.2,True
+2027-04-01,2027-04,2027,4,Q2,Madrid,SARIMA,Forecast,4291.2,True
+2027-05-01,2027-05,2027,5,Q2,Madrid,SARIMA,Forecast,4326.6,True
+2027-06-01,2027-06,2027,6,Q2,Madrid,SARIMA,Forecast,4358.5,True
+2027-07-01,2027-07,2027,7,Q3,Madrid,SARIMA,Forecast,4387.3,True
+2027-08-01,2027-08,2027,8,Q3,Madrid,SARIMA,Forecast,4413.1,True
+2027-09-01,2027-09,2027,9,Q3,Madrid,SARIMA,Forecast,4436.5,True
+2027-10-01,2027-10,2027,10,Q4,Madrid,SARIMA,Forecast,4457.6,True
+2027-11-01,2027-11,2027,11,Q4,Madrid,SARIMA,Forecast,4476.6,True
+2027-12-01,2027-12,2027,12,Q4,Madrid,SARIMA,Forecast,4493.7,True
+2025-01-01,2025-01,2025,1,Q1,Madrid,XGBoost,Prediccion_Test,938.4,False
+2025-02-01,2025-02,2025,2,Q1,Madrid,XGBoost,Prediccion_Test,938.4,False
+2025-03-01,2025-03,2025,3,Q1,Madrid,XGBoost,Prediccion_Test,954.8,False
+2025-04-01,2025-04,2025,4,Q2,Madrid,XGBoost,Prediccion_Test,994.2,False
+2025-05-01,2025-05,2025,5,Q2,Madrid,XGBoost,Prediccion_Test,941.6,False
+2025-06-01,2025-06,2025,6,Q2,Madrid,XGBoost,Prediccion_Test,1015.5,False
+2025-07-01,2025-07,2025,7,Q3,Madrid,XGBoost,Prediccion_Test,1019.1,False
+2025-08-01,2025-08,2025,8,Q3,Madrid,XGBoost,Prediccion_Test,974.7,False
+2025-09-01,2025-09,2025,9,Q3,Madrid,XGBoost,Prediccion_Test,1019.2,False
+2025-10-01,2025-10,2025,10,Q4,Madrid,XGBoost,Prediccion_Test,1084.2,False
+2025-11-01,2025-11,2025,11,Q4,Madrid,XGBoost,Prediccion_Test,1159.4,False
+2025-12-01,2025-12,2025,12,Q4,Madrid,XGBoost,Prediccion_Test,1147.5,False
+2026-01-01,2026-01,2026,1,Q1,Madrid,XGBoost,Forecast,938.4,False
+2026-02-01,2026-02,2026,2,Q1,Madrid,XGBoost,Forecast,938.4,False
+2026-03-01,2026-03,2026,3,Q1,Madrid,XGBoost,Forecast,942.6,False
+2026-04-01,2026-04,2026,4,Q2,Madrid,XGBoost,Forecast,924.3,False
+2026-05-01,2026-05,2026,5,Q2,Madrid,XGBoost,Forecast,921.1,False
+2026-06-01,2026-06,2026,6,Q2,Madrid,XGBoost,Forecast,945.4,False
+2026-07-01,2026-07,2026,7,Q3,Madrid,XGBoost,Forecast,948.7,False
+2026-08-01,2026-08,2026,8,Q3,Madrid,XGBoost,Forecast,952.1,False
+2026-09-01,2026-09,2026,9,Q3,Madrid,XGBoost,Forecast,1012.3,False
+2026-10-01,2026-10,2026,10,Q4,Madrid,XGBoost,Forecast,1086.0,False
+2026-11-01,2026-11,2026,11,Q4,Madrid,XGBoost,Forecast,1086.0,False
+2026-12-01,2026-12,2026,12,Q4,Madrid,XGBoost,Forecast,1082.1,False
+2027-01-01,2027-01,2027,1,Q1,Madrid,XGBoost,Forecast,938.4,False
+2027-02-01,2027-02,2027,2,Q1,Madrid,XGBoost,Forecast,938.4,False
+2027-03-01,2027-03,2027,3,Q1,Madrid,XGBoost,Forecast,942.6,False
+2027-04-01,2027-04,2027,4,Q2,Madrid,XGBoost,Forecast,924.3,False
+2027-05-01,2027-05,2027,5,Q2,Madrid,XGBoost,Forecast,921.1,False
+2027-06-01,2027-06,2027,6,Q2,Madrid,XGBoost,Forecast,945.4,False
+2027-07-01,2027-07,2027,7,Q3,Madrid,XGBoost,Forecast,948.7,False
+2027-08-01,2027-08,2027,8,Q3,Madrid,XGBoost,Forecast,952.1,False
+2027-09-01,2027-09,2027,9,Q3,Madrid,XGBoost,Forecast,1012.3,False
+2027-10-01,2027-10,2027,10,Q4,Madrid,XGBoost,Forecast,1086.0,False
+2027-11-01,2027-11,2027,11,Q4,Madrid,XGBoost,Forecast,1086.0,False
+2027-12-01,2027-12,2027,12,Q4,Madrid,XGBoost,Forecast,1082.1,False
+2023-01-01,2023-01,2023,1,Q1,Nacional,Actual,Historico,167.0,True
+2023-02-01,2023-02,2023,2,Q1,Nacional,Actual,Historico,162.0,True
+2023-03-01,2023-03,2023,3,Q1,Nacional,Actual,Historico,205.0,True
+2023-04-01,2023-04,2023,4,Q2,Nacional,Actual,Historico,260.0,True
+2023-05-01,2023-05,2023,5,Q2,Nacional,Actual,Historico,431.0,True
+2023-06-01,2023-06,2023,6,Q2,Nacional,Actual,Historico,379.0,True
+2023-07-01,2023-07,2023,7,Q3,Nacional,Actual,Historico,257.0,True
+2023-08-01,2023-08,2023,8,Q3,Nacional,Actual,Historico,525.0,True
+2023-09-01,2023-09,2023,9,Q3,Nacional,Actual,Historico,389.0,True
+2023-10-01,2023-10,2023,10,Q4,Nacional,Actual,Historico,520.0,True
+2023-11-01,2023-11,2023,11,Q4,Nacional,Actual,Historico,1152.0,True
+2023-12-01,2023-12,2023,12,Q4,Nacional,Actual,Historico,1570.0,True
+2024-01-01,2024-01,2024,1,Q1,Nacional,Actual,Historico,546.0,True
+2024-02-01,2024-02,2024,2,Q1,Nacional,Actual,Historico,1131.0,True
+2024-03-01,2024-03,2024,3,Q1,Nacional,Actual,Historico,1698.0,True
+2024-04-01,2024-04,2024,4,Q2,Nacional,Actual,Historico,2277.0,True
+2024-05-01,2024-05,2024,5,Q2,Nacional,Actual,Historico,3382.0,True
+2024-06-01,2024-06,2024,6,Q2,Nacional,Actual,Historico,5044.0,True
+2024-07-01,2024-07,2024,7,Q3,Nacional,Actual,Historico,6683.0,True
+2024-08-01,2024-08,2024,8,Q3,Nacional,Actual,Historico,6946.0,True
+2024-09-01,2024-09,2024,9,Q3,Nacional,Actual,Historico,7044.0,True
+2024-10-01,2024-10,2024,10,Q4,Nacional,Actual,Historico,8124.0,True
+2024-11-01,2024-11,2024,11,Q4,Nacional,Actual,Historico,10408.0,True
+2024-12-01,2024-12,2024,12,Q4,Nacional,Actual,Historico,13441.0,True
+2025-01-01,2025-01,2025,1,Q1,Nacional,Actual,Historico_Test,11376.0,True
+2025-02-01,2025-02,2025,2,Q1,Nacional,Actual,Historico_Test,10716.0,True
+2025-03-01,2025-03,2025,3,Q1,Nacional,Actual,Historico_Test,12389.0,True
+2025-04-01,2025-04,2025,4,Q2,Nacional,Actual,Historico_Test,14145.0,True
+2025-05-01,2025-05,2025,5,Q2,Nacional,Actual,Historico_Test,18921.0,True
+2025-06-01,2025-06,2025,6,Q2,Nacional,Actual,Historico_Test,23356.0,True
+2025-07-01,2025-07,2025,7,Q3,Nacional,Actual,Historico_Test,27001.0,True
+2025-08-01,2025-08,2025,8,Q3,Nacional,Actual,Historico_Test,19929.0,True
+2025-09-01,2025-09,2025,9,Q3,Nacional,Actual,Historico_Test,18836.0,True
+2025-10-01,2025-10,2025,10,Q4,Nacional,Actual,Historico_Test,20133.0,True
+2025-11-01,2025-11,2025,11,Q4,Nacional,Actual,Historico_Test,20228.0,True
+2025-12-01,2025-12,2025,12,Q4,Nacional,Actual,Historico_Test,22632.0,True
+2025-01-01,2025-01,2025,1,Q1,Nacional,Random Forest,Prediccion_Test,6737.0,False
+2025-02-01,2025-02,2025,2,Q1,Nacional,Random Forest,Prediccion_Test,6760.8,False
+2025-03-01,2025-03,2025,3,Q1,Nacional,Random Forest,Prediccion_Test,6907.2,False
+2025-04-01,2025-04,2025,4,Q2,Nacional,Random Forest,Prediccion_Test,6948.9,False
+2025-05-01,2025-05,2025,5,Q2,Nacional,Random Forest,Prediccion_Test,6929.2,False
+2025-06-01,2025-06,2025,6,Q2,Nacional,Random Forest,Prediccion_Test,7199.0,False
+2025-07-01,2025-07,2025,7,Q3,Nacional,Random Forest,Prediccion_Test,7262.2,False
+2025-08-01,2025-08,2025,8,Q3,Nacional,Random Forest,Prediccion_Test,7312.7,False
+2025-09-01,2025-09,2025,9,Q3,Nacional,Random Forest,Prediccion_Test,7229.6,False
+2025-10-01,2025-10,2025,10,Q4,Nacional,Random Forest,Prediccion_Test,7066.6,False
+2025-11-01,2025-11,2025,11,Q4,Nacional,Random Forest,Prediccion_Test,7199.6,False
+2025-12-01,2025-12,2025,12,Q4,Nacional,Random Forest,Prediccion_Test,7448.6,False
+2026-01-01,2026-01,2026,1,Q1,Nacional,Random Forest,Forecast,6888.0,False
+2026-02-01,2026-02,2026,2,Q1,Nacional,Random Forest,Forecast,6873.4,False
+2026-03-01,2026-03,2026,3,Q1,Nacional,Random Forest,Forecast,6803.8,False
+2026-04-01,2026-04,2026,4,Q2,Nacional,Random Forest,Forecast,6688.2,False
+2026-05-01,2026-05,2026,5,Q2,Nacional,Random Forest,Forecast,6582.1,False
+2026-06-01,2026-06,2026,6,Q2,Nacional,Random Forest,Forecast,6836.7,False
+2026-07-01,2026-07,2026,7,Q3,Nacional,Random Forest,Forecast,6974.9,False
+2026-08-01,2026-08,2026,8,Q3,Nacional,Random Forest,Forecast,7203.8,False
+2026-09-01,2026-09,2026,9,Q3,Nacional,Random Forest,Forecast,7328.5,False
+2026-10-01,2026-10,2026,10,Q4,Nacional,Random Forest,Forecast,7446.7,False
+2026-11-01,2026-11,2026,11,Q4,Nacional,Random Forest,Forecast,7446.7,False
+2026-12-01,2026-12,2026,12,Q4,Nacional,Random Forest,Forecast,7446.7,False
+2027-01-01,2027-01,2027,1,Q1,Nacional,Random Forest,Forecast,6888.0,False
+2027-02-01,2027-02,2027,2,Q1,Nacional,Random Forest,Forecast,6873.4,False
+2027-03-01,2027-03,2027,3,Q1,Nacional,Random Forest,Forecast,6803.8,False
+2027-04-01,2027-04,2027,4,Q2,Nacional,Random Forest,Forecast,6688.2,False
+2027-05-01,2027-05,2027,5,Q2,Nacional,Random Forest,Forecast,6582.1,False
+2027-06-01,2027-06,2027,6,Q2,Nacional,Random Forest,Forecast,6836.7,False
+2027-07-01,2027-07,2027,7,Q3,Nacional,Random Forest,Forecast,6974.9,False
+2027-08-01,2027-08,2027,8,Q3,Nacional,Random Forest,Forecast,7203.8,False
+2027-09-01,2027-09,2027,9,Q3,Nacional,Random Forest,Forecast,7328.5,False
+2027-10-01,2027-10,2027,10,Q4,Nacional,Random Forest,Forecast,7446.7,False
+2027-11-01,2027-11,2027,11,Q4,Nacional,Random Forest,Forecast,7446.7,False
+2027-12-01,2027-12,2027,12,Q4,Nacional,Random Forest,Forecast,7446.7,False
+2025-01-01,2025-01,2025,1,Q1,Nacional,SARIMA,Prediccion_Test,17010.1,True
+2025-02-01,2025-02,2025,2,Q1,Nacional,SARIMA,Prediccion_Test,18825.3,True
+2025-03-01,2025-03,2025,3,Q1,Nacional,SARIMA,Prediccion_Test,20315.5,True
+2025-04-01,2025-04,2025,4,Q2,Nacional,SARIMA,Prediccion_Test,21430.2,True
+2025-05-01,2025-05,2025,5,Q2,Nacional,SARIMA,Prediccion_Test,22068.9,True
+2025-06-01,2025-06,2025,6,Q2,Nacional,SARIMA,Prediccion_Test,22411.4,True
+2025-07-01,2025-07,2025,7,Q3,Nacional,SARIMA,Prediccion_Test,22656.5,True
+2025-08-01,2025-08,2025,8,Q3,Nacional,SARIMA,Prediccion_Test,22991.9,True
+2025-09-01,2025-09,2025,9,Q3,Nacional,SARIMA,Prediccion_Test,23244.8,True
+2025-10-01,2025-10,2025,10,Q4,Nacional,SARIMA,Prediccion_Test,23288.5,True
+2025-11-01,2025-11,2025,11,Q4,Nacional,SARIMA,Prediccion_Test,23169.1,True
+2025-12-01,2025-12,2025,12,Q4,Nacional,SARIMA,Prediccion_Test,23003.2,True
+2026-01-01,2026-01,2026,1,Q1,Nacional,SARIMA,Forecast,23556.5,True
+2026-02-01,2026-02,2026,2,Q1,Nacional,SARIMA,Forecast,24152.2,True
+2026-03-01,2026-03,2026,3,Q1,Nacional,SARIMA,Forecast,24910.6,True
+2026-04-01,2026-04,2026,4,Q2,Nacional,SARIMA,Forecast,25466.8,True
+2026-05-01,2026-05,2026,5,Q2,Nacional,SARIMA,Forecast,26328.3,True
+2026-06-01,2026-06,2026,6,Q2,Nacional,SARIMA,Forecast,26946.1,True
+2026-07-01,2026-07,2026,7,Q3,Nacional,SARIMA,Forecast,27369.3,True
+2026-08-01,2026-08,2026,8,Q3,Nacional,SARIMA,Forecast,26596.6,True
+2026-09-01,2026-09,2026,9,Q3,Nacional,SARIMA,Forecast,26463.4,True
+2026-10-01,2026-10,2026,10,Q4,Nacional,SARIMA,Forecast,26641.6,True
+2026-11-01,2026-11,2026,11,Q4,Nacional,SARIMA,Forecast,26657.4,True
+2026-12-01,2026-12,2026,12,Q4,Nacional,SARIMA,Forecast,26951.4,True
+2027-01-01,2027-01,2027,1,Q1,Nacional,SARIMA,Forecast,27057.4,True
+2027-02-01,2027-02,2027,2,Q1,Nacional,SARIMA,Forecast,27123.6,True
+2027-03-01,2027-03,2027,3,Q1,Nacional,SARIMA,Forecast,27205.4,True
+2027-04-01,2027-04,2027,4,Q2,Nacional,SARIMA,Forecast,27264.0,True
+2027-05-01,2027-05,2027,5,Q2,Nacional,SARIMA,Forecast,27352.2,True
+2027-06-01,2027-06,2027,6,Q2,Nacional,SARIMA,Forecast,27413.9,True
+2027-07-01,2027-07,2027,7,Q3,Nacional,SARIMA,Forecast,27455.4,True
+2027-08-01,2027-08,2027,8,Q3,Nacional,SARIMA,Forecast,27379.2,True
+2027-09-01,2027-09,2027,9,Q3,Nacional,SARIMA,Forecast,27365.9,True
+2027-10-01,2027-10,2027,10,Q4,Nacional,SARIMA,Forecast,27383.7,True
+2027-11-01,2027-11,2027,11,Q4,Nacional,SARIMA,Forecast,27385.3,True
+2027-12-01,2027-12,2027,12,Q4,Nacional,SARIMA,Forecast,27414.5,True
+2025-01-01,2025-01,2025,1,Q1,Nacional,XGBoost,Prediccion_Test,6330.6,False
+2025-02-01,2025-02,2025,2,Q1,Nacional,XGBoost,Prediccion_Test,6387.7,False
+2025-03-01,2025-03,2025,3,Q1,Nacional,XGBoost,Prediccion_Test,6446.7,False
+2025-04-01,2025-04,2025,4,Q2,Nacional,XGBoost,Prediccion_Test,6567.2,False
+2025-05-01,2025-05,2025,5,Q2,Nacional,XGBoost,Prediccion_Test,6594.8,False
+2025-06-01,2025-06,2025,6,Q2,Nacional,XGBoost,Prediccion_Test,6590.2,False
+2025-07-01,2025-07,2025,7,Q3,Nacional,XGBoost,Prediccion_Test,6910.5,False
+2025-08-01,2025-08,2025,8,Q3,Nacional,XGBoost,Prediccion_Test,7001.8,False
+2025-09-01,2025-09,2025,9,Q3,Nacional,XGBoost,Prediccion_Test,7052.2,False
+2025-10-01,2025-10,2025,10,Q4,Nacional,XGBoost,Prediccion_Test,7355.7,False
+2025-11-01,2025-11,2025,11,Q4,Nacional,XGBoost,Prediccion_Test,7355.7,False
+2025-12-01,2025-12,2025,12,Q4,Nacional,XGBoost,Prediccion_Test,7353.6,False
+2026-01-01,2026-01,2026,1,Q1,Nacional,XGBoost,Forecast,6330.6,False
+2026-02-01,2026-02,2026,2,Q1,Nacional,XGBoost,Forecast,6387.7,False
+2026-03-01,2026-03,2026,3,Q1,Nacional,XGBoost,Forecast,6417.1,False
+2026-04-01,2026-04,2026,4,Q2,Nacional,XGBoost,Forecast,6534.4,False
+2026-05-01,2026-05,2026,5,Q2,Nacional,XGBoost,Forecast,6570.1,False
+2026-06-01,2026-06,2026,6,Q2,Nacional,XGBoost,Forecast,6552.7,False
+2026-07-01,2026-07,2026,7,Q3,Nacional,XGBoost,Forecast,6844.5,False
+2026-08-01,2026-08,2026,8,Q3,Nacional,XGBoost,Forecast,7013.7,False
+2026-09-01,2026-09,2026,9,Q3,Nacional,XGBoost,Forecast,7048.3,False
+2026-10-01,2026-10,2026,10,Q4,Nacional,XGBoost,Forecast,7339.3,False
+2026-11-01,2026-11,2026,11,Q4,Nacional,XGBoost,Forecast,7339.3,False
+2026-12-01,2026-12,2026,12,Q4,Nacional,XGBoost,Forecast,7339.3,False
+2027-01-01,2027-01,2027,1,Q1,Nacional,XGBoost,Forecast,6330.6,False
+2027-02-01,2027-02,2027,2,Q1,Nacional,XGBoost,Forecast,6387.7,False
+2027-03-01,2027-03,2027,3,Q1,Nacional,XGBoost,Forecast,6417.1,False
+2027-04-01,2027-04,2027,4,Q2,Nacional,XGBoost,Forecast,6534.4,False
+2027-05-01,2027-05,2027,5,Q2,Nacional,XGBoost,Forecast,6570.1,False
+2027-06-01,2027-06,2027,6,Q2,Nacional,XGBoost,Forecast,6552.7,False
+2027-07-01,2027-07,2027,7,Q3,Nacional,XGBoost,Forecast,6844.5,False
+2027-08-01,2027-08,2027,8,Q3,Nacional,XGBoost,Forecast,7013.7,False
+2027-09-01,2027-09,2027,9,Q3,Nacional,XGBoost,Forecast,7048.3,False
+2027-10-01,2027-10,2027,10,Q4,Nacional,XGBoost,Forecast,7339.3,False
+2027-11-01,2027-11,2027,11,Q4,Nacional,XGBoost,Forecast,7339.3,False
+2027-12-01,2027-12,2027,12,Q4,Nacional,XGBoost,Forecast,7339.3,False
+2023-01-01,2023-01,2023,1,Q1,Valencia,Actual,Historico,52.0,True
+2023-02-01,2023-02,2023,2,Q1,Valencia,Actual,Historico,50.0,True
+2023-03-01,2023-03,2023,3,Q1,Valencia,Actual,Historico,25.0,True
+2023-04-01,2023-04,2023,4,Q2,Valencia,Actual,Historico,76.0,True
+2023-05-01,2023-05,2023,5,Q2,Valencia,Actual,Historico,76.0,True
+2023-06-01,2023-06,2023,6,Q2,Valencia,Actual,Historico,25.0,True
+2023-07-01,2023-07,2023,7,Q3,Valencia,Actual,Historico,0.0,True
+2023-08-01,2023-08,2023,8,Q3,Valencia,Actual,Historico,0.0,True
+2023-09-01,2023-09,2023,9,Q3,Valencia,Actual,Historico,0.0,True
+2023-10-01,2023-10,2023,10,Q4,Valencia,Actual,Historico,17.0,True
+2023-11-01,2023-11,2023,11,Q4,Valencia,Actual,Historico,0.0,True
+2023-12-01,2023-12,2023,12,Q4,Valencia,Actual,Historico,0.0,True
+2024-01-01,2024-01,2024,1,Q1,Valencia,Actual,Historico,15.0,True
+2024-02-01,2024-02,2024,2,Q1,Valencia,Actual,Historico,43.0,True
+2024-03-01,2024-03,2024,3,Q1,Valencia,Actual,Historico,78.0,True
+2024-04-01,2024-04,2024,4,Q2,Valencia,Actual,Historico,139.0,True
+2024-05-01,2024-05,2024,5,Q2,Valencia,Actual,Historico,116.0,True
+2024-06-01,2024-06,2024,6,Q2,Valencia,Actual,Historico,246.0,True
+2024-07-01,2024-07,2024,7,Q3,Valencia,Actual,Historico,336.0,True
+2024-08-01,2024-08,2024,8,Q3,Valencia,Actual,Historico,403.0,True
+2024-09-01,2024-09,2024,9,Q3,Valencia,Actual,Historico,442.0,True
+2024-10-01,2024-10,2024,10,Q4,Valencia,Actual,Historico,344.0,True
+2024-11-01,2024-11,2024,11,Q4,Valencia,Actual,Historico,435.0,True
+2024-12-01,2024-12,2024,12,Q4,Valencia,Actual,Historico,549.0,True
+2025-01-01,2025-01,2025,1,Q1,Valencia,Actual,Historico_Test,462.0,True
+2025-02-01,2025-02,2025,2,Q1,Valencia,Actual,Historico_Test,506.0,True
+2025-03-01,2025-03,2025,3,Q1,Valencia,Actual,Historico_Test,538.0,True
+2025-04-01,2025-04,2025,4,Q2,Valencia,Actual,Historico_Test,673.0,True
+2025-05-01,2025-05,2025,5,Q2,Valencia,Actual,Historico_Test,868.0,True
+2025-06-01,2025-06,2025,6,Q2,Valencia,Actual,Historico_Test,1045.0,True
+2025-07-01,2025-07,2025,7,Q3,Valencia,Actual,Historico_Test,1448.0,True
+2025-08-01,2025-08,2025,8,Q3,Valencia,Actual,Historico_Test,954.0,True
+2025-09-01,2025-09,2025,9,Q3,Valencia,Actual,Historico_Test,900.0,True
+2025-10-01,2025-10,2025,10,Q4,Valencia,Actual,Historico_Test,955.0,True
+2025-11-01,2025-11,2025,11,Q4,Valencia,Actual,Historico_Test,1162.0,True
+2025-12-01,2025-12,2025,12,Q4,Valencia,Actual,Historico_Test,1273.0,True
+2025-01-01,2025-01,2025,1,Q1,Valencia,Random Forest,Prediccion_Test,267.4,False
+2025-02-01,2025-02,2025,2,Q1,Valencia,Random Forest,Prediccion_Test,264.7,False
+2025-03-01,2025-03,2025,3,Q1,Valencia,Random Forest,Prediccion_Test,270.4,False
+2025-04-01,2025-04,2025,4,Q2,Valencia,Random Forest,Prediccion_Test,269.9,False
+2025-05-01,2025-05,2025,5,Q2,Valencia,Random Forest,Prediccion_Test,275.7,False
+2025-06-01,2025-06,2025,6,Q2,Valencia,Random Forest,Prediccion_Test,339.5,False
+2025-07-01,2025-07,2025,7,Q3,Valencia,Random Forest,Prediccion_Test,353.3,False
+2025-08-01,2025-08,2025,8,Q3,Valencia,Random Forest,Prediccion_Test,359.0,False
+2025-09-01,2025-09,2025,9,Q3,Valencia,Random Forest,Prediccion_Test,357.9,False
+2025-10-01,2025-10,2025,10,Q4,Valencia,Random Forest,Prediccion_Test,358.2,False
+2025-11-01,2025-11,2025,11,Q4,Valencia,Random Forest,Prediccion_Test,356.4,False
+2025-12-01,2025-12,2025,12,Q4,Valencia,Random Forest,Prediccion_Test,352.7,False
+2026-01-01,2026-01,2026,1,Q1,Valencia,Random Forest,Forecast,268.5,False
+2026-02-01,2026-02,2026,2,Q1,Valencia,Random Forest,Forecast,264.4,False
+2026-03-01,2026-03,2026,3,Q1,Valencia,Random Forest,Forecast,262.0,False
+2026-04-01,2026-04,2026,4,Q2,Valencia,Random Forest,Forecast,260.0,False
+2026-05-01,2026-05,2026,5,Q2,Valencia,Random Forest,Forecast,262.8,False
+2026-06-01,2026-06,2026,6,Q2,Valencia,Random Forest,Forecast,322.5,False
+2026-07-01,2026-07,2026,7,Q3,Valencia,Random Forest,Forecast,340.3,False
+2026-08-01,2026-08,2026,8,Q3,Valencia,Random Forest,Forecast,355.7,False
+2026-09-01,2026-09,2026,9,Q3,Valencia,Random Forest,Forecast,357.3,False
+2026-10-01,2026-10,2026,10,Q4,Valencia,Random Forest,Forecast,360.1,False
+2026-11-01,2026-11,2026,11,Q4,Valencia,Random Forest,Forecast,358.7,False
+2026-12-01,2026-12,2026,12,Q4,Valencia,Random Forest,Forecast,349.8,False
+2027-01-01,2027-01,2027,1,Q1,Valencia,Random Forest,Forecast,267.1,False
+2027-02-01,2027-02,2027,2,Q1,Valencia,Random Forest,Forecast,264.4,False
+2027-03-01,2027-03,2027,3,Q1,Valencia,Random Forest,Forecast,262.0,False
+2027-04-01,2027-04,2027,4,Q2,Valencia,Random Forest,Forecast,260.0,False
+2027-05-01,2027-05,2027,5,Q2,Valencia,Random Forest,Forecast,262.8,False
+2027-06-01,2027-06,2027,6,Q2,Valencia,Random Forest,Forecast,322.5,False
+2027-07-01,2027-07,2027,7,Q3,Valencia,Random Forest,Forecast,340.3,False
+2027-08-01,2027-08,2027,8,Q3,Valencia,Random Forest,Forecast,355.7,False
+2027-09-01,2027-09,2027,9,Q3,Valencia,Random Forest,Forecast,357.3,False
+2027-10-01,2027-10,2027,10,Q4,Valencia,Random Forest,Forecast,360.1,False
+2027-11-01,2027-11,2027,11,Q4,Valencia,Random Forest,Forecast,358.7,False
+2027-12-01,2027-12,2027,12,Q4,Valencia,Random Forest,Forecast,349.8,False
+2025-01-01,2025-01,2025,1,Q1,Valencia,SARIMA,Prediccion_Test,418.6,True
+2025-02-01,2025-02,2025,2,Q1,Valencia,SARIMA,Prediccion_Test,375.3,True
+2025-03-01,2025-03,2025,3,Q1,Valencia,SARIMA,Prediccion_Test,351.5,True
+2025-04-01,2025-04,2025,4,Q2,Valencia,SARIMA,Prediccion_Test,331.2,True
+2025-05-01,2025-05,2025,5,Q2,Valencia,SARIMA,Prediccion_Test,334.0,True
+2025-06-01,2025-06,2025,6,Q2,Valencia,SARIMA,Prediccion_Test,311.6,True
+2025-07-01,2025-07,2025,7,Q3,Valencia,SARIMA,Prediccion_Test,302.4,True
+2025-08-01,2025-08,2025,8,Q3,Valencia,SARIMA,Prediccion_Test,297.0,True
+2025-09-01,2025-09,2025,9,Q3,Valencia,SARIMA,Prediccion_Test,294.2,True
+2025-10-01,2025-10,2025,10,Q4,Valencia,SARIMA,Prediccion_Test,300.3,True
+2025-11-01,2025-11,2025,11,Q4,Valencia,SARIMA,Prediccion_Test,294.1,True
+2025-12-01,2025-12,2025,12,Q4,Valencia,SARIMA,Prediccion_Test,288.1,True
+2026-01-01,2026-01,2026,1,Q1,Valencia,SARIMA,Forecast,1286.6,True
+2026-02-01,2026-02,2026,2,Q1,Valencia,SARIMA,Forecast,1279.8,True
+2026-03-01,2026-03,2026,3,Q1,Valencia,SARIMA,Forecast,1275.3,True
+2026-04-01,2026-04,2026,4,Q2,Valencia,SARIMA,Forecast,1258.4,True
+2026-05-01,2026-05,2026,5,Q2,Valencia,SARIMA,Forecast,1239.4,True
+2026-06-01,2026-06,2026,6,Q2,Valencia,SARIMA,Forecast,1225.7,True
+2026-07-01,2026-07,2026,7,Q3,Valencia,SARIMA,Forecast,1201.9,True
+2026-08-01,2026-08,2026,8,Q3,Valencia,SARIMA,Forecast,1232.5,True
+2026-09-01,2026-09,2026,9,Q3,Valencia,SARIMA,Forecast,1236.8,True
+2026-10-01,2026-10,2026,10,Q4,Valencia,SARIMA,Forecast,1232.4,True
+2026-11-01,2026-11,2026,11,Q4,Valencia,SARIMA,Forecast,1218.0,True
+2026-12-01,2026-12,2026,12,Q4,Valencia,SARIMA,Forecast,1211.3,True
+2027-01-01,2027-01,2027,1,Q1,Valencia,SARIMA,Forecast,1210.6,True
+2027-02-01,2027-02,2027,2,Q1,Valencia,SARIMA,Forecast,1211.0,True
+2027-03-01,2027-03,2027,3,Q1,Valencia,SARIMA,Forecast,1211.2,True
+2027-04-01,2027-04,2027,4,Q2,Valencia,SARIMA,Forecast,1212.2,True
+2027-05-01,2027-05,2027,5,Q2,Valencia,SARIMA,Forecast,1213.3,True
+2027-06-01,2027-06,2027,6,Q2,Valencia,SARIMA,Forecast,1214.1,True
+2027-07-01,2027-07,2027,7,Q3,Valencia,SARIMA,Forecast,1215.6,True
+2027-08-01,2027-08,2027,8,Q3,Valencia,SARIMA,Forecast,1213.7,True
+2027-09-01,2027-09,2027,9,Q3,Valencia,SARIMA,Forecast,1213.5,True
+2027-10-01,2027-10,2027,10,Q4,Valencia,SARIMA,Forecast,1213.7,True
+2027-11-01,2027-11,2027,11,Q4,Valencia,SARIMA,Forecast,1214.6,True
+2027-12-01,2027-12,2027,12,Q4,Valencia,SARIMA,Forecast,1215.0,True
+2025-01-01,2025-01,2025,1,Q1,Valencia,XGBoost,Prediccion_Test,244.6,False
+2025-02-01,2025-02,2025,2,Q1,Valencia,XGBoost,Prediccion_Test,229.7,False
+2025-03-01,2025-03,2025,3,Q1,Valencia,XGBoost,Prediccion_Test,274.8,False
+2025-04-01,2025-04,2025,4,Q2,Valencia,XGBoost,Prediccion_Test,358.8,False
+2025-05-01,2025-05,2025,5,Q2,Valencia,XGBoost,Prediccion_Test,355.5,False
+2025-06-01,2025-06,2025,6,Q2,Valencia,XGBoost,Prediccion_Test,306.1,False
+2025-07-01,2025-07,2025,7,Q3,Valencia,XGBoost,Prediccion_Test,321.9,False
+2025-08-01,2025-08,2025,8,Q3,Valencia,XGBoost,Prediccion_Test,358.7,False
+2025-09-01,2025-09,2025,9,Q3,Valencia,XGBoost,Prediccion_Test,362.2,False
+2025-10-01,2025-10,2025,10,Q4,Valencia,XGBoost,Prediccion_Test,357.7,False
+2025-11-01,2025-11,2025,11,Q4,Valencia,XGBoost,Prediccion_Test,364.7,False
+2025-12-01,2025-12,2025,12,Q4,Valencia,XGBoost,Prediccion_Test,387.2,False
+2026-01-01,2026-01,2026,1,Q1,Valencia,XGBoost,Forecast,243.1,False
+2026-02-01,2026-02,2026,2,Q1,Valencia,XGBoost,Forecast,230.3,False
+2026-03-01,2026-03,2026,3,Q1,Valencia,XGBoost,Forecast,289.1,False
+2026-04-01,2026-04,2026,4,Q2,Valencia,XGBoost,Forecast,370.9,False
+2026-05-01,2026-05,2026,5,Q2,Valencia,XGBoost,Forecast,370.7,False
+2026-06-01,2026-06,2026,6,Q2,Valencia,XGBoost,Forecast,339.1,False
+2026-07-01,2026-07,2026,7,Q3,Valencia,XGBoost,Forecast,364.2,False
+2026-08-01,2026-08,2026,8,Q3,Valencia,XGBoost,Forecast,390.8,False
+2026-09-01,2026-09,2026,9,Q3,Valencia,XGBoost,Forecast,379.8,False
+2026-10-01,2026-10,2026,10,Q4,Valencia,XGBoost,Forecast,409.0,False
+2026-11-01,2026-11,2026,11,Q4,Valencia,XGBoost,Forecast,405.4,False
+2026-12-01,2026-12,2026,12,Q4,Valencia,XGBoost,Forecast,412.6,False
+2027-01-01,2027-01,2027,1,Q1,Valencia,XGBoost,Forecast,243.8,False
+2027-02-01,2027-02,2027,2,Q1,Valencia,XGBoost,Forecast,230.3,False
+2027-03-01,2027-03,2027,3,Q1,Valencia,XGBoost,Forecast,289.1,False
+2027-04-01,2027-04,2027,4,Q2,Valencia,XGBoost,Forecast,370.9,False
+2027-05-01,2027-05,2027,5,Q2,Valencia,XGBoost,Forecast,370.7,False
+2027-06-01,2027-06,2027,6,Q2,Valencia,XGBoost,Forecast,339.1,False
+2027-07-01,2027-07,2027,7,Q3,Valencia,XGBoost,Forecast,364.2,False
+2027-08-01,2027-08,2027,8,Q3,Valencia,XGBoost,Forecast,390.8,False
+2027-09-01,2027-09,2027,9,Q3,Valencia,XGBoost,Forecast,379.8,False
+2027-10-01,2027-10,2027,10,Q4,Valencia,XGBoost,Forecast,409.0,False
+2027-11-01,2027-11,2027,11,Q4,Valencia,XGBoost,Forecast,405.4,False
+2027-12-01,2027-12,2027,12,Q4,Valencia,XGBoost,Forecast,412.6,False

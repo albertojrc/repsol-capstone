@@ -1,0 +1,181 @@
+Fecha,CCAA,Consumo_Tm,Target
+2023-01,ESPAÑA,167,Nacional
+2023-02,ESPAÑA,162,Nacional
+2023-03,ESPAÑA,205,Nacional
+2023-04,ESPAÑA,260,Nacional
+2023-05,ESPAÑA,431,Nacional
+2023-06,ESPAÑA,379,Nacional
+2023-07,ESPAÑA,257,Nacional
+2023-08,ESPAÑA,525,Nacional
+2023-09,ESPAÑA,389,Nacional
+2023-10,ESPAÑA,520,Nacional
+2023-11,ESPAÑA,1152,Nacional
+2023-12,ESPAÑA,1570,Nacional
+2024-01,ESPAÑA,546,Nacional
+2024-02,ESPAÑA,1131,Nacional
+2024-03,ESPAÑA,1698,Nacional
+2024-04,ESPAÑA,2277,Nacional
+2024-05,ESPAÑA,3382,Nacional
+2024-06,ESPAÑA,5044,Nacional
+2024-07,ESPAÑA,6683,Nacional
+2024-08,ESPAÑA,6946,Nacional
+2024-09,ESPAÑA,7044,Nacional
+2024-10,ESPAÑA,8124,Nacional
+2024-11,ESPAÑA,10408,Nacional
+2024-12,ESPAÑA,13441,Nacional
+2025-01,ESPAÑA,11376,Nacional
+2025-02,ESPAÑA,10716,Nacional
+2025-03,ESPAÑA,12389,Nacional
+2025-04,ESPAÑA,14145,Nacional
+2025-05,ESPAÑA,18921,Nacional
+2025-06,ESPAÑA,23356,Nacional
+2025-07,ESPAÑA,27001,Nacional
+2025-08,ESPAÑA,19929,Nacional
+2025-09,ESPAÑA,18836,Nacional
+2025-10,ESPAÑA,20133,Nacional
+2025-11,ESPAÑA,20228,Nacional
+2025-12,ESPAÑA,22632,Nacional
+2023-01,Andalucía,0,Andalucía
+2023-01,Cataluña,85,Cataluña
+2023-01,Comunitat Valenciana,52,Valencia
+2023-01,"Madrid, Comunidad de",26,Madrid
+2023-02,Andalucía,0,Andalucía
+2023-02,Cataluña,82,Cataluña
+2023-02,Comunitat Valenciana,50,Valencia
+2023-02,"Madrid, Comunidad de",26,Madrid
+2023-03,Andalucía,0,Andalucía
+2023-03,Cataluña,119,Cataluña
+2023-03,Comunitat Valenciana,25,Valencia
+2023-03,"Madrid, Comunidad de",25,Madrid
+2023-04,Andalucía,46,Andalucía
+2023-04,Cataluña,78,Cataluña
+2023-04,Comunitat Valenciana,76,Valencia
+2023-04,"Madrid, Comunidad de",0,Madrid
+2023-05,Andalucía,0,Andalucía
+2023-05,Cataluña,169,Cataluña
+2023-05,Comunitat Valenciana,76,Valencia
+2023-05,"Madrid, Comunidad de",0,Madrid
+2023-06,Andalucía,0,Andalucía
+2023-06,Cataluña,133,Cataluña
+2023-06,Comunitat Valenciana,25,Valencia
+2023-06,"Madrid, Comunidad de",42,Madrid
+2023-07,Andalucía,0,Andalucía
+2023-07,Cataluña,170,Cataluña
+2023-07,Comunitat Valenciana,0,Valencia
+2023-07,"Madrid, Comunidad de",12,Madrid
+2023-08,Andalucía,0,Andalucía
+2023-08,Cataluña,169,Cataluña
+2023-08,Comunitat Valenciana,0,Valencia
+2023-08,"Madrid, Comunidad de",92,Madrid
+2023-09,Andalucía,19,Andalucía
+2023-09,Cataluña,109,Cataluña
+2023-09,Comunitat Valenciana,0,Valencia
+2023-09,"Madrid, Comunidad de",26,Madrid
+2023-10,Andalucía,43,Andalucía
+2023-10,Cataluña,93,Cataluña
+2023-10,Comunitat Valenciana,17,Valencia
+2023-10,"Madrid, Comunidad de",129,Madrid
+2023-11,Andalucía,159,Andalucía
+2023-11,Cataluña,84,Cataluña
+2023-11,Comunitat Valenciana,0,Valencia
+2023-11,"Madrid, Comunidad de",74,Madrid
+2023-12,Andalucía,85,Andalucía
+2023-12,Cataluña,100,Cataluña
+2023-12,Comunitat Valenciana,0,Valencia
+2023-12,"Madrid, Comunidad de",78,Madrid
+2024-01,Andalucía,92,Andalucía
+2024-01,Cataluña,96,Cataluña
+2024-01,Comunitat Valenciana,15,Valencia
+2024-01,"Madrid, Comunidad de",78,Madrid
+2024-02,Andalucía,80,Andalucía
+2024-02,Cataluña,90,Cataluña
+2024-02,Comunitat Valenciana,43,Valencia
+2024-02,"Madrid, Comunidad de",81,Madrid
+2024-03,Andalucía,104,Andalucía
+2024-03,Cataluña,103,Cataluña
+2024-03,Comunitat Valenciana,78,Valencia
+2024-03,"Madrid, Comunidad de",133,Madrid
+2024-04,Andalucía,154,Andalucía
+2024-04,Cataluña,174,Cataluña
+2024-04,Comunitat Valenciana,139,Valencia
+2024-04,"Madrid, Comunidad de",140,Madrid
+2024-05,Andalucía,355,Andalucía
+2024-05,Cataluña,184,Cataluña
+2024-05,Comunitat Valenciana,116,Valencia
+2024-05,"Madrid, Comunidad de",331,Madrid
+2024-06,Andalucía,414,Andalucía
+2024-06,Cataluña,515,Cataluña
+2024-06,Comunitat Valenciana,246,Valencia
+2024-06,"Madrid, Comunidad de",389,Madrid
+2024-07,Andalucía,616,Andalucía
+2024-07,Cataluña,903,Cataluña
+2024-07,Comunitat Valenciana,336,Valencia
+2024-07,"Madrid, Comunidad de",503,Madrid
+2024-08,Andalucía,582,Andalucía
+2024-08,Cataluña,1036,Cataluña
+2024-08,Comunitat Valenciana,403,Valencia
+2024-08,"Madrid, Comunidad de",598,Madrid
+2024-09,Andalucía,440,Andalucía
+2024-09,Cataluña,775,Cataluña
+2024-09,Comunitat Valenciana,442,Valencia
+2024-09,"Madrid, Comunidad de",980,Madrid
+2024-10,Andalucía,510,Andalucía
+2024-10,Cataluña,1449,Cataluña
+2024-10,Comunitat Valenciana,344,Valencia
+2024-10,"Madrid, Comunidad de",1335,Madrid
+2024-11,Andalucía,608,Andalucía
+2024-11,Cataluña,1843,Cataluña
+2024-11,Comunitat Valenciana,435,Valencia
+2024-11,"Madrid, Comunidad de",1635,Madrid
+2024-12,Andalucía,684,Andalucía
+2024-12,Cataluña,2176,Cataluña
+2024-12,Comunitat Valenciana,549,Valencia
+2024-12,"Madrid, Comunidad de",2067,Madrid
+2025-01,Andalucía,590,Andalucía
+2025-01,Cataluña,1894,Cataluña
+2025-01,Comunitat Valenciana,462,Valencia
+2025-01,"Madrid, Comunidad de",1663,Madrid
+2025-02,Andalucía,498,Andalucía
+2025-02,Cataluña,1882,Cataluña
+2025-02,Comunitat Valenciana,506,Valencia
+2025-02,"Madrid, Comunidad de",1640,Madrid
+2025-03,Andalucía,804,Andalucía
+2025-03,Cataluña,2130,Cataluña
+2025-03,Comunitat Valenciana,538,Valencia
+2025-03,"Madrid, Comunidad de",2037,Madrid
+2025-04,Andalucía,919,Andalucía
+2025-04,Cataluña,2682,Cataluña
+2025-04,Comunitat Valenciana,673,Valencia
+2025-04,"Madrid, Comunidad de",2431,Madrid
+2025-05,Andalucía,1591,Andalucía
+2025-05,Cataluña,3209,Cataluña
+2025-05,Comunitat Valenciana,868,Valencia
+2025-05,"Madrid, Comunidad de",2961,Madrid
+2025-06,Andalucía,2162,Andalucía
+2025-06,Cataluña,3522,Cataluña
+2025-06,Comunitat Valenciana,1045,Valencia
+2025-06,"Madrid, Comunidad de",3747,Madrid
+2025-07,Andalucía,2664,Andalucía
+2025-07,Cataluña,3811,Cataluña
+2025-07,Comunitat Valenciana,1448,Valencia
+2025-07,"Madrid, Comunidad de",3854,Madrid
+2025-08,Andalucía,1823,Andalucía
+2025-08,Cataluña,2919,Cataluña
+2025-08,Comunitat Valenciana,954,Valencia
+2025-08,"Madrid, Comunidad de",2698,Madrid
+2025-09,Andalucía,1612,Andalucía
+2025-09,Cataluña,2503,Cataluña
+2025-09,Comunitat Valenciana,900,Valencia
+2025-09,"Madrid, Comunidad de",2821,Madrid
+2025-10,Andalucía,1637,Andalucía
+2025-10,Cataluña,3470,Cataluña
+2025-10,Comunitat Valenciana,955,Valencia
+2025-10,"Madrid, Comunidad de",2617,Madrid
+2025-11,Andalucía,1565,Andalucía
+2025-11,Cataluña,3081,Cataluña
+2025-11,Comunitat Valenciana,1162,Valencia
+2025-11,"Madrid, Comunidad de",3118,Madrid
+2025-12,Andalucía,1911,Andalucía
+2025-12,Cataluña,3362,Cataluña
+2025-12,Comunitat Valenciana,1273,Valencia
+2025-12,"Madrid, Comunidad de",2975,Madrid
