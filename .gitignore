@@ -40,12 +40,17 @@ env/
 .ipynb_checkpoints/
 # *.ipynb  # Commented out - we want to track notebooks
 
-# Data (don't commit raw data or large files)
-data/raw/*
+# Data — ignore old structure and large raw price files
+data/raw/
+data/processed/
 *.CSV
 *.xlsx
-# Override: allow processed CSVs (must come after *.CSV to win on macOS case-insensitive FS)
-!data/processed/*.csv
+# Override: track all CSVs in the new semantic folders (must come after *.CSV)
+!data/inputs/*.csv
+!data/features/*.csv
+!data/outputs/*.csv
+# Exclude large raw price files from git (re-generate from source if needed)
+data/inputs/precios_combustibles_*.csv
 
 # Models (don't commit trained models)
 models/*.pkl
@@ -53,6 +58,7 @@ models/*.joblib
 
 # OS
 .DS_Store
+Icon?
 Thumbs.db
 
 # Environment variables
