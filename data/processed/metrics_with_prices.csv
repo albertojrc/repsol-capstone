@@ -1,0 +1,11 @@
+Target,Model,MAE,RMSE,MAPE
+Nacional,RF+Precios,11143.7,12073.2,58.0
+Nacional,XGB+Precios,11446.4,12361.5,59.8
+Madrid,RF+Precios,1821.4,1932.0,65.1
+Madrid,XGB+Precios,1706.8,1795.1,61.8
+Cataluña,RF+Precios,1774.1,1875.0,59.8
+Cataluña,XGB+Precios,1715.9,1806.7,58.1
+Andalucía,RF+Precios,988.6,1166.9,57.7
+Andalucía,XGB+Precios,1051.0,1197.0,65.7
+Valencia,RF+Precios,578.3,635.5,61.3
+Valencia,XGB+Precios,559.7,618.1,59.4
