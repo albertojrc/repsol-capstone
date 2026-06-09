@@ -49,8 +49,6 @@ data/processed/
 !data/inputs/*.csv
 !data/features/*.csv
 !data/outputs/*.csv
-# Exclude large raw price files from git (re-generate from source if needed)
-data/inputs/precios_combustibles_*.csv
 
 # Models (don't commit trained models)
 models/*.pkl
