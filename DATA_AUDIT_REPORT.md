@@ -16,7 +16,7 @@
 | Date range | 2023-01 → 2025-12 |
 | Primary key | `Fecha` + `CCAA` |
 | Null % | 0.6% (36 NaN rows in Gasolina98 — Melilla only, expected) |
-| Built by | `notebooks/10_master_dataset.ipynb` |
+| Built by | `notebooks/04_master_dataset.ipynb` |
 
 **Columns:**
 
@@ -54,7 +54,7 @@
 | Columns | Fecha, CCAA, Consumo_Tm |
 | Null % | 0% |
 | Description | Monthly biodiesel consumption by CCAA (all 19 + ESPAÑA + Melilla + Ceuta) |
-| Used in | `notebooks/10_master_dataset.ipynb` (merged into master_dataset) |
+| Used in | `notebooks/04_master_dataset.ipynb` (merged into master_dataset) |
 
 ---
 
@@ -66,7 +66,7 @@
 | Columns | Fecha, CCAA, Consumo_Tm, Target |
 | Null % | 0% |
 | Description | Consumption for the 5 modelling targets with short Target labels (Nacional/Madrid/Cataluña/Andalucía/Valencia) |
-| Used in | `notebooks/04_feature_engineering.ipynb`, `notebooks/08_price_features.ipynb` |
+| Used in | `notebooks/05_feature_engineering.ipynb`, `notebooks/06_price_features.ipynb` |
 | Note | Superseded by `master_dataset.csv` for data loading. Target column contains short labels. |
 
 ---
@@ -145,7 +145,7 @@
 | Date range | 2023-01 → 2025-12 |
 | Null % | 3.2% (lag features are NaN for first months) |
 | Description | Full feature matrix for all 5 targets — lag features, rolling means, macro lags, sin/cos seasonality |
-| Built by | `notebooks/04_feature_engineering.ipynb` |
+| Built by | `notebooks/05_feature_engineering.ipynb` |
 
 ---
 
@@ -155,7 +155,7 @@
 | Shapes | 120 × 25 (train) / 60 × 25 (test) |
 | Split | Train: 2023-01 → 2024-12 / Test: 2025-01 → 2025-12 |
 | Null % | 4.8% train / 0% test |
-| Built by | `notebooks/04_feature_engineering.ipynb` |
+| Built by | `notebooks/05_feature_engineering.ipynb` |
 
 ---
 
@@ -166,7 +166,7 @@
 | Date range | 2023-01 → 2025-12 |
 | Null % | 0% |
 | Description | Monthly fuel price features with regional lag_1 columns (81 price series) |
-| Built by | `notebooks/08_price_features.ipynb` |
+| Built by | `notebooks/06_price_features.ipynb` |
 | Note | Must be read with explicit `sep=','` — comma in column names can confuse auto-detection |
 
 ---
@@ -224,23 +224,23 @@
 ```
 RAW INPUTS
 ├── consumo_biodiesel_ccaa.csv        ─┐
-├── macro_indicadores_ine.csv          ├── 10_master_dataset.ipynb → master_dataset.csv
+├── macro_indicadores_ine.csv          ├── 04_master_dataset.ipynb → master_dataset.csv
 ├── brent_oil_price_monthly_*.csv      │
 └── precios_combustibles_2023/24/25   ─┘
 
 master_dataset.csv
-└── 04_feature_engineering.ipynb → features_modelo_completo.csv
+└── 05_feature_engineering.ipynb → features_modelo_completo.csv
                                      features_train.csv
                                      features_test.csv
-└── 05_modeling.ipynb → metricas_modelos.csv
+└── 07_modeling.ipynb → metricas_modelos.csv
                          predicciones_test_2025.csv
                          forecast_24m_sarima_rf_xgb.csv
-└── 06_evaluation.ipynb (reads outputs, produces figures)
-└── 07_tableau_prep.ipynb → tableau_dashboard.csv
+└── 09_evaluation.ipynb (reads outputs, produces figures)
+└── ~~07_tableau_prep.ipynb~~ (deleted) tableau_dashboard.csv
                               tableau_metricas.csv
                               tableau_forecast_pivot.csv
-└── 08_price_features.ipynb → features_precios_combustibles.csv
-└── 09_modeling_with_prices.ipynb → metricas_modelos_con_precios.csv
+└── 06_price_features.ipynb → features_precios_combustibles.csv
+└── 08_modeling_with_prices.ipynb → metricas_modelos_con_precios.csv
                                      predicciones_test_2025_con_precios.csv
                                      forecast_24m_con_precios.csv
                                      metricas_comparativa.csv

@@ -53,7 +53,7 @@ Merging province-level consumption into a CCAA-level table would require aggrega
 
 If monthly tourist visitor data were available for 2023–2025 (36 months), it could be merged into the master dataset as additional demand-driving features. Tourism intensity correlates with transportation fuel demand — high-tourism CCAAs (Baleares, Canarias, Cataluña, Andalucía) could show demand peaks aligned with tourism seasons.
 
-**Recommended data source:** Instituto Nacional de Estadística (INE) — Encuesta de Ocupación Hotelera provides monthly data by CCAA going back several years. If this dataset is extended to cover 2023–2025, re-run `notebooks/10_master_dataset.ipynb` to incorporate it.
+**Recommended data source:** Instituto Nacional de Estadística (INE) — Encuesta de Ocupación Hotelera provides monthly data by CCAA going back several years. If this dataset is extended to cover 2023–2025, re-run `notebooks/04_master_dataset.ipynb` to incorporate it.
 
 ---
 
