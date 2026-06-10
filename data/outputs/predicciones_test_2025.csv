@@ -1,181 +1,241 @@
-Fecha,Target,Model,Pred,Actual
-2025-01,Andalucía,SARIMA,683.8,590
-2025-02,Andalucía,SARIMA,692.1,498
-2025-03,Andalucía,SARIMA,680.0,804
-2025-04,Andalucía,SARIMA,661.6,919
-2025-05,Andalucía,SARIMA,623.6,1591
-2025-06,Andalucía,SARIMA,616.9,2162
-2025-07,Andalucía,SARIMA,599.7,2664
-2025-08,Andalucía,SARIMA,602.1,1823
-2025-09,Andalucía,SARIMA,614.3,1612
-2025-10,Andalucía,SARIMA,607.8,1637
-2025-11,Andalucía,SARIMA,600.3,1565
-2025-12,Andalucía,SARIMA,595.3,1911
-2025-01,Andalucía,Random Forest,463.0,590
-2025-02,Andalucía,Random Forest,498.4,498
-2025-03,Andalucía,Random Forest,497.6,804
-2025-04,Andalucía,Random Forest,498.1,919
-2025-05,Andalucía,Random Forest,513.0,1591
-2025-06,Andalucía,Random Forest,509.9,2162
-2025-07,Andalucía,Random Forest,514.7,2664
-2025-08,Andalucía,Random Forest,506.9,1823
-2025-09,Andalucía,Random Forest,512.9,1612
-2025-10,Andalucía,Random Forest,509.9,1637
-2025-11,Andalucía,Random Forest,509.8,1565
-2025-12,Andalucía,Random Forest,508.8,1911
-2025-01,Andalucía,XGBoost,318.6,590
-2025-02,Andalucía,XGBoost,312.9,498
-2025-03,Andalucía,XGBoost,345.8,804
-2025-04,Andalucía,XGBoost,408.6,919
-2025-05,Andalucía,XGBoost,436.0,1591
-2025-06,Andalucía,XGBoost,462.0,2162
-2025-07,Andalucía,XGBoost,497.5,2664
-2025-08,Andalucía,XGBoost,447.2,1823
-2025-09,Andalucía,XGBoost,467.7,1612
-2025-10,Andalucía,XGBoost,498.3,1637
-2025-11,Andalucía,XGBoost,490.6,1565
-2025-12,Andalucía,XGBoost,484.6,1911
-2025-01,Cataluña,SARIMA,2466.8,1894
-2025-02,Cataluña,SARIMA,2677.1,1882
-2025-03,Cataluña,SARIMA,2645.5,2130
-2025-04,Cataluña,SARIMA,2263.0,2682
-2025-05,Cataluña,SARIMA,2242.7,3209
-2025-06,Cataluña,SARIMA,1600.3,3522
-2025-07,Cataluña,SARIMA,1330.6,3811
-2025-08,Cataluña,SARIMA,1272.9,2919
-2025-09,Cataluña,SARIMA,1403.5,2503
-2025-10,Cataluña,SARIMA,1139.4,3470
-2025-11,Cataluña,SARIMA,1051.7,3081
-2025-12,Cataluña,SARIMA,995.1,3362
-2025-01,Cataluña,Random Forest,1061.2,1894
-2025-02,Cataluña,Random Forest,1083.3,1882
-2025-03,Cataluña,Random Forest,1066.4,2130
-2025-04,Cataluña,Random Forest,1066.0,2682
-2025-05,Cataluña,Random Forest,1083.9,3209
-2025-06,Cataluña,Random Forest,1079.0,3522
-2025-07,Cataluña,Random Forest,1079.0,3811
-2025-08,Cataluña,Random Forest,1054.4,2919
-2025-09,Cataluña,Random Forest,1078.6,2503
-2025-10,Cataluña,Random Forest,1117.5,3470
-2025-11,Cataluña,Random Forest,1117.5,3081
-2025-12,Cataluña,Random Forest,1104.1,3362
-2025-01,Cataluña,XGBoost,1081.3,1894
-2025-02,Cataluña,XGBoost,1076.4,1882
-2025-03,Cataluña,XGBoost,1104.4,2130
-2025-04,Cataluña,XGBoost,1263.4,2682
-2025-05,Cataluña,XGBoost,1128.9,3209
-2025-06,Cataluña,XGBoost,1246.4,3522
-2025-07,Cataluña,XGBoost,1249.9,3811
-2025-08,Cataluña,XGBoost,1199.7,2919
-2025-09,Cataluña,XGBoost,917.3,2503
-2025-10,Cataluña,XGBoost,1170.9,3470
-2025-11,Cataluña,XGBoost,1191.0,3081
-2025-12,Cataluña,XGBoost,1191.7,3362
-2025-01,Madrid,SARIMA,2659.3,1663
-2025-02,Madrid,SARIMA,3398.8,1640
-2025-03,Madrid,SARIMA,4308.5,2037
-2025-04,Madrid,SARIMA,5438.9,2431
-2025-05,Madrid,SARIMA,6801.5,2961
-2025-06,Madrid,SARIMA,8481.9,3747
-2025-07,Madrid,SARIMA,10513.9,3854
-2025-08,Madrid,SARIMA,12966.0,2698
-2025-09,Madrid,SARIMA,15882.7,2821
-2025-10,Madrid,SARIMA,19370.0,2617
-2025-11,Madrid,SARIMA,23514.2,3118
-2025-12,Madrid,SARIMA,28400.3,2975
-2025-01,Madrid,Random Forest,805.4,1663
-2025-02,Madrid,Random Forest,836.0,1640
-2025-03,Madrid,Random Forest,838.1,2037
-2025-04,Madrid,Random Forest,867.2,2431
-2025-05,Madrid,Random Forest,868.5,2961
-2025-06,Madrid,Random Forest,889.9,3747
-2025-07,Madrid,Random Forest,887.4,3854
-2025-08,Madrid,Random Forest,859.8,2698
-2025-09,Madrid,Random Forest,877.2,2821
-2025-10,Madrid,Random Forest,886.8,2617
-2025-11,Madrid,Random Forest,891.3,3118
-2025-12,Madrid,Random Forest,916.5,2975
-2025-01,Madrid,XGBoost,938.4,1663
-2025-02,Madrid,XGBoost,938.4,1640
-2025-03,Madrid,XGBoost,954.8,2037
-2025-04,Madrid,XGBoost,994.2,2431
-2025-05,Madrid,XGBoost,941.6,2961
-2025-06,Madrid,XGBoost,1015.5,3747
-2025-07,Madrid,XGBoost,1019.1,3854
-2025-08,Madrid,XGBoost,974.7,2698
-2025-09,Madrid,XGBoost,1019.2,2821
-2025-10,Madrid,XGBoost,1084.2,2617
-2025-11,Madrid,XGBoost,1159.4,3118
-2025-12,Madrid,XGBoost,1147.5,2975
-2025-01,Nacional,SARIMA,17010.1,11376
-2025-02,Nacional,SARIMA,18825.3,10716
-2025-03,Nacional,SARIMA,20315.5,12389
-2025-04,Nacional,SARIMA,21430.2,14145
-2025-05,Nacional,SARIMA,22068.9,18921
-2025-06,Nacional,SARIMA,22411.4,23356
-2025-07,Nacional,SARIMA,22656.5,27001
-2025-08,Nacional,SARIMA,22991.9,19929
-2025-09,Nacional,SARIMA,23244.8,18836
-2025-10,Nacional,SARIMA,23288.5,20133
-2025-11,Nacional,SARIMA,23169.1,20228
-2025-12,Nacional,SARIMA,23003.2,22632
-2025-01,Nacional,Random Forest,6737.0,11376
-2025-02,Nacional,Random Forest,6760.8,10716
-2025-03,Nacional,Random Forest,6907.2,12389
-2025-04,Nacional,Random Forest,6948.9,14145
-2025-05,Nacional,Random Forest,6929.2,18921
-2025-06,Nacional,Random Forest,7199.0,23356
-2025-07,Nacional,Random Forest,7262.2,27001
-2025-08,Nacional,Random Forest,7312.7,19929
-2025-09,Nacional,Random Forest,7229.6,18836
-2025-10,Nacional,Random Forest,7066.6,20133
-2025-11,Nacional,Random Forest,7199.6,20228
-2025-12,Nacional,Random Forest,7448.6,22632
-2025-01,Nacional,XGBoost,6330.6,11376
-2025-02,Nacional,XGBoost,6387.7,10716
-2025-03,Nacional,XGBoost,6446.7,12389
-2025-04,Nacional,XGBoost,6567.2,14145
-2025-05,Nacional,XGBoost,6594.8,18921
-2025-06,Nacional,XGBoost,6590.2,23356
-2025-07,Nacional,XGBoost,6910.5,27001
-2025-08,Nacional,XGBoost,7001.8,19929
-2025-09,Nacional,XGBoost,7052.2,18836
-2025-10,Nacional,XGBoost,7355.7,20133
-2025-11,Nacional,XGBoost,7355.7,20228
-2025-12,Nacional,XGBoost,7353.6,22632
-2025-01,Valencia,SARIMA,418.6,462
-2025-02,Valencia,SARIMA,375.3,506
-2025-03,Valencia,SARIMA,351.5,538
-2025-04,Valencia,SARIMA,331.2,673
-2025-05,Valencia,SARIMA,334.0,868
-2025-06,Valencia,SARIMA,311.6,1045
-2025-07,Valencia,SARIMA,302.4,1448
-2025-08,Valencia,SARIMA,297.0,954
-2025-09,Valencia,SARIMA,294.2,900
-2025-10,Valencia,SARIMA,300.3,955
-2025-11,Valencia,SARIMA,294.1,1162
-2025-12,Valencia,SARIMA,288.1,1273
-2025-01,Valencia,Random Forest,267.4,462
-2025-02,Valencia,Random Forest,264.7,506
-2025-03,Valencia,Random Forest,270.4,538
-2025-04,Valencia,Random Forest,269.9,673
-2025-05,Valencia,Random Forest,275.7,868
-2025-06,Valencia,Random Forest,339.5,1045
-2025-07,Valencia,Random Forest,353.3,1448
-2025-08,Valencia,Random Forest,359.0,954
-2025-09,Valencia,Random Forest,357.9,900
-2025-10,Valencia,Random Forest,358.2,955
-2025-11,Valencia,Random Forest,356.4,1162
-2025-12,Valencia,Random Forest,352.7,1273
-2025-01,Valencia,XGBoost,244.6,462
-2025-02,Valencia,XGBoost,229.7,506
-2025-03,Valencia,XGBoost,274.8,538
-2025-04,Valencia,XGBoost,358.8,673
-2025-05,Valencia,XGBoost,355.5,868
-2025-06,Valencia,XGBoost,306.1,1045
-2025-07,Valencia,XGBoost,321.9,1448
-2025-08,Valencia,XGBoost,358.7,954
-2025-09,Valencia,XGBoost,362.2,900
-2025-10,Valencia,XGBoost,357.7,955
-2025-11,Valencia,XGBoost,364.7,1162
-2025-12,Valencia,XGBoost,387.2,1273
+Fecha,Target,Actual,Model,Pred
+2025-01,Nacional,11376.0,SARIMA,17010.1
+2025-02,Nacional,10716.0,SARIMA,18825.3
+2025-03,Nacional,12389.0,SARIMA,20315.5
+2025-04,Nacional,14145.0,SARIMA,21430.2
+2025-05,Nacional,18921.0,SARIMA,22068.9
+2025-06,Nacional,23356.0,SARIMA,22411.4
+2025-07,Nacional,27001.0,SARIMA,22656.5
+2025-08,Nacional,19929.0,SARIMA,22991.9
+2025-09,Nacional,18836.0,SARIMA,23244.8
+2025-10,Nacional,20133.0,SARIMA,23288.5
+2025-11,Nacional,20228.0,SARIMA,23169.1
+2025-12,Nacional,22632.0,SARIMA,23003.2
+2025-01,Nacional,11376.0,Ridge,22564.2
+2025-02,Nacional,10716.0,Ridge,46167.8
+2025-03,Nacional,12389.0,Ridge,55133.9
+2025-04,Nacional,14145.0,Ridge,50911.2
+2025-05,Nacional,18921.0,Ridge,58938.4
+2025-06,Nacional,23356.0,Ridge,118602.5
+2025-07,Nacional,27001.0,Ridge,349137.4
+2025-08,Nacional,19929.0,Ridge,1107144.8
+2025-09,Nacional,18836.0,Ridge,1058595.6
+2025-10,Nacional,20133.0,Ridge,1038717.2
+2025-11,Nacional,20228.0,Ridge,698992.0
+2025-12,Nacional,22632.0,Ridge,732625.4
+2025-01,Nacional,11376.0,Random Forest,6737.0
+2025-02,Nacional,10716.0,Random Forest,6760.8
+2025-03,Nacional,12389.0,Random Forest,6907.2
+2025-04,Nacional,14145.0,Random Forest,6948.9
+2025-05,Nacional,18921.0,Random Forest,6929.2
+2025-06,Nacional,23356.0,Random Forest,7199.0
+2025-07,Nacional,27001.0,Random Forest,7262.2
+2025-08,Nacional,19929.0,Random Forest,7312.7
+2025-09,Nacional,18836.0,Random Forest,7229.6
+2025-10,Nacional,20133.0,Random Forest,7066.6
+2025-11,Nacional,20228.0,Random Forest,7199.6
+2025-12,Nacional,22632.0,Random Forest,7448.6
+2025-01,Nacional,11376.0,XGBoost,5608.4
+2025-02,Nacional,10716.0,XGBoost,5659.3
+2025-03,Nacional,12389.0,XGBoost,5677.2
+2025-04,Nacional,14145.0,XGBoost,5880.9
+2025-05,Nacional,18921.0,XGBoost,6082.4
+2025-06,Nacional,23356.0,XGBoost,6513.8
+2025-07,Nacional,27001.0,XGBoost,6941.1
+2025-08,Nacional,19929.0,XGBoost,7025.5
+2025-09,Nacional,18836.0,XGBoost,7054.3
+2025-10,Nacional,20133.0,XGBoost,7327.5
+2025-11,Nacional,20228.0,XGBoost,7327.5
+2025-12,Nacional,22632.0,XGBoost,7325.6
+2025-01,Madrid,1663.0,SARIMA,2659.3
+2025-02,Madrid,1640.0,SARIMA,3398.8
+2025-03,Madrid,2037.0,SARIMA,4308.5
+2025-04,Madrid,2431.0,SARIMA,5438.9
+2025-05,Madrid,2961.0,SARIMA,6801.5
+2025-06,Madrid,3747.0,SARIMA,8481.9
+2025-07,Madrid,3854.0,SARIMA,10513.9
+2025-08,Madrid,2698.0,SARIMA,12966.0
+2025-09,Madrid,2821.0,SARIMA,15882.7
+2025-10,Madrid,2617.0,SARIMA,19370.0
+2025-11,Madrid,3118.0,SARIMA,23514.2
+2025-12,Madrid,2975.0,SARIMA,28400.3
+2025-01,Madrid,1663.0,Ridge,2354.3
+2025-02,Madrid,1640.0,Ridge,3792.7
+2025-03,Madrid,2037.0,Ridge,4500.5
+2025-04,Madrid,2431.0,Ridge,4909.4
+2025-05,Madrid,2961.0,Ridge,6697.8
+2025-06,Madrid,3747.0,Ridge,13471.7
+2025-07,Madrid,3854.0,Ridge,38754.4
+2025-08,Madrid,2698.0,Ridge,92473.9
+2025-09,Madrid,2821.0,Ridge,98097.3
+2025-10,Madrid,2617.0,Ridge,86528.6
+2025-11,Madrid,3118.0,Ridge,64512.5
+2025-12,Madrid,2975.0,Ridge,65403.6
+2025-01,Madrid,1663.0,Random Forest,805.4
+2025-02,Madrid,1640.0,Random Forest,836.0
+2025-03,Madrid,2037.0,Random Forest,838.1
+2025-04,Madrid,2431.0,Random Forest,867.2
+2025-05,Madrid,2961.0,Random Forest,868.5
+2025-06,Madrid,3747.0,Random Forest,889.9
+2025-07,Madrid,3854.0,Random Forest,887.4
+2025-08,Madrid,2698.0,Random Forest,859.8
+2025-09,Madrid,2821.0,Random Forest,877.2
+2025-10,Madrid,2617.0,Random Forest,886.8
+2025-11,Madrid,3118.0,Random Forest,891.3
+2025-12,Madrid,2975.0,Random Forest,916.5
+2025-01,Madrid,1663.0,XGBoost,848.5
+2025-02,Madrid,1640.0,XGBoost,846.2
+2025-03,Madrid,2037.0,XGBoost,857.7
+2025-04,Madrid,2431.0,XGBoost,937.0
+2025-05,Madrid,2961.0,XGBoost,967.5
+2025-06,Madrid,3747.0,XGBoost,1070.2
+2025-07,Madrid,3854.0,XGBoost,1071.9
+2025-08,Madrid,2698.0,XGBoost,994.6
+2025-09,Madrid,2821.0,XGBoost,1000.9
+2025-10,Madrid,2617.0,XGBoost,1032.6
+2025-11,Madrid,3118.0,XGBoost,1108.5
+2025-12,Madrid,2975.0,XGBoost,1101.0
+2025-01,Cataluña,1894.0,SARIMA,2466.8
+2025-02,Cataluña,1882.0,SARIMA,2677.1
+2025-03,Cataluña,2130.0,SARIMA,2645.5
+2025-04,Cataluña,2682.0,SARIMA,2263.0
+2025-05,Cataluña,3209.0,SARIMA,2242.7
+2025-06,Cataluña,3522.0,SARIMA,1600.3
+2025-07,Cataluña,3811.0,SARIMA,1330.6
+2025-08,Cataluña,2919.0,SARIMA,1272.9
+2025-09,Cataluña,2503.0,SARIMA,1403.5
+2025-10,Cataluña,3470.0,SARIMA,1139.4
+2025-11,Cataluña,3081.0,SARIMA,1051.7
+2025-12,Cataluña,3362.0,SARIMA,995.1
+2025-01,Cataluña,1894.0,Ridge,4462.2
+2025-02,Cataluña,1882.0,Ridge,8415.3
+2025-03,Cataluña,2130.0,Ridge,12039.6
+2025-04,Cataluña,2682.0,Ridge,15005.8
+2025-05,Cataluña,3209.0,Ridge,25346.5
+2025-06,Cataluña,3522.0,Ridge,63370.0
+2025-07,Cataluña,3811.0,Ridge,177793.5
+2025-08,Cataluña,2919.0,Ridge,409661.2
+2025-09,Cataluña,2503.0,Ridge,289675.4
+2025-10,Cataluña,3470.0,Ridge,183539.6
+2025-11,Cataluña,3081.0,Ridge,127816.6
+2025-12,Cataluña,3362.0,Ridge,111931.2
+2025-01,Cataluña,1894.0,Random Forest,1061.2
+2025-02,Cataluña,1882.0,Random Forest,1083.3
+2025-03,Cataluña,2130.0,Random Forest,1066.4
+2025-04,Cataluña,2682.0,Random Forest,1066.0
+2025-05,Cataluña,3209.0,Random Forest,1083.9
+2025-06,Cataluña,3522.0,Random Forest,1079.0
+2025-07,Cataluña,3811.0,Random Forest,1079.0
+2025-08,Cataluña,2919.0,Random Forest,1054.4
+2025-09,Cataluña,2503.0,Random Forest,1078.6
+2025-10,Cataluña,3470.0,Random Forest,1117.5
+2025-11,Cataluña,3081.0,Random Forest,1117.5
+2025-12,Cataluña,3362.0,Random Forest,1104.1
+2025-01,Cataluña,1894.0,XGBoost,1039.6
+2025-02,Cataluña,1882.0,XGBoost,1033.5
+2025-03,Cataluña,2130.0,XGBoost,1053.4
+2025-04,Cataluña,2682.0,XGBoost,1178.4
+2025-05,Cataluña,3209.0,XGBoost,1080.1
+2025-06,Cataluña,3522.0,XGBoost,1153.2
+2025-07,Cataluña,3811.0,XGBoost,1227.8
+2025-08,Cataluña,2919.0,XGBoost,1192.5
+2025-09,Cataluña,2503.0,XGBoost,957.5
+2025-10,Cataluña,3470.0,XGBoost,1153.7
+2025-11,Cataluña,3081.0,XGBoost,1181.8
+2025-12,Cataluña,3362.0,XGBoost,1184.3
+2025-01,Andalucía,590.0,SARIMA,683.8
+2025-02,Andalucía,498.0,SARIMA,692.1
+2025-03,Andalucía,804.0,SARIMA,680.0
+2025-04,Andalucía,919.0,SARIMA,661.6
+2025-05,Andalucía,1591.0,SARIMA,623.6
+2025-06,Andalucía,2162.0,SARIMA,616.9
+2025-07,Andalucía,2664.0,SARIMA,599.7
+2025-08,Andalucía,1823.0,SARIMA,602.1
+2025-09,Andalucía,1612.0,SARIMA,614.3
+2025-10,Andalucía,1637.0,SARIMA,607.8
+2025-11,Andalucía,1565.0,SARIMA,600.3
+2025-12,Andalucía,1911.0,SARIMA,595.3
+2025-01,Andalucía,590.0,Ridge,3855.5
+2025-02,Andalucía,498.0,Ridge,8523.4
+2025-03,Andalucía,804.0,Ridge,3563.0
+2025-04,Andalucía,919.0,Ridge,2516.9
+2025-05,Andalucía,1591.0,Ridge,2879.9
+2025-06,Andalucía,2162.0,Ridge,18992.4
+2025-07,Andalucía,2664.0,Ridge,421804.7
+2025-08,Andalucía,1823.0,Ridge,3269016.4
+2025-09,Andalucía,1612.0,Ridge,3269016.4
+2025-10,Andalucía,1637.0,Ridge,3269016.4
+2025-11,Andalucía,1565.0,Ridge,1959399.9
+2025-12,Andalucía,1911.0,Ridge,1373402.8
+2025-01,Andalucía,590.0,Random Forest,463.0
+2025-02,Andalucía,498.0,Random Forest,498.4
+2025-03,Andalucía,804.0,Random Forest,497.6
+2025-04,Andalucía,919.0,Random Forest,498.1
+2025-05,Andalucía,1591.0,Random Forest,513.0
+2025-06,Andalucía,2162.0,Random Forest,509.9
+2025-07,Andalucía,2664.0,Random Forest,514.7
+2025-08,Andalucía,1823.0,Random Forest,506.9
+2025-09,Andalucía,1612.0,Random Forest,512.9
+2025-10,Andalucía,1637.0,Random Forest,509.9
+2025-11,Andalucía,1565.0,Random Forest,509.8
+2025-12,Andalucía,1911.0,Random Forest,508.8
+2025-01,Andalucía,590.0,XGBoost,311.5
+2025-02,Andalucía,498.0,XGBoost,310.8
+2025-03,Andalucía,804.0,XGBoost,336.9
+2025-04,Andalucía,919.0,XGBoost,395.0
+2025-05,Andalucía,1591.0,XGBoost,423.0
+2025-06,Andalucía,2162.0,XGBoost,459.6
+2025-07,Andalucía,2664.0,XGBoost,491.8
+2025-08,Andalucía,1823.0,XGBoost,466.8
+2025-09,Andalucía,1612.0,XGBoost,467.0
+2025-10,Andalucía,1637.0,XGBoost,492.6
+2025-11,Andalucía,1565.0,XGBoost,482.9
+2025-12,Andalucía,1911.0,XGBoost,478.5
+2025-01,Valencia,462.0,SARIMA,418.6
+2025-02,Valencia,506.0,SARIMA,375.3
+2025-03,Valencia,538.0,SARIMA,351.5
+2025-04,Valencia,673.0,SARIMA,331.2
+2025-05,Valencia,868.0,SARIMA,334.0
+2025-06,Valencia,1045.0,SARIMA,311.6
+2025-07,Valencia,1448.0,SARIMA,302.4
+2025-08,Valencia,954.0,SARIMA,297.0
+2025-09,Valencia,900.0,SARIMA,294.2
+2025-10,Valencia,955.0,SARIMA,300.3
+2025-11,Valencia,1162.0,SARIMA,294.1
+2025-12,Valencia,1273.0,SARIMA,288.1
+2025-01,Valencia,462.0,Ridge,8405.7
+2025-02,Valencia,506.0,Ridge,46386.0
+2025-03,Valencia,538.0,Ridge,65217.0
+2025-04,Valencia,673.0,Ridge,34286.9
+2025-05,Valencia,868.0,Ridge,47573.8
+2025-06,Valencia,1045.0,Ridge,131638.6
+2025-07,Valencia,1448.0,Ridge,953221.5
+2025-08,Valencia,954.0,Ridge,3269016.4
+2025-09,Valencia,900.0,Ridge,3269016.4
+2025-10,Valencia,955.0,Ridge,3269016.4
+2025-11,Valencia,1162.0,Ridge,1567638.0
+2025-12,Valencia,1273.0,Ridge,2866821.5
+2025-01,Valencia,462.0,Random Forest,267.4
+2025-02,Valencia,506.0,Random Forest,264.7
+2025-03,Valencia,538.0,Random Forest,270.4
+2025-04,Valencia,673.0,Random Forest,269.9
+2025-05,Valencia,868.0,Random Forest,275.7
+2025-06,Valencia,1045.0,Random Forest,339.5
+2025-07,Valencia,1448.0,Random Forest,353.3
+2025-08,Valencia,954.0,Random Forest,359.0
+2025-09,Valencia,900.0,Random Forest,357.9
+2025-10,Valencia,955.0,Random Forest,358.2
+2025-11,Valencia,1162.0,Random Forest,356.4
+2025-12,Valencia,1273.0,Random Forest,352.7
+2025-01,Valencia,462.0,XGBoost,274.5
+2025-02,Valencia,506.0,XGBoost,258.6
+2025-03,Valencia,538.0,XGBoost,291.4
+2025-04,Valencia,673.0,XGBoost,356.1
+2025-05,Valencia,868.0,XGBoost,356.8
+2025-06,Valencia,1045.0,XGBoost,305.6
+2025-07,Valencia,1448.0,XGBoost,330.6
+2025-08,Valencia,954.0,XGBoost,357.3
+2025-09,Valencia,900.0,XGBoost,364.1
+2025-10,Valencia,955.0,XGBoost,367.7
+2025-11,Valencia,1162.0,XGBoost,365.4
+2025-12,Valencia,1273.0,XGBoost,383.3
