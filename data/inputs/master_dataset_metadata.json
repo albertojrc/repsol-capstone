@@ -1,0 +1,106 @@
+{
+  "dataset": "master_dataset",
+  "description": "Monthly biodiesel demand + macroeconomic + Brent + fuel price variables by CCAA (2023-01 to 2025-12)",
+  "primary_key": [
+    "Fecha",
+    "CCAA"
+  ],
+  "rows": 720,
+  "columns": 17,
+  "date_range": {
+    "start": "2023-01",
+    "end": "2025-12"
+  },
+  "known_nulls": "36 NaN rows in PVP_Gasolina98 / PAI_Gasolina98 — Melilla does not sell Gasolina 98",
+  "variables": {
+    "Fecha": {
+      "type": "str",
+      "format": "YYYY-MM",
+      "description": "Month"
+    },
+    "CCAA": {
+      "type": "str",
+      "description": "Comunidad Autónoma (19 + ESPAÑA + Melilla + Ceuta = 20 units)"
+    },
+    "Consumo_Tm": {
+      "type": "float",
+      "unit": "metric tonnes",
+      "description": "Monthly biodiesel consumption"
+    },
+    "Target": {
+      "type": "int",
+      "values": [
+        0,
+        1
+      ],
+      "description": "1 for 5 modelling targets: ESPAÑA, Andalucía, Cataluña, Madrid Comunidad de, Comunitat Valenciana"
+    },
+    "IPI_original": {
+      "type": "float",
+      "source": "INE",
+      "description": "Industrial Production Index — original series"
+    },
+    "IPI_ajustado": {
+      "type": "float",
+      "source": "INE",
+      "description": "Industrial Production Index — seasonally adjusted"
+    },
+    "IPC_var_anual": {
+      "type": "float",
+      "unit": "%",
+      "source": "INE",
+      "description": "CPI annual variation"
+    },
+    "Tasa_paro": {
+      "type": "float",
+      "unit": "%",
+      "source": "INE",
+      "description": "Unemployment rate"
+    },
+    "Precio_Brent_USD": {
+      "type": "float",
+      "unit": "USD/barrel",
+      "description": "Monthly Brent crude oil price"
+    },
+    "PVP_Gasoleo_A": {
+      "type": "float",
+      "unit": "€/L",
+      "description": "Retail price Gasóleo A habitual — CCAA monthly mean"
+    },
+    "PVP_Gasoleo_Premium": {
+      "type": "float",
+      "unit": "€/L",
+      "description": "Retail price Gasóleo Premium — CCAA monthly mean"
+    },
+    "PVP_Gasolina95": {
+      "type": "float",
+      "unit": "€/L",
+      "description": "Retail price Gasolina 95 E5 — CCAA monthly mean"
+    },
+    "PVP_Gasolina98": {
+      "type": "float",
+      "unit": "€/L",
+      "description": "Retail price Gasolina 98 — CCAA monthly mean (NaN for Melilla)"
+    },
+    "PAI_Gasoleo_A": {
+      "type": "float",
+      "unit": "€/L",
+      "description": "Net (pre-tax) price Gasóleo A — CCAA monthly mean"
+    },
+    "PAI_Gasoleo_Premium": {
+      "type": "float",
+      "unit": "€/L",
+      "description": "Net price Gasóleo Premium — CCAA monthly mean"
+    },
+    "PAI_Gasolina95": {
+      "type": "float",
+      "unit": "€/L",
+      "description": "Net price Gasolina 95 E5 — CCAA monthly mean"
+    },
+    "PAI_Gasolina98": {
+      "type": "float",
+      "unit": "€/L",
+      "description": "Net price Gasolina 98 — CCAA monthly mean (NaN for Melilla)"
+    }
+  }
+}

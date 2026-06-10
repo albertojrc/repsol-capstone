@@ -49,6 +49,8 @@ data/processed/
 !data/inputs/*.csv
 !data/features/*.csv
 !data/outputs/*.csv
+# Override: track master dataset Excel export
+!data/inputs/master_dataset.xlsx
 
 # Models (don't commit trained models)
 models/*.pkl
