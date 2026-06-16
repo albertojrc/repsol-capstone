@@ -83,7 +83,14 @@ A deep-dive analysis of the dataset found that YoY growth in every target decele
 | Andalucía | **Logistic** (was SARIMA, 52.5%) | **48.4%** | -1.56 |
 | Valencia | **Gompertz** (was SARIMA, 57.4%) | **34.2%** | -1.25 |
 
-This was independently re-verified afterward (re-derived the walk-forward numbers from scratch in a standalone script, cross-checked all output CSVs for internal consistency, reconfirmed all prior leakage fixes were still intact, confirmed zero execution errors across all three notebooks). **Verification passed — no leakage, no errors found in this round.**
+This was independently re-verified afterward (re-derived the walk-forward numbers from scratch in a standalone script, cross-checked all output CSVs for internal consistency, reconfirmed all prior leakage fixes were still intact, confirmed zero execution errors across all three notebooks). **Verification passed — no leakage, no errors found in this round.** This work was committed (`d60cbef`) along with the creation of this `memory.md` file.
+
+### Broader model-research pass (2026-06-16, chat-only, no repo changes)
+A wide research review of additional forecasting approaches was conducted (SARIMAX, VAR/BVAR, Prophet/NeuralProphet, LightGBM/CatBoost, Elastic Net, Bayesian regression, structural/state-space models, Gaussian Processes, deep learning — LSTM/GRU/N-BEATS/TFT/DeepAR/TCN, hierarchical reconciliation, panel/pooled regression), backed by academic papers and competition results (M3/M4, Zou & Hastie 2005, Hyndman's MinT, etc.). Delivered in chat only, per explicit instruction not to touch the repo. **Top conclusion: pooling the 5 regional series into one model is the single highest-leverage untried change** (panel-forecasting literature shows pooling trades a little heterogeneity bias for a large reduction in estimation variance — exactly what's needed given ~21-23 effective rows/target). **Deep learning models (LSTM/GRU/N-BEATS/TFT/DeepAR/TCN) and vanilla VAR/VARMAX were explicitly flagged as NOT worth trying** at this sample size (5 series × 24-36 points) — those architectures are designed for hundreds/thousands of series or timesteps, and plain VAR's parameter count grows roughly quadratically with series count, both well past what 24 training months can support. The full report (model-by-model trade-off tables, citations) exists only in the chat transcript, not saved as a repo file — if it needs to be referenced again, ask the user to re-share it or re-run the research.
+
+### SARIMAX experiment — tried and rejected (2026-06-16)
+Following on from the model-research pass, SARIMAX (SARIMA + the same three already-vetted `_lag1` macro regressors used by Ridge/RF/XGBoost: `IPI_original_lag1`, `IPC_var_anual_lag1`, `Tasa_paro_lag1`) was implemented as an 8th walk-forward candidate in `07_modeling.ipynb`, fully wired into the main training loop, walk-forward CV, and 24-month forecast section. **Result: SARIMAX lost the walk-forward comparison for every single target**, often by a wide margin (e.g. Nacional 43.7% vs. SARIMA's 12.5%; Andalucía 91.6% vs. Logistic's 16.7%). The final selected model per target came back byte-identical to before the experiment. All changes were fully reverted via `git checkout` — **no SARIMAX code exists in the repo today.**
+**Do not re-add plain SARIMAX with these same 3 macro exogenous regressors without a reason to expect a different outcome** — it has already been tried and failed on this exact feature set. It might be worth revisiting only *after* the regional-pooling change (more effective training rows could change this result), or with a different/richer set of exogenous regressors (e.g. fuel price lags, which were not included in this test since `07_modeling.ipynb` doesn't currently load the price-feature table).
 
 ---
 
@@ -217,16 +224,20 @@ ESTADISTICA-BIOS_2020.xlsx, ESTADISTICAS_BIOS_2022.xlsx, ESTADISTICA_BIOS_2021.x
 
 **Verification status:** A full leakage audit was performed, two critical leaks and a model-selection bias were fixed, and the fix was independently double-checked (catching and correcting one mid-session regression). The growth-curve addition was independently re-verified for leakage and reproducibility on 2026-06-16. **As of now, the pipeline is believed leakage-free and error-free**, with the explicit caveat that absolute model fit (R²) remains poor for Madrid and Cataluña — this is a data-size limitation, not a known bug.
 
-**Git status:** Local `main` branch is **1 commit ahead of `origin/main`** (commit `37ead38`, the leakage-fix commit — already created, not yet pushed). The subsequent growth-curve work (Logistic/Gompertz addition, updated outputs/figures in notebooks 07/08/09) is **uncommitted in the working tree** as of this writing — it has been verified but the user has not yet decided whether to commit/push it.
+**Git status:** Local `main` branch is **2 commits ahead of `origin/main`**, neither pushed yet:
+- `37ead38` — the leakage-fix + walk-forward-selection commit.
+- `d60cbef` — the Logistic/Gompertz growth-curve addition + creation of this `memory.md`.
+The subsequent SARIMAX experiment (see Section 4) was fully reverted and never committed, so it left no trace — the working tree as of this update matches `d60cbef` exactly, plus this edit to `memory.md` itself.
 
 **Outstanding documentation debt:** `DATA_AUDIT_REPORT.md` and `NOTEBOOKS_AUDIT.md` (both dated 2026-06-10) predate this session's fixes and the growth-curve work; their model lists and row counts are stale. They have not been regenerated — this `memory.md` file is the current source of truth until they are.
 
 **Next priorities (not yet started), in order of expected impact:**
-1. **Pool the 5 regional series into one model** instead of fitting each independently — directly targets the small-effective-sample-size problem (~21-23 rows/target today) that's the most fundamental constraint on model quality. This was recommendation #2 from the deep-dive analysis and has not yet been implemented.
-2. **Reduce feature collinearity for Ridge** (`Tendencia`/`Lag_1`/`Lag_2`/`Lag_3`/`Roll_mean_3`/`Roll_mean_6` were found pairwise-correlated at 0.84-1.00) and/or **add an explicit forecast-plausibility guardrail** to the walk-forward selection step (reject a candidate whose forecast diverges implausibly from recent history) — this was recommendation #3 and is now lower priority since the growth curves have made Ridge's worst failure modes moot in practice, but the underlying collinearity issue is unaddressed.
-3. Source DGT vehicle fleet data (currently a placeholder).
-4. Regenerate the Tableau export step (`tableau_dashboard.csv` etc. are stale relative to the current model set) — the notebook that built them (`07_tableau_prep.ipynb`) was deleted; this logic needs to be reintroduced or rebuilt, likely as an addition to notebook 09.
-5. Decide whether/when to commit and push the pending growth-curve changes.
+1. **Pool the 5 regional series into one model** instead of fitting each independently — directly targets the small-effective-sample-size problem (~21-23 rows/target today) that's the most fundamental constraint on model quality. Confirmed as the top recommendation by both the original deep-dive analysis *and* the later external model-research pass (Section 4) — not yet implemented. **This is the current single highest-priority next step.**
+2. **Reduce feature collinearity for Ridge** (`Tendencia`/`Lag_1`/`Lag_2`/`Lag_3`/`Roll_mean_3`/`Roll_mean_6` were found pairwise-correlated at 0.84-1.00) — e.g. switch to Elastic Net, which the model-research pass flagged as a near-zero-cost fix for exactly this problem. Lower priority than #1 since the growth curves already made Ridge's worst failure modes moot in practice, but the underlying collinearity is still unaddressed.
+3. SARIMAX has already been tried (plain macro exogenous regressors) and rejected — see Section 4. Don't repeat that exact test; if exogenous-variable modelling is revisited, do it after #1 (pooling) or with a richer regressor set (e.g. fuel prices).
+4. Source DGT vehicle fleet data (currently a placeholder).
+5. Regenerate the Tableau export step (`tableau_dashboard.csv` etc. are stale relative to the current model set) — the notebook that built them (`07_tableau_prep.ipynb`) was deleted; this logic needs to be reintroduced or rebuilt, likely as an addition to notebook 09.
+6. Decide whether/when to push the 2 pending local commits to `origin/main`.
 
 ---
 
