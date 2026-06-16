@@ -1,26 +1,26 @@
 Target,Model,MAE,RMSE,MAPE,R2
-Nacional,SARIMA,4277.6,4921.4,29.0,-0.009
-Madrid,SARIMA,9097.8,11968.6,318.6,-312.873
+Nacional,SARIMA,4277.7,4921.5,29.0,-0.009
+Madrid,SARIMA,9097.9,11968.7,318.7,-312.876
 Cataluña,SARIMA,1428.6,1613.8,47.2,-5.62
 Andalucía,SARIMA,897.9,1077.0,52.5,-1.924
 Valencia,SARIMA,573.8,661.8,57.4,-3.932
-Nacional,RF (baseline),11221.7,12173.6,58.3,-5.173
-Nacional,XGB (baseline),11769.9,12560.1,62.3,-5.571
-Madrid,RF (baseline),1844.8,1956.9,66.0,-7.391
-Madrid,XGB (baseline),1727.1,1827.3,61.9,-6.317
-Cataluña,RF (baseline),1789.5,1893.3,60.3,-8.112
-Cataluña,XGB (baseline),1752.4,1843.2,59.4,-7.636
-Andalucía,RF (baseline),977.8,1157.9,56.7,-2.38
-Andalucía,XGB (baseline),1054.9,1199.6,66.1,-2.628
-Valencia,RF (baseline),579.9,637.5,61.5,-3.577
-Valencia,XGB (baseline),564.4,627.7,59.3,-3.437
-Nacional,RF+Precios,11143.7,12073.2,58.0,
-Nacional,XGB+Precios,11446.4,12361.5,59.8,
-Madrid,RF+Precios,1821.4,1932.0,65.1,
-Madrid,XGB+Precios,1706.8,1795.1,61.8,
-Cataluña,RF+Precios,1774.1,1875.0,59.8,
-Cataluña,XGB+Precios,1715.9,1806.7,58.1,
-Andalucía,RF+Precios,988.6,1166.9,57.7,
-Andalucía,XGB+Precios,1051.0,1197.0,65.7,
-Valencia,RF+Precios,578.3,635.5,61.3,
-Valencia,XGB+Precios,559.7,618.1,59.4,
+Nacional,RF (baseline),11104.8,12051.2,57.7,-5.049
+Nacional,XGB (baseline),11995.5,12704.8,64.0,-5.723
+Madrid,RF (baseline),1826.1,1938.2,65.2,-7.231
+Madrid,XGB (baseline),1748.4,1839.2,63.1,-6.412
+Cataluña,RF (baseline),1768.8,1868.2,59.7,-7.871
+Cataluña,XGB (baseline),1808.0,1887.0,61.7,-8.052
+Andalucía,RF (baseline),975.9,1159.9,56.2,-2.392
+Andalucía,XGB (baseline),1048.5,1200.1,64.9,-2.631
+Valencia,RF (baseline),581.3,638.7,61.6,-3.593
+Valencia,XGB (baseline),541.2,622.7,54.6,-3.366
+Nacional,RF+Precios,10962.8,11922.4,56.9,
+Nacional,XGB+Precios,11451.1,12361.6,59.8,
+Madrid,RF+Precios,1797.6,1910.9,64.1,
+Madrid,XGB+Precios,1710.9,1799.7,61.9,
+Cataluña,RF+Precios,1785.0,1879.2,60.4,
+Cataluña,XGB+Precios,1709.9,1802.6,57.8,
+Andalucía,RF+Precios,991.5,1172.9,57.6,
+Andalucía,XGB+Precios,1046.3,1194.4,65.1,
+Valencia,RF+Precios,568.3,632.6,59.3,
+Valencia,XGB+Precios,537.7,614.0,54.7,
