@@ -1,12 +1,12 @@
 {
   "dataset": "master_dataset",
-  "description": "Monthly biodiesel demand + macroeconomic + Brent + fuel price variables by CCAA (2023-01 to 2025-12)",
+  "description": "Monthly biodiesel demand + macroeconomic + Brent + fuel price + CNMC diesel-market variables by CCAA (2023-01 to 2025-12)",
   "primary_key": [
     "Fecha",
     "CCAA"
   ],
   "rows": 720,
-  "columns": 17,
+  "columns": 22,
   "date_range": {
     "start": "2023-01",
     "end": "2025-12"
@@ -101,6 +101,34 @@
       "type": "float",
       "unit": "€/L",
       "description": "Net price Gasolina 98 — CCAA monthly mean (NaN for Melilla)"
+    },
+    "CNMC_Biodiesel_Tm": {
+      "type": "float",
+      "unit": "metric tonnes",
+      "source": "CNMC",
+      "description": "CNMC biodiesel consumption, reconciled to Consumo_Tm"
+    },
+    "GasoleoA_Tm": {
+      "type": "float",
+      "unit": "metric tonnes",
+      "source": "CNMC",
+      "description": "Monthly Gasoleo A market consumption by CCAA/national total"
+    },
+    "DieselPool_Tm": {
+      "type": "float",
+      "unit": "metric tonnes",
+      "source": "CNMC",
+      "description": "Biodiesel + Gasoleo A/B/C + Otros Gasoleos consumption"
+    },
+    "Biodiesel_GasoleoA_Ratio": {
+      "type": "float",
+      "source": "CNMC",
+      "description": "Biodiesel consumption divided by Gasoleo A consumption"
+    },
+    "Biodiesel_DieselPool_Share": {
+      "type": "float",
+      "source": "CNMC",
+      "description": "Biodiesel consumption divided by the diesel-pool proxy"
     }
   }
 }

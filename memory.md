@@ -1,7 +1,70 @@
 # Project Memory — Repsol Eco-Fuels Demand Forecasting Capstone
 
-**Last updated:** 2026-06-16
+**Last updated:** 2026-06-19
 **Maintainer note:** This file is the long-term source of truth for this project. See [Section 10](#10-future-instructions-for-claude) for how Claude should use and maintain it.
+
+---
+
+## 2026-06-19 Update: CNMC Diesel-Market Feature Integration
+
+The CNMC `Estadistica Petroleo - Consumos mensuales provincial (Tm)` files have now been integrated as a leakage-safe diesel-market feature source.
+
+New raw files under `data/raw/consumos_mensuales_petroleo/`:
+- `ds_14200_1.csv` through `ds_14203_1.csv`
+- 2023-01 to 2025-12 plus Jan-Feb 2026 CNMC data
+- Jan-Feb 2026 is cleaned and retained in processed CNMC files, but is not used in `master_dataset.csv`, feature training/test sets, model selection, or final 2026-2027 forecast generation.
+
+New scripts:
+- `scripts/03_clean_cnmc_petroleum.py`: cleans CNMC provincial data, writes provincial/CCAA diesel-market tables, and validates reconciliation against the existing biodiesel target.
+- `scripts/04_build_features.py`: rebuilds the modeling feature tables with leakage-safe lagged CNMC features.
+- `scripts/05_modeling_with_cnmc.py`: reruns model evaluation, walk-forward selection, 2025 test predictions, 2026-2027 forecasts, figures, and Tableau exports with the new diesel-market features.
+
+New processed CNMC outputs:
+- `data/processed/cnmc_consumos_petroleo_provincial.csv`
+- `data/processed/cnmc_consumos_petroleo_ccaa.csv`
+- `data/processed/cnmc_diesel_market_features.csv`
+
+Current master/feature state:
+- `data/inputs/master_dataset.csv`: 720 rows x 22 columns, still 2023-01 to 2025-12 only.
+- `data/features/features_modelo_completo.csv`: 180 rows x 34 columns, still only the 5 modeled targets.
+- Added CNMC model inputs are lagged only: `GasoleoA_Tm_lag1`, `GasoleoA_Tm_roll3_lag1`, `Biodiesel_GasoleoA_Ratio_lag1`, `Biodiesel_GasoleoA_Ratio_roll3_lag1`.
+- Contemporaneous `GasoleoA_Tm` and contemporaneous biodiesel/Gasoleo A ratio are retained for audit and lag construction, but are not used as direct ML features for month `t`.
+
+Verification passed:
+- All four raw CNMC files parse as semicolon CSVs with zero missing cells and zero duplicate province-product-month rows.
+- CNMC 2023-2025 `BIODIESEL` reconciles exactly against `data/inputs/consumo_biodiesel_ccaa.csv` over 720 CCAA-month pairs, max absolute difference 0.0 Tm.
+- National `ESPAÑA` `GasoleoA_Tm` equals the sum of all 19 CCAA values for every month, max absolute difference 0.0 Tm.
+- No 2026 CNMC rows enter master, features, training, validation, walk-forward selection, or final production forecast origin.
+- Lagged diesel-market feature causality checks passed to floating-point tolerance.
+- Selected regional forecasts remain below the national forecast every month; the four modeled regions are about 43.5% of national forecast volume in 2026 and 44.2% in 2027.
+
+Modeling result:
+- The new feature did not materially improve the selected production models.
+- Walk-forward-selected models remain: Nacional = SARIMA, Madrid = Gompertz, Cataluña = Gompertz, Andalucia = Logistic, Valencia = Gompertz.
+- The new `Diesel Share` candidate was added as requested, but performed very badly in 2025 test metrics and should be treated as a failed experiment, not a recommended model.
+- Direct ML models with the new diesel lags showed some useful signal in places (notably Madrid XGBoost test MAPE around 60%), but did not win the existing 2023-2024 walk-forward selection gate.
+- Important business/modeling caveat: Madrid and Cataluña still have a serious validation/test mismatch. The walk-forward-selected Gompertz models looked strong in 2023-2024 one-step validation but have very poor 2025 test MAPE (Madrid 197.1%, Cataluña 164.2%). This is not solved by the CNMC feature and remains a final-delivery risk.
+
+Updated outputs regenerated:
+- `data/outputs/metricas_modelos.csv`
+- `data/outputs/model_selection_walkforward.csv`
+- `data/outputs/metricas_final_seleccionado.csv`
+- `data/outputs/predicciones_test_2025.csv`
+- `data/outputs/forecast_24m_sarima_rf_xgb.csv`
+- `data/outputs/tableau_dashboard.csv`
+- `data/outputs/tableau_metricas.csv`
+- `data/outputs/tableau_forecast_pivot.csv`
+- `data/outputs/tableau_export_legacy.csv`
+- `reports/figures/07_model_comparison.png`
+- `reports/figures/11_forecast_24m.png`
+
+Pipeline order for the current script path:
+1. Run `scripts/03_clean_cnmc_petroleum.py`.
+2. Run `scripts/02_master_dataset_builder.py`.
+3. Run `scripts/04_build_features.py`.
+4. Run `scripts/05_modeling_with_cnmc.py`.
+
+Important note: the script path above is now the most current reproducible path. Some older notebook/documentation text still predates this CNMC integration and may describe the former 17-column master dataset or the pre-CNMC model candidate set.
 
 ---
 
