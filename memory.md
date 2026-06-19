@@ -7,50 +7,143 @@
 
 ## 2026-06-19 Update: CNMC Diesel-Market Feature Integration
 
-The CNMC `Estadistica Petroleo - Consumos mensuales provincial (Tm)` files have now been integrated as a leakage-safe diesel-market feature source.
+This section explains the newest repository changes in plain language so teammates can understand what changed, how to rerun it, and how to interpret the result.
 
-New raw files under `data/raw/consumos_mensuales_petroleo/`:
-- `ds_14200_1.csv` through `ds_14203_1.csv`
-- 2023-01 to 2025-12 plus Jan-Feb 2026 CNMC data
-- Jan-Feb 2026 is cleaned and retained in processed CNMC files, but is not used in `master_dataset.csv`, feature training/test sets, model selection, or final 2026-2027 forecast generation.
+### Why CNMC was added
 
-New scripts:
-- `scripts/03_clean_cnmc_petroleum.py`: cleans CNMC provincial data, writes provincial/CCAA diesel-market tables, and validates reconciliation against the existing biodiesel target.
-- `scripts/04_build_features.py`: rebuilds the modeling feature tables with leakage-safe lagged CNMC features.
-- `scripts/05_modeling_with_cnmc.py`: reruns model evaluation, walk-forward selection, 2025 test predictions, 2026-2027 forecasts, figures, and Tableau exports with the new diesel-market features.
+The original target remains biodiesel demand in metric tonnes (`Consumo_Tm`). That target already comes from the existing cleaned biodiesel consumption source and represents total market demand, not Repsol sales.
 
-New processed CNMC outputs:
-- `data/processed/cnmc_consumos_petroleo_provincial.csv`
-- `data/processed/cnmc_consumos_petroleo_ccaa.csv`
-- `data/processed/cnmc_diesel_market_features.csv`
+The CNMC petroleum-consumption data was added as a market-structure feature source. The business logic is:
 
-Current master/feature state:
-- `data/inputs/master_dataset.csv`: 720 rows x 22 columns, still 2023-01 to 2025-12 only.
-- `data/features/features_modelo_completo.csv`: 180 rows x 34 columns, still only the 5 modeled targets.
-- Added CNMC model inputs are lagged only: `GasoleoA_Tm_lag1`, `GasoleoA_Tm_roll3_lag1`, `Biodiesel_GasoleoA_Ratio_lag1`, `Biodiesel_GasoleoA_Ratio_roll3_lag1`.
-- Contemporaneous `GasoleoA_Tm` and contemporaneous biodiesel/Gasoleo A ratio are retained for audit and lag construction, but are not used as direct ML features for month `t`.
+`biodiesel demand = underlying Gasoleo A diesel market size x biodiesel penetration`
 
-Verification passed:
-- All four raw CNMC files parse as semicolon CSVs with zero missing cells and zero duplicate province-product-month rows.
-- CNMC 2023-2025 `BIODIESEL` reconciles exactly against `data/inputs/consumo_biodiesel_ccaa.csv` over 720 CCAA-month pairs, max absolute difference 0.0 Tm.
-- National `ESPAÑA` `GasoleoA_Tm` equals the sum of all 19 CCAA values for every month, max absolute difference 0.0 Tm.
-- No 2026 CNMC rows enter master, features, training, validation, walk-forward selection, or final production forecast origin.
-- Lagged diesel-market feature causality checks passed to floating-point tolerance.
-- Selected regional forecasts remain below the national forecast every month; the four modeled regions are about 43.5% of national forecast volume in 2026 and 44.2% in 2027.
+In other words, biodiesel tonnes should depend partly on the size of the conventional diesel market and partly on the share of that market captured by biodiesel. CNMC gives us the conventional diesel-market context that was missing before.
 
-Modeling result:
-- The new feature did not materially improve the selected production models.
-- Walk-forward-selected models remain: Nacional = SARIMA, Madrid = Gompertz, Cataluña = Gompertz, Andalucia = Logistic, Valencia = Gompertz.
-- The new `Diesel Share` candidate was added as requested, but performed very badly in 2025 test metrics and should be treated as a failed experiment, not a recommended model.
-- Direct ML models with the new diesel lags showed some useful signal in places (notably Madrid XGBoost test MAPE around 60%), but did not win the existing 2023-2024 walk-forward selection gate.
-- Important business/modeling caveat: Madrid and Cataluña still have a serious validation/test mismatch. The walk-forward-selected Gompertz models looked strong in 2023-2024 one-step validation but have very poor 2025 test MAPE (Madrid 197.1%, Cataluña 164.2%). This is not solved by the CNMC feature and remains a final-delivery risk.
+### Raw CNMC inputs
 
-Updated outputs regenerated:
+The following files are now kept under `data/raw/consumos_mensuales_petroleo/`:
+
+- `ds_14200_1.csv`: 2023 monthly petroleum consumption
+- `ds_14201_1.csv`: 2024 monthly petroleum consumption
+- `ds_14202_1.csv`: 2025 monthly petroleum consumption
+- `ds_14203_1.csv`: Jan-Feb 2026 monthly petroleum consumption
+
+Each raw file is a semicolon-separated CSV from CNMC `Estadistica Petroleo - Consumos mensuales provincial (Tm)`. Each row is a province, month, and product category, with consumption in tonnes.
+
+The Jan-Feb 2026 CNMC rows are intentionally cleaned and saved in processed CNMC outputs, but they are not used for training, validation, model selection, or the 2026-2027 forecast origin. The capstone forecast remains an origin-at-2025-12 forecast.
+
+### New cleaning step
+
+New script: `scripts/03_clean_cnmc_petroleum.py`
+
+What it does:
+
+- Reads all four raw CNMC CSVs with `sep=";"`.
+- Standardizes the raw columns into `Fecha`, `CCAA`, `Provincia`, `Tipo_Producto`, and `Consumo_Tm`.
+- Keeps all 14 CNMC product categories in the cleaned outputs, not only diesel.
+- Checks that there are no missing values and no duplicate `Fecha` + `CCAA` + `Provincia` + `Tipo_Producto` rows.
+- Aggregates province-level rows to CCAA-level rows.
+- Creates an independent national `ESPAÑA` row by summing all 19 CCAA values. This is important: the national row is not built from only Madrid, Cataluna, Andalucia, and Valencia.
+- Builds diesel-market features from the product table.
+
+Outputs:
+
+- `data/processed/cnmc_consumos_petroleo_provincial.csv`: cleaned province-product-month table.
+- `data/processed/cnmc_consumos_petroleo_ccaa.csv`: cleaned CCAA-product-month table, including independently computed `ESPAÑA`.
+- `data/processed/cnmc_diesel_market_features.csv`: modeling-ready diesel-market feature table.
+
+The diesel-market feature table contains:
+
+- `CNMC_Biodiesel_Tm`: CNMC biodiesel tonnes, used only as a reconciliation check against the existing target.
+- `GasoleoA_Tm`: conventional Gasoleo A market size.
+- `DieselPool_Tm`: broader diesel pool used for descriptive share checking.
+- `Biodiesel_GasoleoA_Ratio`: biodiesel tonnes divided by Gasoleo A tonnes.
+- `Biodiesel_DieselPool_Share`: biodiesel tonnes divided by the broader diesel pool.
+
+### Master dataset integration
+
+Updated script: `scripts/02_master_dataset_builder.py`
+
+What changed:
+
+- The master build now reads `data/processed/cnmc_diesel_market_features.csv`.
+- It filters CNMC rows to `Fecha <= 2025-12` before merging.
+- It merges CNMC features by `Fecha` + `CCAA`.
+- It preserves `Consumo_Tm` as the official modeling target. The project does not replace the target with CNMC `BIODIESEL`.
+- It checks that `CNMC_Biodiesel_Tm` exactly reconciles to `Consumo_Tm` after the merge.
+- It fails loudly if any modeled month/region is missing `GasoleoA_Tm`.
+
+Current master output:
+
+- `data/inputs/master_dataset.csv`
+- 720 rows x 22 columns
+- 2023-01 to 2025-12 only
+- 20 CCAA/national entities x 36 months
+- Includes all CCAA rows for context, but modeling still uses only the five targets: Nacional, Madrid, Cataluna, Andalucia, Valencia.
+
+### Feature engineering integration
+
+New script: `scripts/04_build_features.py`
+
+What it does:
+
+- Rebuilds the modeling feature tables from `master_dataset.csv`.
+- Keeps the same capstone split: train = 2023-2024, test = 2025.
+- Keeps only the five modeled targets in the model feature tables.
+- Adds CNMC diesel-market features only in lagged form.
+
+New leakage-safe model inputs:
+
+- `GasoleoA_Tm_lag1`
+- `GasoleoA_Tm_roll3_lag1`
+- `Biodiesel_GasoleoA_Ratio_lag1`
+- `Biodiesel_GasoleoA_Ratio_roll3_lag1`
+
+The contemporaneous values `GasoleoA_Tm` and `Biodiesel_GasoleoA_Ratio` are retained in the feature table so the lagged columns can be audited, but they are not used as direct predictors for month `t`. This is the key leakage rule for the CNMC integration.
+
+Current feature outputs:
+
+- `data/features/features_modelo_completo.csv`: 180 rows x 34 columns
+- `data/features/features_train.csv`: 120 rows x 34 columns
+- `data/features/features_test.csv`: 60 rows x 34 columns
+
+### Modeling changes
+
+New script: `scripts/05_modeling_with_cnmc.py`
+
+This is now the current script-based modeling path. It reruns:
+
+- 2025 test prediction generation
+- 2023-2024 walk-forward model selection
+- final model metrics
+- 2026-2027 24-month forecasts
+- Tableau exports
+- final figures
+
+Candidate models now include:
+
+- SARIMA
+- Ridge
+- Random Forest
+- XGBoost
+- Logistic growth curve
+- Gompertz growth curve
+- Diesel Share model
+
+The direct ML models, Ridge/Random Forest/XGBoost, now use the old lagged macro/target/calendar features plus the four lagged CNMC diesel-market features.
+
+The new `Diesel Share` candidate models `Biodiesel_GasoleoA_Ratio` directly and then converts the predicted ratio back into tonnes using future `GasoleoA_Tm`. Future `GasoleoA_Tm` is not taken from Jan-Feb 2026 actuals. It is generated with a seasonal naive assumption: repeat the latest full 12-month Gasoleo A pattern from 2025 into 2026 and 2027.
+
+### Regenerated outputs
+
+These files were regenerated from the CNMC-aware pipeline:
+
 - `data/outputs/metricas_modelos.csv`
 - `data/outputs/model_selection_walkforward.csv`
 - `data/outputs/metricas_final_seleccionado.csv`
 - `data/outputs/predicciones_test_2025.csv`
 - `data/outputs/forecast_24m_sarima_rf_xgb.csv`
+- `data/outputs/metricas_comparativa.csv`
 - `data/outputs/tableau_dashboard.csv`
 - `data/outputs/tableau_metricas.csv`
 - `data/outputs/tableau_forecast_pivot.csv`
@@ -58,13 +151,61 @@ Updated outputs regenerated:
 - `reports/figures/07_model_comparison.png`
 - `reports/figures/11_forecast_24m.png`
 
-Pipeline order for the current script path:
-1. Run `scripts/03_clean_cnmc_petroleum.py`.
-2. Run `scripts/02_master_dataset_builder.py`.
-3. Run `scripts/04_build_features.py`.
-4. Run `scripts/05_modeling_with_cnmc.py`.
+Despite the legacy filename `forecast_24m_sarima_rf_xgb.csv`, that file now contains all current model families, including Logistic, Gompertz, and Diesel Share.
 
-Important note: the script path above is now the most current reproducible path. Some older notebook/documentation text still predates this CNMC integration and may describe the former 17-column master dataset or the pre-CNMC model candidate set.
+### Validation checks that passed
+
+The integration was checked end to end:
+
+- All four raw CNMC files parse correctly as semicolon CSVs.
+- Raw CNMC files have zero missing cells.
+- Raw CNMC files have zero duplicate province-product-month rows.
+- CNMC 2023-2025 `BIODIESEL` reconciles exactly with the existing biodiesel target source over 720 CCAA-month pairs, with max absolute difference `0.0 Tm`.
+- National `ESPAÑA` `GasoleoA_Tm` equals the sum of all 19 CCAA values for every month, with max absolute difference `0.0 Tm`.
+- `master_dataset.csv` contains no 2026 rows.
+- The modeling feature tables contain no 2026 rows.
+- Lag causality checks passed: CNMC lag columns equal values available at `t-1` or earlier.
+- Selected regional forecasts remain below the national forecast every month.
+- The four modeled regions are about 43.5% of national forecast volume in 2026 and 44.2% in 2027.
+
+### Modeling result and interpretation
+
+The CNMC feature made the project more business-grounded and auditable, but it did not materially improve the selected production forecasts.
+
+Walk-forward-selected models remain:
+
+| Target | Selected model | 2025 MAPE | 2025 R2 |
+|---|---|---:|---:|
+| Nacional | SARIMA | 29.0% | -0.009 |
+| Madrid | Gompertz | 197.1% | -101.018 |
+| Cataluna | Gompertz | 164.2% | -91.269 |
+| Andalucia | Logistic | 48.4% | -1.555 |
+| Valencia | Gompertz | 34.2% | -1.246 |
+
+Important interpretation:
+
+- The new diesel-market variables are conceptually correct and useful for explaining demand structure.
+- They are not, by themselves, enough to fix the main forecasting issue.
+- The new `Diesel Share` model performed very poorly on 2025 and should be treated as a failed experiment, not a recommended final model.
+- Direct ML with diesel lags showed some useful signal in places, especially Madrid XGBoost, but did not win the existing 2023-2024 walk-forward selection gate.
+- Madrid and Cataluna still have a serious validation/test mismatch. The selected Gompertz models looked good in 2023-2024 one-step validation but performed badly on 2025. This remains a final-delivery risk.
+
+The main next modeling improvement is still likely a pooled/panel model across the five targets, not just adding another isolated feature.
+
+### How to rerun the current pipeline
+
+Run these commands from the repository root:
+
+```powershell
+python scripts/03_clean_cnmc_petroleum.py
+python scripts/02_master_dataset_builder.py
+python scripts/04_build_features.py
+python scripts/05_modeling_with_cnmc.py
+```
+
+Use the Anaconda Python environment if the plain `python` command does not point to the project environment.
+
+Important note: this script path is now the most current reproducible path. Some older notebook/documentation text still predates the CNMC integration and may describe the former 17-column master dataset or the pre-CNMC model candidate set.
 
 ---
 
@@ -230,7 +371,7 @@ ESTADISTICA-BIOS_2020.xlsx, ESTADISTICAS_BIOS_2022.xlsx, ESTADISTICA_BIOS_2021.x
 
 ## 7. Modeling Approach
 
-**Candidates evaluated** (6 total, all fit independently per target):
+**Candidates evaluated** (7 total, all fit independently per target):
 
 | Model | Type | Notes |
 |---|---|---|
@@ -240,19 +381,21 @@ ESTADISTICA-BIOS_2020.xlsx, ESTADISTICAS_BIOS_2022.xlsx, ESTADISTICA_BIOS_2021.x
 | XGBoost (300 rounds, depth 2, lr 0.05) | ML, gradient boosting | Same feature set as Ridge. |
 | **Logistic growth curve** *(added 2026-06-16)* | Statistical, saturating | `L / (1 + exp(-k(t-t0)))` + 2-parameter sin/cos seasonal correction, fit on raw `Consumo_Tm`. |
 | **Gompertz growth curve** *(added 2026-06-16)* | Statistical, saturating | `L·exp(-b·exp(-kt))` + same seasonal correction. |
+| **Diesel Share** *(added 2026-06-19)* | Ratio model | Models `Biodiesel_GasoleoA_Ratio` and converts the predicted ratio back into tonnes using seasonal-naive future `GasoleoA_Tm`. Tested as a candidate, but not selected. |
 
-**Feature set** (`ML_FEATS`, used by Ridge/RF/XGBoost only): `Tendencia` (trend index), `Mes`, `sin_mes`/`cos_mes` (cyclical month encoding), `Lag_1`/`Lag_2`/`Lag_3` (target lags), `Roll_mean_3`/`Roll_mean_6` (rolling means), `IPI_original_lag1`, `IPC_var_anual_lag1`, `Tasa_paro_lag1` (lagged macro — **never the contemporaneous value**, see Section 4). `Lag_12` exists in the feature table but is excluded from the model feature lists due to excessive NaN loss.
+**Feature set** (`ML_FEATS`, used by Ridge/RF/XGBoost only): `Tendencia` (trend index), `Mes`, `sin_mes`/`cos_mes` (cyclical month encoding), `Lag_1`/`Lag_2`/`Lag_3` (target lags), `Roll_mean_3`/`Roll_mean_6` (rolling means), `IPI_original_lag1`, `IPC_var_anual_lag1`, `Tasa_paro_lag1` (lagged macro — **never the contemporaneous value**, see Section 4), plus the lagged CNMC diesel-market features `GasoleoA_Tm_lag1`, `GasoleoA_Tm_roll3_lag1`, `Biodiesel_GasoleoA_Ratio_lag1`, and `Biodiesel_GasoleoA_Ratio_roll3_lag1`. `Lag_12` exists in the feature table but is excluded from the model feature lists due to excessive NaN loss.
 
 **Evaluation metric:** MAPE is the primary ranking metric; MAE, RMSE, R² also reported. **R² is the more honest signal of absolute fit quality** — it is negative for every target except Nacional (≈0), meaning even the best models still underperform a naive mean in absolute terms; MAPE looks more flattering but can mask this.
 
 **Model selection methodology:** walk-forward (expanding-window, 1-step-ahead) cross-validation confined to 2023-2024, median-aggregated across ~8 folds per target (median chosen over mean because a single divergent SARIMA fold can otherwise dominate). The winner is committed to *before* ever touching the 2025 test set; the test MAPE/R² reported is a single honest out-of-sample number, not a result of picking among candidates after seeing their test performance.
 
-**Current best model per target** (as of 2026-06-16, see Section 4 table): SARIMA for Nacional, Gompertz for Madrid/Cataluña/Valencia, Logistic for Andalucía.
+**Current best model per target** (as of 2026-06-19, after CNMC integration): SARIMA for Nacional, Gompertz for Madrid/Cataluña/Valencia, Logistic for Andalucía.
 
 **Known weaknesses of the current approach:**
 - Each of the 5 targets is modelled **independently** — no pooling of information across regions, despite all 5 sharing the same national adoption wave and macro environment. This means each model effectively has only ~21-23 usable training observations.
 - 1-step-ahead walk-forward validation does not fully replicate the actual 12-month-ahead forecasting task, so it can occasionally select a model (e.g. Ridge, before the growth curves were added) that looks fine 1 month out but extrapolates badly over a full year.
 - No hyperparameter tuning via cross-validation for Ridge/RF/XGBoost — values are hand-picked, partly to avoid adding yet another source of test-set-adjacent overfitting risk on this little data.
+- CNMC diesel-market features improved the business logic of the dataset but did not solve the poor regional forecast performance for Madrid and Cataluña. The remaining issue appears more structural than feature-missing.
 
 ---
 
@@ -263,6 +406,9 @@ ESTADISTICA-BIOS_2020.xlsx, ESTADISTICAS_BIOS_2022.xlsx, ESTADISTICA_BIOS_2021.x
 - **Forecast horizon fixed at 24 months** (2026-01 → 2027-12), monthly granularity, matching the project brief.
 - **Train/test split is temporal, not random**: 2023-2024 train, 2025 test — required for any time-series evaluation to be meaningful, and enforced consistently across every notebook.
 - **Macro features must be lagged by 1 month minimum** before use as model inputs, because INE publishes IPI/IPC/unemployment with a real delay. Quarterly EPA data is shifted by a full quarter for the same reason. This was a deliberate fix this session (see Section 4) — any new macro series added in the future must follow the same convention.
+- **CNMC diesel-market features must also be leakage-safe.** `GasoleoA_Tm` and `Biodiesel_GasoleoA_Ratio` can be stored contemporaneously for auditing, but the model inputs must be lagged or rolling-lagged versions only.
+- **Do not use Jan-Feb 2026 CNMC actuals for the original capstone forecast.** They are retained in processed CNMC files for future reference, but the production forecast remains a 2025-12-origin forecast for 2026-01 through 2027-12.
+- **National CNMC rows must be built from all 19 CCAA, never from only the four modeled regions.** The four regions are modeled separately, but they are not the whole Spanish market.
 - **Model selection must never use the test set.** Walk-forward CV inside the training window is the only sanctioned way to choose a model family per target. This is a hard rule going forward, established after finding the original pipeline violated it.
 - **A new candidate model is only adopted if it wins (or ties) the existing walk-forward selection — never by manually overriding the selection after seeing test results.** This is exactly how the Logistic/Gompertz curves were added and validated.
 - **Gasolina 98 is genuinely not sold in Melilla** — the resulting 36 NaN rows in `master_dataset.csv` are expected, not a data quality bug.
@@ -273,9 +419,23 @@ ESTADISTICA-BIOS_2020.xlsx, ESTADISTICAS_BIOS_2022.xlsx, ESTADISTICA_BIOS_2021.x
 
 ## 9. Current Status
 
-**Data pipeline:** Complete and stable. `master_dataset.csv` and the feature tables are correct and incorporate the EPA publication-delay fix.
+**Data pipeline:** Complete and stable for the current capstone scope. `master_dataset.csv` and the feature tables incorporate:
 
-**Modelling pipeline:** Complete for the current candidate set (6 models). The walk-forward-selected model per target, and its honestly-reported 2025 test metric, are:
+- the EPA publication-delay fix,
+- lagged macro features,
+- CNMC diesel-market features,
+- and the original 2025-12 forecast origin.
+
+The current script-based rebuild path is:
+
+```powershell
+python scripts/03_clean_cnmc_petroleum.py
+python scripts/02_master_dataset_builder.py
+python scripts/04_build_features.py
+python scripts/05_modeling_with_cnmc.py
+```
+
+**Modelling pipeline:** Complete for the current candidate set (7 models). The walk-forward-selected model per target, and its honestly-reported 2025 test metric, are:
 
 | Target | Model | MAPE | R² |
 |---|---|---|---|
@@ -285,22 +445,32 @@ ESTADISTICA-BIOS_2020.xlsx, ESTADISTICAS_BIOS_2022.xlsx, ESTADISTICA_BIOS_2021.x
 | Andalucía | Logistic | 48.4% | -1.56 |
 | Valencia | Gompertz | 34.2% | -1.25 |
 
-**Verification status:** A full leakage audit was performed, two critical leaks and a model-selection bias were fixed, and the fix was independently double-checked (catching and correcting one mid-session regression). The growth-curve addition was independently re-verified for leakage and reproducibility on 2026-06-16. **As of now, the pipeline is believed leakage-free and error-free**, with the explicit caveat that absolute model fit (R²) remains poor for Madrid and Cataluña — this is a data-size limitation, not a known bug.
+**Verification status:** A full leakage audit was performed, two critical leaks and a model-selection bias were fixed, and the fix was independently double-checked. The growth-curve addition was independently re-verified for leakage and reproducibility on 2026-06-16. The CNMC integration was verified on 2026-06-19:
 
-**Git status:** Local `main` branch is **2 commits ahead of `origin/main`**, neither pushed yet:
-- `37ead38` — the leakage-fix + walk-forward-selection commit.
-- `d60cbef` — the Logistic/Gompertz growth-curve addition + creation of this `memory.md`.
-The subsequent SARIMAX experiment (see Section 4) was fully reverted and never committed, so it left no trace — the working tree as of this update matches `d60cbef` exactly, plus this edit to `memory.md` itself.
+- raw CNMC files parse cleanly,
+- CNMC biodiesel reconciles exactly to the existing target,
+- national `ESPAÑA` Gasoleo A is independently summed from all 19 CCAA,
+- no 2026 CNMC rows enter the model-origin data,
+- and CNMC model inputs are lagged only.
 
-**Outstanding documentation debt:** `DATA_AUDIT_REPORT.md` and `NOTEBOOKS_AUDIT.md` (both dated 2026-06-10) predate this session's fixes and the growth-curve work; their model lists and row counts are stale. They have not been regenerated — this `memory.md` file is the current source of truth until they are.
+**Important modeling caveat:** The pipeline is believed leakage-free, but the absolute model fit remains poor for Madrid and Cataluña. CNMC improves the project's business structure, not the core statistical limitation. The next serious improvement should be a pooled/panel regional model or another approach that increases effective sample size.
+
+**Git status:** As of this update, local `main` contains unpushed commits beyond `origin/main`, including the leakage fixes, growth-curve additions, research notes, CNMC integration, and this documentation update. Before pushing, verify with:
+
+```powershell
+git status --short --branch
+git log --oneline --decorate -5
+```
+
+**Outstanding documentation debt:** `DATA_AUDIT_REPORT.md` and `NOTEBOOKS_AUDIT.md` (both dated 2026-06-10) predate the leakage fixes, growth-curve work, and CNMC integration. Their model lists, row counts, and pipeline descriptions are stale. They have not been regenerated; this `memory.md` file and the current scripts are the source of truth until those audit docs are refreshed.
 
 **Next priorities (not yet started), in order of expected impact:**
 1. **Pool the 5 regional series into one model** instead of fitting each independently — directly targets the small-effective-sample-size problem (~21-23 rows/target today) that's the most fundamental constraint on model quality. Confirmed as the top recommendation by both the original deep-dive analysis *and* the later external model-research pass (Section 4) — not yet implemented. **This is the current single highest-priority next step.**
 2. **Reduce feature collinearity for Ridge** (`Tendencia`/`Lag_1`/`Lag_2`/`Lag_3`/`Roll_mean_3`/`Roll_mean_6` were found pairwise-correlated at 0.84-1.00) — e.g. switch to Elastic Net, which the model-research pass flagged as a near-zero-cost fix for exactly this problem. Lower priority than #1 since the growth curves already made Ridge's worst failure modes moot in practice, but the underlying collinearity is still unaddressed.
 3. SARIMAX has already been tried (plain macro exogenous regressors) and rejected — see Section 4. Don't repeat that exact test; if exogenous-variable modelling is revisited, do it after #1 (pooling) or with a richer regressor set (e.g. fuel prices).
 4. Source DGT vehicle fleet data (currently a placeholder).
-5. Regenerate the Tableau export step (`tableau_dashboard.csv` etc. are stale relative to the current model set) — the notebook that built them (`07_tableau_prep.ipynb`) was deleted; this logic needs to be reintroduced or rebuilt, likely as an addition to notebook 09.
-6. Decide whether/when to push the 2 pending local commits to `origin/main`.
+5. Regenerate `DATA_AUDIT_REPORT.md` and `NOTEBOOKS_AUDIT.md` so they reflect the current CNMC-aware script path.
+6. Decide whether/when to push the pending local commits to `origin/main`.
 
 ---
 
@@ -310,7 +480,10 @@ The subsequent SARIMAX experiment (see Section 4) was fully reverted and never c
 - Treat this file as the **source of truth** for project state, decisions, and conventions — prefer it over `README.md`, `DATA_AUDIT_REPORT.md`, and `NOTEBOOKS_AUDIT.md` where they conflict, since those three are known to be partially stale (see Sections 5, 6, 9).
 - Before relying on any specific claim in this file that names a file, function, or result (e.g., "`ML_FEATS` contains X", "Gompertz is selected for Madrid"), **verify it against the actual current repo state** — re-read the relevant notebook cell or re-run the relevant CSV check — rather than assuming this file is still accurate. Treat this file as a snapshot in time, not a live source.
 - **Never reintroduce the two leaks fixed in Section 4**: (a) never use contemporaneous (non-lagged) `IPI_original`/`IPC_var_anual`/`Tasa_paro` as a model feature, only `_lag1`; (b) never let quarterly macro data (like EPA unemployment) get forward-filled into months before it would actually have been published.
-- **Never select a model family using test-set performance.** Any new candidate model must go through the same walk-forward CV gate (inside 2023-2024 only) as the existing six, and must only be adopted if it wins or ties that CV — exactly as was done for the Logistic/Gompertz addition.
+- **Never use contemporaneous CNMC market variables as model features for the same month.** `GasoleoA_Tm` and `Biodiesel_GasoleoA_Ratio` must enter models through lagged/rolling-lagged features only, unless the forecast design explicitly changes and is documented.
+- **Do not silently change the forecast origin by using Jan-Feb 2026 CNMC actuals.** Those rows exist in processed CNMC files for future use, but the current capstone forecast is intentionally generated as if standing at 2025-12.
+- **When rebuilding national CNMC features, sum all 19 CCAA.** Never build the national series from only Madrid, Cataluna, Andalucia, and Valencia.
+- **Never select a model family using test-set performance.** Any new candidate model must go through the same walk-forward CV gate (inside 2023-2024 only) as the existing seven, and must only be adopted if it wins or ties that CV — exactly as was done for the Logistic/Gompertz and Diesel Share additions.
 - **When editing notebook `.ipynb` files programmatically** (via `nbformat`), always re-read the file fresh from disk immediately after writing to confirm the edit actually persisted — a real bug this session came from a bundled multi-edit script that crashed before its `nbformat.write()` call, silently discarding an earlier successful edit in the same script. Prefer one isolated read-modify-write-verify script per logical change over bundling several edits together.
 - **When changing a feature list** (`ML_FEATS`, `ML_BASE`, `ML_PRICE`), grep for any code elsewhere that builds a model input row by **fixed position** (`np.array([[...]])` with positional values) rather than by feature name — this exact bug class broke the recursive forecast functions in both notebook 07 and 08 once before, and would break silently again.
 - **Update this file** whenever a major change happens: a new model is added/removed, a new leak is found and fixed, the target/scope changes, a new data source is integrated, or the git/commit state materially changes. Keep Section 9 ("Current Status") especially current, since it's the section most likely to go stale fastest.
