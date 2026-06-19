@@ -103,9 +103,9 @@ The contemporaneous values `GasoleoA_Tm` and `Biodiesel_GasoleoA_Ratio` are reta
 
 Current feature outputs:
 
-- `data/features/features_modelo_completo.csv`: 180 rows x 34 columns
-- `data/features/features_train.csv`: 120 rows x 34 columns
-- `data/features/features_test.csv`: 60 rows x 34 columns
+- `data/features/features_modelo_completo.csv`: 180 rows x 36 columns
+- `data/features/features_train.csv`: 120 rows x 36 columns
+- `data/features/features_test.csv`: 60 rows x 36 columns
 
 ### Modeling changes
 
@@ -130,13 +130,13 @@ Candidate models now include:
 - Gompertz growth curve
 - Diesel Share model
 
-The direct ML models, Ridge/Random Forest/XGBoost, now use the old lagged macro/target/calendar features plus the four lagged CNMC diesel-market features.
+The direct ML models, Ridge/Random Forest/XGBoost, now use the old lagged macro/target/calendar features plus the four lagged CNMC diesel-market features and the two deterministic mandate features.
 
 The new `Diesel Share` candidate models `Biodiesel_GasoleoA_Ratio` directly and then converts the predicted ratio back into tonnes using future `GasoleoA_Tm`. Future `GasoleoA_Tm` is not taken from Jan-Feb 2026 actuals. It is generated with a seasonal naive assumption: repeat the latest full 12-month Gasoleo A pattern from 2025 into 2026 and 2027.
 
 ### Regenerated outputs
 
-These files were regenerated from the CNMC-aware pipeline:
+These files were regenerated from the CNMC + mandate-aware pipeline:
 
 - `data/outputs/metricas_modelos.csv`
 - `data/outputs/model_selection_walkforward.csv`
@@ -296,6 +296,48 @@ A wide research review of additional forecasting approaches was conducted (SARIM
 Following on from the model-research pass, SARIMAX (SARIMA + the same three already-vetted `_lag1` macro regressors used by Ridge/RF/XGBoost: `IPI_original_lag1`, `IPC_var_anual_lag1`, `Tasa_paro_lag1`) was implemented as an 8th walk-forward candidate in `07_modeling.ipynb`, fully wired into the main training loop, walk-forward CV, and 24-month forecast section. **Result: SARIMAX lost the walk-forward comparison for every single target**, often by a wide margin (e.g. Nacional 43.7% vs. SARIMA's 12.5%; Andalucía 91.6% vs. Logistic's 16.7%). The final selected model per target came back byte-identical to before the experiment. All changes were fully reverted via `git checkout` — **no SARIMAX code exists in the repo today.**
 **Do not re-add plain SARIMAX with these same 3 macro exogenous regressors without a reason to expect a different outcome** — it has already been tried and failed on this exact feature set. It might be worth revisiting only *after* the regional-pooling change (more effective training rows could change this result), or with a different/richer set of exogenous regressors (e.g. fuel price lags, which were not included in this test since `07_modeling.ipynb` doesn't currently load the price-feature table).
 
+### Biofuel mandate features added (2026-06-19)
+
+#### Background: what the mandate is
+Spain has two distinct legislative drivers that directly determine how much biodiesel must be blended into the diesel pool:
+
+1. **Mandato de Energia (Mandato_Energia_Pct)**: Annual national biofuel blending obligation (% of energy content of all transport fuels) set by successive Royal Decrees. Increased year-on-year: 10.5% (2023), 11.0% (2024), 11.5% (2025), **14.0% (2026, RD 5/2026 signed 10 Jan 2026)**, 14.0% (2027 carry-forward).
+2. **Mandato de Mezcla Biodiesel (Mandato_Biodiesel_Blend_Pct)**: Volumetric biodiesel-into-Gasoleo-A blend requirement introduced by Decreto 61/2023. Activated August 2024 at 3%; rises to 7.5% from 2028. Zero before August 2024.
+
+Both are deterministic policy variables -- not forecasts, no uncertainty -- so they can be used as features without leakage risk. Their future values are known from the legislation.
+
+#### What was built
+A new input file `data/inputs/mandato_biocarburantes.csv` was created with the full mandate schedule 2016-2030 (annual rows). Notebooks 05, 07, and 08 were updated, and the current script path was also updated so CNMC and mandate features coexist in the same production feature tables:
+
+- **`05_feature_engineering.ipynb` / `scripts/04_build_features.py`**: Mandate CSV loaded, joined at monthly granularity (with the `Mandato_Biodiesel_Blend_Pct` set to 0.0 for all months before August 2024), and merged onto the feature matrix. The current script output has 36 columns: 34 CNMC-aware columns plus 2 mandate columns.
+- **`07_modeling.ipynb` / `scripts/05_modeling_with_cnmc.py`**: `ML_FEATS` now contains 18 features: 12 baseline calendar/target/macro features, 4 lagged CNMC diesel-market features, and 2 mandate features. The recursive ML forecast function passes mandate values forward using legislated 2026-2027 values: `Mandato_Energia_Pct = 14.0` (RD 5/2026), `Mandato_Biodiesel_Blend_Pct = 3.0` (Decreto 61/2023, 3% through 2027).
+- **`08_modeling_with_prices.ipynb`**: Same `ML_BASE` extension and recursive forecast update as notebook 07.
+
+#### Numeric outcome -- mandate did NOT improve forecasts
+A quantitative before/after comparison was run (walk-forward CV + test metrics):
+
+- **Walk-forward CV winners:** Identical per target before and after adding mandate features (SARIMA/Nacional, Gompertz/Madrid, Gompertz/Cataluna, Logistic/Andalucia, Gompertz/Valencia).
+- **Test MAPE and R2:** Identical. The winning models for all 5 targets are SARIMA, Logistic, or Gompertz -- none of which use `ML_FEATS` (they are statistical/curve-fit models, not ML feature-based). The ML models (Ridge/RF/XGBoost) did receive the new features but they don't win the walk-forward selection for any target.
+- **24-month ML forecast shift:** Random Forest point forecasts for Nacional shifted by approximately +8 Tm/month on average -- a small positive effect reflecting the 14% mandate step-up, but within noise.
+
+**Conclusion: the mandate features are correctly integrated alongside CNMC and will improve presentation narrative** ("our models know about the 14% RD 5/2026 mandate jump in 2026"), but they do not change the production forecast, because the production forecast uses SARIMA/Logistic/Gompertz which are insensitive to external regressors. The mandate features would matter if a pooled/panel ML model were adopted (see next priorities), or if SARIMAX were ever revisited with a richer feature set.
+
+**Do not remove the mandate features** -- they are a legitimate deterministic policy driver and are correctly coded. They just don't move the needle numerically with the current winning model family.
+
+#### HVO (Hydrotreated Vegetable Oil) -- explicitly excluded
+Investigated whether HVO should be modelled as a competing substitute (HVO share in the diesel pool displaces biodiesel demand). Decision: **do not include HVO as a feature or separate model target.** Reasons:
+- CORES/CNMC data shows erratic HVO share patterns (24.6% in 2021, 11.9% in 2022) with no stable trend.
+- No CCAA-level HVO breakdown exists in the available data sources -- only national totals.
+- Including HVO would require forecasting HVO itself first, adding a second uncertain forecast into the pipeline.
+- HVO is instead documented as a **risk factor in the presentation narrative** ("displacement by HVO could erode the mandate-driven demand uplift we forecast").
+
+#### Data scarcity confirmed: ~21 effective training observations per target
+This session clarified the "21 observations" limitation that surprises anyone expecting 3 years of monthly data to mean 36 observations. The correct count per target:
+- 36 months total (2023-01 to 2025-12)
+- Minus the 12-month tail reserved as 2025 test set = 24 training months
+- Minus lag-induced NaN loss: `Lag_1` to `Lag_3` remove the first 3 rows, `Roll_mean_6` removes the first 6 -- effective ~21-23 usable training rows for ML walk-forward CV.
+- Older CORES data exists (ESTADISTICAS-BIOS Excel files, 2009-2022) but is **national-level only** (no CCAA breakdown), uses different units (m3 not Tm), and covers a period before modern biodiesel adoption. User confirmed older data is NOT useful and should not be incorporated.
+
 ---
 
 ## 5. Repository Structure
@@ -383,13 +425,13 @@ ESTADISTICA-BIOS_2020.xlsx, ESTADISTICAS_BIOS_2022.xlsx, ESTADISTICA_BIOS_2021.x
 | **Gompertz growth curve** *(added 2026-06-16)* | Statistical, saturating | `L·exp(-b·exp(-kt))` + same seasonal correction. |
 | **Diesel Share** *(added 2026-06-19)* | Ratio model | Models `Biodiesel_GasoleoA_Ratio` and converts the predicted ratio back into tonnes using seasonal-naive future `GasoleoA_Tm`. Tested as a candidate, but not selected. |
 
-**Feature set** (`ML_FEATS`, used by Ridge/RF/XGBoost only): `Tendencia` (trend index), `Mes`, `sin_mes`/`cos_mes` (cyclical month encoding), `Lag_1`/`Lag_2`/`Lag_3` (target lags), `Roll_mean_3`/`Roll_mean_6` (rolling means), `IPI_original_lag1`, `IPC_var_anual_lag1`, `Tasa_paro_lag1` (lagged macro — **never the contemporaneous value**, see Section 4), plus the lagged CNMC diesel-market features `GasoleoA_Tm_lag1`, `GasoleoA_Tm_roll3_lag1`, `Biodiesel_GasoleoA_Ratio_lag1`, and `Biodiesel_GasoleoA_Ratio_roll3_lag1`. `Lag_12` exists in the feature table but is excluded from the model feature lists due to excessive NaN loss.
+**Feature set** (`ML_FEATS`, used by Ridge/RF/XGBoost only, 18 features total as of 2026-06-19): `Tendencia` (trend index), `Mes`, `sin_mes`/`cos_mes` (cyclical month encoding), `Lag_1`/`Lag_2`/`Lag_3` (target lags), `Roll_mean_3`/`Roll_mean_6` (rolling means), `IPI_original_lag1`, `IPC_var_anual_lag1`, `Tasa_paro_lag1` (lagged macro -- **never the contemporaneous value**, see Section 4), plus the lagged CNMC diesel-market features `GasoleoA_Tm_lag1`, `GasoleoA_Tm_roll3_lag1`, `Biodiesel_GasoleoA_Ratio_lag1`, `Biodiesel_GasoleoA_Ratio_roll3_lag1`, **plus `Mandato_Energia_Pct` and `Mandato_Biodiesel_Blend_Pct`** (deterministic policy features, no lag needed, future values read from the mandate schedule). `Lag_12` exists in the feature table but is excluded from the model feature lists due to excessive NaN loss.
 
 **Evaluation metric:** MAPE is the primary ranking metric; MAE, RMSE, R² also reported. **R² is the more honest signal of absolute fit quality** — it is negative for every target except Nacional (≈0), meaning even the best models still underperform a naive mean in absolute terms; MAPE looks more flattering but can mask this.
 
 **Model selection methodology:** walk-forward (expanding-window, 1-step-ahead) cross-validation confined to 2023-2024, median-aggregated across ~8 folds per target (median chosen over mean because a single divergent SARIMA fold can otherwise dominate). The winner is committed to *before* ever touching the 2025 test set; the test MAPE/R² reported is a single honest out-of-sample number, not a result of picking among candidates after seeing their test performance.
 
-**Current best model per target** (as of 2026-06-19, after CNMC integration): SARIMA for Nacional, Gompertz for Madrid/Cataluña/Valencia, Logistic for Andalucía.
+**Current best model per target** (as of 2026-06-19, after CNMC + mandate integration): SARIMA for Nacional, Gompertz for Madrid/Cataluña/Valencia, Logistic for Andalucía.
 
 **Known weaknesses of the current approach:**
 - Each of the 5 targets is modelled **independently** — no pooling of information across regions, despite all 5 sharing the same national adoption wave and macro environment. This means each model effectively has only ~21-23 usable training observations.
@@ -424,6 +466,7 @@ ESTADISTICA-BIOS_2020.xlsx, ESTADISTICAS_BIOS_2022.xlsx, ESTADISTICA_BIOS_2021.x
 - the EPA publication-delay fix,
 - lagged macro features,
 - CNMC diesel-market features,
+- deterministic biofuel mandate features,
 - and the original 2025-12 forecast origin.
 
 The current script-based rebuild path is:
@@ -451,7 +494,8 @@ python scripts/05_modeling_with_cnmc.py
 - CNMC biodiesel reconciles exactly to the existing target,
 - national `ESPAÑA` Gasoleo A is independently summed from all 19 CCAA,
 - no 2026 CNMC rows enter the model-origin data,
-- and CNMC model inputs are lagged only.
+- CNMC model inputs are lagged only,
+- and mandate features are present with the biodiesel blend requirement set to 0.0 before August 2024.
 
 **Important modeling caveat:** The pipeline is believed leakage-free, but the absolute model fit remains poor for Madrid and Cataluña. CNMC improves the project's business structure, not the core statistical limitation. The next serious improvement should be a pooled/panel regional model or another approach that increases effective sample size.
 

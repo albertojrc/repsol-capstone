@@ -1,8 +1,9 @@
 """
 Build model-ready features from master_dataset.csv.
 
-This script mirrors the notebook feature-engineering flow, with the CNMC
-diesel-market features added as lagged variables only.
+This script mirrors the notebook feature-engineering flow, with CNMC
+diesel-market features added as lagged variables only and deterministic
+biofuel mandate variables added from the legislated schedule.
 """
 
 from __future__ import annotations
@@ -31,6 +32,7 @@ TARGET_LABEL = {
 BASE_LAGS = [1, 2, 3, 12]
 MACRO_COLS = ["IPI_original", "IPI_ajustado", "IPC_var_anual", "Tasa_paro"]
 DIESEL_MARKET_COLS = ["GasoleoA_Tm", "Biodiesel_GasoleoA_Ratio"]
+MANDATE_COLS = ["Mandato_Energia_Pct", "Mandato_Biodiesel_Blend_Pct"]
 
 
 def load_targets(master: pd.DataFrame) -> pd.DataFrame:
@@ -54,6 +56,40 @@ def add_calendar_features(df: pd.DataFrame) -> pd.DataFrame:
     out["Tendencia"] = out.groupby("Target").cumcount() + 1
     out["sin_mes"] = np.sin(2 * np.pi * out["Mes"] / 12)
     out["cos_mes"] = np.cos(2 * np.pi * out["Mes"] / 12)
+    return out
+
+
+def load_mandate_schedule() -> pd.DataFrame:
+    path = DATA_INPUTS / "mandato_biocarburantes.csv"
+    if not path.exists():
+        raise FileNotFoundError(f"Missing mandate schedule: {path}")
+
+    mandates = pd.read_csv(path)
+    year_col = "Año" if "Año" in mandates.columns else "AÃ±o"
+    required = [year_col, *MANDATE_COLS]
+    missing = [col for col in required if col not in mandates.columns]
+    if missing:
+        raise ValueError(f"mandato_biocarburantes.csv is missing columns: {missing}")
+
+    mandates = mandates[required].rename(columns={year_col: "Año"}).copy()
+    mandates["Año"] = mandates["Año"].astype(int)
+    for col in MANDATE_COLS:
+        mandates[col] = mandates[col].astype(float)
+    return mandates
+
+
+def add_mandate_features(df: pd.DataFrame) -> pd.DataFrame:
+    out = df.copy()
+    mandates = load_mandate_schedule()
+    out = out.merge(mandates, on="Año", how="left")
+
+    missing = out[MANDATE_COLS].isna().sum()
+    if missing.sum() > 0:
+        raise ValueError(f"Missing mandate values after merge: {missing.to_dict()}")
+
+    # Decreto 61/2023 activates the biodiesel blend requirement from Aug 2024.
+    fecha_dt = pd.to_datetime(out["Fecha"])
+    out.loc[fecha_dt < pd.Timestamp("2024-08-01"), "Mandato_Biodiesel_Blend_Pct"] = 0.0
     return out
 
 
@@ -112,6 +148,7 @@ def build_features() -> pd.DataFrame:
 
     df = load_targets(master[required].copy())
     df = add_calendar_features(df)
+    df = add_mandate_features(df)
     df = add_target_lags(df)
     df = add_rolling_target_features(df)
     df = add_lagged_exogenous_features(df)
@@ -135,6 +172,11 @@ def validate_features(df: pd.DataFrame) -> None:
             actual = grp[f"{col}_lag1"]
             if not actual.fillna(-999999).round(10).equals(expected.fillna(-999999).round(10)):
                 raise ValueError(f"{col}_lag1 mismatch for {target}")
+
+    if df[MANDATE_COLS].isna().sum().sum() > 0:
+        raise ValueError("Mandate features contain nulls")
+    if (df[pd.to_datetime(df["Fecha"]) < pd.Timestamp("2024-08-01")]["Mandato_Biodiesel_Blend_Pct"] != 0).any():
+        raise ValueError("Mandato_Biodiesel_Blend_Pct must be 0 before Aug 2024")
 
 
 def main() -> None:
@@ -161,6 +203,8 @@ def main() -> None:
         "Biodiesel_GasoleoA_Ratio_roll3_lag1",
     ]
     print(df_feat[diesel_cols].isna().sum().to_string())
+    print("Mandate feature ranges:")
+    print(df_feat[MANDATE_COLS].agg(["min", "max"]).to_string())
 
 
 if __name__ == "__main__":

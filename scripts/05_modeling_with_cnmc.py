@@ -1,5 +1,6 @@
 """
-Train, validate, and forecast biodiesel demand with CNMC diesel-market features.
+Train, validate, and forecast biodiesel demand with CNMC diesel-market and
+biofuel mandate features.
 
 Outputs are written to data/outputs and reports/figures, preserving the existing
 CSV filenames used by the notebooks/Tableau flow while adding the new
@@ -27,6 +28,7 @@ warnings.filterwarnings("ignore")
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 DATA_FEATURES = REPO_ROOT / "data" / "features"
+DATA_INPUTS = REPO_ROOT / "data" / "inputs"
 DATA_OUTPUTS = REPO_ROOT / "data" / "outputs"
 FIGURES = REPO_ROOT / "reports" / "figures"
 
@@ -64,7 +66,12 @@ DIESEL_FEATS = [
     "Biodiesel_GasoleoA_Ratio_roll3_lag1",
 ]
 
-ML_FEATS = BASE_ML_FEATS + DIESEL_FEATS
+MANDATE_FEATS = [
+    "Mandato_Energia_Pct",
+    "Mandato_Biodiesel_Blend_Pct",
+]
+
+ML_FEATS = BASE_ML_FEATS + DIESEL_FEATS + MANDATE_FEATS
 
 SHARE_FEATS = [
     "Tendencia",
@@ -78,6 +85,7 @@ SHARE_FEATS = [
     "GasoleoA_Tm_roll3_lag1",
     "Biodiesel_GasoleoA_Ratio_lag1",
     "Biodiesel_GasoleoA_Ratio_roll3_lag1",
+    *MANDATE_FEATS,
 ]
 
 CANDIDATE_COLS = [
@@ -91,6 +99,33 @@ CANDIDATE_COLS = [
 ]
 
 FORECAST_DATES = pd.date_range("2026-01-01", periods=24, freq="MS")
+
+
+def load_mandate_schedule() -> pd.DataFrame:
+    mandates = pd.read_csv(DATA_INPUTS / "mandato_biocarburantes.csv")
+    year_col = "Año" if "Año" in mandates.columns else "AÃ±o"
+    required = [year_col, *MANDATE_FEATS]
+    missing = [col for col in required if col not in mandates.columns]
+    if missing:
+        raise ValueError(f"mandato_biocarburantes.csv is missing columns: {missing}")
+    mandates = mandates[required].rename(columns={year_col: "Año"}).copy()
+    mandates["Año"] = mandates["Año"].astype(int)
+    for col in MANDATE_FEATS:
+        mandates[col] = mandates[col].astype(float)
+    return mandates
+
+
+MANDATE_SCHEDULE = load_mandate_schedule()
+
+
+def mandate_values_for_date(dt: pd.Timestamp) -> dict[str, float]:
+    row = MANDATE_SCHEDULE[MANDATE_SCHEDULE["Año"] == int(dt.year)]
+    if row.empty:
+        raise ValueError(f"No mandate schedule row for year {dt.year}")
+    values = row.iloc[0][MANDATE_FEATS].astype(float).to_dict()
+    if dt < pd.Timestamp("2024-08-01"):
+        values["Mandato_Biodiesel_Blend_Pct"] = 0.0
+    return values
 
 
 def compute_metrics(y_true: np.ndarray, y_pred: np.ndarray) -> dict[str, float]:
@@ -248,6 +283,7 @@ def recursive_forecast_ml(model, scaler, history: pd.DataFrame, macro_last: dict
     start_tendencia = int(history["Tendencia"].max()) + 1
     for step, (dt, gaso_t) in enumerate(zip(future_dates, future_gaso)):
         mes = int(dt.month)
+        mandate = mandate_values_for_date(dt)
         feat_values = {
             "Tendencia": start_tendencia + step,
             "Mes": mes,
@@ -265,6 +301,7 @@ def recursive_forecast_ml(model, scaler, history: pd.DataFrame, macro_last: dict
             "GasoleoA_Tm_roll3_lag1": float(np.mean(hist_gaso[-3:])),
             "Biodiesel_GasoleoA_Ratio_lag1": hist_ratio[-1],
             "Biodiesel_GasoleoA_Ratio_roll3_lag1": float(np.mean(hist_ratio[-3:])),
+            **mandate,
         }
         row = np.array([[feat_values[f] for f in ML_FEATS]])
         pred = float(predict_ml(model, scaler, row)[0])
@@ -286,6 +323,7 @@ def recursive_forecast_share(model, scaler, history: pd.DataFrame, macro_last: d
 
     for step, (dt, gaso_t) in enumerate(zip(future_dates, future_gaso)):
         mes = int(dt.month)
+        mandate = mandate_values_for_date(dt)
         feat_values = {
             "Tendencia": start_tendencia + step,
             "Mes": mes,
@@ -298,6 +336,7 @@ def recursive_forecast_share(model, scaler, history: pd.DataFrame, macro_last: d
             "GasoleoA_Tm_roll3_lag1": float(np.mean(hist_gaso[-3:])),
             "Biodiesel_GasoleoA_Ratio_lag1": hist_ratio[-1],
             "Biodiesel_GasoleoA_Ratio_roll3_lag1": float(np.mean(hist_ratio[-3:])),
+            **mandate,
         }
         row = np.array([[feat_values[f] for f in SHARE_FEATS]])
         ratio = float(predict_share_ratio(model, scaler, row)[0])
@@ -591,7 +630,7 @@ def plot_outputs(df_all: pd.DataFrame, df_metrics: pd.DataFrame, df_preds: pd.Da
         ax.grid(True, axis="y", alpha=0.3)
         ax.legend(fontsize=8)
     fig.suptitle(
-        "Model Performance Comparison - with CNMC Diesel-Market Features\n"
+        "Model Performance Comparison - with CNMC Diesel-Market and Mandate Features\n"
         "Extreme failed candidates Ridge and Diesel Share retained in CSV metrics, omitted from this chart",
         fontweight="bold",
     )
