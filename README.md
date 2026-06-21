@@ -49,7 +49,8 @@ This rebuilds:
 
 `forecast_24m_sarima_rf_xgb.csv` is a legacy filename. It now contains all current
 candidate families used by the CNMC-aware script, including SARIMA, Ridge, Random
-Forest, XGBoost, Logistic, Gompertz, and Diesel Share.
+Forest, XGBoost, Logistic, Gompertz, Diesel Share, and the Phase 2 pooled regional
+ML candidates.
 
 ## Data Sources
 
@@ -67,7 +68,7 @@ The project does not currently use DGT vehicle data in the production dataset.
 - `data/features/features_modelo_completo.csv`: 180 rows x 36 columns
 - `data/features/features_train.csv`: 120 rows x 36 columns
 - `data/features/features_test.csv`: 60 rows x 36 columns
-- `data/outputs/forecast_24m_sarima_rf_xgb.csv`: 840 rows x 4 columns
+- `data/outputs/forecast_24m_sarima_rf_xgb.csv`: 1128 rows x 4 columns
 
 ## Notebooks
 
@@ -76,11 +77,24 @@ The notebooks are retained for exploration and narrative context. The scripts in
 are intentionally cleared to avoid stale local paths, warnings, and old results being
 mistaken for a fresh run.
 
-## Known Modeling Limitation
+## Phase 2 Modeling
 
-Phase 1 cleanup does not change the modeling methodology. Current selected 2025
-holdout performance is weak for some regional targets, especially Madrid and
-Cataluña. See `DATA_AUDIT_REPORT.md` for the current metrics and readiness caveats.
+The `enrico` branch productionizes the Phase 2 modeling upgrade. The script now
+uses a recursive multi-step walk-forward gate and a no-regression acceptance check
+against the Phase 1 selected models. Regional pooling is tested in the production
+pipeline and accepted only where it improves real validation without weakening the
+final selected set.
+
+| Target | Selected model | 2025 MAPE |
+|---|---|---:|
+| Nacional | SARIMA | 29.0% |
+| Madrid | Logistic | 73.6% |
+| Cataluña | Pooled Random Forest | 46.8% |
+| Andalucía | Logistic | 48.4% |
+| Valencia | Gompertz | 34.2% |
+
+See `PHASE2_MODELING_REPORT.md` for the before/after comparison, pooling decision,
+and remaining limitations.
 
 ## Repository Layout
 

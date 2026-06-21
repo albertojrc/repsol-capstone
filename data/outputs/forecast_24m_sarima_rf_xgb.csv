@@ -839,3 +839,291 @@ Fecha,Target,Model,Forecast
 2027-10,Valencia,Diesel Share,52311.3
 2027-11,Valencia,Diesel Share,48579.6
 2027-12,Valencia,Diesel Share,50520.9
+2026-01,Madrid,Pooled Ridge,32305.7
+2026-02,Madrid,Pooled Ridge,92030.8
+2026-03,Madrid,Pooled Ridge,33921.8
+2026-04,Madrid,Pooled Ridge,53.5
+2026-05,Madrid,Pooled Ridge,2.4
+2026-06,Madrid,Pooled Ridge,243.8
+2026-07,Madrid,Pooled Ridge,8224.6
+2026-08,Madrid,Pooled Ridge,64166.1
+2026-09,Madrid,Pooled Ridge,202819.4
+2026-10,Madrid,Pooled Ridge,6937.8
+2026-11,Madrid,Pooled Ridge,0.0
+2026-12,Madrid,Pooled Ridge,0.0
+2027-01,Madrid,Pooled Ridge,491.8
+2027-02,Madrid,Pooled Ridge,9402.1
+2027-03,Madrid,Pooled Ridge,80695.5
+2027-04,Madrid,Pooled Ridge,233989.2
+2027-05,Madrid,Pooled Ridge,5687.7
+2027-06,Madrid,Pooled Ridge,0.0
+2027-07,Madrid,Pooled Ridge,0.0
+2027-08,Madrid,Pooled Ridge,848.9
+2027-09,Madrid,Pooled Ridge,18889.2
+2027-10,Madrid,Pooled Ridge,177685.9
+2027-11,Madrid,Pooled Ridge,369954.0
+2027-12,Madrid,Pooled Ridge,50.0
+2026-01,Cataluña,Pooled Ridge,45684.4
+2026-02,Cataluña,Pooled Ridge,144355.0
+2026-03,Cataluña,Pooled Ridge,95278.7
+2026-04,Cataluña,Pooled Ridge,939.3
+2026-05,Cataluña,Pooled Ridge,29.0
+2026-06,Cataluña,Pooled Ridge,437.5
+2026-07,Cataluña,Pooled Ridge,16260.2
+2026-08,Cataluña,Pooled Ridge,107967.9
+2026-09,Cataluña,Pooled Ridge,312763.4
+2026-10,Cataluña,Pooled Ridge,25223.4
+2026-11,Cataluña,Pooled Ridge,0.0
+2026-12,Cataluña,Pooled Ridge,0.0
+2027-01,Cataluña,Pooled Ridge,400.8
+2027-02,Cataluña,Pooled Ridge,9809.8
+2027-03,Cataluña,Pooled Ridge,91236.7
+2027-04,Cataluña,Pooled Ridge,363957.8
+2027-05,Cataluña,Pooled Ridge,81862.7
+2027-06,Cataluña,Pooled Ridge,0.1
+2027-07,Cataluña,Pooled Ridge,0.0
+2027-08,Cataluña,Pooled Ridge,128.5
+2027-09,Cataluña,Pooled Ridge,9933.7
+2027-10,Cataluña,Pooled Ridge,121214.6
+2027-11,Cataluña,Pooled Ridge,606833.0
+2027-12,Cataluña,Pooled Ridge,98125.3
+2026-01,Andalucía,Pooled Ridge,23583.6
+2026-02,Andalucía,Pooled Ridge,70223.3
+2026-03,Andalucía,Pooled Ridge,82978.6
+2026-04,Andalucía,Pooled Ridge,11783.1
+2026-05,Andalucía,Pooled Ridge,865.8
+2026-06,Andalucía,Pooled Ridge,1711.0
+2026-07,Andalucía,Pooled Ridge,21766.6
+2026-08,Andalucía,Pooled Ridge,96952.4
+2026-09,Andalucía,Pooled Ridge,163987.6
+2026-10,Andalucía,Pooled Ridge,15311.1
+2026-11,Andalucía,Pooled Ridge,60.7
+2026-12,Andalucía,Pooled Ridge,55.5
+2027-01,Andalucía,Pooled Ridge,3443.5
+2027-02,Andalucía,Pooled Ridge,29607.9
+2027-03,Andalucía,Pooled Ridge,127950.9
+2027-04,Andalucía,Pooled Ridge,157304.9
+2027-05,Andalucía,Pooled Ridge,4921.7
+2027-06,Andalucía,Pooled Ridge,24.7
+2027-07,Andalucía,Pooled Ridge,85.1
+2027-08,Andalucía,Pooled Ridge,8058.0
+2027-09,Andalucía,Pooled Ridge,70898.4
+2027-10,Andalucía,Pooled Ridge,293888.6
+2027-11,Andalucía,Pooled Ridge,113709.9
+2027-12,Andalucía,Pooled Ridge,19.2
+2026-01,Valencia,Pooled Ridge,14246.3
+2026-02,Valencia,Pooled Ridge,40007.8
+2026-03,Valencia,Pooled Ridge,43517.8
+2026-04,Valencia,Pooled Ridge,6283.9
+2026-05,Valencia,Pooled Ridge,585.0
+2026-06,Valencia,Pooled Ridge,1243.1
+2026-07,Valencia,Pooled Ridge,13977.3
+2026-08,Valencia,Pooled Ridge,57761.3
+2026-09,Valencia,Pooled Ridge,90168.4
+2026-10,Valencia,Pooled Ridge,6801.2
+2026-11,Valencia,Pooled Ridge,31.7
+2026-12,Valencia,Pooled Ridge,39.7
+2027-01,Valencia,Pooled Ridge,2295.0
+2027-02,Valencia,Pooled Ridge,18108.0
+2027-03,Valencia,Pooled Ridge,73780.0
+2027-04,Valencia,Pooled Ridge,83287.3
+2027-05,Valencia,Pooled Ridge,2289.1
+2027-06,Valencia,Pooled Ridge,15.7
+2027-07,Valencia,Pooled Ridge,69.7
+2027-08,Valencia,Pooled Ridge,5447.2
+2027-09,Valencia,Pooled Ridge,44651.1
+2027-10,Valencia,Pooled Ridge,168261.3
+2027-11,Valencia,Pooled Ridge,50200.7
+2027-12,Valencia,Pooled Ridge,5.9
+2026-01,Madrid,Pooled Random Forest,2822.1
+2026-02,Madrid,Pooled Random Forest,2822.1
+2026-03,Madrid,Pooled Random Forest,2822.1
+2026-04,Madrid,Pooled Random Forest,2822.1
+2026-05,Madrid,Pooled Random Forest,2822.1
+2026-06,Madrid,Pooled Random Forest,2822.1
+2026-07,Madrid,Pooled Random Forest,2822.1
+2026-08,Madrid,Pooled Random Forest,2822.1
+2026-09,Madrid,Pooled Random Forest,2822.1
+2026-10,Madrid,Pooled Random Forest,2822.1
+2026-11,Madrid,Pooled Random Forest,2822.1
+2026-12,Madrid,Pooled Random Forest,2822.1
+2027-01,Madrid,Pooled Random Forest,2822.1
+2027-02,Madrid,Pooled Random Forest,2822.1
+2027-03,Madrid,Pooled Random Forest,2822.1
+2027-04,Madrid,Pooled Random Forest,2822.1
+2027-05,Madrid,Pooled Random Forest,2822.1
+2027-06,Madrid,Pooled Random Forest,2822.1
+2027-07,Madrid,Pooled Random Forest,2822.1
+2027-08,Madrid,Pooled Random Forest,2822.1
+2027-09,Madrid,Pooled Random Forest,2822.1
+2027-10,Madrid,Pooled Random Forest,2822.1
+2027-11,Madrid,Pooled Random Forest,2822.1
+2027-12,Madrid,Pooled Random Forest,2822.1
+2026-01,Cataluña,Pooled Random Forest,2822.1
+2026-02,Cataluña,Pooled Random Forest,2822.1
+2026-03,Cataluña,Pooled Random Forest,2822.1
+2026-04,Cataluña,Pooled Random Forest,2822.1
+2026-05,Cataluña,Pooled Random Forest,2822.1
+2026-06,Cataluña,Pooled Random Forest,2822.1
+2026-07,Cataluña,Pooled Random Forest,2822.1
+2026-08,Cataluña,Pooled Random Forest,2822.1
+2026-09,Cataluña,Pooled Random Forest,2822.1
+2026-10,Cataluña,Pooled Random Forest,2822.1
+2026-11,Cataluña,Pooled Random Forest,2822.1
+2026-12,Cataluña,Pooled Random Forest,2822.1
+2027-01,Cataluña,Pooled Random Forest,2822.1
+2027-02,Cataluña,Pooled Random Forest,2822.1
+2027-03,Cataluña,Pooled Random Forest,2822.1
+2027-04,Cataluña,Pooled Random Forest,2822.1
+2027-05,Cataluña,Pooled Random Forest,2822.1
+2027-06,Cataluña,Pooled Random Forest,2822.1
+2027-07,Cataluña,Pooled Random Forest,2822.1
+2027-08,Cataluña,Pooled Random Forest,2822.1
+2027-09,Cataluña,Pooled Random Forest,2822.1
+2027-10,Cataluña,Pooled Random Forest,2822.1
+2027-11,Cataluña,Pooled Random Forest,2822.1
+2027-12,Cataluña,Pooled Random Forest,2822.1
+2026-01,Andalucía,Pooled Random Forest,2032.1
+2026-02,Andalucía,Pooled Random Forest,2064.8
+2026-03,Andalucía,Pooled Random Forest,2128.8
+2026-04,Andalucía,Pooled Random Forest,2450.7
+2026-05,Andalucía,Pooled Random Forest,2732.8
+2026-06,Andalucía,Pooled Random Forest,2822.1
+2026-07,Andalucía,Pooled Random Forest,2822.1
+2026-08,Andalucía,Pooled Random Forest,2822.1
+2026-09,Andalucía,Pooled Random Forest,2822.1
+2026-10,Andalucía,Pooled Random Forest,2822.1
+2026-11,Andalucía,Pooled Random Forest,2822.1
+2026-12,Andalucía,Pooled Random Forest,2822.1
+2027-01,Andalucía,Pooled Random Forest,2822.1
+2027-02,Andalucía,Pooled Random Forest,2822.1
+2027-03,Andalucía,Pooled Random Forest,2822.1
+2027-04,Andalucía,Pooled Random Forest,2822.1
+2027-05,Andalucía,Pooled Random Forest,2822.1
+2027-06,Andalucía,Pooled Random Forest,2822.1
+2027-07,Andalucía,Pooled Random Forest,2822.1
+2027-08,Andalucía,Pooled Random Forest,2822.1
+2027-09,Andalucía,Pooled Random Forest,2822.1
+2027-10,Andalucía,Pooled Random Forest,2822.1
+2027-11,Andalucía,Pooled Random Forest,2822.1
+2027-12,Andalucía,Pooled Random Forest,2822.1
+2026-01,Valencia,Pooled Random Forest,1475.7
+2026-02,Valencia,Pooled Random Forest,1716.4
+2026-03,Valencia,Pooled Random Forest,1824.8
+2026-04,Valencia,Pooled Random Forest,1875.8
+2026-05,Valencia,Pooled Random Forest,1962.1
+2026-06,Valencia,Pooled Random Forest,1983.0
+2026-07,Valencia,Pooled Random Forest,2108.6
+2026-08,Valencia,Pooled Random Forest,2445.3
+2026-09,Valencia,Pooled Random Forest,2720.0
+2026-10,Valencia,Pooled Random Forest,2812.9
+2026-11,Valencia,Pooled Random Forest,2822.1
+2026-12,Valencia,Pooled Random Forest,2822.1
+2027-01,Valencia,Pooled Random Forest,2822.1
+2027-02,Valencia,Pooled Random Forest,2822.1
+2027-03,Valencia,Pooled Random Forest,2822.1
+2027-04,Valencia,Pooled Random Forest,2822.1
+2027-05,Valencia,Pooled Random Forest,2822.1
+2027-06,Valencia,Pooled Random Forest,2822.1
+2027-07,Valencia,Pooled Random Forest,2822.1
+2027-08,Valencia,Pooled Random Forest,2822.1
+2027-09,Valencia,Pooled Random Forest,2822.1
+2027-10,Valencia,Pooled Random Forest,2822.1
+2027-11,Valencia,Pooled Random Forest,2822.1
+2027-12,Valencia,Pooled Random Forest,2822.1
+2026-01,Madrid,Pooled XGBoost,2510.1
+2026-02,Madrid,Pooled XGBoost,2516.4
+2026-03,Madrid,Pooled XGBoost,2551.9
+2026-04,Madrid,Pooled XGBoost,2551.9
+2026-05,Madrid,Pooled XGBoost,2715.5
+2026-06,Madrid,Pooled XGBoost,2829.5
+2026-07,Madrid,Pooled XGBoost,2829.5
+2026-08,Madrid,Pooled XGBoost,2647.2
+2026-09,Madrid,Pooled XGBoost,2647.2
+2026-10,Madrid,Pooled XGBoost,2636.1
+2026-11,Madrid,Pooled XGBoost,2659.0
+2026-12,Madrid,Pooled XGBoost,2659.0
+2027-01,Madrid,Pooled XGBoost,2510.1
+2027-02,Madrid,Pooled XGBoost,2516.4
+2027-03,Madrid,Pooled XGBoost,2551.9
+2027-04,Madrid,Pooled XGBoost,2551.9
+2027-05,Madrid,Pooled XGBoost,2715.5
+2027-06,Madrid,Pooled XGBoost,2829.5
+2027-07,Madrid,Pooled XGBoost,2829.5
+2027-08,Madrid,Pooled XGBoost,2647.2
+2027-09,Madrid,Pooled XGBoost,2647.2
+2027-10,Madrid,Pooled XGBoost,2636.1
+2027-11,Madrid,Pooled XGBoost,2659.0
+2027-12,Madrid,Pooled XGBoost,2659.0
+2026-01,Cataluña,Pooled XGBoost,2379.9
+2026-02,Cataluña,Pooled XGBoost,2339.1
+2026-03,Cataluña,Pooled XGBoost,2339.1
+2026-04,Cataluña,Pooled XGBoost,2517.9
+2026-05,Cataluña,Pooled XGBoost,2697.9
+2026-06,Cataluña,Pooled XGBoost,2657.5
+2026-07,Cataluña,Pooled XGBoost,2949.8
+2026-08,Cataluña,Pooled XGBoost,2632.1
+2026-09,Cataluña,Pooled XGBoost,2546.3
+2026-10,Cataluña,Pooled XGBoost,2750.6
+2026-11,Cataluña,Pooled XGBoost,2651.5
+2026-12,Cataluña,Pooled XGBoost,2762.9
+2027-01,Cataluña,Pooled XGBoost,2379.9
+2027-02,Cataluña,Pooled XGBoost,2339.1
+2027-03,Cataluña,Pooled XGBoost,2339.1
+2027-04,Cataluña,Pooled XGBoost,2517.9
+2027-05,Cataluña,Pooled XGBoost,2697.9
+2027-06,Cataluña,Pooled XGBoost,2657.5
+2027-07,Cataluña,Pooled XGBoost,2949.8
+2027-08,Cataluña,Pooled XGBoost,2632.1
+2027-09,Cataluña,Pooled XGBoost,2546.3
+2027-10,Cataluña,Pooled XGBoost,2750.6
+2027-11,Cataluña,Pooled XGBoost,2651.5
+2027-12,Cataluña,Pooled XGBoost,2762.9
+2026-01,Andalucía,Pooled XGBoost,2046.1
+2026-02,Andalucía,Pooled XGBoost,1933.7
+2026-03,Andalucía,Pooled XGBoost,1910.7
+2026-04,Andalucía,Pooled XGBoost,2032.1
+2026-05,Andalucía,Pooled XGBoost,2322.1
+2026-06,Andalucía,Pooled XGBoost,2533.5
+2026-07,Andalucía,Pooled XGBoost,2564.2
+2026-08,Andalucía,Pooled XGBoost,2455.7
+2026-09,Andalucía,Pooled XGBoost,2574.8
+2026-10,Andalucía,Pooled XGBoost,2742.9
+2026-11,Andalucía,Pooled XGBoost,2462.3
+2026-12,Andalucía,Pooled XGBoost,2533.6
+2027-01,Andalucía,Pooled XGBoost,2519.8
+2027-02,Andalucía,Pooled XGBoost,2415.2
+2027-03,Andalucía,Pooled XGBoost,2459.6
+2027-04,Andalucía,Pooled XGBoost,2502.5
+2027-05,Andalucía,Pooled XGBoost,2681.4
+2027-06,Andalucía,Pooled XGBoost,2624.9
+2027-07,Andalucía,Pooled XGBoost,2564.2
+2027-08,Andalucía,Pooled XGBoost,2455.7
+2027-09,Andalucía,Pooled XGBoost,2574.8
+2027-10,Andalucía,Pooled XGBoost,2742.9
+2027-11,Andalucía,Pooled XGBoost,2462.3
+2027-12,Andalucía,Pooled XGBoost,2533.6
+2026-01,Valencia,Pooled XGBoost,1199.6
+2026-02,Valencia,Pooled XGBoost,1306.8
+2026-03,Valencia,Pooled XGBoost,1306.8
+2026-04,Valencia,Pooled XGBoost,1208.1
+2026-05,Valencia,Pooled XGBoost,1267.5
+2026-06,Valencia,Pooled XGBoost,1248.1
+2026-07,Valencia,Pooled XGBoost,1248.1
+2026-08,Valencia,Pooled XGBoost,1145.7
+2026-09,Valencia,Pooled XGBoost,1087.9
+2026-10,Valencia,Pooled XGBoost,1067.5
+2026-11,Valencia,Pooled XGBoost,1133.0
+2026-12,Valencia,Pooled XGBoost,1169.3
+2027-01,Valencia,Pooled XGBoost,1199.6
+2027-02,Valencia,Pooled XGBoost,1306.8
+2027-03,Valencia,Pooled XGBoost,1306.8
+2027-04,Valencia,Pooled XGBoost,1208.1
+2027-05,Valencia,Pooled XGBoost,1267.5
+2027-06,Valencia,Pooled XGBoost,1248.1
+2027-07,Valencia,Pooled XGBoost,1248.1
+2027-08,Valencia,Pooled XGBoost,1145.7
+2027-09,Valencia,Pooled XGBoost,1087.9
+2027-10,Valencia,Pooled XGBoost,1067.5
+2027-11,Valencia,Pooled XGBoost,1133.0
+2027-12,Valencia,Pooled XGBoost,1169.3

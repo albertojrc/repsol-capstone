@@ -32,11 +32,26 @@ Explicitly out of scope for Phase 1: changing the modeling methodology.
 - Rebuilt the production artifacts from the script path through feature
   generation and modeling outputs.
 
-## Still Open For Phase 2
+## Completed In Phase 2 On `enrico`
 
-- Improve weak regional forecasts for Madrid and Catalonia.
-- Replace one-step holdout evaluation with fixed-origin multi-step backtesting.
-- Decide whether the business target should remain biodiesel only or expand to a
-  broader eco-fuels definition that includes HVO / renewable diesel.
-- Consider pooled or panel models across the five targets.
+- Preserved the Phase 1 cleanup from `main` on the `enrico` branch.
+- Replaced the one-step model-selection gate with a recursive multi-step
+  walk-forward gate inside the 2023-2024 training period.
+- Tested pooled regional ML models in the official script pipeline.
+- Kept `Nacional` separate from pooled regional modeling.
+- Added a no-regression acceptance gate versus the Phase 1 selected models.
+- Accepted Phase 2 changes only for Madrid and Catalonia:
+  - Madrid: Gompertz -> Logistic, MAPE 197.1% -> 73.6%.
+  - Catalonia: Gompertz -> Pooled Random Forest, MAPE 164.2% -> 46.8%.
+- Rejected Phase 2 proposals for Nacional, Andalusia, and Valencia because they
+  did not improve the Phase 1 selected holdout result.
+- Added `PHASE2_MODELING_REPORT.md` and `data/outputs/phase2_*.csv` lineage
+  files documenting the production decision.
+
+## Still Open After Phase 2
+
 - Add automated tests around dataset shapes, target mappings, and output lineage.
+- Explain the Catalonia pooled Random Forest as a conservative plateau forecast;
+  tree models do not extrapolate structural growth curves.
+- Keep HVO / renewable diesel outside the target unless new usable regional data
+  becomes available.

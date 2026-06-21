@@ -9,10 +9,10 @@ The production data pipeline is coherent at the dataset level: national demand
 reconciles to the sum of the CCAA rows, the five delivery targets are present, and
 the script path builds causal lag features for the modeling table.
 
-The project is not modeling-final yet. The selected 2025 holdout metrics are weak
-for several regional targets, especially Madrid and Cataluña. Phase 1 cleanup keeps
-the current methodology unchanged and focuses on reproducibility, documentation,
-lineage, and repo hygiene.
+Phase 2 improves the modeling layer on branch `enrico`: model selection now uses
+recursive multi-step walk-forward validation, pooled regional ML is tested in the
+official script path, and a no-regression acceptance gate prevents Phase 2 changes
+from weakening the Phase 1 selected models on the 2025 holdout.
 
 ## Production Inputs
 
@@ -69,11 +69,14 @@ Known data issues:
 
 | File | Current Role |
 |---|---|
-| `metricas_modelos.csv` | Metrics for the current CNMC-aware candidate models. |
-| `model_selection_walkforward.csv` | Expanding-window one-step model-selection scores over the training period. |
+| `metricas_modelos.csv` | Metrics for the current CNMC-aware candidates, including pooled regional ML. |
+| `model_selection_walkforward.csv` | Recursive multi-step model-selection scores over the training period. |
 | `metricas_final_seleccionado.csv` | 2025 holdout metrics for the selected model per target. |
 | `predicciones_test_2025.csv` | 2025 predictions for all current candidates. |
 | `forecast_24m_sarima_rf_xgb.csv` | 2026-2027 forecasts for all current candidates. Legacy filename. |
+| `phase2_model_acceptance.csv` | Phase 1 model, Phase 2 proposed model, final selected model, and no-regression decision. |
+| `phase2_pooling_experiment_metrics.csv` | 2025 holdout metrics for pooled regional ML candidates. |
+| `phase2_pooling_decision.csv` | Target-level accept/reject explanation for pooled ML. |
 | `metricas_modelos_con_precios.csv` | Optional price-ablation metrics from notebook 08. |
 | `forecast_24m_con_precios.csv` | Optional price-ablation forecasts from notebook 08. |
 | `metricas_comparativa.csv` | Combined current metrics plus optional price-ablation metrics when available. |
@@ -86,14 +89,15 @@ Known data issues:
 
 | Target | Selected Model | 2025 MAPE | 2025 R2 | Readiness |
 |---|---|---:|---:|---|
-| Nacional | SARIMA | 29.0% | -0.009 | Borderline but usable as a baseline. |
-| Madrid | Gompertz | 197.1% | -101.018 | Critical modeling risk. |
-| Cataluña | Gompertz | 164.2% | -91.269 | Critical modeling risk. |
-| Andalucía | Logistic | 48.4% | -1.555 | Weak. |
+| Nacional | SARIMA | 29.0% | -0.009 | Kept from Phase 1; Phase 2 proposal regressed. |
+| Madrid | Logistic | 73.6% | -8.273 | Improved versus Phase 1 Gompertz. |
+| Cataluña | Pooled Random Forest | 46.8% | -5.158 | Pooled regional model accepted. |
+| Andalucía | Logistic | 48.4% | -1.555 | Kept from Phase 1; pooled proposal regressed slightly. |
 | Valencia | Gompertz | 34.2% | -1.246 | Weak but less severe. |
 
-These limitations are not fixed in Phase 1 because the user requested no modeling
-methodology changes.
+Average selected MAPE improved from 94.6% in Phase 1 to 46.4% in Phase 2.
+Remaining risk: all selected R2 values are still negative except near-zero national
+SARIMA, so the forecasts should be presented as directional planning estimates.
 
 ## Dataset Lineage
 
@@ -120,6 +124,7 @@ mandato_biocarburantes.csv
 features_*.csv
   -> scripts/05_modeling_with_cnmc.py
   -> data/outputs/*.csv
+  -> data/outputs/phase2_*.csv
   -> reports/figures/07_model_comparison.png
   -> reports/figures/11_forecast_24m.png
 ```

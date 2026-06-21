@@ -5,6 +5,60 @@
 
 ---
 
+## 2026-06-21 Phase 2 Modeling Productionization (`enrico`)
+
+Phase 2 has now been implemented on branch `enrico` in the official script
+pipeline. `main` remains the stable Phase 1 branch.
+
+Current production source of truth is still:
+
+```powershell
+.\.venv\Scripts\python scripts/03_clean_cnmc_petroleum.py
+.\.venv\Scripts\python scripts/02_master_dataset_builder.py
+.\.venv\Scripts\python scripts/04_build_features.py
+.\.venv\Scripts\python scripts/05_modeling_with_cnmc.py
+```
+
+Phase 2 modeling decisions:
+
+- The old one-step model-selection gate was replaced with recursive multi-step
+  walk-forward validation inside the 2023-2024 training period.
+- The gate evaluates ML models recursively, so predicted months feed future lag
+  features instead of using actual future target lags.
+- `Nacional` is never pooled with regional series.
+- Regional pooling is tested only for Madrid, Catalonia, Andalusia, and Valencia.
+- A no-regression acceptance gate compares the Phase 2 proposal with the Phase 1
+  selected model on the 2025 holdout. A Phase 2 proposal is adopted only if it
+  does not worsen the Phase 1 holdout MAPE.
+
+Final selected models after Phase 2:
+
+| Target | Selected model | 2025 MAPE | 2025 R2 |
+|---|---|---:|---:|
+| Nacional | SARIMA | 29.0% | -0.009 |
+| Madrid | Logistic | 73.6% | -8.273 |
+| Catalonia | Pooled Random Forest | 46.8% | -5.158 |
+| Andalusia | Logistic | 48.4% | -1.555 |
+| Valencia | Gompertz | 34.2% | -1.246 |
+
+Average selected MAPE improved from 94.6% to 46.4%. The pooled regional model is
+accepted only for Catalonia. Madrid's best pooled holdout metric is better than
+the selected Logistic model, but it is not used because the training-only gate
+did not select it; using it would be test-set cherry-picking.
+
+New Phase 2 lineage files:
+
+- `PHASE2_MODELING_REPORT.md`
+- `data/outputs/phase2_model_acceptance.csv`
+- `data/outputs/phase2_pooling_experiment_metrics.csv`
+- `data/outputs/phase2_pooling_decision.csv`
+
+Remaining caveat: Catalonia's pooled Random Forest forecast is a conservative
+plateau forecast. This is not an extrapolating structural growth curve; it is
+kept because it improves validation and avoids explosive behavior.
+
+---
+
 ## 2026-06-21 Phase 1 Cleanup Update
 
 Phase 1 addressed reproducibility, stale documentation, notebook/script drift,

@@ -35,6 +35,13 @@ pipeline for reproducible final artifacts.
   `Cataluña` and `Andalucía`.
 - Kept notebook methodology unchanged.
 
+## Phase 2 Note
+
+Phase 2 modeling productionization was implemented in
+`scripts/05_modeling_with_cnmc.py`, not in notebook 07. The notebook remains
+historical/exploratory; use `PHASE2_MODELING_REPORT.md` and the script outputs
+for current model-selection results.
+
 ## Remaining Caveat
 
 The notebooks should not be used as the authoritative final pipeline unless they are
