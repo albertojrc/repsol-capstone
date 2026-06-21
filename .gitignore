@@ -24,6 +24,7 @@ share/python-wheels/
 MANIFEST
 
 # Virtual environments
+.venv/
 venv/
 ENV/
 env/
@@ -64,6 +65,8 @@ models/*.joblib
 
 # OS
 .DS_Store
+._*
+**/._*
 Icon?
 Thumbs.db
 

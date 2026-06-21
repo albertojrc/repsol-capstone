@@ -10,9 +10,9 @@ Inputs  (data/inputs/):
     precios_combustibles_2025.csv
 
 Outputs (data/inputs/):
-    master_dataset.csv          — 720 rows × 17 columns (primary)
-    master_dataset.xlsx         — same data + metadata sheet
-    master_dataset_metadata.json — variable dictionary
+    master_dataset.csv          - 720 rows x 22 columns (primary)
+    master_dataset.xlsx         - same data + metadata sheet
+    master_dataset_metadata.json - variable dictionary
 
 Run from repo root:
     python scripts/02_master_dataset_builder.py
@@ -31,7 +31,7 @@ REPO_ROOT   = Path(__file__).resolve().parent.parent
 DATA_INPUTS = REPO_ROOT / "data" / "inputs"
 DATA_PROCESSED = REPO_ROOT / "data" / "processed"
 
-# ── Province → CCAA mapping (all 52 provinces) ────────────────────────────────
+# Province to CCAA mapping (all 52 provinces).
 PROVINCE_CCAA = {
     "Albacete":              "Castilla - La Mancha",
     "Alicante/Alacant":      "Comunitat Valenciana",
@@ -150,7 +150,7 @@ def load_and_aggregate_prices() -> pd.DataFrame:
     for year in [2023, 2024, 2025]:
         path = DATA_INPUTS / f"precios_combustibles_{year}.csv"
         if not path.exists():
-            print(f"  Warning: {path.name} not found — skipping year {year}")
+            print(f"  Warning: {path.name} not found - skipping year {year}")
             continue
         chunk = pd.read_csv(path, sep=None, engine="python", decimal=",", thousands=".")
         # Normalise column names regardless of exact wording
@@ -222,7 +222,7 @@ def build_master() -> pd.DataFrame:
     print("Loading Brent price...")
     brent = load_brent()
 
-    print("Aggregating fuel prices (daily×province → monthly×CCAA)...")
+    print("Aggregating fuel prices (daily x province -> monthly x CCAA)...")
     prices = load_and_aggregate_prices()
 
     print("Loading CNMC diesel-market features...")
@@ -308,10 +308,10 @@ def save_outputs(master: pd.DataFrame) -> None:
     xlsx_path = DATA_INPUTS / "master_dataset.xlsx"
     json_path = DATA_INPUTS / "master_dataset_metadata.json"
 
-    print(f"Saving CSV → {csv_path.name}")
+    print(f"Saving CSV -> {csv_path.name}")
     master.to_csv(csv_path, index=False)
 
-    print(f"Saving XLSX → {xlsx_path.name}")
+    print(f"Saving XLSX -> {xlsx_path.name}")
     with pd.ExcelWriter(xlsx_path, engine="openpyxl") as writer:
         master.to_excel(writer, sheet_name="master_dataset", index=False)
 
@@ -322,7 +322,7 @@ def save_outputs(master: pd.DataFrame) -> None:
             meta_rows.append(row)
         pd.DataFrame(meta_rows).to_excel(writer, sheet_name="metadata", index=False)
 
-    print(f"Saving JSON metadata → {json_path.name}")
+    print(f"Saving JSON metadata -> {json_path.name}")
     with open(json_path, "w", encoding="utf-8") as f:
         json.dump(METADATA, f, ensure_ascii=False, indent=2)
 
@@ -334,7 +334,7 @@ def main() -> None:
 
     master = build_master()
 
-    print(f"\nMaster dataset: {master.shape[0]} rows × {master.shape[1]} columns")
+    print(f"\nMaster dataset: {master.shape[0]} rows x {master.shape[1]} columns")
     null_count = master.isnull().sum().sum()
     null_pct   = null_count / master.size * 100
     print(f"Null values: {null_count} ({null_pct:.1f}%)")

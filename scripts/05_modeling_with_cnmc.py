@@ -25,6 +25,7 @@ from statsmodels.tsa.statespace.sarimax import SARIMAX
 
 
 warnings.filterwarnings("ignore")
+np.random.seed(42)
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 DATA_FEATURES = REPO_ROOT / "data" / "features"
@@ -541,6 +542,21 @@ def build_final_metrics(df_metrics: pd.DataFrame, df_wf: pd.DataFrame) -> pd.Dat
     return pd.DataFrame(rows)[["Target", "Model", "MAE", "RMSE", "MAPE", "R2"]]
 
 
+def build_comparison_metrics(df_metrics: pd.DataFrame) -> pd.DataFrame:
+    """Combine current CNMC metrics with optional price-ablation metrics."""
+    frames = [df_metrics.copy()]
+    price_path = DATA_OUTPUTS / "metricas_modelos_con_precios.csv"
+    if price_path.exists():
+        price_metrics = pd.read_csv(price_path)
+        if "R2" not in price_metrics.columns:
+            price_metrics["R2"] = np.nan
+        frames.append(price_metrics[["Target", "Model", "MAE", "RMSE", "MAPE", "R2"]])
+
+    comparison = pd.concat(frames, ignore_index=True)
+    comparison = comparison.drop_duplicates(["Target", "Model"], keep="last")
+    return comparison.sort_values(["Target", "MAPE", "Model"]).reset_index(drop=True)
+
+
 def build_tableau_outputs(df_all: pd.DataFrame, df_preds: pd.DataFrame, df_fc: pd.DataFrame, df_final: pd.DataFrame, df_metrics: pd.DataFrame) -> None:
     selected = dict(zip(df_final["Target"], df_final["Model"]))
     actual_rows = df_all[["Fecha", "Target", "Consumo_Tm"]].copy()
@@ -682,13 +698,14 @@ def main() -> None:
     df_wf = run_walk_forward(df_train)
     df_final = build_final_metrics(df_metrics, df_wf)
     df_fc = final_forecasts(df_all)
+    df_comparison = build_comparison_metrics(df_metrics)
 
     df_metrics.to_csv(DATA_OUTPUTS / "metricas_modelos.csv", index=False, encoding="utf-8")
     df_wf.to_csv(DATA_OUTPUTS / "model_selection_walkforward.csv", index=False, encoding="utf-8")
     df_final.to_csv(DATA_OUTPUTS / "metricas_final_seleccionado.csv", index=False, encoding="utf-8")
     df_preds.to_csv(DATA_OUTPUTS / "predicciones_test_2025.csv", index=False, encoding="utf-8")
     df_fc.to_csv(DATA_OUTPUTS / "forecast_24m_sarima_rf_xgb.csv", index=False, encoding="utf-8")
-    df_metrics.to_csv(DATA_OUTPUTS / "metricas_comparativa.csv", index=False, encoding="utf-8")
+    df_comparison.to_csv(DATA_OUTPUTS / "metricas_comparativa.csv", index=False, encoding="utf-8")
 
     build_tableau_outputs(df_all, df_preds, df_fc, df_final, df_metrics)
     plot_outputs(df_all, df_metrics, df_preds, df_fc, df_final)

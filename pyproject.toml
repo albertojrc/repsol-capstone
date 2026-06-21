@@ -1,0 +1,8 @@
+[project]
+name = "repsol-capstone"
+version = "0.1.0"
+description = "Repsol capstone project for monthly biodiesel demand forecasting in Spain."
+requires-python = ">=3.10,<3.12"
+
+[tool.uv]
+package = false

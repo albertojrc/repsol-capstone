@@ -1,16 +1,16 @@
 Fecha,Target,Actual,Model,Pred
 2025-01,Nacional,11376.0,SARIMA,17010.3
-2025-02,Nacional,10716.0,SARIMA,18825.6
-2025-03,Nacional,12389.0,SARIMA,20316.0
-2025-04,Nacional,14145.0,SARIMA,21430.8
-2025-05,Nacional,18921.0,SARIMA,22069.7
-2025-06,Nacional,23356.0,SARIMA,22412.3
-2025-07,Nacional,27001.0,SARIMA,22657.5
-2025-08,Nacional,19929.0,SARIMA,22993.0
-2025-09,Nacional,18836.0,SARIMA,23246.0
-2025-10,Nacional,20133.0,SARIMA,23289.8
-2025-11,Nacional,20228.0,SARIMA,23170.4
-2025-12,Nacional,22632.0,SARIMA,23004.4
+2025-02,Nacional,10716.0,SARIMA,18825.5
+2025-03,Nacional,12389.0,SARIMA,20315.9
+2025-04,Nacional,14145.0,SARIMA,21430.6
+2025-05,Nacional,18921.0,SARIMA,22069.5
+2025-06,Nacional,23356.0,SARIMA,22412.1
+2025-07,Nacional,27001.0,SARIMA,22657.3
+2025-08,Nacional,19929.0,SARIMA,22992.7
+2025-09,Nacional,18836.0,SARIMA,23245.7
+2025-10,Nacional,20133.0,SARIMA,23289.5
+2025-11,Nacional,20228.0,SARIMA,23170.1
+2025-12,Nacional,22632.0,SARIMA,23004.2
 2025-01,Nacional,11376.0,Logistic,14458.5
 2025-02,Nacional,10716.0,Logistic,16570.9
 2025-03,Nacional,12389.0,Logistic,18749.7
@@ -21,7 +21,7 @@ Fecha,Target,Actual,Model,Pred
 2025-08,Nacional,19929.0,Logistic,27784.3
 2025-09,Nacional,18836.0,Logistic,28907.8
 2025-10,Nacional,20133.0,Logistic,29829.4
-2025-11,Nacional,20228.0,Logistic,30599.4
+2025-11,Nacional,20228.0,Logistic,30599.5
 2025-12,Nacional,22632.0,Logistic,31267.8
 2025-01,Nacional,11376.0,Gompertz,14745.0
 2025-02,Nacional,10716.0,Gompertz,17245.7
@@ -30,7 +30,7 @@ Fecha,Target,Actual,Model,Pred
 2025-05,Nacional,18921.0,Gompertz,26647.7
 2025-06,Nacional,23356.0,Gompertz,30343.5
 2025-07,Nacional,27001.0,Gompertz,34292.7
-2025-08,Nacional,19929.0,Gompertz,38498.9
+2025-08,Nacional,19929.0,Gompertz,38498.8
 2025-09,Nacional,18836.0,Gompertz,42982.1
 2025-10,Nacional,20133.0,Gompertz,47774.8
 2025-11,Nacional,20228.0,Gompertz,52913.6
@@ -59,18 +59,18 @@ Fecha,Target,Actual,Model,Pred
 2025-10,Nacional,20133.0,Random Forest,7597.0
 2025-11,Nacional,20228.0,Random Forest,7463.9
 2025-12,Nacional,22632.0,Random Forest,7581.7
-2025-01,Nacional,11376.0,XGBoost,5347.8
-2025-02,Nacional,10716.0,XGBoost,5397.8
-2025-03,Nacional,12389.0,XGBoost,5393.3
-2025-04,Nacional,14145.0,XGBoost,5665.8
-2025-05,Nacional,18921.0,XGBoost,5878.5
-2025-06,Nacional,23356.0,XGBoost,6172.6
-2025-07,Nacional,27001.0,XGBoost,6883.4
-2025-08,Nacional,19929.0,XGBoost,6993.6
-2025-09,Nacional,18836.0,XGBoost,7066.8
-2025-10,Nacional,20133.0,XGBoost,7371.7
-2025-11,Nacional,20228.0,XGBoost,7300.4
-2025-12,Nacional,22632.0,XGBoost,7351.5
+2025-01,Nacional,11376.0,XGBoost,5297.9
+2025-02,Nacional,10716.0,XGBoost,5353.0
+2025-03,Nacional,12389.0,XGBoost,5361.1
+2025-04,Nacional,14145.0,XGBoost,5604.2
+2025-05,Nacional,18921.0,XGBoost,5803.4
+2025-06,Nacional,23356.0,XGBoost,6145.3
+2025-07,Nacional,27001.0,XGBoost,6858.6
+2025-08,Nacional,19929.0,XGBoost,6958.2
+2025-09,Nacional,18836.0,XGBoost,7028.3
+2025-10,Nacional,20133.0,XGBoost,7393.9
+2025-11,Nacional,20228.0,XGBoost,7325.2
+2025-12,Nacional,22632.0,XGBoost,7355.9
 2025-01,Nacional,11376.0,Diesel Share,22519.7
 2025-02,Nacional,10716.0,Diesel Share,24524.7
 2025-03,Nacional,12389.0,Diesel Share,30582.8
@@ -91,10 +91,10 @@ Fecha,Target,Actual,Model,Pred
 2025-06,Madrid,3747.0,SARIMA,8481.9
 2025-07,Madrid,3854.0,SARIMA,10513.8
 2025-08,Madrid,2698.0,SARIMA,12965.9
-2025-09,Madrid,2821.0,SARIMA,15882.7
-2025-10,Madrid,2617.0,SARIMA,19369.9
-2025-11,Madrid,3118.0,SARIMA,23514.1
-2025-12,Madrid,2975.0,SARIMA,28400.1
+2025-09,Madrid,2821.0,SARIMA,15882.6
+2025-10,Madrid,2617.0,SARIMA,19369.8
+2025-11,Madrid,3118.0,SARIMA,23513.9
+2025-12,Madrid,2975.0,SARIMA,28399.9
 2025-01,Madrid,1663.0,Logistic,2583.6
 2025-02,Madrid,1640.0,Logistic,3085.1
 2025-03,Madrid,2037.0,Logistic,3581.5
@@ -143,18 +143,18 @@ Fecha,Target,Actual,Model,Pred
 2025-10,Madrid,2617.0,Random Forest,951.7
 2025-11,Madrid,3118.0,Random Forest,906.8
 2025-12,Madrid,2975.0,Random Forest,920.5
-2025-01,Madrid,1663.0,XGBoost,927.3
-2025-02,Madrid,1640.0,XGBoost,927.3
-2025-03,Madrid,2037.0,XGBoost,929.7
-2025-04,Madrid,2431.0,XGBoost,999.2
-2025-05,Madrid,2961.0,XGBoost,1020.7
-2025-06,Madrid,3747.0,XGBoost,1107.5
-2025-07,Madrid,3854.0,XGBoost,1047.9
-2025-08,Madrid,2698.0,XGBoost,966.3
-2025-09,Madrid,2821.0,XGBoost,1092.3
-2025-10,Madrid,2617.0,XGBoost,1116.0
-2025-11,Madrid,3118.0,XGBoost,1099.7
-2025-12,Madrid,2975.0,XGBoost,1002.5
+2025-01,Madrid,1663.0,XGBoost,925.9
+2025-02,Madrid,1640.0,XGBoost,925.9
+2025-03,Madrid,2037.0,XGBoost,928.2
+2025-04,Madrid,2431.0,XGBoost,997.7
+2025-05,Madrid,2961.0,XGBoost,1020.8
+2025-06,Madrid,3747.0,XGBoost,1108.0
+2025-07,Madrid,3854.0,XGBoost,1054.5
+2025-08,Madrid,2698.0,XGBoost,964.8
+2025-09,Madrid,2821.0,XGBoost,1093.3
+2025-10,Madrid,2617.0,XGBoost,1114.8
+2025-11,Madrid,3118.0,XGBoost,1098.6
+2025-12,Madrid,2975.0,XGBoost,1007.5
 2025-01,Madrid,1663.0,Diesel Share,2978.4
 2025-02,Madrid,1640.0,Diesel Share,2481.1
 2025-03,Madrid,2037.0,Diesel Share,2577.1
@@ -227,18 +227,18 @@ Fecha,Target,Actual,Model,Pred
 2025-10,Cataluña,3470.0,Random Forest,1090.7
 2025-11,Cataluña,3081.0,Random Forest,1102.6
 2025-12,Cataluña,3362.0,Random Forest,1088.6
-2025-01,Cataluña,1894.0,XGBoost,1036.4
-2025-02,Cataluña,1882.0,XGBoost,1037.0
-2025-03,Cataluña,2130.0,XGBoost,1037.0
-2025-04,Cataluña,2682.0,XGBoost,1211.4
-2025-05,Cataluña,3209.0,XGBoost,1086.2
-2025-06,Cataluña,3522.0,XGBoost,1163.5
-2025-07,Cataluña,3811.0,XGBoost,1240.4
-2025-08,Cataluña,2919.0,XGBoost,1183.6
-2025-09,Cataluña,2503.0,XGBoost,920.6
-2025-10,Cataluña,3470.0,XGBoost,1184.2
-2025-11,Cataluña,3081.0,XGBoost,1184.2
-2025-12,Cataluña,3362.0,XGBoost,1184.2
+2025-01,Cataluña,1894.0,XGBoost,1036.0
+2025-02,Cataluña,1882.0,XGBoost,1036.7
+2025-03,Cataluña,2130.0,XGBoost,1036.7
+2025-04,Cataluña,2682.0,XGBoost,1212.0
+2025-05,Cataluña,3209.0,XGBoost,1083.0
+2025-06,Cataluña,3522.0,XGBoost,1162.5
+2025-07,Cataluña,3811.0,XGBoost,1240.1
+2025-08,Cataluña,2919.0,XGBoost,1186.3
+2025-09,Cataluña,2503.0,XGBoost,922.2
+2025-10,Cataluña,3470.0,XGBoost,1186.8
+2025-11,Cataluña,3081.0,XGBoost,1186.8
+2025-12,Cataluña,3362.0,XGBoost,1186.8
 2025-01,Cataluña,1894.0,Diesel Share,4074.6
 2025-02,Cataluña,1882.0,Diesel Share,4421.8
 2025-03,Cataluña,2130.0,Diesel Share,5442.1
@@ -311,18 +311,18 @@ Fecha,Target,Actual,Model,Pred
 2025-10,Andalucía,1637.0,Random Forest,528.4
 2025-11,Andalucía,1565.0,Random Forest,466.0
 2025-12,Andalucía,1911.0,Random Forest,527.1
-2025-01,Andalucía,590.0,XGBoost,338.3
-2025-02,Andalucía,498.0,XGBoost,342.7
-2025-03,Andalucía,804.0,XGBoost,362.0
-2025-04,Andalucía,919.0,XGBoost,422.9
-2025-05,Andalucía,1591.0,XGBoost,431.4
-2025-06,Andalucía,2162.0,XGBoost,449.8
-2025-07,Andalucía,2664.0,XGBoost,486.6
-2025-08,Andalucía,1823.0,XGBoost,470.6
-2025-09,Andalucía,1612.0,XGBoost,473.4
-2025-10,Andalucía,1637.0,XGBoost,490.3
-2025-11,Andalucía,1565.0,XGBoost,471.5
-2025-12,Andalucía,1911.0,XGBoost,476.3
+2025-01,Andalucía,590.0,XGBoost,338.9
+2025-02,Andalucía,498.0,XGBoost,338.6
+2025-03,Andalucía,804.0,XGBoost,357.1
+2025-04,Andalucía,919.0,XGBoost,416.8
+2025-05,Andalucía,1591.0,XGBoost,430.7
+2025-06,Andalucía,2162.0,XGBoost,449.9
+2025-07,Andalucía,2664.0,XGBoost,486.0
+2025-08,Andalucía,1823.0,XGBoost,470.2
+2025-09,Andalucía,1612.0,XGBoost,473.5
+2025-10,Andalucía,1637.0,XGBoost,489.7
+2025-11,Andalucía,1565.0,XGBoost,471.1
+2025-12,Andalucía,1911.0,XGBoost,475.7
 2025-01,Andalucía,590.0,Diesel Share,5894.8
 2025-02,Andalucía,498.0,Diesel Share,5745.6
 2025-03,Andalucía,804.0,Diesel Share,3572.2
@@ -395,18 +395,18 @@ Fecha,Target,Actual,Model,Pred
 2025-10,Valencia,955.0,Random Forest,352.1
 2025-11,Valencia,1162.0,Random Forest,350.4
 2025-12,Valencia,1273.0,Random Forest,339.6
-2025-01,Valencia,462.0,XGBoost,364.5
-2025-02,Valencia,506.0,XGBoost,443.8
-2025-03,Valencia,538.0,XGBoost,405.7
-2025-04,Valencia,673.0,XGBoost,349.3
-2025-05,Valencia,868.0,XGBoost,311.4
-2025-06,Valencia,1045.0,XGBoost,276.5
-2025-07,Valencia,1448.0,XGBoost,287.5
-2025-08,Valencia,954.0,XGBoost,359.1
-2025-09,Valencia,900.0,XGBoost,329.1
-2025-10,Valencia,955.0,XGBoost,312.5
-2025-11,Valencia,1162.0,XGBoost,416.9
-2025-12,Valencia,1273.0,XGBoost,347.4
+2025-01,Valencia,462.0,XGBoost,367.9
+2025-02,Valencia,506.0,XGBoost,434.9
+2025-03,Valencia,538.0,XGBoost,416.5
+2025-04,Valencia,673.0,XGBoost,350.1
+2025-05,Valencia,868.0,XGBoost,311.0
+2025-06,Valencia,1045.0,XGBoost,274.1
+2025-07,Valencia,1448.0,XGBoost,285.1
+2025-08,Valencia,954.0,XGBoost,356.2
+2025-09,Valencia,900.0,XGBoost,331.8
+2025-10,Valencia,955.0,XGBoost,312.9
+2025-11,Valencia,1162.0,XGBoost,417.6
+2025-12,Valencia,1273.0,XGBoost,350.4
 2025-01,Valencia,462.0,Diesel Share,35255.3
 2025-02,Valencia,506.0,Diesel Share,46500.0
 2025-03,Valencia,538.0,Diesel Share,51149.7

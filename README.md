@@ -1,56 +1,102 @@
 # Repsol Eco-Fuels Demand Forecasting
 
-## Project Overview
-This project forecasts the demand for eco-fuels (renewable diesel) in Spain for the next 24 months using machine learning and statistical models.
+This repository forecasts monthly biodiesel demand in Spain for a 24-month horizon
+from a forecast origin of 2025-12. The modeled target is total market biodiesel
+demand (`Consumo_Tm`, metric tonnes), not Repsol sales.
 
-## Current Reproducible Pipeline
+The required delivery scope is:
 
-The current production path includes the CNMC diesel-market feature integration plus deterministic biofuel mandate features, and is script-based:
+- National demand (`Nacional`, sourced from `ESPAÑA`)
+- Madrid
+- Cataluña
+- Andalucía
+- Valencia
+- Monthly forecasts for 2026-01 through 2027-12
+
+## Reproducible Environment
+
+Use Python 3.11. The default Python 3.14 runtime is not supported by the pinned
+dependency set.
+
+Recommended setup with `uv`:
 
 ```powershell
-python scripts/03_clean_cnmc_petroleum.py
-python scripts/02_master_dataset_builder.py
-python scripts/04_build_features.py
-python scripts/05_modeling_with_cnmc.py
+uv venv --python 3.11 .venv
+uv pip install -r requirements.txt --python .\.venv\Scripts\python.exe
+```
+
+Conda users can also create the environment from `environment.yml`.
+
+## Production Pipeline
+
+Run these commands from the repository root:
+
+```powershell
+.\.venv\Scripts\python scripts/03_clean_cnmc_petroleum.py
+.\.venv\Scripts\python scripts/02_master_dataset_builder.py
+.\.venv\Scripts\python scripts/04_build_features.py
+.\.venv\Scripts\python scripts/05_modeling_with_cnmc.py
 ```
 
 This rebuilds:
+
 - `data/processed/cnmc_*.csv`
-- `data/inputs/master_dataset.csv`
+- `data/inputs/master_dataset.csv`, `.xlsx`, and metadata
 - `data/features/features_modelo_completo.csv`
 - `data/features/features_train.csv`
 - `data/features/features_test.csv`
-- model metrics, 2025 predictions, 2026-2027 forecasts, Tableau exports, and final figures in `data/outputs/` and `reports/figures/`.
+- model metrics, 2025 predictions, 2026-2027 forecasts, Tableau exports, and final figures
 
-The target remains total market biodiesel demand (`Consumo_Tm`), not Repsol sales. CNMC `GasoleoA_Tm` and biodiesel/Gasoleo A ratio are used only through lagged, leakage-safe features. `Mandato_Energia_Pct` and `Mandato_Biodiesel_Blend_Pct` are deterministic policy features from the mandate schedule. Jan-Feb 2026 CNMC data is cleaned and retained in processed files, but not used in model training, validation, or the original 2026-2027 forecast origin.
-
-## Objectives
-- Forecast demand at national level
-- Forecast demand at regional level (Madrid, Andalucía, Cataluña, Valencia)
-- Monthly granularity
-- Using mathematical, statistical, and ML models
+`forecast_24m_sarima_rf_xgb.csv` is a legacy filename. It now contains all current
+candidate families used by the CNMC-aware script, including SARIMA, Ridge, Random
+Forest, XGBoost, Logistic, Gompertz, and Diesel Share.
 
 ## Data Sources
-- CORES: Eco-fuel demand data
-- INE: Macroeconomic indicators
-- DGT: Vehicle statistics
 
-## Technologies
-- Python 3.9+
-- Pandas, NumPy
-- Scikit-learn, XGBoost, Statsmodels
-- Matplotlib, Seaborn
-- Jupyter Lab
+- CNMC petroleum-consumption data: biodiesel target reconciliation and diesel-market context
+- CORES / certified biofuel source files: cleaned biodiesel target inputs
+- INE: macroeconomic indicators
+- BOE mandate schedule: deterministic biofuel mandate features
+- Fuel price files: optional price-ablation notebook outputs
 
-## Project Structure
+The project does not currently use DGT vehicle data in the production dataset.
+
+## Current Dataset Shapes
+
+- `data/inputs/master_dataset.csv`: 720 rows x 22 columns
+- `data/features/features_modelo_completo.csv`: 180 rows x 36 columns
+- `data/features/features_train.csv`: 120 rows x 36 columns
+- `data/features/features_test.csv`: 60 rows x 36 columns
+- `data/outputs/forecast_24m_sarima_rf_xgb.csv`: 840 rows x 4 columns
+
+## Notebooks
+
+The notebooks are retained for exploration and narrative context. The scripts in
+`scripts/` are the source of truth for final reproducible outputs. Notebook outputs
+are intentionally cleared to avoid stale local paths, warnings, and old results being
+mistaken for a fresh run.
+
+## Known Modeling Limitation
+
+Phase 1 cleanup does not change the modeling methodology. Current selected 2025
+holdout performance is weak for some regional targets, especially Madrid and
+Cataluña. See `DATA_AUDIT_REPORT.md` for the current metrics and readiness caveats.
+
+## Repository Layout
+
+```text
 repsol-capstone/
 ├── data/
-│   ├── raw/
-│   └── processed/
+│   ├── inputs/
+│   ├── features/
+│   ├── outputs/
+│   ├── processed/
+│   └── raw/
 ├── notebooks/
-├── models/
 ├── reports/
 │   └── figures/
-├── src/
+├── scripts/
 ├── requirements.txt
+├── environment.yml
 └── README.md
+```
