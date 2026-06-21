@@ -32,11 +32,27 @@ Explicitly out of scope for Phase 1: changing the modeling methodology.
 - Rebuilt the production artifacts from the script path through feature
   generation and modeling outputs.
 
-## Still Open For Phase 2
+## Completed In Main-Branch Phase 2
 
-- Improve weak regional forecasts for Madrid and Catalonia.
-- Replace one-step holdout evaluation with fixed-origin multi-step backtesting.
-- Decide whether the business target should remain biodiesel only or expand to a
-  broader eco-fuels definition that includes HVO / renewable diesel.
-- Consider pooled or panel models across the five targets.
+- Kept regional pooling out of `main`; pooling remains exclusive to `enrico`.
+- Replaced the one-step model-selection gate with recursive multi-step
+  walk-forward validation.
+- Made ML holdout evaluation recursive, so 2025 predictions do not use actual
+  future target lags.
+- Added a no-regression acceptance gate versus the Phase 1 selected models.
+- Accepted non-pooling Phase 2 changes only where they improved 2025 holdout
+  MAPE:
+  - Madrid: Gompertz -> Logistic, MAPE 197.1% -> 73.6%.
+  - Catalonia: Gompertz -> XGBoost, MAPE 164.2% -> 61.6%.
+- Kept Nacional, Andalusia, and Valencia at their Phase 1 selections because the
+  Phase 2 proposals regressed.
+- Added `PHASE2_NON_POOLING_REPORT.md` and
+  `data/outputs/phase2_non_pooling_model_acceptance.csv`.
+
+## Still Open After Main-Branch Phase 2
+
 - Add automated tests around dataset shapes, target mappings, and output lineage.
+- Keep HVO / renewable diesel outside the target unless new usable regional data
+  becomes available.
+- Keep the pooled regional experiment isolated on `enrico` unless the team
+  explicitly decides to promote it later.

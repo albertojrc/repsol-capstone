@@ -48,8 +48,8 @@ This rebuilds:
 - model metrics, 2025 predictions, 2026-2027 forecasts, Tableau exports, and final figures
 
 `forecast_24m_sarima_rf_xgb.csv` is a legacy filename. It now contains all current
-candidate families used by the CNMC-aware script, including SARIMA, Ridge, Random
-Forest, XGBoost, Logistic, Gompertz, and Diesel Share.
+non-pooled candidate families used by the CNMC-aware script, including SARIMA,
+Ridge, Random Forest, XGBoost, Logistic, Gompertz, and Diesel Share.
 
 ## Data Sources
 
@@ -76,11 +76,25 @@ The notebooks are retained for exploration and narrative context. The scripts in
 are intentionally cleared to avoid stale local paths, warnings, and old results being
 mistaken for a fresh run.
 
-## Known Modeling Limitation
+## Phase 2 Non-Pooling Modeling
 
-Phase 1 cleanup does not change the modeling methodology. Current selected 2025
-holdout performance is weak for some regional targets, especially Madrid and
-Cataluña. See `DATA_AUDIT_REPORT.md` for the current metrics and readiness caveats.
+`main` now includes the non-pooling parts of Phase 2. The modeling script uses
+recursive multi-step walk-forward validation, evaluates ML holdout predictions
+recursively, and applies a no-regression acceptance gate against the Phase 1
+selected models.
+
+Regional pooling remains exclusive to the `enrico` branch.
+
+| Target | Selected model | 2025 MAPE |
+|---|---|---:|
+| Nacional | SARIMA | 29.0% |
+| Madrid | Logistic | 73.6% |
+| Cataluña | XGBoost | 61.6% |
+| Andalucía | Logistic | 48.4% |
+| Valencia | Gompertz | 34.2% |
+
+See `PHASE2_NON_POOLING_REPORT.md` for the before/after comparison, acceptance
+decisions, and remaining limitations.
 
 ## Repository Layout
 

@@ -2,35 +2,35 @@ Target,Model,MAE,RMSE,MAPE,R2
 Nacional,SARIMA,4278.0,4921.8,29.0,-0.009
 Nacional,Logistic,6228.7,6999.4,36.7,-1.041
 Nacional,Gompertz,15625.4,19146.0,82.7,-14.268
-Nacional,Ridge,459614.1,630880.8,2252.8,-16576.855
-Nacional,Random Forest,11057.7,12018.8,57.4,-5.017
-Nacional,XGBoost,11931.4,12688.0,63.4,-5.705
-Nacional,Diesel Share,122757.9,158541.6,600.3,-1045.936
+Nacional,Ridge,2749652.7,2969388.6,14763.5,-367254.006
+Nacional,Random Forest,10990.7,11986.5,56.8,-4.984
+Nacional,XGBoost,11937.4,12695.1,63.4,-5.713
+Nacional,Diesel Share,445352.4,482636.7,2389.3,-9701.292
 Madrid,SARIMA,9097.7,11968.5,318.6,-312.865
 Madrid,Logistic,1924.0,2057.2,73.6,-8.273
 Madrid,Gompertz,5538.4,6823.5,197.1,-101.018
-Madrid,Ridge,20485.5,28995.7,702.0,-1841.194
-Madrid,Random Forest,1813.0,1934.0,64.5,-7.196
-Madrid,XGBoost,1693.5,1805.0,60.3,-6.139
-Madrid,Diesel Share,14651.2,22315.9,512.2,-1090.181
+Madrid,Ridge,1643946.6,2309624.0,55396.4,-11688250.398
+Madrid,Random Forest,1814.2,1938.2,64.5,-7.231
+Madrid,XGBoost,1743.3,1868.1,61.9,-6.647
+Madrid,Diesel Share,15472.0,24107.2,543.1,-1272.392
 Cataluña,SARIMA,1428.6,1613.8,47.2,-5.62
 Cataluña,Logistic,2299.1,2498.6,80.2,-14.869
 Cataluña,Gompertz,4929.6,6024.8,164.2,-91.269
-Cataluña,Ridge,55297.0,72965.1,1800.1,-13532.095
-Cataluña,Random Forest,1777.7,1887.7,59.7,-8.058
-Cataluña,XGBoost,1749.1,1838.0,59.3,-7.587
-Cataluña,Diesel Share,19416.7,24221.0,628.1,-1490.25
+Cataluña,Ridge,2725203.4,2981410.9,91437.5,-22594875.075
+Cataluña,Random Forest,1767.4,1878.0,59.3,-7.965
+Cataluña,XGBoost,1825.5,1926.3,61.6,-8.432
+Cataluña,Diesel Share,72129.9,77391.6,2448.4,-15223.895
 Andalucía,SARIMA,897.9,1077.0,52.5,-1.924
 Andalucía,Logistic,833.8,1006.7,48.4,-1.555
 Andalucía,Gompertz,830.4,1002.4,48.3,-1.533
-Andalucía,Ridge,1102893.6,1690247.1,64158.5,-7202192.199
-Andalucía,Random Forest,987.8,1179.0,56.7,-2.504
-Andalucía,XGBoost,1048.1,1199.3,64.9,-2.626
-Andalucía,Diesel Share,48368.6,61914.8,2804.5,-9662.92
+Andalucía,Ridge,2995471.9,3128349.3,238283.1,-24671458.892
+Andalucía,Random Forest,984.6,1172.1,56.6,-2.464
+Andalucía,XGBoost,1053.4,1202.9,65.5,-2.648
+Andalucía,Diesel Share,79229.8,82376.6,6275.1,-17105.946
 Valencia,SARIMA,573.8,661.8,57.4,-3.932
 Valencia,Logistic,365.4,453.3,34.7,-1.314
 Valencia,Gompertz,360.3,446.6,34.2,-1.246
-Valencia,Ridge,1418589.0,2020847.3,136805.9,-45984749.118
-Valencia,Random Forest,580.4,641.4,61.1,-3.632
-Valencia,XGBoost,548.0,638.2,54.4,-3.586
+Valencia,Ridge,2997317.0,3128951.3,353660.8,-110241323.387
+Valencia,Random Forest,586.6,648.6,61.7,-3.736
+Valencia,XGBoost,527.7,610.0,52.8,-3.19
 Valencia,Diesel Share,48508.3,48748.3,5980.6,-26757.695

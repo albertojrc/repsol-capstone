@@ -9,10 +9,10 @@ The production data pipeline is coherent at the dataset level: national demand
 reconciles to the sum of the CCAA rows, the five delivery targets are present, and
 the script path builds causal lag features for the modeling table.
 
-The project is not modeling-final yet. The selected 2025 holdout metrics are weak
-for several regional targets, especially Madrid and Cataluña. Phase 1 cleanup keeps
-the current methodology unchanged and focuses on reproducibility, documentation,
-lineage, and repo hygiene.
+`main` now includes the non-pooling Phase 2 validation upgrade. The selected
+models are still non-pooled, but model selection now uses recursive multi-step
+walk-forward validation and a no-regression acceptance gate versus the Phase 1
+selected models.
 
 ## Production Inputs
 
@@ -70,8 +70,9 @@ Known data issues:
 | File | Current Role |
 |---|---|
 | `metricas_modelos.csv` | Metrics for the current CNMC-aware candidate models. |
-| `model_selection_walkforward.csv` | Expanding-window one-step model-selection scores over the training period. |
+| `model_selection_walkforward.csv` | Recursive multi-step model-selection scores over the training period. |
 | `metricas_final_seleccionado.csv` | 2025 holdout metrics for the selected model per target. |
+| `phase2_non_pooling_model_acceptance.csv` | Phase 1 model, Phase 2 proposed model, final selected model, and no-regression decision. |
 | `predicciones_test_2025.csv` | 2025 predictions for all current candidates. |
 | `forecast_24m_sarima_rf_xgb.csv` | 2026-2027 forecasts for all current candidates. Legacy filename. |
 | `metricas_modelos_con_precios.csv` | Optional price-ablation metrics from notebook 08. |
@@ -86,14 +87,15 @@ Known data issues:
 
 | Target | Selected Model | 2025 MAPE | 2025 R2 | Readiness |
 |---|---|---:|---:|---|
-| Nacional | SARIMA | 29.0% | -0.009 | Borderline but usable as a baseline. |
-| Madrid | Gompertz | 197.1% | -101.018 | Critical modeling risk. |
-| Cataluña | Gompertz | 164.2% | -91.269 | Critical modeling risk. |
-| Andalucía | Logistic | 48.4% | -1.555 | Weak. |
+| Nacional | SARIMA | 29.0% | -0.009 | Kept from Phase 1; Phase 2 proposal regressed. |
+| Madrid | Logistic | 73.6% | -8.273 | Improved versus Phase 1 Gompertz. |
+| Cataluña | XGBoost | 61.6% | -8.432 | Improved versus Phase 1 Gompertz without pooling. |
+| Andalucía | Logistic | 48.4% | -1.555 | Kept from Phase 1; Phase 2 proposal regressed. |
 | Valencia | Gompertz | 34.2% | -1.246 | Weak but less severe. |
 
-These limitations are not fixed in Phase 1 because the user requested no modeling
-methodology changes.
+Average selected MAPE improved from 94.6% in Phase 1 to 49.4% after the
+non-pooling Phase 2 gate. Regional pooling remains outside `main` and exists only
+on the `enrico` branch.
 
 ## Dataset Lineage
 
@@ -120,6 +122,7 @@ mandato_biocarburantes.csv
 features_*.csv
   -> scripts/05_modeling_with_cnmc.py
   -> data/outputs/*.csv
+  -> data/outputs/phase2_non_pooling_model_acceptance.csv
   -> reports/figures/07_model_comparison.png
   -> reports/figures/11_forecast_24m.png
 ```

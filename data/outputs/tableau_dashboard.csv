@@ -35,78 +35,78 @@ Fecha_Date,Fecha,Anyo,Mes,Trimestre,Target,Model,Type,Valor,Selected_Model,Is_Se
 2025-10-01,2025-10,2025,10,4,Andalucía,Actual,Actual,1637.0,Logistic,True
 2025-11-01,2025-11,2025,11,4,Andalucía,Actual,Actual,1565.0,Logistic,True
 2025-12-01,2025-12,2025,12,4,Andalucía,Actual,Actual,1911.0,Logistic,True
-2023-01-01,2023-01,2023,1,1,Cataluña,Actual,Actual,85.0,Gompertz,True
-2023-02-01,2023-02,2023,2,1,Cataluña,Actual,Actual,82.0,Gompertz,True
-2023-03-01,2023-03,2023,3,1,Cataluña,Actual,Actual,119.0,Gompertz,True
-2023-04-01,2023-04,2023,4,2,Cataluña,Actual,Actual,78.0,Gompertz,True
-2023-05-01,2023-05,2023,5,2,Cataluña,Actual,Actual,169.0,Gompertz,True
-2023-06-01,2023-06,2023,6,2,Cataluña,Actual,Actual,133.0,Gompertz,True
-2023-07-01,2023-07,2023,7,3,Cataluña,Actual,Actual,170.0,Gompertz,True
-2023-08-01,2023-08,2023,8,3,Cataluña,Actual,Actual,169.0,Gompertz,True
-2023-09-01,2023-09,2023,9,3,Cataluña,Actual,Actual,109.0,Gompertz,True
-2023-10-01,2023-10,2023,10,4,Cataluña,Actual,Actual,93.0,Gompertz,True
-2023-11-01,2023-11,2023,11,4,Cataluña,Actual,Actual,84.0,Gompertz,True
-2023-12-01,2023-12,2023,12,4,Cataluña,Actual,Actual,100.0,Gompertz,True
-2024-01-01,2024-01,2024,1,1,Cataluña,Actual,Actual,96.0,Gompertz,True
-2024-02-01,2024-02,2024,2,1,Cataluña,Actual,Actual,90.0,Gompertz,True
-2024-03-01,2024-03,2024,3,1,Cataluña,Actual,Actual,103.0,Gompertz,True
-2024-04-01,2024-04,2024,4,2,Cataluña,Actual,Actual,174.0,Gompertz,True
-2024-05-01,2024-05,2024,5,2,Cataluña,Actual,Actual,184.0,Gompertz,True
-2024-06-01,2024-06,2024,6,2,Cataluña,Actual,Actual,515.0,Gompertz,True
-2024-07-01,2024-07,2024,7,3,Cataluña,Actual,Actual,903.0,Gompertz,True
-2024-08-01,2024-08,2024,8,3,Cataluña,Actual,Actual,1036.0,Gompertz,True
-2024-09-01,2024-09,2024,9,3,Cataluña,Actual,Actual,775.0,Gompertz,True
-2024-10-01,2024-10,2024,10,4,Cataluña,Actual,Actual,1449.0,Gompertz,True
-2024-11-01,2024-11,2024,11,4,Cataluña,Actual,Actual,1843.0,Gompertz,True
-2024-12-01,2024-12,2024,12,4,Cataluña,Actual,Actual,2176.0,Gompertz,True
-2025-01-01,2025-01,2025,1,1,Cataluña,Actual,Actual,1894.0,Gompertz,True
-2025-02-01,2025-02,2025,2,1,Cataluña,Actual,Actual,1882.0,Gompertz,True
-2025-03-01,2025-03,2025,3,1,Cataluña,Actual,Actual,2130.0,Gompertz,True
-2025-04-01,2025-04,2025,4,2,Cataluña,Actual,Actual,2682.0,Gompertz,True
-2025-05-01,2025-05,2025,5,2,Cataluña,Actual,Actual,3209.0,Gompertz,True
-2025-06-01,2025-06,2025,6,2,Cataluña,Actual,Actual,3522.0,Gompertz,True
-2025-07-01,2025-07,2025,7,3,Cataluña,Actual,Actual,3811.0,Gompertz,True
-2025-08-01,2025-08,2025,8,3,Cataluña,Actual,Actual,2919.0,Gompertz,True
-2025-09-01,2025-09,2025,9,3,Cataluña,Actual,Actual,2503.0,Gompertz,True
-2025-10-01,2025-10,2025,10,4,Cataluña,Actual,Actual,3470.0,Gompertz,True
-2025-11-01,2025-11,2025,11,4,Cataluña,Actual,Actual,3081.0,Gompertz,True
-2025-12-01,2025-12,2025,12,4,Cataluña,Actual,Actual,3362.0,Gompertz,True
-2023-01-01,2023-01,2023,1,1,Madrid,Actual,Actual,26.0,Gompertz,True
-2023-02-01,2023-02,2023,2,1,Madrid,Actual,Actual,26.0,Gompertz,True
-2023-03-01,2023-03,2023,3,1,Madrid,Actual,Actual,25.0,Gompertz,True
-2023-04-01,2023-04,2023,4,2,Madrid,Actual,Actual,0.0,Gompertz,True
-2023-05-01,2023-05,2023,5,2,Madrid,Actual,Actual,0.0,Gompertz,True
-2023-06-01,2023-06,2023,6,2,Madrid,Actual,Actual,42.0,Gompertz,True
-2023-07-01,2023-07,2023,7,3,Madrid,Actual,Actual,12.0,Gompertz,True
-2023-08-01,2023-08,2023,8,3,Madrid,Actual,Actual,92.0,Gompertz,True
-2023-09-01,2023-09,2023,9,3,Madrid,Actual,Actual,26.0,Gompertz,True
-2023-10-01,2023-10,2023,10,4,Madrid,Actual,Actual,129.0,Gompertz,True
-2023-11-01,2023-11,2023,11,4,Madrid,Actual,Actual,74.0,Gompertz,True
-2023-12-01,2023-12,2023,12,4,Madrid,Actual,Actual,78.0,Gompertz,True
-2024-01-01,2024-01,2024,1,1,Madrid,Actual,Actual,78.0,Gompertz,True
-2024-02-01,2024-02,2024,2,1,Madrid,Actual,Actual,81.0,Gompertz,True
-2024-03-01,2024-03,2024,3,1,Madrid,Actual,Actual,133.0,Gompertz,True
-2024-04-01,2024-04,2024,4,2,Madrid,Actual,Actual,140.0,Gompertz,True
-2024-05-01,2024-05,2024,5,2,Madrid,Actual,Actual,331.0,Gompertz,True
-2024-06-01,2024-06,2024,6,2,Madrid,Actual,Actual,389.0,Gompertz,True
-2024-07-01,2024-07,2024,7,3,Madrid,Actual,Actual,503.0,Gompertz,True
-2024-08-01,2024-08,2024,8,3,Madrid,Actual,Actual,598.0,Gompertz,True
-2024-09-01,2024-09,2024,9,3,Madrid,Actual,Actual,980.0,Gompertz,True
-2024-10-01,2024-10,2024,10,4,Madrid,Actual,Actual,1335.0,Gompertz,True
-2024-11-01,2024-11,2024,11,4,Madrid,Actual,Actual,1635.0,Gompertz,True
-2024-12-01,2024-12,2024,12,4,Madrid,Actual,Actual,2067.0,Gompertz,True
-2025-01-01,2025-01,2025,1,1,Madrid,Actual,Actual,1663.0,Gompertz,True
-2025-02-01,2025-02,2025,2,1,Madrid,Actual,Actual,1640.0,Gompertz,True
-2025-03-01,2025-03,2025,3,1,Madrid,Actual,Actual,2037.0,Gompertz,True
-2025-04-01,2025-04,2025,4,2,Madrid,Actual,Actual,2431.0,Gompertz,True
-2025-05-01,2025-05,2025,5,2,Madrid,Actual,Actual,2961.0,Gompertz,True
-2025-06-01,2025-06,2025,6,2,Madrid,Actual,Actual,3747.0,Gompertz,True
-2025-07-01,2025-07,2025,7,3,Madrid,Actual,Actual,3854.0,Gompertz,True
-2025-08-01,2025-08,2025,8,3,Madrid,Actual,Actual,2698.0,Gompertz,True
-2025-09-01,2025-09,2025,9,3,Madrid,Actual,Actual,2821.0,Gompertz,True
-2025-10-01,2025-10,2025,10,4,Madrid,Actual,Actual,2617.0,Gompertz,True
-2025-11-01,2025-11,2025,11,4,Madrid,Actual,Actual,3118.0,Gompertz,True
-2025-12-01,2025-12,2025,12,4,Madrid,Actual,Actual,2975.0,Gompertz,True
+2023-01-01,2023-01,2023,1,1,Cataluña,Actual,Actual,85.0,XGBoost,True
+2023-02-01,2023-02,2023,2,1,Cataluña,Actual,Actual,82.0,XGBoost,True
+2023-03-01,2023-03,2023,3,1,Cataluña,Actual,Actual,119.0,XGBoost,True
+2023-04-01,2023-04,2023,4,2,Cataluña,Actual,Actual,78.0,XGBoost,True
+2023-05-01,2023-05,2023,5,2,Cataluña,Actual,Actual,169.0,XGBoost,True
+2023-06-01,2023-06,2023,6,2,Cataluña,Actual,Actual,133.0,XGBoost,True
+2023-07-01,2023-07,2023,7,3,Cataluña,Actual,Actual,170.0,XGBoost,True
+2023-08-01,2023-08,2023,8,3,Cataluña,Actual,Actual,169.0,XGBoost,True
+2023-09-01,2023-09,2023,9,3,Cataluña,Actual,Actual,109.0,XGBoost,True
+2023-10-01,2023-10,2023,10,4,Cataluña,Actual,Actual,93.0,XGBoost,True
+2023-11-01,2023-11,2023,11,4,Cataluña,Actual,Actual,84.0,XGBoost,True
+2023-12-01,2023-12,2023,12,4,Cataluña,Actual,Actual,100.0,XGBoost,True
+2024-01-01,2024-01,2024,1,1,Cataluña,Actual,Actual,96.0,XGBoost,True
+2024-02-01,2024-02,2024,2,1,Cataluña,Actual,Actual,90.0,XGBoost,True
+2024-03-01,2024-03,2024,3,1,Cataluña,Actual,Actual,103.0,XGBoost,True
+2024-04-01,2024-04,2024,4,2,Cataluña,Actual,Actual,174.0,XGBoost,True
+2024-05-01,2024-05,2024,5,2,Cataluña,Actual,Actual,184.0,XGBoost,True
+2024-06-01,2024-06,2024,6,2,Cataluña,Actual,Actual,515.0,XGBoost,True
+2024-07-01,2024-07,2024,7,3,Cataluña,Actual,Actual,903.0,XGBoost,True
+2024-08-01,2024-08,2024,8,3,Cataluña,Actual,Actual,1036.0,XGBoost,True
+2024-09-01,2024-09,2024,9,3,Cataluña,Actual,Actual,775.0,XGBoost,True
+2024-10-01,2024-10,2024,10,4,Cataluña,Actual,Actual,1449.0,XGBoost,True
+2024-11-01,2024-11,2024,11,4,Cataluña,Actual,Actual,1843.0,XGBoost,True
+2024-12-01,2024-12,2024,12,4,Cataluña,Actual,Actual,2176.0,XGBoost,True
+2025-01-01,2025-01,2025,1,1,Cataluña,Actual,Actual,1894.0,XGBoost,True
+2025-02-01,2025-02,2025,2,1,Cataluña,Actual,Actual,1882.0,XGBoost,True
+2025-03-01,2025-03,2025,3,1,Cataluña,Actual,Actual,2130.0,XGBoost,True
+2025-04-01,2025-04,2025,4,2,Cataluña,Actual,Actual,2682.0,XGBoost,True
+2025-05-01,2025-05,2025,5,2,Cataluña,Actual,Actual,3209.0,XGBoost,True
+2025-06-01,2025-06,2025,6,2,Cataluña,Actual,Actual,3522.0,XGBoost,True
+2025-07-01,2025-07,2025,7,3,Cataluña,Actual,Actual,3811.0,XGBoost,True
+2025-08-01,2025-08,2025,8,3,Cataluña,Actual,Actual,2919.0,XGBoost,True
+2025-09-01,2025-09,2025,9,3,Cataluña,Actual,Actual,2503.0,XGBoost,True
+2025-10-01,2025-10,2025,10,4,Cataluña,Actual,Actual,3470.0,XGBoost,True
+2025-11-01,2025-11,2025,11,4,Cataluña,Actual,Actual,3081.0,XGBoost,True
+2025-12-01,2025-12,2025,12,4,Cataluña,Actual,Actual,3362.0,XGBoost,True
+2023-01-01,2023-01,2023,1,1,Madrid,Actual,Actual,26.0,Logistic,True
+2023-02-01,2023-02,2023,2,1,Madrid,Actual,Actual,26.0,Logistic,True
+2023-03-01,2023-03,2023,3,1,Madrid,Actual,Actual,25.0,Logistic,True
+2023-04-01,2023-04,2023,4,2,Madrid,Actual,Actual,0.0,Logistic,True
+2023-05-01,2023-05,2023,5,2,Madrid,Actual,Actual,0.0,Logistic,True
+2023-06-01,2023-06,2023,6,2,Madrid,Actual,Actual,42.0,Logistic,True
+2023-07-01,2023-07,2023,7,3,Madrid,Actual,Actual,12.0,Logistic,True
+2023-08-01,2023-08,2023,8,3,Madrid,Actual,Actual,92.0,Logistic,True
+2023-09-01,2023-09,2023,9,3,Madrid,Actual,Actual,26.0,Logistic,True
+2023-10-01,2023-10,2023,10,4,Madrid,Actual,Actual,129.0,Logistic,True
+2023-11-01,2023-11,2023,11,4,Madrid,Actual,Actual,74.0,Logistic,True
+2023-12-01,2023-12,2023,12,4,Madrid,Actual,Actual,78.0,Logistic,True
+2024-01-01,2024-01,2024,1,1,Madrid,Actual,Actual,78.0,Logistic,True
+2024-02-01,2024-02,2024,2,1,Madrid,Actual,Actual,81.0,Logistic,True
+2024-03-01,2024-03,2024,3,1,Madrid,Actual,Actual,133.0,Logistic,True
+2024-04-01,2024-04,2024,4,2,Madrid,Actual,Actual,140.0,Logistic,True
+2024-05-01,2024-05,2024,5,2,Madrid,Actual,Actual,331.0,Logistic,True
+2024-06-01,2024-06,2024,6,2,Madrid,Actual,Actual,389.0,Logistic,True
+2024-07-01,2024-07,2024,7,3,Madrid,Actual,Actual,503.0,Logistic,True
+2024-08-01,2024-08,2024,8,3,Madrid,Actual,Actual,598.0,Logistic,True
+2024-09-01,2024-09,2024,9,3,Madrid,Actual,Actual,980.0,Logistic,True
+2024-10-01,2024-10,2024,10,4,Madrid,Actual,Actual,1335.0,Logistic,True
+2024-11-01,2024-11,2024,11,4,Madrid,Actual,Actual,1635.0,Logistic,True
+2024-12-01,2024-12,2024,12,4,Madrid,Actual,Actual,2067.0,Logistic,True
+2025-01-01,2025-01,2025,1,1,Madrid,Actual,Actual,1663.0,Logistic,True
+2025-02-01,2025-02,2025,2,1,Madrid,Actual,Actual,1640.0,Logistic,True
+2025-03-01,2025-03,2025,3,1,Madrid,Actual,Actual,2037.0,Logistic,True
+2025-04-01,2025-04,2025,4,2,Madrid,Actual,Actual,2431.0,Logistic,True
+2025-05-01,2025-05,2025,5,2,Madrid,Actual,Actual,2961.0,Logistic,True
+2025-06-01,2025-06,2025,6,2,Madrid,Actual,Actual,3747.0,Logistic,True
+2025-07-01,2025-07,2025,7,3,Madrid,Actual,Actual,3854.0,Logistic,True
+2025-08-01,2025-08,2025,8,3,Madrid,Actual,Actual,2698.0,Logistic,True
+2025-09-01,2025-09,2025,9,3,Madrid,Actual,Actual,2821.0,Logistic,True
+2025-10-01,2025-10,2025,10,4,Madrid,Actual,Actual,2617.0,Logistic,True
+2025-11-01,2025-11,2025,11,4,Madrid,Actual,Actual,3118.0,Logistic,True
+2025-12-01,2025-12,2025,12,4,Madrid,Actual,Actual,2975.0,Logistic,True
 2023-01-01,2023-01,2023,1,1,Nacional,Actual,Actual,167.0,SARIMA,True
 2023-02-01,2023-02,2023,2,1,Nacional,Actual,Actual,162.0,SARIMA,True
 2023-03-01,2023-03,2023,3,1,Nacional,Actual,Actual,205.0,SARIMA,True
@@ -216,221 +216,221 @@ Fecha_Date,Fecha,Anyo,Mes,Trimestre,Target,Model,Type,Valor,Selected_Model,Is_Se
 2025-11-01,2025-11,2025,11,4,Nacional,Gompertz,Test Prediction,52913.6,SARIMA,False
 2025-12-01,2025-12,2025,12,4,Nacional,Gompertz,Test Prediction,58429.5,SARIMA,False
 2025-01-01,2025-01,2025,1,1,Nacional,Ridge,Test Prediction,35431.2,SARIMA,False
-2025-02-01,2025-02,2025,2,1,Nacional,Ridge,Test Prediction,43889.1,SARIMA,False
-2025-03-01,2025-03,2025,3,1,Nacional,Ridge,Test Prediction,51667.6,SARIMA,False
-2025-04-01,2025-04,2025,4,2,Nacional,Ridge,Test Prediction,53870.2,SARIMA,False
-2025-05-01,2025-05,2025,5,2,Nacional,Ridge,Test Prediction,80601.7,SARIMA,False
-2025-06-01,2025-06,2025,6,2,Nacional,Ridge,Test Prediction,172462.0,SARIMA,False
-2025-07-01,2025-07,2025,7,3,Nacional,Ridge,Test Prediction,441026.0,SARIMA,False
-2025-08-01,2025-08,2025,8,3,Nacional,Ridge,Test Prediction,1154994.5,SARIMA,False
-2025-09-01,2025-09,2025,9,3,Nacional,Ridge,Test Prediction,882834.5,SARIMA,False
-2025-10-01,2025-10,2025,10,4,Nacional,Ridge,Test Prediction,962729.3,SARIMA,False
-2025-11-01,2025-11,2025,11,4,Nacional,Ridge,Test Prediction,864744.5,SARIMA,False
-2025-12-01,2025-12,2025,12,4,Nacional,Ridge,Test Prediction,990780.2,SARIMA,False
+2025-02-01,2025-02,2025,2,1,Nacional,Ridge,Test Prediction,489898.9,SARIMA,False
+2025-03-01,2025-03,2025,3,1,Nacional,Ridge,Test Prediction,3269016.4,SARIMA,False
+2025-04-01,2025-04,2025,4,2,Nacional,Ridge,Test Prediction,3269016.4,SARIMA,False
+2025-05-01,2025-05,2025,5,2,Nacional,Ridge,Test Prediction,3269016.4,SARIMA,False
+2025-06-01,2025-06,2025,6,2,Nacional,Ridge,Test Prediction,3269016.4,SARIMA,False
+2025-07-01,2025-07,2025,7,3,Nacional,Ridge,Test Prediction,3269016.4,SARIMA,False
+2025-08-01,2025-08,2025,8,3,Nacional,Ridge,Test Prediction,3269016.4,SARIMA,False
+2025-09-01,2025-09,2025,9,3,Nacional,Ridge,Test Prediction,3269016.4,SARIMA,False
+2025-10-01,2025-10,2025,10,4,Nacional,Ridge,Test Prediction,3269016.4,SARIMA,False
+2025-11-01,2025-11,2025,11,4,Nacional,Ridge,Test Prediction,3269016.4,SARIMA,False
+2025-12-01,2025-12,2025,12,4,Nacional,Ridge,Test Prediction,3269016.4,SARIMA,False
 2025-01-01,2025-01,2025,1,1,Nacional,Random Forest,Test Prediction,7143.7,SARIMA,False
-2025-02-01,2025-02,2025,2,1,Nacional,Random Forest,Test Prediction,6846.6,SARIMA,False
-2025-03-01,2025-03,2025,3,1,Nacional,Random Forest,Test Prediction,6796.3,SARIMA,False
-2025-04-01,2025-04,2025,4,2,Nacional,Random Forest,Test Prediction,6890.5,SARIMA,False
-2025-05-01,2025-05,2025,5,2,Nacional,Random Forest,Test Prediction,7080.9,SARIMA,False
-2025-06-01,2025-06,2025,6,2,Nacional,Random Forest,Test Prediction,7167.2,SARIMA,False
-2025-07-01,2025-07,2025,7,3,Nacional,Random Forest,Test Prediction,7372.3,SARIMA,False
-2025-08-01,2025-08,2025,8,3,Nacional,Random Forest,Test Prediction,7425.7,SARIMA,False
-2025-09-01,2025-09,2025,9,3,Nacional,Random Forest,Test Prediction,7603.4,SARIMA,False
-2025-10-01,2025-10,2025,10,4,Nacional,Random Forest,Test Prediction,7597.0,SARIMA,False
-2025-11-01,2025-11,2025,11,4,Nacional,Random Forest,Test Prediction,7463.9,SARIMA,False
-2025-12-01,2025-12,2025,12,4,Nacional,Random Forest,Test Prediction,7581.7,SARIMA,False
+2025-02-01,2025-02,2025,2,1,Nacional,Random Forest,Test Prediction,7143.7,SARIMA,False
+2025-03-01,2025-03,2025,3,1,Nacional,Random Forest,Test Prediction,7091.3,SARIMA,False
+2025-04-01,2025-04,2025,4,2,Nacional,Random Forest,Test Prediction,7049.0,SARIMA,False
+2025-05-01,2025-05,2025,5,2,Nacional,Random Forest,Test Prediction,6909.7,SARIMA,False
+2025-06-01,2025-06,2025,6,2,Nacional,Random Forest,Test Prediction,7011.7,SARIMA,False
+2025-07-01,2025-07,2025,7,3,Nacional,Random Forest,Test Prediction,7426.2,SARIMA,False
+2025-08-01,2025-08,2025,8,3,Nacional,Random Forest,Test Prediction,7411.7,SARIMA,False
+2025-09-01,2025-09,2025,9,3,Nacional,Random Forest,Test Prediction,7550.6,SARIMA,False
+2025-10-01,2025-10,2025,10,4,Nacional,Random Forest,Test Prediction,7710.1,SARIMA,False
+2025-11-01,2025-11,2025,11,4,Nacional,Random Forest,Test Prediction,7682.0,SARIMA,False
+2025-12-01,2025-12,2025,12,4,Nacional,Random Forest,Test Prediction,7643.4,SARIMA,False
 2025-01-01,2025-01,2025,1,1,Nacional,XGBoost,Test Prediction,5297.9,SARIMA,False
-2025-02-01,2025-02,2025,2,1,Nacional,XGBoost,Test Prediction,5353.0,SARIMA,False
-2025-03-01,2025-03,2025,3,1,Nacional,XGBoost,Test Prediction,5361.1,SARIMA,False
-2025-04-01,2025-04,2025,4,2,Nacional,XGBoost,Test Prediction,5604.2,SARIMA,False
-2025-05-01,2025-05,2025,5,2,Nacional,XGBoost,Test Prediction,5803.4,SARIMA,False
-2025-06-01,2025-06,2025,6,2,Nacional,XGBoost,Test Prediction,6145.3,SARIMA,False
-2025-07-01,2025-07,2025,7,3,Nacional,XGBoost,Test Prediction,6858.6,SARIMA,False
-2025-08-01,2025-08,2025,8,3,Nacional,XGBoost,Test Prediction,6958.2,SARIMA,False
-2025-09-01,2025-09,2025,9,3,Nacional,XGBoost,Test Prediction,7028.3,SARIMA,False
-2025-10-01,2025-10,2025,10,4,Nacional,XGBoost,Test Prediction,7393.9,SARIMA,False
-2025-11-01,2025-11,2025,11,4,Nacional,XGBoost,Test Prediction,7325.2,SARIMA,False
-2025-12-01,2025-12,2025,12,4,Nacional,XGBoost,Test Prediction,7355.9,SARIMA,False
+2025-02-01,2025-02,2025,2,1,Nacional,XGBoost,Test Prediction,5351.6,SARIMA,False
+2025-03-01,2025-03,2025,3,1,Nacional,XGBoost,Test Prediction,5359.7,SARIMA,False
+2025-04-01,2025-04,2025,4,2,Nacional,XGBoost,Test Prediction,5563.8,SARIMA,False
+2025-05-01,2025-05,2025,5,2,Nacional,XGBoost,Test Prediction,5742.5,SARIMA,False
+2025-06-01,2025-06,2025,6,2,Nacional,XGBoost,Test Prediction,6100.8,SARIMA,False
+2025-07-01,2025-07,2025,7,3,Nacional,XGBoost,Test Prediction,6827.2,SARIMA,False
+2025-08-01,2025-08,2025,8,3,Nacional,XGBoost,Test Prediction,6959.1,SARIMA,False
+2025-09-01,2025-09,2025,9,3,Nacional,XGBoost,Test Prediction,7029.6,SARIMA,False
+2025-10-01,2025-10,2025,10,4,Nacional,XGBoost,Test Prediction,7394.8,SARIMA,False
+2025-11-01,2025-11,2025,11,4,Nacional,XGBoost,Test Prediction,7393.1,SARIMA,False
+2025-12-01,2025-12,2025,12,4,Nacional,XGBoost,Test Prediction,7393.1,SARIMA,False
 2025-01-01,2025-01,2025,1,1,Nacional,Diesel Share,Test Prediction,22519.7,SARIMA,False
-2025-02-01,2025-02,2025,2,1,Nacional,Diesel Share,Test Prediction,24524.7,SARIMA,False
-2025-03-01,2025-03,2025,3,1,Nacional,Diesel Share,Test Prediction,30582.8,SARIMA,False
-2025-04-01,2025-04,2025,4,2,Nacional,Diesel Share,Test Prediction,38294.0,SARIMA,False
-2025-05-01,2025-05,2025,5,2,Nacional,Diesel Share,Test Prediction,57654.0,SARIMA,False
-2025-06-01,2025-06,2025,6,2,Nacional,Diesel Share,Test Prediction,94565.0,SARIMA,False
-2025-07-01,2025-07,2025,7,3,Nacional,Diesel Share,Test Prediction,179257.3,SARIMA,False
-2025-08-01,2025-08,2025,8,3,Nacional,Diesel Share,Test Prediction,273391.5,SARIMA,False
-2025-09-01,2025-09,2025,9,3,Nacional,Diesel Share,Test Prediction,178847.6,SARIMA,False
-2025-10-01,2025-10,2025,10,4,Nacional,Diesel Share,Test Prediction,229606.7,SARIMA,False
-2025-11-01,2025-11,2025,11,4,Nacional,Diesel Share,Test Prediction,254314.8,SARIMA,False
-2025-12-01,2025-12,2025,12,4,Nacional,Diesel Share,Test Prediction,309198.6,SARIMA,False
-2025-01-01,2025-01,2025,1,1,Madrid,SARIMA,Test Prediction,2659.3,Gompertz,False
-2025-02-01,2025-02,2025,2,1,Madrid,SARIMA,Test Prediction,3398.8,Gompertz,False
-2025-03-01,2025-03,2025,3,1,Madrid,SARIMA,Test Prediction,4308.5,Gompertz,False
-2025-04-01,2025-04,2025,4,2,Madrid,SARIMA,Test Prediction,5438.8,Gompertz,False
-2025-05-01,2025-05,2025,5,2,Madrid,SARIMA,Test Prediction,6801.5,Gompertz,False
-2025-06-01,2025-06,2025,6,2,Madrid,SARIMA,Test Prediction,8481.9,Gompertz,False
-2025-07-01,2025-07,2025,7,3,Madrid,SARIMA,Test Prediction,10513.8,Gompertz,False
-2025-08-01,2025-08,2025,8,3,Madrid,SARIMA,Test Prediction,12965.9,Gompertz,False
-2025-09-01,2025-09,2025,9,3,Madrid,SARIMA,Test Prediction,15882.6,Gompertz,False
-2025-10-01,2025-10,2025,10,4,Madrid,SARIMA,Test Prediction,19369.8,Gompertz,False
-2025-11-01,2025-11,2025,11,4,Madrid,SARIMA,Test Prediction,23513.9,Gompertz,False
-2025-12-01,2025-12,2025,12,4,Madrid,SARIMA,Test Prediction,28399.9,Gompertz,False
-2025-01-01,2025-01,2025,1,1,Madrid,Logistic,Test Prediction,2583.6,Gompertz,False
-2025-02-01,2025-02,2025,2,1,Madrid,Logistic,Test Prediction,3085.1,Gompertz,False
-2025-03-01,2025-03,2025,3,1,Madrid,Logistic,Test Prediction,3581.5,Gompertz,False
-2025-04-01,2025-04,2025,4,2,Madrid,Logistic,Test Prediction,4046.9,Gompertz,False
-2025-05-01,2025-05,2025,5,2,Madrid,Logistic,Test Prediction,4461.3,Gompertz,False
-2025-06-01,2025-06,2025,6,2,Madrid,Logistic,Test Prediction,4814.1,Gompertz,False
-2025-07-01,2025-07,2025,7,3,Madrid,Logistic,Test Prediction,5102.6,Gompertz,False
-2025-08-01,2025-08,2025,8,3,Madrid,Logistic,Test Prediction,5330.3,Gompertz,False
-2025-09-01,2025-09,2025,9,3,Madrid,Logistic,Test Prediction,5504.2,Gompertz,False
-2025-10-01,2025-10,2025,10,4,Madrid,Logistic,Test Prediction,5632.3,Gompertz,False
-2025-11-01,2025-11,2025,11,4,Madrid,Logistic,Test Prediction,5723.2,Gompertz,False
-2025-12-01,2025-12,2025,12,4,Madrid,Logistic,Test Prediction,5785.0,Gompertz,False
-2025-01-01,2025-01,2025,1,1,Madrid,Gompertz,Test Prediction,2644.6,Gompertz,True
-2025-02-01,2025-02,2025,2,1,Madrid,Gompertz,Test Prediction,3269.1,Gompertz,True
-2025-03-01,2025-03,2025,3,1,Madrid,Gompertz,Test Prediction,3998.7,Gompertz,True
-2025-04-01,2025-04,2025,4,2,Madrid,Gompertz,Test Prediction,4843.0,Gompertz,True
-2025-05-01,2025-05,2025,5,2,Madrid,Gompertz,Test Prediction,5809.5,Gompertz,True
-2025-06-01,2025-06,2025,6,2,Madrid,Gompertz,Test Prediction,6903.4,Gompertz,True
-2025-07-01,2025-07,2025,7,3,Madrid,Gompertz,Test Prediction,8127.2,Gompertz,True
-2025-08-01,2025-08,2025,8,3,Madrid,Gompertz,Test Prediction,9480.6,Gompertz,True
-2025-09-01,2025-09,2025,9,3,Madrid,Gompertz,Test Prediction,10961.4,Gompertz,True
-2025-10-01,2025-10,2025,10,4,Madrid,Gompertz,Test Prediction,12566.0,Gompertz,True
-2025-11-01,2025-11,2025,11,4,Madrid,Gompertz,Test Prediction,14290.0,Gompertz,True
-2025-12-01,2025-12,2025,12,4,Madrid,Gompertz,Test Prediction,16129.0,Gompertz,True
-2025-01-01,2025-01,2025,1,1,Madrid,Ridge,Test Prediction,3111.8,Gompertz,False
-2025-02-01,2025-02,2025,2,1,Madrid,Ridge,Test Prediction,2419.3,Gompertz,False
-2025-03-01,2025-03,2025,3,1,Madrid,Ridge,Test Prediction,2432.8,Gompertz,False
-2025-04-01,2025-04,2025,4,2,Madrid,Ridge,Test Prediction,2947.8,Gompertz,False
-2025-05-01,2025-05,2025,5,2,Madrid,Ridge,Test Prediction,6361.4,Gompertz,False
-2025-06-01,2025-06,2025,6,2,Madrid,Ridge,Test Prediction,12335.1,Gompertz,False
-2025-07-01,2025-07,2025,7,3,Madrid,Ridge,Test Prediction,20593.4,Gompertz,False
-2025-08-01,2025-08,2025,8,3,Madrid,Ridge,Test Prediction,33541.7,Gompertz,False
-2025-09-01,2025-09,2025,9,3,Madrid,Ridge,Test Prediction,35029.2,Gompertz,False
-2025-10-01,2025-10,2025,10,4,Madrid,Ridge,Test Prediction,44177.0,Gompertz,False
-2025-11-01,2025-11,2025,11,4,Madrid,Ridge,Test Prediction,54167.2,Gompertz,False
-2025-12-01,2025-12,2025,12,4,Madrid,Ridge,Test Prediction,61271.0,Gompertz,False
-2025-01-01,2025-01,2025,1,1,Madrid,Random Forest,Test Prediction,884.5,Gompertz,False
-2025-02-01,2025-02,2025,2,1,Madrid,Random Forest,Test Prediction,881.7,Gompertz,False
-2025-03-01,2025-03,2025,3,1,Madrid,Random Forest,Test Prediction,881.7,Gompertz,False
-2025-04-01,2025-04,2025,4,2,Madrid,Random Forest,Test Prediction,889.9,Gompertz,False
-2025-05-01,2025-05,2025,5,2,Madrid,Random Forest,Test Prediction,894.9,Gompertz,False
-2025-06-01,2025-06,2025,6,2,Madrid,Random Forest,Test Prediction,880.5,Gompertz,False
-2025-07-01,2025-07,2025,7,3,Madrid,Random Forest,Test Prediction,884.5,Gompertz,False
-2025-08-01,2025-08,2025,8,3,Madrid,Random Forest,Test Prediction,872.5,Gompertz,False
-2025-09-01,2025-09,2025,9,3,Madrid,Random Forest,Test Prediction,956.9,Gompertz,False
-2025-10-01,2025-10,2025,10,4,Madrid,Random Forest,Test Prediction,951.7,Gompertz,False
-2025-11-01,2025-11,2025,11,4,Madrid,Random Forest,Test Prediction,906.8,Gompertz,False
-2025-12-01,2025-12,2025,12,4,Madrid,Random Forest,Test Prediction,920.5,Gompertz,False
-2025-01-01,2025-01,2025,1,1,Madrid,XGBoost,Test Prediction,925.9,Gompertz,False
-2025-02-01,2025-02,2025,2,1,Madrid,XGBoost,Test Prediction,925.9,Gompertz,False
-2025-03-01,2025-03,2025,3,1,Madrid,XGBoost,Test Prediction,928.2,Gompertz,False
-2025-04-01,2025-04,2025,4,2,Madrid,XGBoost,Test Prediction,997.7,Gompertz,False
-2025-05-01,2025-05,2025,5,2,Madrid,XGBoost,Test Prediction,1020.8,Gompertz,False
-2025-06-01,2025-06,2025,6,2,Madrid,XGBoost,Test Prediction,1108.0,Gompertz,False
-2025-07-01,2025-07,2025,7,3,Madrid,XGBoost,Test Prediction,1054.5,Gompertz,False
-2025-08-01,2025-08,2025,8,3,Madrid,XGBoost,Test Prediction,964.8,Gompertz,False
-2025-09-01,2025-09,2025,9,3,Madrid,XGBoost,Test Prediction,1093.3,Gompertz,False
-2025-10-01,2025-10,2025,10,4,Madrid,XGBoost,Test Prediction,1114.8,Gompertz,False
-2025-11-01,2025-11,2025,11,4,Madrid,XGBoost,Test Prediction,1098.6,Gompertz,False
-2025-12-01,2025-12,2025,12,4,Madrid,XGBoost,Test Prediction,1007.5,Gompertz,False
-2025-01-01,2025-01,2025,1,1,Madrid,Diesel Share,Test Prediction,2978.4,Gompertz,False
-2025-02-01,2025-02,2025,2,1,Madrid,Diesel Share,Test Prediction,2481.1,Gompertz,False
-2025-03-01,2025-03,2025,3,1,Madrid,Diesel Share,Test Prediction,2577.1,Gompertz,False
-2025-04-01,2025-04,2025,4,2,Madrid,Diesel Share,Test Prediction,2174.6,Gompertz,False
-2025-05-01,2025-05,2025,5,2,Madrid,Diesel Share,Test Prediction,3170.2,Gompertz,False
-2025-06-01,2025-06,2025,6,2,Madrid,Diesel Share,Test Prediction,5882.6,Gompertz,False
-2025-07-01,2025-07,2025,7,3,Madrid,Diesel Share,Test Prediction,10841.0,Gompertz,False
-2025-08-01,2025-08,2025,8,3,Madrid,Diesel Share,Test Prediction,19780.6,Gompertz,False
-2025-09-01,2025-09,2025,9,3,Madrid,Diesel Share,Test Prediction,25430.0,Gompertz,False
-2025-10-01,2025-10,2025,10,4,Madrid,Diesel Share,Test Prediction,45693.0,Gompertz,False
-2025-11-01,2025-11,2025,11,4,Madrid,Diesel Share,Test Prediction,43456.2,Gompertz,False
-2025-12-01,2025-12,2025,12,4,Madrid,Diesel Share,Test Prediction,43398.9,Gompertz,False
-2025-01-01,2025-01,2025,1,1,Cataluña,SARIMA,Test Prediction,2466.8,Gompertz,False
-2025-02-01,2025-02,2025,2,1,Cataluña,SARIMA,Test Prediction,2677.1,Gompertz,False
-2025-03-01,2025-03,2025,3,1,Cataluña,SARIMA,Test Prediction,2645.5,Gompertz,False
-2025-04-01,2025-04,2025,4,2,Cataluña,SARIMA,Test Prediction,2263.0,Gompertz,False
-2025-05-01,2025-05,2025,5,2,Cataluña,SARIMA,Test Prediction,2242.7,Gompertz,False
-2025-06-01,2025-06,2025,6,2,Cataluña,SARIMA,Test Prediction,1600.3,Gompertz,False
-2025-07-01,2025-07,2025,7,3,Cataluña,SARIMA,Test Prediction,1330.6,Gompertz,False
-2025-08-01,2025-08,2025,8,3,Cataluña,SARIMA,Test Prediction,1272.9,Gompertz,False
-2025-09-01,2025-09,2025,9,3,Cataluña,SARIMA,Test Prediction,1403.5,Gompertz,False
-2025-10-01,2025-10,2025,10,4,Cataluña,SARIMA,Test Prediction,1139.4,Gompertz,False
-2025-11-01,2025-11,2025,11,4,Cataluña,SARIMA,Test Prediction,1051.7,Gompertz,False
-2025-12-01,2025-12,2025,12,4,Cataluña,SARIMA,Test Prediction,995.1,Gompertz,False
-2025-01-01,2025-01,2025,1,1,Cataluña,Logistic,Test Prediction,2671.7,Gompertz,False
-2025-02-01,2025-02,2025,2,1,Cataluña,Logistic,Test Prediction,3194.5,Gompertz,False
-2025-03-01,2025-03,2025,3,1,Cataluña,Logistic,Test Prediction,3746.5,Gompertz,False
-2025-04-01,2025-04,2025,4,2,Cataluña,Logistic,Test Prediction,4300.5,Gompertz,False
-2025-05-01,2025-05,2025,5,2,Cataluña,Logistic,Test Prediction,4827.7,Gompertz,False
-2025-06-01,2025-06,2025,6,2,Cataluña,Logistic,Test Prediction,5303.7,Gompertz,False
-2025-07-01,2025-07,2025,7,3,Cataluña,Logistic,Test Prediction,5712.2,Gompertz,False
-2025-08-01,2025-08,2025,8,3,Cataluña,Logistic,Test Prediction,6046.4,Gompertz,False
-2025-09-01,2025-09,2025,9,3,Cataluña,Logistic,Test Prediction,6308.6,Gompertz,False
-2025-10-01,2025-10,2025,10,4,Cataluña,Logistic,Test Prediction,6508.3,Gompertz,False
-2025-11-01,2025-11,2025,11,4,Cataluña,Logistic,Test Prediction,6658.9,Gompertz,False
-2025-12-01,2025-12,2025,12,4,Cataluña,Logistic,Test Prediction,6775.2,Gompertz,False
-2025-01-01,2025-01,2025,1,1,Cataluña,Gompertz,Test Prediction,2710.9,Gompertz,True
-2025-02-01,2025-02,2025,2,1,Cataluña,Gompertz,Test Prediction,3303.4,Gompertz,True
-2025-03-01,2025-03,2025,3,1,Cataluña,Gompertz,Test Prediction,3995.4,Gompertz,True
-2025-04-01,2025-04,2025,4,2,Cataluña,Gompertz,Test Prediction,4788.9,Gompertz,True
-2025-05-01,2025-05,2025,5,2,Cataluña,Gompertz,Test Prediction,5683.4,Gompertz,True
-2025-06-01,2025-06,2025,6,2,Cataluña,Gompertz,Test Prediction,6677.0,Gompertz,True
-2025-07-01,2025-07,2025,7,3,Cataluña,Gompertz,Test Prediction,7768.0,Gompertz,True
-2025-08-01,2025-08,2025,8,3,Cataluña,Gompertz,Test Prediction,8956.1,Gompertz,True
-2025-09-01,2025-09,2025,9,3,Cataluña,Gompertz,Test Prediction,10242.9,Gompertz,True
-2025-10-01,2025-10,2025,10,4,Cataluña,Gompertz,Test Prediction,11632.1,Gompertz,True
-2025-11-01,2025-11,2025,11,4,Cataluña,Gompertz,Test Prediction,13127.9,Gompertz,True
-2025-12-01,2025-12,2025,12,4,Cataluña,Gompertz,Test Prediction,14734.3,Gompertz,True
-2025-01-01,2025-01,2025,1,1,Cataluña,Ridge,Test Prediction,4984.6,Gompertz,False
-2025-02-01,2025-02,2025,2,1,Cataluña,Ridge,Test Prediction,5940.2,Gompertz,False
-2025-03-01,2025-03,2025,3,1,Cataluña,Ridge,Test Prediction,7614.4,Gompertz,False
-2025-04-01,2025-04,2025,4,2,Cataluña,Ridge,Test Prediction,9877.3,Gompertz,False
-2025-05-01,2025-05,2025,5,2,Cataluña,Ridge,Test Prediction,21624.4,Gompertz,False
-2025-06-01,2025-06,2025,6,2,Cataluña,Ridge,Test Prediction,48483.9,Gompertz,False
-2025-07-01,2025-07,2025,7,3,Cataluña,Ridge,Test Prediction,103647.4,Gompertz,False
-2025-08-01,2025-08,2025,8,3,Cataluña,Ridge,Test Prediction,157807.0,Gompertz,False
-2025-09-01,2025-09,2025,9,3,Cataluña,Ridge,Test Prediction,109616.8,Gompertz,False
-2025-10-01,2025-10,2025,10,4,Cataluña,Ridge,Test Prediction,78403.0,Gompertz,False
-2025-11-01,2025-11,2025,11,4,Cataluña,Ridge,Test Prediction,80524.3,Gompertz,False
-2025-12-01,2025-12,2025,12,4,Cataluña,Ridge,Test Prediction,69505.7,Gompertz,False
-2025-01-01,2025-01,2025,1,1,Cataluña,Random Forest,Test Prediction,1138.6,Gompertz,False
-2025-02-01,2025-02,2025,2,1,Cataluña,Random Forest,Test Prediction,1101.8,Gompertz,False
-2025-03-01,2025-03,2025,3,1,Cataluña,Random Forest,Test Prediction,1085.5,Gompertz,False
-2025-04-01,2025-04,2025,4,2,Cataluña,Random Forest,Test Prediction,1102.9,Gompertz,False
-2025-05-01,2025-05,2025,5,2,Cataluña,Random Forest,Test Prediction,1135.7,Gompertz,False
-2025-06-01,2025-06,2025,6,2,Cataluña,Random Forest,Test Prediction,1073.1,Gompertz,False
-2025-07-01,2025-07,2025,7,3,Cataluña,Random Forest,Test Prediction,1080.0,Gompertz,False
-2025-08-01,2025-08,2025,8,3,Cataluña,Random Forest,Test Prediction,1061.2,Gompertz,False
-2025-09-01,2025-09,2025,9,3,Cataluña,Random Forest,Test Prediction,1071.6,Gompertz,False
-2025-10-01,2025-10,2025,10,4,Cataluña,Random Forest,Test Prediction,1090.7,Gompertz,False
-2025-11-01,2025-11,2025,11,4,Cataluña,Random Forest,Test Prediction,1102.6,Gompertz,False
-2025-12-01,2025-12,2025,12,4,Cataluña,Random Forest,Test Prediction,1088.6,Gompertz,False
-2025-01-01,2025-01,2025,1,1,Cataluña,XGBoost,Test Prediction,1036.0,Gompertz,False
-2025-02-01,2025-02,2025,2,1,Cataluña,XGBoost,Test Prediction,1036.7,Gompertz,False
-2025-03-01,2025-03,2025,3,1,Cataluña,XGBoost,Test Prediction,1036.7,Gompertz,False
-2025-04-01,2025-04,2025,4,2,Cataluña,XGBoost,Test Prediction,1212.0,Gompertz,False
-2025-05-01,2025-05,2025,5,2,Cataluña,XGBoost,Test Prediction,1083.0,Gompertz,False
-2025-06-01,2025-06,2025,6,2,Cataluña,XGBoost,Test Prediction,1162.5,Gompertz,False
-2025-07-01,2025-07,2025,7,3,Cataluña,XGBoost,Test Prediction,1240.1,Gompertz,False
-2025-08-01,2025-08,2025,8,3,Cataluña,XGBoost,Test Prediction,1186.3,Gompertz,False
-2025-09-01,2025-09,2025,9,3,Cataluña,XGBoost,Test Prediction,922.2,Gompertz,False
-2025-10-01,2025-10,2025,10,4,Cataluña,XGBoost,Test Prediction,1186.8,Gompertz,False
-2025-11-01,2025-11,2025,11,4,Cataluña,XGBoost,Test Prediction,1186.8,Gompertz,False
-2025-12-01,2025-12,2025,12,4,Cataluña,XGBoost,Test Prediction,1186.8,Gompertz,False
-2025-01-01,2025-01,2025,1,1,Cataluña,Diesel Share,Test Prediction,4074.6,Gompertz,False
-2025-02-01,2025-02,2025,2,1,Cataluña,Diesel Share,Test Prediction,4421.8,Gompertz,False
-2025-03-01,2025-03,2025,3,1,Cataluña,Diesel Share,Test Prediction,5442.1,Gompertz,False
-2025-04-01,2025-04,2025,4,2,Cataluña,Diesel Share,Test Prediction,6829.4,Gompertz,False
-2025-05-01,2025-05,2025,5,2,Cataluña,Diesel Share,Test Prediction,14822.4,Gompertz,False
-2025-06-01,2025-06,2025,6,2,Cataluña,Diesel Share,Test Prediction,24515.1,Gompertz,False
-2025-07-01,2025-07,2025,7,3,Cataluña,Diesel Share,Test Prediction,43898.6,Gompertz,False
-2025-08-01,2025-08,2025,8,3,Cataluña,Diesel Share,Test Prediction,50072.6,Gompertz,False
-2025-09-01,2025-09,2025,9,3,Cataluña,Diesel Share,Test Prediction,30973.8,Gompertz,False
-2025-10-01,2025-10,2025,10,4,Cataluña,Diesel Share,Test Prediction,24793.6,Gompertz,False
-2025-11-01,2025-11,2025,11,4,Cataluña,Diesel Share,Test Prediction,31796.8,Gompertz,False
-2025-12-01,2025-12,2025,12,4,Cataluña,Diesel Share,Test Prediction,25824.6,Gompertz,False
+2025-02-01,2025-02,2025,2,1,Nacional,Diesel Share,Test Prediction,62003.9,SARIMA,False
+2025-03-01,2025-03,2025,3,1,Nacional,Diesel Share,Test Prediction,544608.0,SARIMA,False
+2025-04-01,2025-04,2025,4,2,Nacional,Diesel Share,Test Prediction,558621.3,SARIMA,False
+2025-05-01,2025-05,2025,5,2,Nacional,Diesel Share,Test Prediction,579276.3,SARIMA,False
+2025-06-01,2025-06,2025,6,2,Nacional,Diesel Share,Test Prediction,529864.2,SARIMA,False
+2025-07-01,2025-07,2025,7,3,Nacional,Diesel Share,Test Prediction,564034.5,SARIMA,False
+2025-08-01,2025-08,2025,8,3,Nacional,Diesel Share,Test Prediction,554222.1,SARIMA,False
+2025-09-01,2025-09,2025,9,3,Nacional,Diesel Share,Test Prediction,531841.8,SARIMA,False
+2025-10-01,2025-10,2025,10,4,Nacional,Diesel Share,Test Prediction,552683.1,SARIMA,False
+2025-11-01,2025-11,2025,11,4,Nacional,Diesel Share,Test Prediction,531483.6,SARIMA,False
+2025-12-01,2025-12,2025,12,4,Nacional,Diesel Share,Test Prediction,532732.5,SARIMA,False
+2025-01-01,2025-01,2025,1,1,Madrid,SARIMA,Test Prediction,2659.3,Logistic,False
+2025-02-01,2025-02,2025,2,1,Madrid,SARIMA,Test Prediction,3398.8,Logistic,False
+2025-03-01,2025-03,2025,3,1,Madrid,SARIMA,Test Prediction,4308.5,Logistic,False
+2025-04-01,2025-04,2025,4,2,Madrid,SARIMA,Test Prediction,5438.8,Logistic,False
+2025-05-01,2025-05,2025,5,2,Madrid,SARIMA,Test Prediction,6801.5,Logistic,False
+2025-06-01,2025-06,2025,6,2,Madrid,SARIMA,Test Prediction,8481.9,Logistic,False
+2025-07-01,2025-07,2025,7,3,Madrid,SARIMA,Test Prediction,10513.8,Logistic,False
+2025-08-01,2025-08,2025,8,3,Madrid,SARIMA,Test Prediction,12965.9,Logistic,False
+2025-09-01,2025-09,2025,9,3,Madrid,SARIMA,Test Prediction,15882.6,Logistic,False
+2025-10-01,2025-10,2025,10,4,Madrid,SARIMA,Test Prediction,19369.8,Logistic,False
+2025-11-01,2025-11,2025,11,4,Madrid,SARIMA,Test Prediction,23513.9,Logistic,False
+2025-12-01,2025-12,2025,12,4,Madrid,SARIMA,Test Prediction,28399.9,Logistic,False
+2025-01-01,2025-01,2025,1,1,Madrid,Logistic,Test Prediction,2583.6,Logistic,True
+2025-02-01,2025-02,2025,2,1,Madrid,Logistic,Test Prediction,3085.1,Logistic,True
+2025-03-01,2025-03,2025,3,1,Madrid,Logistic,Test Prediction,3581.5,Logistic,True
+2025-04-01,2025-04,2025,4,2,Madrid,Logistic,Test Prediction,4046.9,Logistic,True
+2025-05-01,2025-05,2025,5,2,Madrid,Logistic,Test Prediction,4461.3,Logistic,True
+2025-06-01,2025-06,2025,6,2,Madrid,Logistic,Test Prediction,4814.1,Logistic,True
+2025-07-01,2025-07,2025,7,3,Madrid,Logistic,Test Prediction,5102.6,Logistic,True
+2025-08-01,2025-08,2025,8,3,Madrid,Logistic,Test Prediction,5330.3,Logistic,True
+2025-09-01,2025-09,2025,9,3,Madrid,Logistic,Test Prediction,5504.2,Logistic,True
+2025-10-01,2025-10,2025,10,4,Madrid,Logistic,Test Prediction,5632.3,Logistic,True
+2025-11-01,2025-11,2025,11,4,Madrid,Logistic,Test Prediction,5723.2,Logistic,True
+2025-12-01,2025-12,2025,12,4,Madrid,Logistic,Test Prediction,5785.0,Logistic,True
+2025-01-01,2025-01,2025,1,1,Madrid,Gompertz,Test Prediction,2644.6,Logistic,False
+2025-02-01,2025-02,2025,2,1,Madrid,Gompertz,Test Prediction,3269.1,Logistic,False
+2025-03-01,2025-03,2025,3,1,Madrid,Gompertz,Test Prediction,3998.7,Logistic,False
+2025-04-01,2025-04,2025,4,2,Madrid,Gompertz,Test Prediction,4843.0,Logistic,False
+2025-05-01,2025-05,2025,5,2,Madrid,Gompertz,Test Prediction,5809.5,Logistic,False
+2025-06-01,2025-06,2025,6,2,Madrid,Gompertz,Test Prediction,6903.4,Logistic,False
+2025-07-01,2025-07,2025,7,3,Madrid,Gompertz,Test Prediction,8127.2,Logistic,False
+2025-08-01,2025-08,2025,8,3,Madrid,Gompertz,Test Prediction,9480.6,Logistic,False
+2025-09-01,2025-09,2025,9,3,Madrid,Gompertz,Test Prediction,10961.4,Logistic,False
+2025-10-01,2025-10,2025,10,4,Madrid,Gompertz,Test Prediction,12566.0,Logistic,False
+2025-11-01,2025-11,2025,11,4,Madrid,Gompertz,Test Prediction,14290.0,Logistic,False
+2025-12-01,2025-12,2025,12,4,Madrid,Gompertz,Test Prediction,16129.0,Logistic,False
+2025-01-01,2025-01,2025,1,1,Madrid,Ridge,Test Prediction,3111.8,Logistic,False
+2025-02-01,2025-02,2025,2,1,Madrid,Ridge,Test Prediction,3622.4,Logistic,False
+2025-03-01,2025-03,2025,3,1,Madrid,Ridge,Test Prediction,4954.6,Logistic,False
+2025-04-01,2025-04,2025,4,2,Madrid,Ridge,Test Prediction,7377.3,Logistic,False
+2025-05-01,2025-05,2025,5,2,Madrid,Ridge,Test Prediction,15680.6,Logistic,False
+2025-06-01,2025-06,2025,6,2,Madrid,Ridge,Test Prediction,111075.9,Logistic,False
+2025-07-01,2025-07,2025,7,3,Madrid,Ridge,Test Prediction,3269016.4,Logistic,False
+2025-08-01,2025-08,2025,8,3,Madrid,Ridge,Test Prediction,3269016.4,Logistic,False
+2025-09-01,2025-09,2025,9,3,Madrid,Ridge,Test Prediction,3269016.4,Logistic,False
+2025-10-01,2025-10,2025,10,4,Madrid,Ridge,Test Prediction,3269016.4,Logistic,False
+2025-11-01,2025-11,2025,11,4,Madrid,Ridge,Test Prediction,3269016.4,Logistic,False
+2025-12-01,2025-12,2025,12,4,Madrid,Ridge,Test Prediction,3269016.4,Logistic,False
+2025-01-01,2025-01,2025,1,1,Madrid,Random Forest,Test Prediction,884.5,Logistic,False
+2025-02-01,2025-02,2025,2,1,Madrid,Random Forest,Test Prediction,893.7,Logistic,False
+2025-03-01,2025-03,2025,3,1,Madrid,Random Forest,Test Prediction,893.7,Logistic,False
+2025-04-01,2025-04,2025,4,2,Madrid,Random Forest,Test Prediction,877.3,Logistic,False
+2025-05-01,2025-05,2025,5,2,Madrid,Random Forest,Test Prediction,835.8,Logistic,False
+2025-06-01,2025-06,2025,6,2,Madrid,Random Forest,Test Prediction,853.2,Logistic,False
+2025-07-01,2025-07,2025,7,3,Madrid,Random Forest,Test Prediction,860.3,Logistic,False
+2025-08-01,2025-08,2025,8,3,Madrid,Random Forest,Test Prediction,872.5,Logistic,False
+2025-09-01,2025-09,2025,9,3,Madrid,Random Forest,Test Prediction,956.9,Logistic,False
+2025-10-01,2025-10,2025,10,4,Madrid,Random Forest,Test Prediction,962.9,Logistic,False
+2025-11-01,2025-11,2025,11,4,Madrid,Random Forest,Test Prediction,951.7,Logistic,False
+2025-12-01,2025-12,2025,12,4,Madrid,Random Forest,Test Prediction,948.6,Logistic,False
+2025-01-01,2025-01,2025,1,1,Madrid,XGBoost,Test Prediction,925.9,Logistic,False
+2025-02-01,2025-02,2025,2,1,Madrid,XGBoost,Test Prediction,910.6,Logistic,False
+2025-03-01,2025-03,2025,3,1,Madrid,XGBoost,Test Prediction,910.6,Logistic,False
+2025-04-01,2025-04,2025,4,2,Madrid,XGBoost,Test Prediction,910.6,Logistic,False
+2025-05-01,2025-05,2025,5,2,Madrid,XGBoost,Test Prediction,871.0,Logistic,False
+2025-06-01,2025-06,2025,6,2,Madrid,XGBoost,Test Prediction,878.3,Logistic,False
+2025-07-01,2025-07,2025,7,3,Madrid,XGBoost,Test Prediction,926.3,Logistic,False
+2025-08-01,2025-08,2025,8,3,Madrid,XGBoost,Test Prediction,968.8,Logistic,False
+2025-09-01,2025-09,2025,9,3,Madrid,XGBoost,Test Prediction,1067.8,Logistic,False
+2025-10-01,2025-10,2025,10,4,Madrid,XGBoost,Test Prediction,1093.3,Logistic,False
+2025-11-01,2025-11,2025,11,4,Madrid,XGBoost,Test Prediction,1093.3,Logistic,False
+2025-12-01,2025-12,2025,12,4,Madrid,XGBoost,Test Prediction,1086.2,Logistic,False
+2025-01-01,2025-01,2025,1,1,Madrid,Diesel Share,Test Prediction,2978.4,Logistic,False
+2025-02-01,2025-02,2025,2,1,Madrid,Diesel Share,Test Prediction,2228.7,Logistic,False
+2025-03-01,2025-03,2025,3,1,Madrid,Diesel Share,Test Prediction,2101.6,Logistic,False
+2025-04-01,2025-04,2025,4,2,Madrid,Diesel Share,Test Prediction,1957.9,Logistic,False
+2025-05-01,2025-05,2025,5,2,Madrid,Diesel Share,Test Prediction,2210.5,Logistic,False
+2025-06-01,2025-06,2025,6,2,Madrid,Diesel Share,Test Prediction,3656.5,Logistic,False
+2025-07-01,2025-07,2025,7,3,Madrid,Diesel Share,Test Prediction,8384.6,Logistic,False
+2025-08-01,2025-08,2025,8,3,Madrid,Diesel Share,Test Prediction,16011.2,Logistic,False
+2025-09-01,2025-09,2025,9,3,Madrid,Diesel Share,Test Prediction,43520.7,Logistic,False
+2025-10-01,2025-10,2025,10,4,Madrid,Diesel Share,Test Prediction,45693.0,Logistic,False
+2025-11-01,2025-11,2025,11,4,Madrid,Diesel Share,Test Prediction,43456.2,Logistic,False
+2025-12-01,2025-12,2025,12,4,Madrid,Diesel Share,Test Prediction,43398.9,Logistic,False
+2025-01-01,2025-01,2025,1,1,Cataluña,SARIMA,Test Prediction,2466.8,XGBoost,False
+2025-02-01,2025-02,2025,2,1,Cataluña,SARIMA,Test Prediction,2677.1,XGBoost,False
+2025-03-01,2025-03,2025,3,1,Cataluña,SARIMA,Test Prediction,2645.5,XGBoost,False
+2025-04-01,2025-04,2025,4,2,Cataluña,SARIMA,Test Prediction,2263.0,XGBoost,False
+2025-05-01,2025-05,2025,5,2,Cataluña,SARIMA,Test Prediction,2242.7,XGBoost,False
+2025-06-01,2025-06,2025,6,2,Cataluña,SARIMA,Test Prediction,1600.3,XGBoost,False
+2025-07-01,2025-07,2025,7,3,Cataluña,SARIMA,Test Prediction,1330.6,XGBoost,False
+2025-08-01,2025-08,2025,8,3,Cataluña,SARIMA,Test Prediction,1272.9,XGBoost,False
+2025-09-01,2025-09,2025,9,3,Cataluña,SARIMA,Test Prediction,1403.5,XGBoost,False
+2025-10-01,2025-10,2025,10,4,Cataluña,SARIMA,Test Prediction,1139.4,XGBoost,False
+2025-11-01,2025-11,2025,11,4,Cataluña,SARIMA,Test Prediction,1051.7,XGBoost,False
+2025-12-01,2025-12,2025,12,4,Cataluña,SARIMA,Test Prediction,995.1,XGBoost,False
+2025-01-01,2025-01,2025,1,1,Cataluña,Logistic,Test Prediction,2671.7,XGBoost,False
+2025-02-01,2025-02,2025,2,1,Cataluña,Logistic,Test Prediction,3194.5,XGBoost,False
+2025-03-01,2025-03,2025,3,1,Cataluña,Logistic,Test Prediction,3746.5,XGBoost,False
+2025-04-01,2025-04,2025,4,2,Cataluña,Logistic,Test Prediction,4300.5,XGBoost,False
+2025-05-01,2025-05,2025,5,2,Cataluña,Logistic,Test Prediction,4827.7,XGBoost,False
+2025-06-01,2025-06,2025,6,2,Cataluña,Logistic,Test Prediction,5303.7,XGBoost,False
+2025-07-01,2025-07,2025,7,3,Cataluña,Logistic,Test Prediction,5712.2,XGBoost,False
+2025-08-01,2025-08,2025,8,3,Cataluña,Logistic,Test Prediction,6046.4,XGBoost,False
+2025-09-01,2025-09,2025,9,3,Cataluña,Logistic,Test Prediction,6308.6,XGBoost,False
+2025-10-01,2025-10,2025,10,4,Cataluña,Logistic,Test Prediction,6508.3,XGBoost,False
+2025-11-01,2025-11,2025,11,4,Cataluña,Logistic,Test Prediction,6658.9,XGBoost,False
+2025-12-01,2025-12,2025,12,4,Cataluña,Logistic,Test Prediction,6775.2,XGBoost,False
+2025-01-01,2025-01,2025,1,1,Cataluña,Gompertz,Test Prediction,2710.9,XGBoost,False
+2025-02-01,2025-02,2025,2,1,Cataluña,Gompertz,Test Prediction,3303.4,XGBoost,False
+2025-03-01,2025-03,2025,3,1,Cataluña,Gompertz,Test Prediction,3995.4,XGBoost,False
+2025-04-01,2025-04,2025,4,2,Cataluña,Gompertz,Test Prediction,4788.9,XGBoost,False
+2025-05-01,2025-05,2025,5,2,Cataluña,Gompertz,Test Prediction,5683.4,XGBoost,False
+2025-06-01,2025-06,2025,6,2,Cataluña,Gompertz,Test Prediction,6677.0,XGBoost,False
+2025-07-01,2025-07,2025,7,3,Cataluña,Gompertz,Test Prediction,7768.0,XGBoost,False
+2025-08-01,2025-08,2025,8,3,Cataluña,Gompertz,Test Prediction,8956.1,XGBoost,False
+2025-09-01,2025-09,2025,9,3,Cataluña,Gompertz,Test Prediction,10242.9,XGBoost,False
+2025-10-01,2025-10,2025,10,4,Cataluña,Gompertz,Test Prediction,11632.1,XGBoost,False
+2025-11-01,2025-11,2025,11,4,Cataluña,Gompertz,Test Prediction,13127.9,XGBoost,False
+2025-12-01,2025-12,2025,12,4,Cataluña,Gompertz,Test Prediction,14734.3,XGBoost,False
+2025-01-01,2025-01,2025,1,1,Cataluña,Ridge,Test Prediction,4984.6,XGBoost,False
+2025-02-01,2025-02,2025,2,1,Cataluña,Ridge,Test Prediction,41757.4,XGBoost,False
+2025-03-01,2025-03,2025,3,1,Cataluña,Ridge,Test Prediction,3269016.4,XGBoost,False
+2025-04-01,2025-04,2025,4,2,Cataluña,Ridge,Test Prediction,3269016.4,XGBoost,False
+2025-05-01,2025-05,2025,5,2,Cataluña,Ridge,Test Prediction,3269016.4,XGBoost,False
+2025-06-01,2025-06,2025,6,2,Cataluña,Ridge,Test Prediction,3269016.4,XGBoost,False
+2025-07-01,2025-07,2025,7,3,Cataluña,Ridge,Test Prediction,3269016.4,XGBoost,False
+2025-08-01,2025-08,2025,8,3,Cataluña,Ridge,Test Prediction,3269016.4,XGBoost,False
+2025-09-01,2025-09,2025,9,3,Cataluña,Ridge,Test Prediction,3269016.4,XGBoost,False
+2025-10-01,2025-10,2025,10,4,Cataluña,Ridge,Test Prediction,3269016.4,XGBoost,False
+2025-11-01,2025-11,2025,11,4,Cataluña,Ridge,Test Prediction,3269016.4,XGBoost,False
+2025-12-01,2025-12,2025,12,4,Cataluña,Ridge,Test Prediction,3269016.4,XGBoost,False
+2025-01-01,2025-01,2025,1,1,Cataluña,Random Forest,Test Prediction,1138.6,XGBoost,False
+2025-02-01,2025-02,2025,2,1,Cataluña,Random Forest,Test Prediction,1136.5,XGBoost,False
+2025-03-01,2025-03,2025,3,1,Cataluña,Random Forest,Test Prediction,1083.4,XGBoost,False
+2025-04-01,2025-04,2025,4,2,Cataluña,Random Forest,Test Prediction,1074.2,XGBoost,False
+2025-05-01,2025-05,2025,5,2,Cataluña,Random Forest,Test Prediction,1088.8,XGBoost,False
+2025-06-01,2025-06,2025,6,2,Cataluña,Random Forest,Test Prediction,1061.2,XGBoost,False
+2025-07-01,2025-07,2025,7,3,Cataluña,Random Forest,Test Prediction,1068.1,XGBoost,False
+2025-08-01,2025-08,2025,8,3,Cataluña,Random Forest,Test Prediction,1068.1,XGBoost,False
+2025-09-01,2025-09,2025,9,3,Cataluña,Random Forest,Test Prediction,1092.5,XGBoost,False
+2025-10-01,2025-10,2025,10,4,Cataluña,Random Forest,Test Prediction,1149.1,XGBoost,False
+2025-11-01,2025-11,2025,11,4,Cataluña,Random Forest,Test Prediction,1146.9,XGBoost,False
+2025-12-01,2025-12,2025,12,4,Cataluña,Random Forest,Test Prediction,1149.1,XGBoost,False
+2025-01-01,2025-01,2025,1,1,Cataluña,XGBoost,Test Prediction,1036.0,XGBoost,True
+2025-02-01,2025-02,2025,2,1,Cataluña,XGBoost,Test Prediction,1036.0,XGBoost,True
+2025-03-01,2025-03,2025,3,1,Cataluña,XGBoost,Test Prediction,1036.0,XGBoost,True
+2025-04-01,2025-04,2025,4,2,Cataluña,XGBoost,Test Prediction,1036.0,XGBoost,True
+2025-05-01,2025-05,2025,5,2,Cataluña,XGBoost,Test Prediction,1012.7,XGBoost,True
+2025-06-01,2025-06,2025,6,2,Cataluña,XGBoost,Test Prediction,1000.6,XGBoost,True
+2025-07-01,2025-07,2025,7,3,Cataluña,XGBoost,Test Prediction,1067.4,XGBoost,True
+2025-08-01,2025-08,2025,8,3,Cataluña,XGBoost,Test Prediction,1091.9,XGBoost,True
+2025-09-01,2025-09,2025,9,3,Cataluña,XGBoost,Test Prediction,963.3,XGBoost,True
+2025-10-01,2025-10,2025,10,4,Cataluña,XGBoost,Test Prediction,1093.2,XGBoost,True
+2025-11-01,2025-11,2025,11,4,Cataluña,XGBoost,Test Prediction,1092.4,XGBoost,True
+2025-12-01,2025-12,2025,12,4,Cataluña,XGBoost,Test Prediction,1093.2,XGBoost,True
+2025-01-01,2025-01,2025,1,1,Cataluña,Diesel Share,Test Prediction,4074.6,XGBoost,False
+2025-02-01,2025-02,2025,2,1,Cataluña,Diesel Share,Test Prediction,20239.3,XGBoost,False
+2025-03-01,2025-03,2025,3,1,Cataluña,Diesel Share,Test Prediction,88255.2,XGBoost,False
+2025-04-01,2025-04,2025,4,2,Cataluña,Diesel Share,Test Prediction,86150.4,XGBoost,False
+2025-05-01,2025-05,2025,5,2,Cataluña,Diesel Share,Test Prediction,95706.0,XGBoost,False
+2025-06-01,2025-06,2025,6,2,Cataluña,Diesel Share,Test Prediction,86801.4,XGBoost,False
+2025-07-01,2025-07,2025,7,3,Cataluña,Diesel Share,Test Prediction,89577.0,XGBoost,False
+2025-08-01,2025-08,2025,8,3,Cataluña,Diesel Share,Test Prediction,86781.6,XGBoost,False
+2025-09-01,2025-09,2025,9,3,Cataluña,Diesel Share,Test Prediction,81963.0,XGBoost,False
+2025-10-01,2025-10,2025,10,4,Cataluña,Diesel Share,Test Prediction,90954.6,XGBoost,False
+2025-11-01,2025-11,2025,11,4,Cataluña,Diesel Share,Test Prediction,83437.2,XGBoost,False
+2025-12-01,2025-12,2025,12,4,Cataluña,Diesel Share,Test Prediction,86083.5,XGBoost,False
 2025-01-01,2025-01,2025,1,1,Andalucía,SARIMA,Test Prediction,683.8,Logistic,False
 2025-02-01,2025-02,2025,2,1,Andalucía,SARIMA,Test Prediction,692.1,Logistic,False
 2025-03-01,2025-03,2025,3,1,Andalucía,SARIMA,Test Prediction,680.0,Logistic,False
@@ -468,47 +468,47 @@ Fecha_Date,Fecha,Anyo,Mes,Trimestre,Target,Model,Type,Valor,Selected_Model,Is_Se
 2025-11-01,2025-11,2025,11,4,Andalucía,Gompertz,Test Prediction,712.5,Logistic,False
 2025-12-01,2025-12,2025,12,4,Andalucía,Gompertz,Test Prediction,708.1,Logistic,False
 2025-01-01,2025-01,2025,1,1,Andalucía,Ridge,Test Prediction,4258.7,Logistic,False
-2025-02-01,2025-02,2025,2,1,Andalucía,Ridge,Test Prediction,5656.5,Logistic,False
-2025-03-01,2025-03,2025,3,1,Andalucía,Ridge,Test Prediction,4061.2,Logistic,False
-2025-04-01,2025-04,2025,4,2,Andalucía,Ridge,Test Prediction,5679.8,Logistic,False
-2025-05-01,2025-05,2025,5,2,Andalucía,Ridge,Test Prediction,5139.6,Logistic,False
-2025-06-01,2025-06,2025,6,2,Andalucía,Ridge,Test Prediction,35308.1,Logistic,False
-2025-07-01,2025-07,2025,7,3,Andalucía,Ridge,Test Prediction,502841.6,Logistic,False
+2025-02-01,2025-02,2025,2,1,Andalucía,Ridge,Test Prediction,3269016.4,Logistic,False
+2025-03-01,2025-03,2025,3,1,Andalucía,Ridge,Test Prediction,3269016.4,Logistic,False
+2025-04-01,2025-04,2025,4,2,Andalucía,Ridge,Test Prediction,3269016.4,Logistic,False
+2025-05-01,2025-05,2025,5,2,Andalucía,Ridge,Test Prediction,3269016.4,Logistic,False
+2025-06-01,2025-06,2025,6,2,Andalucía,Ridge,Test Prediction,3269016.4,Logistic,False
+2025-07-01,2025-07,2025,7,3,Andalucía,Ridge,Test Prediction,3269016.4,Logistic,False
 2025-08-01,2025-08,2025,8,3,Andalucía,Ridge,Test Prediction,3269016.4,Logistic,False
-2025-09-01,2025-09,2025,9,3,Andalucía,Ridge,Test Prediction,3194423.8,Logistic,False
-2025-10-01,2025-10,2025,10,4,Andalucía,Ridge,Test Prediction,2489987.5,Logistic,False
-2025-11-01,2025-11,2025,11,4,Andalucía,Ridge,Test Prediction,1918061.9,Logistic,False
-2025-12-01,2025-12,2025,12,4,Andalucía,Ridge,Test Prediction,1818063.9,Logistic,False
+2025-09-01,2025-09,2025,9,3,Andalucía,Ridge,Test Prediction,3269016.4,Logistic,False
+2025-10-01,2025-10,2025,10,4,Andalucía,Ridge,Test Prediction,3269016.4,Logistic,False
+2025-11-01,2025-11,2025,11,4,Andalucía,Ridge,Test Prediction,3269016.4,Logistic,False
+2025-12-01,2025-12,2025,12,4,Andalucía,Ridge,Test Prediction,3269016.4,Logistic,False
 2025-01-01,2025-01,2025,1,1,Andalucía,Random Forest,Test Prediction,519.8,Logistic,False
-2025-02-01,2025-02,2025,2,1,Andalucía,Random Forest,Test Prediction,515.5,Logistic,False
-2025-03-01,2025-03,2025,3,1,Andalucía,Random Forest,Test Prediction,513.0,Logistic,False
-2025-04-01,2025-04,2025,4,2,Andalucía,Random Forest,Test Prediction,514.9,Logistic,False
-2025-05-01,2025-05,2025,5,2,Andalucía,Random Forest,Test Prediction,477.1,Logistic,False
-2025-06-01,2025-06,2025,6,2,Andalucía,Random Forest,Test Prediction,453.2,Logistic,False
-2025-07-01,2025-07,2025,7,3,Andalucía,Random Forest,Test Prediction,453.7,Logistic,False
-2025-08-01,2025-08,2025,8,3,Andalucía,Random Forest,Test Prediction,463.1,Logistic,False
-2025-09-01,2025-09,2025,9,3,Andalucía,Random Forest,Test Prediction,525.9,Logistic,False
-2025-10-01,2025-10,2025,10,4,Andalucía,Random Forest,Test Prediction,528.4,Logistic,False
-2025-11-01,2025-11,2025,11,4,Andalucía,Random Forest,Test Prediction,466.0,Logistic,False
-2025-12-01,2025-12,2025,12,4,Andalucía,Random Forest,Test Prediction,527.1,Logistic,False
+2025-02-01,2025-02,2025,2,1,Andalucía,Random Forest,Test Prediction,516.6,Logistic,False
+2025-03-01,2025-03,2025,3,1,Andalucía,Random Forest,Test Prediction,515.9,Logistic,False
+2025-04-01,2025-04,2025,4,2,Andalucía,Random Forest,Test Prediction,516.2,Logistic,False
+2025-05-01,2025-05,2025,5,2,Andalucía,Random Forest,Test Prediction,476.4,Logistic,False
+2025-06-01,2025-06,2025,6,2,Andalucía,Random Forest,Test Prediction,449.2,Logistic,False
+2025-07-01,2025-07,2025,7,3,Andalucía,Random Forest,Test Prediction,512.3,Logistic,False
+2025-08-01,2025-08,2025,8,3,Andalucía,Random Forest,Test Prediction,463.6,Logistic,False
+2025-09-01,2025-09,2025,9,3,Andalucía,Random Forest,Test Prediction,456.6,Logistic,False
+2025-10-01,2025-10,2025,10,4,Andalucía,Random Forest,Test Prediction,520.0,Logistic,False
+2025-11-01,2025-11,2025,11,4,Andalucía,Random Forest,Test Prediction,528.6,Logistic,False
+2025-12-01,2025-12,2025,12,4,Andalucía,Random Forest,Test Prediction,523.3,Logistic,False
 2025-01-01,2025-01,2025,1,1,Andalucía,XGBoost,Test Prediction,338.9,Logistic,False
-2025-02-01,2025-02,2025,2,1,Andalucía,XGBoost,Test Prediction,338.6,Logistic,False
-2025-03-01,2025-03,2025,3,1,Andalucía,XGBoost,Test Prediction,357.1,Logistic,False
-2025-04-01,2025-04,2025,4,2,Andalucía,XGBoost,Test Prediction,416.8,Logistic,False
-2025-05-01,2025-05,2025,5,2,Andalucía,XGBoost,Test Prediction,430.7,Logistic,False
-2025-06-01,2025-06,2025,6,2,Andalucía,XGBoost,Test Prediction,449.9,Logistic,False
-2025-07-01,2025-07,2025,7,3,Andalucía,XGBoost,Test Prediction,486.0,Logistic,False
-2025-08-01,2025-08,2025,8,3,Andalucía,XGBoost,Test Prediction,470.2,Logistic,False
-2025-09-01,2025-09,2025,9,3,Andalucía,XGBoost,Test Prediction,473.5,Logistic,False
-2025-10-01,2025-10,2025,10,4,Andalucía,XGBoost,Test Prediction,489.7,Logistic,False
-2025-11-01,2025-11,2025,11,4,Andalucía,XGBoost,Test Prediction,471.1,Logistic,False
-2025-12-01,2025-12,2025,12,4,Andalucía,XGBoost,Test Prediction,475.7,Logistic,False
+2025-02-01,2025-02,2025,2,1,Andalucía,XGBoost,Test Prediction,324.3,Logistic,False
+2025-03-01,2025-03,2025,3,1,Andalucía,XGBoost,Test Prediction,340.2,Logistic,False
+2025-04-01,2025-04,2025,4,2,Andalucía,XGBoost,Test Prediction,402.2,Logistic,False
+2025-05-01,2025-05,2025,5,2,Andalucía,XGBoost,Test Prediction,428.1,Logistic,False
+2025-06-01,2025-06,2025,6,2,Andalucía,XGBoost,Test Prediction,441.5,Logistic,False
+2025-07-01,2025-07,2025,7,3,Andalucía,XGBoost,Test Prediction,478.6,Logistic,False
+2025-08-01,2025-08,2025,8,3,Andalucía,XGBoost,Test Prediction,480.0,Logistic,False
+2025-09-01,2025-09,2025,9,3,Andalucía,XGBoost,Test Prediction,470.7,Logistic,False
+2025-10-01,2025-10,2025,10,4,Andalucía,XGBoost,Test Prediction,481.3,Logistic,False
+2025-11-01,2025-11,2025,11,4,Andalucía,XGBoost,Test Prediction,481.3,Logistic,False
+2025-12-01,2025-12,2025,12,4,Andalucía,XGBoost,Test Prediction,467.6,Logistic,False
 2025-01-01,2025-01,2025,1,1,Andalucía,Diesel Share,Test Prediction,5894.8,Logistic,False
-2025-02-01,2025-02,2025,2,1,Andalucía,Diesel Share,Test Prediction,5745.6,Logistic,False
-2025-03-01,2025-03,2025,3,1,Andalucía,Diesel Share,Test Prediction,3572.2,Logistic,False
-2025-04-01,2025-04,2025,4,2,Andalucía,Diesel Share,Test Prediction,8717.3,Logistic,False
-2025-05-01,2025-05,2025,5,2,Andalucía,Diesel Share,Test Prediction,6679.5,Logistic,False
-2025-06-01,2025-06,2025,6,2,Andalucía,Diesel Share,Test Prediction,40720.3,Logistic,False
+2025-02-01,2025-02,2025,2,1,Andalucía,Diesel Share,Test Prediction,80272.2,Logistic,False
+2025-03-01,2025-03,2025,3,1,Andalucía,Diesel Share,Test Prediction,86220.0,Logistic,False
+2025-04-01,2025-04,2025,4,2,Andalucía,Diesel Share,Test Prediction,90250.5,Logistic,False
+2025-05-01,2025-05,2025,5,2,Andalucía,Diesel Share,Test Prediction,93582.6,Logistic,False
+2025-06-01,2025-06,2025,6,2,Andalucía,Diesel Share,Test Prediction,85443.9,Logistic,False
 2025-07-01,2025-07,2025,7,3,Andalucía,Diesel Share,Test Prediction,91648.8,Logistic,False
 2025-08-01,2025-08,2025,8,3,Andalucía,Diesel Share,Test Prediction,92181.0,Logistic,False
 2025-09-01,2025-09,2025,9,3,Andalucía,Diesel Share,Test Prediction,84999.6,Logistic,False
@@ -552,41 +552,41 @@ Fecha_Date,Fecha,Anyo,Mes,Trimestre,Target,Model,Type,Valor,Selected_Model,Is_Se
 2025-11-01,2025-11,2025,11,4,Valencia,Gompertz,Test Prediction,561.6,Gompertz,True
 2025-12-01,2025-12,2025,12,4,Valencia,Gompertz,Test Prediction,569.5,Gompertz,True
 2025-01-01,2025-01,2025,1,1,Valencia,Ridge,Test Prediction,19408.3,Gompertz,False
-2025-02-01,2025-02,2025,2,1,Valencia,Ridge,Test Prediction,39181.9,Gompertz,False
-2025-03-01,2025-03,2025,3,1,Valencia,Ridge,Test Prediction,65906.2,Gompertz,False
-2025-04-01,2025-04,2025,4,2,Valencia,Ridge,Test Prediction,48724.4,Gompertz,False
-2025-05-01,2025-05,2025,5,2,Valencia,Ridge,Test Prediction,73793.9,Gompertz,False
-2025-06-01,2025-06,2025,6,2,Valencia,Ridge,Test Prediction,246827.6,Gompertz,False
-2025-07-01,2025-07,2025,7,3,Valencia,Ridge,Test Prediction,1398859.9,Gompertz,False
+2025-02-01,2025-02,2025,2,1,Valencia,Ridge,Test Prediction,3269016.4,Gompertz,False
+2025-03-01,2025-03,2025,3,1,Valencia,Ridge,Test Prediction,3269016.4,Gompertz,False
+2025-04-01,2025-04,2025,4,2,Valencia,Ridge,Test Prediction,3269016.4,Gompertz,False
+2025-05-01,2025-05,2025,5,2,Valencia,Ridge,Test Prediction,3269016.4,Gompertz,False
+2025-06-01,2025-06,2025,6,2,Valencia,Ridge,Test Prediction,3269016.4,Gompertz,False
+2025-07-01,2025-07,2025,7,3,Valencia,Ridge,Test Prediction,3269016.4,Gompertz,False
 2025-08-01,2025-08,2025,8,3,Valencia,Ridge,Test Prediction,3269016.4,Gompertz,False
 2025-09-01,2025-09,2025,9,3,Valencia,Ridge,Test Prediction,3269016.4,Gompertz,False
 2025-10-01,2025-10,2025,10,4,Valencia,Ridge,Test Prediction,3269016.4,Gompertz,False
-2025-11-01,2025-11,2025,11,4,Valencia,Ridge,Test Prediction,2065084.1,Gompertz,False
+2025-11-01,2025-11,2025,11,4,Valencia,Ridge,Test Prediction,3269016.4,Gompertz,False
 2025-12-01,2025-12,2025,12,4,Valencia,Ridge,Test Prediction,3269016.4,Gompertz,False
 2025-01-01,2025-01,2025,1,1,Valencia,Random Forest,Test Prediction,285.4,Gompertz,False
-2025-02-01,2025-02,2025,2,1,Valencia,Random Forest,Test Prediction,276.0,Gompertz,False
-2025-03-01,2025-03,2025,3,1,Valencia,Random Forest,Test Prediction,274.3,Gompertz,False
-2025-04-01,2025-04,2025,4,2,Valencia,Random Forest,Test Prediction,280.8,Gompertz,False
-2025-05-01,2025-05,2025,5,2,Valencia,Random Forest,Test Prediction,285.4,Gompertz,False
-2025-06-01,2025-06,2025,6,2,Valencia,Random Forest,Test Prediction,330.0,Gompertz,False
-2025-07-01,2025-07,2025,7,3,Valencia,Random Forest,Test Prediction,343.8,Gompertz,False
-2025-08-01,2025-08,2025,8,3,Valencia,Random Forest,Test Prediction,351.7,Gompertz,False
-2025-09-01,2025-09,2025,9,3,Valencia,Random Forest,Test Prediction,350.1,Gompertz,False
-2025-10-01,2025-10,2025,10,4,Valencia,Random Forest,Test Prediction,352.1,Gompertz,False
-2025-11-01,2025-11,2025,11,4,Valencia,Random Forest,Test Prediction,350.4,Gompertz,False
-2025-12-01,2025-12,2025,12,4,Valencia,Random Forest,Test Prediction,339.6,Gompertz,False
+2025-02-01,2025-02,2025,2,1,Valencia,Random Forest,Test Prediction,275.7,Gompertz,False
+2025-03-01,2025-03,2025,3,1,Valencia,Random Forest,Test Prediction,273.3,Gompertz,False
+2025-04-01,2025-04,2025,4,2,Valencia,Random Forest,Test Prediction,274.4,Gompertz,False
+2025-05-01,2025-05,2025,5,2,Valencia,Random Forest,Test Prediction,275.7,Gompertz,False
+2025-06-01,2025-06,2025,6,2,Valencia,Random Forest,Test Prediction,312.2,Gompertz,False
+2025-07-01,2025-07,2025,7,3,Valencia,Random Forest,Test Prediction,328.6,Gompertz,False
+2025-08-01,2025-08,2025,8,3,Valencia,Random Forest,Test Prediction,342.2,Gompertz,False
+2025-09-01,2025-09,2025,9,3,Valencia,Random Forest,Test Prediction,349.1,Gompertz,False
+2025-10-01,2025-10,2025,10,4,Valencia,Random Forest,Test Prediction,349.3,Gompertz,False
+2025-11-01,2025-11,2025,11,4,Valencia,Random Forest,Test Prediction,345.3,Gompertz,False
+2025-12-01,2025-12,2025,12,4,Valencia,Random Forest,Test Prediction,333.9,Gompertz,False
 2025-01-01,2025-01,2025,1,1,Valencia,XGBoost,Test Prediction,367.9,Gompertz,False
-2025-02-01,2025-02,2025,2,1,Valencia,XGBoost,Test Prediction,434.9,Gompertz,False
-2025-03-01,2025-03,2025,3,1,Valencia,XGBoost,Test Prediction,416.5,Gompertz,False
-2025-04-01,2025-04,2025,4,2,Valencia,XGBoost,Test Prediction,350.1,Gompertz,False
-2025-05-01,2025-05,2025,5,2,Valencia,XGBoost,Test Prediction,311.0,Gompertz,False
-2025-06-01,2025-06,2025,6,2,Valencia,XGBoost,Test Prediction,274.1,Gompertz,False
-2025-07-01,2025-07,2025,7,3,Valencia,XGBoost,Test Prediction,285.1,Gompertz,False
-2025-08-01,2025-08,2025,8,3,Valencia,XGBoost,Test Prediction,356.2,Gompertz,False
-2025-09-01,2025-09,2025,9,3,Valencia,XGBoost,Test Prediction,331.8,Gompertz,False
-2025-10-01,2025-10,2025,10,4,Valencia,XGBoost,Test Prediction,312.9,Gompertz,False
-2025-11-01,2025-11,2025,11,4,Valencia,XGBoost,Test Prediction,417.6,Gompertz,False
-2025-12-01,2025-12,2025,12,4,Valencia,XGBoost,Test Prediction,350.4,Gompertz,False
+2025-02-01,2025-02,2025,2,1,Valencia,XGBoost,Test Prediction,406.2,Gompertz,False
+2025-03-01,2025-03,2025,3,1,Valencia,XGBoost,Test Prediction,411.0,Gompertz,False
+2025-04-01,2025-04,2025,4,2,Valencia,XGBoost,Test Prediction,367.4,Gompertz,False
+2025-05-01,2025-05,2025,5,2,Valencia,XGBoost,Test Prediction,320.4,Gompertz,False
+2025-06-01,2025-06,2025,6,2,Valencia,XGBoost,Test Prediction,292.3,Gompertz,False
+2025-07-01,2025-07,2025,7,3,Valencia,XGBoost,Test Prediction,319.1,Gompertz,False
+2025-08-01,2025-08,2025,8,3,Valencia,XGBoost,Test Prediction,363.6,Gompertz,False
+2025-09-01,2025-09,2025,9,3,Valencia,XGBoost,Test Prediction,370.9,Gompertz,False
+2025-10-01,2025-10,2025,10,4,Valencia,XGBoost,Test Prediction,340.7,Gompertz,False
+2025-11-01,2025-11,2025,11,4,Valencia,XGBoost,Test Prediction,395.4,Gompertz,False
+2025-12-01,2025-12,2025,12,4,Valencia,XGBoost,Test Prediction,496.9,Gompertz,False
 2025-01-01,2025-01,2025,1,1,Valencia,Diesel Share,Test Prediction,35255.3,Gompertz,False
 2025-02-01,2025-02,2025,2,1,Valencia,Diesel Share,Test Prediction,46500.0,Gompertz,False
 2025-03-01,2025-03,2025,3,1,Valencia,Diesel Share,Test Prediction,51149.7,Gompertz,False
@@ -767,342 +767,342 @@ Fecha_Date,Fecha,Anyo,Mes,Trimestre,Target,Model,Type,Valor,Selected_Model,Is_Se
 2027-10-01,2027-10,2027,10,4,Nacional,Diesel Share,Forecast,576250.2,SARIMA,False
 2027-11-01,2027-11,2027,11,4,Nacional,Diesel Share,Forecast,316429.2,SARIMA,False
 2027-12-01,2027-12,2027,12,4,Nacional,Diesel Share,Forecast,230670.0,SARIMA,False
-2026-01-01,2026-01,2026,1,1,Madrid,SARIMA,Forecast,3106.4,Gompertz,False
-2026-02-01,2026-02,2026,2,1,Madrid,SARIMA,Forecast,3234.6,Gompertz,False
-2026-03-01,2026-03,2026,3,1,Madrid,SARIMA,Forecast,3361.2,Gompertz,False
-2026-04-01,2026-04,2026,4,2,Madrid,SARIMA,Forecast,3478.4,Gompertz,False
-2026-05-01,2026-05,2026,5,2,Madrid,SARIMA,Forecast,3588.2,Gompertz,False
-2026-06-01,2026-06,2026,6,2,Madrid,SARIMA,Forecast,3691.7,Gompertz,False
-2026-07-01,2026-07,2026,7,3,Madrid,SARIMA,Forecast,3780.5,Gompertz,False
-2026-08-01,2026-08,2026,8,3,Madrid,SARIMA,Forecast,3848.3,Gompertz,False
-2026-09-01,2026-09,2026,9,3,Madrid,SARIMA,Forecast,3923.4,Gompertz,False
-2026-10-01,2026-10,2026,10,4,Madrid,SARIMA,Forecast,3987.7,Gompertz,False
-2026-11-01,2026-11,2026,11,4,Madrid,SARIMA,Forecast,4055.5,Gompertz,False
-2026-12-01,2026-12,2026,12,4,Madrid,SARIMA,Forecast,4109.4,Gompertz,False
-2027-01-01,2027-01,2027,1,1,Madrid,SARIMA,Forecast,4161.6,Gompertz,False
-2027-02-01,2027-02,2027,2,1,Madrid,SARIMA,Forecast,4209.1,Gompertz,False
-2027-03-01,2027-03,2027,3,1,Madrid,SARIMA,Forecast,4252.2,Gompertz,False
-2027-04-01,2027-04,2027,4,2,Madrid,SARIMA,Forecast,4291.2,Gompertz,False
-2027-05-01,2027-05,2027,5,2,Madrid,SARIMA,Forecast,4326.5,Gompertz,False
-2027-06-01,2027-06,2027,6,2,Madrid,SARIMA,Forecast,4358.5,Gompertz,False
-2027-07-01,2027-07,2027,7,3,Madrid,SARIMA,Forecast,4387.3,Gompertz,False
-2027-08-01,2027-08,2027,8,3,Madrid,SARIMA,Forecast,4413.1,Gompertz,False
-2027-09-01,2027-09,2027,9,3,Madrid,SARIMA,Forecast,4436.5,Gompertz,False
-2027-10-01,2027-10,2027,10,4,Madrid,SARIMA,Forecast,4457.6,Gompertz,False
-2027-11-01,2027-11,2027,11,4,Madrid,SARIMA,Forecast,4476.6,Gompertz,False
-2027-12-01,2027-12,2027,12,4,Madrid,SARIMA,Forecast,4493.7,Gompertz,False
-2026-01-01,2026-01,2026,1,1,Madrid,Logistic,Forecast,3486.4,Gompertz,False
-2026-02-01,2026-02,2026,2,1,Madrid,Logistic,Forecast,3583.4,Gompertz,False
-2026-03-01,2026-03,2026,3,1,Madrid,Logistic,Forecast,3682.4,Gompertz,False
-2026-04-01,2026-04,2026,4,2,Madrid,Logistic,Forecast,3769.9,Gompertz,False
-2026-05-01,2026-05,2026,5,2,Madrid,Logistic,Forecast,3832.9,Gompertz,False
-2026-06-01,2026-06,2026,6,2,Madrid,Logistic,Forecast,3863.1,Gompertz,False
-2026-07-01,2026-07,2026,7,3,Madrid,Logistic,Forecast,3859.6,Gompertz,False
-2026-08-01,2026-08,2026,8,3,Madrid,Logistic,Forecast,3828.7,Gompertz,False
-2026-09-01,2026-09,2026,9,3,Madrid,Logistic,Forecast,3783.2,Gompertz,False
-2026-10-01,2026-10,2026,10,4,Madrid,Logistic,Forecast,3739.1,Gompertz,False
-2026-11-01,2026-11,2026,11,4,Madrid,Logistic,Forecast,3710.9,Gompertz,False
-2026-12-01,2026-12,2026,12,4,Madrid,Logistic,Forecast,3708.5,Gompertz,False
-2027-01-01,2027-01,2027,1,1,Madrid,Logistic,Forecast,3734.4,Gompertz,False
-2027-02-01,2027-02,2027,2,1,Madrid,Logistic,Forecast,3783.1,Gompertz,False
-2027-03-01,2027-03,2027,3,1,Madrid,Logistic,Forecast,3842.8,Gompertz,False
-2027-04-01,2027-04,2027,4,2,Madrid,Logistic,Forecast,3898.3,Gompertz,False
-2027-05-01,2027-05,2027,5,2,Madrid,Logistic,Forecast,3935.5,Gompertz,False
-2027-06-01,2027-06,2027,6,2,Madrid,Logistic,Forecast,3945.1,Gompertz,False
-2027-07-01,2027-07,2027,7,3,Madrid,Logistic,Forecast,3924.9,Gompertz,False
-2027-08-01,2027-08,2027,8,3,Madrid,Logistic,Forecast,3880.7,Gompertz,False
-2027-09-01,2027-09,2027,9,3,Madrid,Logistic,Forecast,3824.6,Gompertz,False
-2027-10-01,2027-10,2027,10,4,Madrid,Logistic,Forecast,3772.0,Gompertz,False
-2027-11-01,2027-11,2027,11,4,Madrid,Logistic,Forecast,3737.0,Gompertz,False
-2027-12-01,2027-12,2027,12,4,Madrid,Logistic,Forecast,3729.3,Gompertz,False
-2026-01-01,2026-01,2026,1,1,Madrid,Gompertz,Forecast,3378.6,Gompertz,True
-2026-02-01,2026-02,2026,2,1,Madrid,Gompertz,Forecast,3480.7,Gompertz,True
-2026-03-01,2026-03,2026,3,1,Madrid,Gompertz,Forecast,3590.3,Gompertz,True
-2026-04-01,2026-04,2026,4,2,Madrid,Gompertz,Forecast,3692.0,Gompertz,True
-2026-05-01,2026-05,2026,5,2,Madrid,Gompertz,Forecast,3770.8,Gompertz,True
-2026-06-01,2026-06,2026,6,2,Madrid,Gompertz,Forecast,3816.3,Gompertz,True
-2026-07-01,2026-07,2026,7,3,Madrid,Gompertz,Forecast,3825.3,Gompertz,True
-2026-08-01,2026-08,2026,8,3,Madrid,Gompertz,Forecast,3803.5,Gompertz,True
-2026-09-01,2026-09,2026,9,3,Madrid,Gompertz,Forecast,3763.4,Gompertz,True
-2026-10-01,2026-10,2026,10,4,Madrid,Gompertz,Forecast,3721.9,Gompertz,True
-2026-11-01,2026-11,2026,11,4,Madrid,Gompertz,Forecast,3695.0,Gompertz,True
-2026-12-01,2026-12,2026,12,4,Madrid,Gompertz,Forecast,3694.3,Gompertz,True
-2027-01-01,2027-01,2027,1,1,Madrid,Gompertz,Forecast,3723.9,Gompertz,True
-2027-02-01,2027-02,2027,2,1,Madrid,Gompertz,Forecast,3779.0,Gompertz,True
-2027-03-01,2027-03,2027,3,1,Madrid,Gompertz,Forecast,3847.6,Gompertz,True
-2027-04-01,2027-04,2027,4,2,Madrid,Gompertz,Forecast,3913.8,Gompertz,True
-2027-05-01,2027-05,2027,5,2,Madrid,Gompertz,Forecast,3961.8,Gompertz,True
-2027-06-01,2027-06,2027,6,2,Madrid,Gompertz,Forecast,3980.6,Gompertz,True
-2027-07-01,2027-07,2027,7,3,Madrid,Gompertz,Forecast,3966.6,Gompertz,True
-2027-08-01,2027-08,2027,8,3,Madrid,Gompertz,Forecast,3924.8,Gompertz,True
-2027-09-01,2027-09,2027,9,3,Madrid,Gompertz,Forecast,3867.7,Gompertz,True
-2027-10-01,2027-10,2027,10,4,Madrid,Gompertz,Forecast,3811.3,Gompertz,True
-2027-11-01,2027-11,2027,11,4,Madrid,Gompertz,Forecast,3771.7,Gompertz,True
-2027-12-01,2027-12,2027,12,4,Madrid,Gompertz,Forecast,3760.2,Gompertz,True
-2026-01-01,2026-01,2026,1,1,Madrid,Ridge,Forecast,120428.6,Gompertz,False
-2026-02-01,2026-02,2026,2,1,Madrid,Ridge,Forecast,3269016.4,Gompertz,False
-2026-03-01,2026-03,2026,3,1,Madrid,Ridge,Forecast,3269016.4,Gompertz,False
-2026-04-01,2026-04,2026,4,2,Madrid,Ridge,Forecast,3269016.4,Gompertz,False
-2026-05-01,2026-05,2026,5,2,Madrid,Ridge,Forecast,0.0,Gompertz,False
-2026-06-01,2026-06,2026,6,2,Madrid,Ridge,Forecast,0.0,Gompertz,False
-2026-07-01,2026-07,2026,7,3,Madrid,Ridge,Forecast,0.0,Gompertz,False
-2026-08-01,2026-08,2026,8,3,Madrid,Ridge,Forecast,0.0,Gompertz,False
-2026-09-01,2026-09,2026,9,3,Madrid,Ridge,Forecast,0.0,Gompertz,False
-2026-10-01,2026-10,2026,10,4,Madrid,Ridge,Forecast,0.0,Gompertz,False
-2026-11-01,2026-11,2026,11,4,Madrid,Ridge,Forecast,374536.9,Gompertz,False
-2026-12-01,2026-12,2026,12,4,Madrid,Ridge,Forecast,3269016.4,Gompertz,False
-2027-01-01,2027-01,2027,1,1,Madrid,Ridge,Forecast,3269016.4,Gompertz,False
-2027-02-01,2027-02,2027,2,1,Madrid,Ridge,Forecast,3269016.4,Gompertz,False
-2027-03-01,2027-03,2027,3,1,Madrid,Ridge,Forecast,0.0,Gompertz,False
-2027-04-01,2027-04,2027,4,2,Madrid,Ridge,Forecast,0.0,Gompertz,False
-2027-05-01,2027-05,2027,5,2,Madrid,Ridge,Forecast,0.0,Gompertz,False
-2027-06-01,2027-06,2027,6,2,Madrid,Ridge,Forecast,0.0,Gompertz,False
-2027-07-01,2027-07,2027,7,3,Madrid,Ridge,Forecast,0.0,Gompertz,False
-2027-08-01,2027-08,2027,8,3,Madrid,Ridge,Forecast,0.0,Gompertz,False
-2027-09-01,2027-09,2027,9,3,Madrid,Ridge,Forecast,1254133.1,Gompertz,False
-2027-10-01,2027-10,2027,10,4,Madrid,Ridge,Forecast,3269016.4,Gompertz,False
-2027-11-01,2027-11,2027,11,4,Madrid,Ridge,Forecast,3269016.4,Gompertz,False
-2027-12-01,2027-12,2027,12,4,Madrid,Ridge,Forecast,3269016.4,Gompertz,False
-2026-01-01,2026-01,2026,1,1,Madrid,Random Forest,Forecast,2932.9,Gompertz,False
-2026-02-01,2026-02,2026,2,1,Madrid,Random Forest,Forecast,2932.3,Gompertz,False
-2026-03-01,2026-03,2026,3,1,Madrid,Random Forest,Forecast,2932.6,Gompertz,False
-2026-04-01,2026-04,2026,4,2,Madrid,Random Forest,Forecast,2949.1,Gompertz,False
-2026-05-01,2026-05,2026,5,2,Madrid,Random Forest,Forecast,2979.8,Gompertz,False
-2026-06-01,2026-06,2026,6,2,Madrid,Random Forest,Forecast,3001.1,Gompertz,False
-2026-07-01,2026-07,2026,7,3,Madrid,Random Forest,Forecast,2968.1,Gompertz,False
-2026-08-01,2026-08,2026,8,3,Madrid,Random Forest,Forecast,2927.1,Gompertz,False
-2026-09-01,2026-09,2026,9,3,Madrid,Random Forest,Forecast,2967.5,Gompertz,False
-2026-10-01,2026-10,2026,10,4,Madrid,Random Forest,Forecast,2965.1,Gompertz,False
-2026-11-01,2026-11,2026,11,4,Madrid,Random Forest,Forecast,2982.8,Gompertz,False
-2026-12-01,2026-12,2026,12,4,Madrid,Random Forest,Forecast,2964.1,Gompertz,False
-2027-01-01,2027-01,2027,1,1,Madrid,Random Forest,Forecast,2929.0,Gompertz,False
-2027-02-01,2027-02,2027,2,1,Madrid,Random Forest,Forecast,2932.3,Gompertz,False
-2027-03-01,2027-03,2027,3,1,Madrid,Random Forest,Forecast,2932.6,Gompertz,False
-2027-04-01,2027-04,2027,4,2,Madrid,Random Forest,Forecast,2949.1,Gompertz,False
-2027-05-01,2027-05,2027,5,2,Madrid,Random Forest,Forecast,2979.8,Gompertz,False
-2027-06-01,2027-06,2027,6,2,Madrid,Random Forest,Forecast,3001.1,Gompertz,False
-2027-07-01,2027-07,2027,7,3,Madrid,Random Forest,Forecast,2968.1,Gompertz,False
-2027-08-01,2027-08,2027,8,3,Madrid,Random Forest,Forecast,2927.1,Gompertz,False
-2027-09-01,2027-09,2027,9,3,Madrid,Random Forest,Forecast,2967.5,Gompertz,False
-2027-10-01,2027-10,2027,10,4,Madrid,Random Forest,Forecast,2965.1,Gompertz,False
-2027-11-01,2027-11,2027,11,4,Madrid,Random Forest,Forecast,2982.8,Gompertz,False
-2027-12-01,2027-12,2027,12,4,Madrid,Random Forest,Forecast,2964.1,Gompertz,False
-2026-01-01,2026-01,2026,1,1,Madrid,XGBoost,Forecast,2552.1,Gompertz,False
-2026-02-01,2026-02,2026,2,1,Madrid,XGBoost,Forecast,2552.1,Gompertz,False
-2026-03-01,2026-03,2026,3,1,Madrid,XGBoost,Forecast,2571.1,Gompertz,False
-2026-04-01,2026-04,2026,4,2,Madrid,XGBoost,Forecast,2556.2,Gompertz,False
-2026-05-01,2026-05,2026,5,2,Madrid,XGBoost,Forecast,2612.9,Gompertz,False
-2026-06-01,2026-06,2026,6,2,Madrid,XGBoost,Forecast,2755.5,Gompertz,False
-2026-07-01,2026-07,2026,7,3,Madrid,XGBoost,Forecast,2755.5,Gompertz,False
-2026-08-01,2026-08,2026,8,3,Madrid,XGBoost,Forecast,2744.4,Gompertz,False
-2026-09-01,2026-09,2026,9,3,Madrid,XGBoost,Forecast,2743.5,Gompertz,False
-2026-10-01,2026-10,2026,10,4,Madrid,XGBoost,Forecast,2743.5,Gompertz,False
-2026-11-01,2026-11,2026,11,4,Madrid,XGBoost,Forecast,2746.0,Gompertz,False
-2026-12-01,2026-12,2026,12,4,Madrid,XGBoost,Forecast,2743.5,Gompertz,False
-2027-01-01,2027-01,2027,1,1,Madrid,XGBoost,Forecast,2552.1,Gompertz,False
-2027-02-01,2027-02,2027,2,1,Madrid,XGBoost,Forecast,2552.1,Gompertz,False
-2027-03-01,2027-03,2027,3,1,Madrid,XGBoost,Forecast,2571.1,Gompertz,False
-2027-04-01,2027-04,2027,4,2,Madrid,XGBoost,Forecast,2556.2,Gompertz,False
-2027-05-01,2027-05,2027,5,2,Madrid,XGBoost,Forecast,2612.9,Gompertz,False
-2027-06-01,2027-06,2027,6,2,Madrid,XGBoost,Forecast,2755.5,Gompertz,False
-2027-07-01,2027-07,2027,7,3,Madrid,XGBoost,Forecast,2755.5,Gompertz,False
-2027-08-01,2027-08,2027,8,3,Madrid,XGBoost,Forecast,2744.4,Gompertz,False
-2027-09-01,2027-09,2027,9,3,Madrid,XGBoost,Forecast,2743.5,Gompertz,False
-2027-10-01,2027-10,2027,10,4,Madrid,XGBoost,Forecast,2743.5,Gompertz,False
-2027-11-01,2027-11,2027,11,4,Madrid,XGBoost,Forecast,2746.0,Gompertz,False
-2027-12-01,2027-12,2027,12,4,Madrid,XGBoost,Forecast,2743.5,Gompertz,False
-2026-01-01,2026-01,2026,1,1,Madrid,Diesel Share,Forecast,40752.3,Gompertz,False
-2026-02-01,2026-02,2026,2,1,Madrid,Diesel Share,Forecast,11628.0,Gompertz,False
-2026-03-01,2026-03,2026,3,1,Madrid,Diesel Share,Forecast,10697.7,Gompertz,False
-2026-04-01,2026-04,2026,4,2,Madrid,Diesel Share,Forecast,3770.9,Gompertz,False
-2026-05-01,2026-05,2026,5,2,Madrid,Diesel Share,Forecast,45116.1,Gompertz,False
-2026-06-01,2026-06,2026,6,2,Madrid,Diesel Share,Forecast,5025.9,Gompertz,False
-2026-07-01,2026-07,2026,7,3,Madrid,Diesel Share,Forecast,17657.2,Gompertz,False
-2026-08-01,2026-08,2026,8,3,Madrid,Diesel Share,Forecast,5957.2,Gompertz,False
-2026-09-01,2026-09,2026,9,3,Madrid,Diesel Share,Forecast,44228.7,Gompertz,False
-2026-10-01,2026-10,2026,10,4,Madrid,Diesel Share,Forecast,9641.5,Gompertz,False
-2026-11-01,2026-11,2026,11,4,Madrid,Diesel Share,Forecast,18897.6,Gompertz,False
-2026-12-01,2026-12,2026,12,4,Madrid,Diesel Share,Forecast,7382.2,Gompertz,False
-2027-01-01,2027-01,2027,1,1,Madrid,Diesel Share,Forecast,40752.3,Gompertz,False
-2027-02-01,2027-02,2027,2,1,Madrid,Diesel Share,Forecast,5625.8,Gompertz,False
-2027-03-01,2027-03,2027,3,1,Madrid,Diesel Share,Forecast,32498.8,Gompertz,False
-2027-04-01,2027-04,2027,4,2,Madrid,Diesel Share,Forecast,1917.3,Gompertz,False
-2027-05-01,2027-05,2027,5,2,Madrid,Diesel Share,Forecast,45116.1,Gompertz,False
-2027-06-01,2027-06,2027,6,2,Madrid,Diesel Share,Forecast,2468.4,Gompertz,False
-2027-07-01,2027-07,2027,7,3,Madrid,Diesel Share,Forecast,46106.4,Gompertz,False
-2027-08-01,2027-08,2027,8,3,Madrid,Diesel Share,Forecast,1244.1,Gompertz,False
-2027-09-01,2027-09,2027,9,3,Madrid,Diesel Share,Forecast,44228.7,Gompertz,False
-2027-10-01,2027-10,2027,10,4,Madrid,Diesel Share,Forecast,4130.8,Gompertz,False
-2027-11-01,2027-11,2027,11,4,Madrid,Diesel Share,Forecast,42950.4,Gompertz,False
-2027-12-01,2027-12,2027,12,4,Madrid,Diesel Share,Forecast,2495.8,Gompertz,False
-2026-01-01,2026-01,2026,1,1,Cataluña,SARIMA,Forecast,3497.8,Gompertz,False
-2026-02-01,2026-02,2026,2,1,Cataluña,SARIMA,Forecast,3628.5,Gompertz,False
-2026-03-01,2026-03,2026,3,1,Cataluña,SARIMA,Forecast,3754.7,Gompertz,False
-2026-04-01,2026-04,2026,4,2,Cataluña,SARIMA,Forecast,3876.1,Gompertz,False
-2026-05-01,2026-05,2026,5,2,Cataluña,SARIMA,Forecast,3987.9,Gompertz,False
-2026-06-01,2026-06,2026,6,2,Cataluña,SARIMA,Forecast,4088.8,Gompertz,False
-2026-07-01,2026-07,2026,7,3,Cataluña,SARIMA,Forecast,4181.6,Gompertz,False
-2026-08-01,2026-08,2026,8,3,Cataluña,SARIMA,Forecast,4254.5,Gompertz,False
-2026-09-01,2026-09,2026,9,3,Cataluña,SARIMA,Forecast,4324.4,Gompertz,False
-2026-10-01,2026-10,2026,10,4,Cataluña,SARIMA,Forecast,4406.3,Gompertz,False
-2026-11-01,2026-11,2026,11,4,Cataluña,SARIMA,Forecast,4465.2,Gompertz,False
-2026-12-01,2026-12,2026,12,4,Cataluña,SARIMA,Forecast,4526.6,Gompertz,False
-2027-01-01,2027-01,2027,1,1,Cataluña,SARIMA,Forecast,4581.1,Gompertz,False
-2027-02-01,2027-02,2027,2,1,Cataluña,SARIMA,Forecast,4630.7,Gompertz,False
-2027-03-01,2027-03,2027,3,1,Cataluña,SARIMA,Forecast,4675.9,Gompertz,False
-2027-04-01,2027-04,2027,4,2,Cataluña,SARIMA,Forecast,4717.1,Gompertz,False
-2027-05-01,2027-05,2027,5,2,Cataluña,SARIMA,Forecast,4754.4,Gompertz,False
-2027-06-01,2027-06,2027,6,2,Cataluña,SARIMA,Forecast,4788.3,Gompertz,False
-2027-07-01,2027-07,2027,7,3,Cataluña,SARIMA,Forecast,4819.0,Gompertz,False
-2027-08-01,2027-08,2027,8,3,Cataluña,SARIMA,Forecast,4846.7,Gompertz,False
-2027-09-01,2027-09,2027,9,3,Cataluña,SARIMA,Forecast,4871.8,Gompertz,False
-2027-10-01,2027-10,2027,10,4,Cataluña,SARIMA,Forecast,4894.7,Gompertz,False
-2027-11-01,2027-11,2027,11,4,Cataluña,SARIMA,Forecast,4915.2,Gompertz,False
-2027-12-01,2027-12,2027,12,4,Cataluña,SARIMA,Forecast,4933.9,Gompertz,False
-2026-01-01,2026-01,2026,1,1,Cataluña,Logistic,Forecast,3564.4,Gompertz,False
-2026-02-01,2026-02,2026,2,1,Cataluña,Logistic,Forecast,3634.8,Gompertz,False
-2026-03-01,2026-03,2026,3,1,Cataluña,Logistic,Forecast,3710.2,Gompertz,False
-2026-04-01,2026-04,2026,4,2,Cataluña,Logistic,Forecast,3780.1,Gompertz,False
-2026-05-01,2026-05,2026,5,2,Cataluña,Logistic,Forecast,3833.6,Gompertz,False
-2026-06-01,2026-06,2026,6,2,Cataluña,Logistic,Forecast,3862.5,Gompertz,False
-2026-07-01,2026-07,2026,7,3,Cataluña,Logistic,Forecast,3863.9,Gompertz,False
-2026-08-01,2026-08,2026,8,3,Cataluña,Logistic,Forecast,3841.3,Gompertz,False
-2026-09-01,2026-09,2026,9,3,Cataluña,Logistic,Forecast,3803.9,Gompertz,False
-2026-10-01,2026-10,2026,10,4,Cataluña,Logistic,Forecast,3764.0,Gompertz,False
-2026-11-01,2026-11,2026,11,4,Cataluña,Logistic,Forecast,3734.3,Gompertz,False
-2026-12-01,2026-12,2026,12,4,Cataluña,Logistic,Forecast,3724.2,Gompertz,False
-2027-01-01,2027-01,2027,1,1,Cataluña,Logistic,Forecast,3737.6,Gompertz,False
-2027-02-01,2027-02,2027,2,1,Cataluña,Logistic,Forecast,3771.8,Gompertz,False
-2027-03-01,2027-03,2027,3,1,Cataluña,Logistic,Forecast,3818.4,Gompertz,False
-2027-04-01,2027-04,2027,4,2,Cataluña,Logistic,Forecast,3865.4,Gompertz,False
-2027-05-01,2027-05,2027,5,2,Cataluña,Logistic,Forecast,3900.8,Gompertz,False
-2027-06-01,2027-06,2027,6,2,Cataluña,Logistic,Forecast,3915.3,Gompertz,False
-2027-07-01,2027-07,2027,7,3,Cataluña,Logistic,Forecast,3905.3,Gompertz,False
-2027-08-01,2027-08,2027,8,3,Cataluña,Logistic,Forecast,3873.8,Gompertz,False
-2027-09-01,2027-09,2027,9,3,Cataluña,Logistic,Forecast,3829.4,Gompertz,False
-2027-10-01,2027-10,2027,10,4,Cataluña,Logistic,Forecast,3784.0,Gompertz,False
-2027-11-01,2027-11,2027,11,4,Cataluña,Logistic,Forecast,3750.0,Gompertz,False
-2027-12-01,2027-12,2027,12,4,Cataluña,Logistic,Forecast,3736.5,Gompertz,False
-2026-01-01,2026-01,2026,1,1,Cataluña,Gompertz,Forecast,3484.5,Gompertz,True
-2026-02-01,2026-02,2026,2,1,Cataluña,Gompertz,Forecast,3566.6,Gompertz,True
-2026-03-01,2026-03,2026,3,1,Cataluña,Gompertz,Forecast,3656.4,Gompertz,True
-2026-04-01,2026-04,2026,4,2,Cataluña,Gompertz,Forecast,3741.2,Gompertz,True
-2026-05-01,2026-05,2026,5,2,Cataluña,Gompertz,Forecast,3807.9,Gompertz,True
-2026-06-01,2026-06,2026,6,2,Cataluña,Gompertz,Forecast,3846.8,Gompertz,True
-2026-07-01,2026-07,2026,7,3,Cataluña,Gompertz,Forecast,3854.6,Gompertz,True
-2026-08-01,2026-08,2026,8,3,Cataluña,Gompertz,Forecast,3835.2,Gompertz,True
-2026-09-01,2026-09,2026,9,3,Cataluña,Gompertz,Forecast,3798.8,Gompertz,True
-2026-10-01,2026-10,2026,10,4,Cataluña,Gompertz,Forecast,3759.5,Gompertz,True
-2026-11-01,2026-11,2026,11,4,Cataluña,Gompertz,Forecast,3731.6,Gompertz,True
-2026-12-01,2026-12,2026,12,4,Cataluña,Gompertz,Forecast,3725.7,Gompertz,True
-2027-01-01,2027-01,2027,1,1,Cataluña,Gompertz,Forecast,3745.9,Gompertz,True
-2027-02-01,2027-02,2027,2,1,Cataluña,Gompertz,Forecast,3789.2,Gompertz,True
-2027-03-01,2027-03,2027,3,1,Cataluña,Gompertz,Forecast,3845.7,Gompertz,True
-2027-04-01,2027-04,2027,4,2,Cataluña,Gompertz,Forecast,3902.1,Gompertz,True
-2027-05-01,2027-05,2027,5,2,Cataluña,Gompertz,Forecast,3944.5,Gompertz,True
-2027-06-01,2027-06,2027,6,2,Cataluña,Gompertz,Forecast,3962.8,Gompertz,True
-2027-07-01,2027-07,2027,7,3,Cataluña,Gompertz,Forecast,3952.9,Gompertz,True
-2027-08-01,2027-08,2027,8,3,Cataluña,Gompertz,Forecast,3918.5,Gompertz,True
-2027-09-01,2027-09,2027,9,3,Cataluña,Gompertz,Forecast,3869.4,Gompertz,True
-2027-10-01,2027-10,2027,10,4,Cataluña,Gompertz,Forecast,3819.3,Gompertz,True
-2027-11-01,2027-11,2027,11,4,Cataluña,Gompertz,Forecast,3782.3,Gompertz,True
-2027-12-01,2027-12,2027,12,4,Cataluña,Gompertz,Forecast,3768.6,Gompertz,True
-2026-01-01,2026-01,2026,1,1,Cataluña,Ridge,Forecast,6623.6,Gompertz,False
-2026-02-01,2026-02,2026,2,1,Cataluña,Ridge,Forecast,22861.7,Gompertz,False
-2026-03-01,2026-03,2026,3,1,Cataluña,Ridge,Forecast,1671133.1,Gompertz,False
-2026-04-01,2026-04,2026,4,2,Cataluña,Ridge,Forecast,3269016.4,Gompertz,False
-2026-05-01,2026-05,2026,5,2,Cataluña,Ridge,Forecast,3269016.4,Gompertz,False
-2026-06-01,2026-06,2026,6,2,Cataluña,Ridge,Forecast,3269016.4,Gompertz,False
-2026-07-01,2026-07,2026,7,3,Cataluña,Ridge,Forecast,3269016.4,Gompertz,False
-2026-08-01,2026-08,2026,8,3,Cataluña,Ridge,Forecast,3269016.4,Gompertz,False
-2026-09-01,2026-09,2026,9,3,Cataluña,Ridge,Forecast,3269016.4,Gompertz,False
-2026-10-01,2026-10,2026,10,4,Cataluña,Ridge,Forecast,3269016.4,Gompertz,False
-2026-11-01,2026-11,2026,11,4,Cataluña,Ridge,Forecast,3269016.4,Gompertz,False
-2026-12-01,2026-12,2026,12,4,Cataluña,Ridge,Forecast,3269016.4,Gompertz,False
-2027-01-01,2027-01,2027,1,1,Cataluña,Ridge,Forecast,3269016.4,Gompertz,False
-2027-02-01,2027-02,2027,2,1,Cataluña,Ridge,Forecast,3269016.4,Gompertz,False
-2027-03-01,2027-03,2027,3,1,Cataluña,Ridge,Forecast,3269016.4,Gompertz,False
-2027-04-01,2027-04,2027,4,2,Cataluña,Ridge,Forecast,3269016.4,Gompertz,False
-2027-05-01,2027-05,2027,5,2,Cataluña,Ridge,Forecast,3269016.4,Gompertz,False
-2027-06-01,2027-06,2027,6,2,Cataluña,Ridge,Forecast,3269016.4,Gompertz,False
-2027-07-01,2027-07,2027,7,3,Cataluña,Ridge,Forecast,3269016.4,Gompertz,False
-2027-08-01,2027-08,2027,8,3,Cataluña,Ridge,Forecast,3269016.4,Gompertz,False
-2027-09-01,2027-09,2027,9,3,Cataluña,Ridge,Forecast,3269016.4,Gompertz,False
-2027-10-01,2027-10,2027,10,4,Cataluña,Ridge,Forecast,3269016.4,Gompertz,False
-2027-11-01,2027-11,2027,11,4,Cataluña,Ridge,Forecast,3269016.4,Gompertz,False
-2027-12-01,2027-12,2027,12,4,Cataluña,Ridge,Forecast,3269016.4,Gompertz,False
-2026-01-01,2026-01,2026,1,1,Cataluña,Random Forest,Forecast,3139.6,Gompertz,False
-2026-02-01,2026-02,2026,2,1,Cataluña,Random Forest,Forecast,2956.4,Gompertz,False
-2026-03-01,2026-03,2026,3,1,Cataluña,Random Forest,Forecast,2922.3,Gompertz,False
-2026-04-01,2026-04,2026,4,2,Cataluña,Random Forest,Forecast,3116.7,Gompertz,False
-2026-05-01,2026-05,2026,5,2,Cataluña,Random Forest,Forecast,3179.5,Gompertz,False
-2026-06-01,2026-06,2026,6,2,Cataluña,Random Forest,Forecast,3186.3,Gompertz,False
-2026-07-01,2026-07,2026,7,3,Cataluña,Random Forest,Forecast,3182.7,Gompertz,False
-2026-08-01,2026-08,2026,8,3,Cataluña,Random Forest,Forecast,3172.0,Gompertz,False
-2026-09-01,2026-09,2026,9,3,Cataluña,Random Forest,Forecast,2973.4,Gompertz,False
-2026-10-01,2026-10,2026,10,4,Cataluña,Random Forest,Forecast,3091.0,Gompertz,False
-2026-11-01,2026-11,2026,11,4,Cataluña,Random Forest,Forecast,3157.9,Gompertz,False
-2026-12-01,2026-12,2026,12,4,Cataluña,Random Forest,Forecast,3151.1,Gompertz,False
-2027-01-01,2027-01,2027,1,1,Cataluña,Random Forest,Forecast,3150.1,Gompertz,False
-2027-02-01,2027-02,2027,2,1,Cataluña,Random Forest,Forecast,2962.3,Gompertz,False
-2027-03-01,2027-03,2027,3,1,Cataluña,Random Forest,Forecast,2923.8,Gompertz,False
-2027-04-01,2027-04,2027,4,2,Cataluña,Random Forest,Forecast,3116.7,Gompertz,False
-2027-05-01,2027-05,2027,5,2,Cataluña,Random Forest,Forecast,3179.5,Gompertz,False
-2027-06-01,2027-06,2027,6,2,Cataluña,Random Forest,Forecast,3186.3,Gompertz,False
-2027-07-01,2027-07,2027,7,3,Cataluña,Random Forest,Forecast,3182.7,Gompertz,False
-2027-08-01,2027-08,2027,8,3,Cataluña,Random Forest,Forecast,3172.0,Gompertz,False
-2027-09-01,2027-09,2027,9,3,Cataluña,Random Forest,Forecast,2973.4,Gompertz,False
-2027-10-01,2027-10,2027,10,4,Cataluña,Random Forest,Forecast,3091.0,Gompertz,False
-2027-11-01,2027-11,2027,11,4,Cataluña,Random Forest,Forecast,3157.9,Gompertz,False
-2027-12-01,2027-12,2027,12,4,Cataluña,Random Forest,Forecast,3151.1,Gompertz,False
-2026-01-01,2026-01,2026,1,1,Cataluña,XGBoost,Forecast,2700.9,Gompertz,False
-2026-02-01,2026-02,2026,2,1,Cataluña,XGBoost,Forecast,2626.7,Gompertz,False
-2026-03-01,2026-03,2026,3,1,Cataluña,XGBoost,Forecast,2739.7,Gompertz,False
-2026-04-01,2026-04,2026,4,2,Cataluña,XGBoost,Forecast,2868.4,Gompertz,False
-2026-05-01,2026-05,2026,5,2,Cataluña,XGBoost,Forecast,2876.1,Gompertz,False
-2026-06-01,2026-06,2026,6,2,Cataluña,XGBoost,Forecast,2854.6,Gompertz,False
-2026-07-01,2026-07,2026,7,3,Cataluña,XGBoost,Forecast,2876.1,Gompertz,False
-2026-08-01,2026-08,2026,8,3,Cataluña,XGBoost,Forecast,2876.1,Gompertz,False
-2026-09-01,2026-09,2026,9,3,Cataluña,XGBoost,Forecast,2682.9,Gompertz,False
-2026-10-01,2026-10,2026,10,4,Cataluña,XGBoost,Forecast,2876.1,Gompertz,False
-2026-11-01,2026-11,2026,11,4,Cataluña,XGBoost,Forecast,2876.1,Gompertz,False
-2026-12-01,2026-12,2026,12,4,Cataluña,XGBoost,Forecast,2876.1,Gompertz,False
-2027-01-01,2027-01,2027,1,1,Cataluña,XGBoost,Forecast,2700.9,Gompertz,False
-2027-02-01,2027-02,2027,2,1,Cataluña,XGBoost,Forecast,2626.7,Gompertz,False
-2027-03-01,2027-03,2027,3,1,Cataluña,XGBoost,Forecast,2739.7,Gompertz,False
-2027-04-01,2027-04,2027,4,2,Cataluña,XGBoost,Forecast,2868.4,Gompertz,False
-2027-05-01,2027-05,2027,5,2,Cataluña,XGBoost,Forecast,2876.1,Gompertz,False
-2027-06-01,2027-06,2027,6,2,Cataluña,XGBoost,Forecast,2854.6,Gompertz,False
-2027-07-01,2027-07,2027,7,3,Cataluña,XGBoost,Forecast,2876.1,Gompertz,False
-2027-08-01,2027-08,2027,8,3,Cataluña,XGBoost,Forecast,2876.1,Gompertz,False
-2027-09-01,2027-09,2027,9,3,Cataluña,XGBoost,Forecast,2682.9,Gompertz,False
-2027-10-01,2027-10,2027,10,4,Cataluña,XGBoost,Forecast,2876.1,Gompertz,False
-2027-11-01,2027-11,2027,11,4,Cataluña,XGBoost,Forecast,2876.1,Gompertz,False
-2027-12-01,2027-12,2027,12,4,Cataluña,XGBoost,Forecast,2876.1,Gompertz,False
-2026-01-01,2026-01,2026,1,1,Cataluña,Diesel Share,Forecast,7147.3,Gompertz,False
-2026-02-01,2026-02,2026,2,1,Cataluña,Diesel Share,Forecast,23390.0,Gompertz,False
-2026-03-01,2026-03,2026,3,1,Cataluña,Diesel Share,Forecast,88214.1,Gompertz,False
-2026-04-01,2026-04,2026,4,2,Cataluña,Diesel Share,Forecast,90093.9,Gompertz,False
-2026-05-01,2026-05,2026,5,2,Cataluña,Diesel Share,Forecast,93559.2,Gompertz,False
-2026-06-01,2026-06,2026,6,2,Cataluña,Diesel Share,Forecast,89942.1,Gompertz,False
-2026-07-01,2026-07,2026,7,3,Cataluña,Diesel Share,Forecast,98753.1,Gompertz,False
-2026-08-01,2026-08,2026,8,3,Cataluña,Diesel Share,Forecast,82139.4,Gompertz,False
-2026-09-01,2026-09,2026,9,3,Cataluña,Diesel Share,Forecast,86334.9,Gompertz,False
-2026-10-01,2026-10,2026,10,4,Cataluña,Diesel Share,Forecast,93233.4,Gompertz,False
-2026-11-01,2026-11,2026,11,4,Cataluña,Diesel Share,Forecast,87174.9,Gompertz,False
-2026-12-01,2026-12,2026,12,4,Cataluña,Diesel Share,Forecast,92969.1,Gompertz,False
-2027-01-01,2027-01,2027,1,1,Cataluña,Diesel Share,Forecast,82690.8,Gompertz,False
-2027-02-01,2027-02,2027,2,1,Cataluña,Diesel Share,Forecast,82336.2,Gompertz,False
-2027-03-01,2027-03,2027,3,1,Cataluña,Diesel Share,Forecast,88214.1,Gompertz,False
-2027-04-01,2027-04,2027,4,2,Cataluña,Diesel Share,Forecast,90093.9,Gompertz,False
-2027-05-01,2027-05,2027,5,2,Cataluña,Diesel Share,Forecast,93559.2,Gompertz,False
-2027-06-01,2027-06,2027,6,2,Cataluña,Diesel Share,Forecast,89942.1,Gompertz,False
-2027-07-01,2027-07,2027,7,3,Cataluña,Diesel Share,Forecast,98753.1,Gompertz,False
-2027-08-01,2027-08,2027,8,3,Cataluña,Diesel Share,Forecast,82139.4,Gompertz,False
-2027-09-01,2027-09,2027,9,3,Cataluña,Diesel Share,Forecast,86334.9,Gompertz,False
-2027-10-01,2027-10,2027,10,4,Cataluña,Diesel Share,Forecast,93233.4,Gompertz,False
-2027-11-01,2027-11,2027,11,4,Cataluña,Diesel Share,Forecast,87174.9,Gompertz,False
-2027-12-01,2027-12,2027,12,4,Cataluña,Diesel Share,Forecast,92969.1,Gompertz,False
+2026-01-01,2026-01,2026,1,1,Madrid,SARIMA,Forecast,3106.4,Logistic,False
+2026-02-01,2026-02,2026,2,1,Madrid,SARIMA,Forecast,3234.6,Logistic,False
+2026-03-01,2026-03,2026,3,1,Madrid,SARIMA,Forecast,3361.2,Logistic,False
+2026-04-01,2026-04,2026,4,2,Madrid,SARIMA,Forecast,3478.4,Logistic,False
+2026-05-01,2026-05,2026,5,2,Madrid,SARIMA,Forecast,3588.2,Logistic,False
+2026-06-01,2026-06,2026,6,2,Madrid,SARIMA,Forecast,3691.7,Logistic,False
+2026-07-01,2026-07,2026,7,3,Madrid,SARIMA,Forecast,3780.5,Logistic,False
+2026-08-01,2026-08,2026,8,3,Madrid,SARIMA,Forecast,3848.3,Logistic,False
+2026-09-01,2026-09,2026,9,3,Madrid,SARIMA,Forecast,3923.4,Logistic,False
+2026-10-01,2026-10,2026,10,4,Madrid,SARIMA,Forecast,3987.7,Logistic,False
+2026-11-01,2026-11,2026,11,4,Madrid,SARIMA,Forecast,4055.5,Logistic,False
+2026-12-01,2026-12,2026,12,4,Madrid,SARIMA,Forecast,4109.4,Logistic,False
+2027-01-01,2027-01,2027,1,1,Madrid,SARIMA,Forecast,4161.6,Logistic,False
+2027-02-01,2027-02,2027,2,1,Madrid,SARIMA,Forecast,4209.1,Logistic,False
+2027-03-01,2027-03,2027,3,1,Madrid,SARIMA,Forecast,4252.2,Logistic,False
+2027-04-01,2027-04,2027,4,2,Madrid,SARIMA,Forecast,4291.2,Logistic,False
+2027-05-01,2027-05,2027,5,2,Madrid,SARIMA,Forecast,4326.5,Logistic,False
+2027-06-01,2027-06,2027,6,2,Madrid,SARIMA,Forecast,4358.5,Logistic,False
+2027-07-01,2027-07,2027,7,3,Madrid,SARIMA,Forecast,4387.3,Logistic,False
+2027-08-01,2027-08,2027,8,3,Madrid,SARIMA,Forecast,4413.1,Logistic,False
+2027-09-01,2027-09,2027,9,3,Madrid,SARIMA,Forecast,4436.5,Logistic,False
+2027-10-01,2027-10,2027,10,4,Madrid,SARIMA,Forecast,4457.6,Logistic,False
+2027-11-01,2027-11,2027,11,4,Madrid,SARIMA,Forecast,4476.6,Logistic,False
+2027-12-01,2027-12,2027,12,4,Madrid,SARIMA,Forecast,4493.7,Logistic,False
+2026-01-01,2026-01,2026,1,1,Madrid,Logistic,Forecast,3486.4,Logistic,True
+2026-02-01,2026-02,2026,2,1,Madrid,Logistic,Forecast,3583.4,Logistic,True
+2026-03-01,2026-03,2026,3,1,Madrid,Logistic,Forecast,3682.4,Logistic,True
+2026-04-01,2026-04,2026,4,2,Madrid,Logistic,Forecast,3769.9,Logistic,True
+2026-05-01,2026-05,2026,5,2,Madrid,Logistic,Forecast,3832.9,Logistic,True
+2026-06-01,2026-06,2026,6,2,Madrid,Logistic,Forecast,3863.1,Logistic,True
+2026-07-01,2026-07,2026,7,3,Madrid,Logistic,Forecast,3859.6,Logistic,True
+2026-08-01,2026-08,2026,8,3,Madrid,Logistic,Forecast,3828.7,Logistic,True
+2026-09-01,2026-09,2026,9,3,Madrid,Logistic,Forecast,3783.2,Logistic,True
+2026-10-01,2026-10,2026,10,4,Madrid,Logistic,Forecast,3739.1,Logistic,True
+2026-11-01,2026-11,2026,11,4,Madrid,Logistic,Forecast,3710.9,Logistic,True
+2026-12-01,2026-12,2026,12,4,Madrid,Logistic,Forecast,3708.5,Logistic,True
+2027-01-01,2027-01,2027,1,1,Madrid,Logistic,Forecast,3734.4,Logistic,True
+2027-02-01,2027-02,2027,2,1,Madrid,Logistic,Forecast,3783.1,Logistic,True
+2027-03-01,2027-03,2027,3,1,Madrid,Logistic,Forecast,3842.8,Logistic,True
+2027-04-01,2027-04,2027,4,2,Madrid,Logistic,Forecast,3898.3,Logistic,True
+2027-05-01,2027-05,2027,5,2,Madrid,Logistic,Forecast,3935.5,Logistic,True
+2027-06-01,2027-06,2027,6,2,Madrid,Logistic,Forecast,3945.1,Logistic,True
+2027-07-01,2027-07,2027,7,3,Madrid,Logistic,Forecast,3924.9,Logistic,True
+2027-08-01,2027-08,2027,8,3,Madrid,Logistic,Forecast,3880.7,Logistic,True
+2027-09-01,2027-09,2027,9,3,Madrid,Logistic,Forecast,3824.6,Logistic,True
+2027-10-01,2027-10,2027,10,4,Madrid,Logistic,Forecast,3772.0,Logistic,True
+2027-11-01,2027-11,2027,11,4,Madrid,Logistic,Forecast,3737.0,Logistic,True
+2027-12-01,2027-12,2027,12,4,Madrid,Logistic,Forecast,3729.3,Logistic,True
+2026-01-01,2026-01,2026,1,1,Madrid,Gompertz,Forecast,3378.6,Logistic,False
+2026-02-01,2026-02,2026,2,1,Madrid,Gompertz,Forecast,3480.7,Logistic,False
+2026-03-01,2026-03,2026,3,1,Madrid,Gompertz,Forecast,3590.3,Logistic,False
+2026-04-01,2026-04,2026,4,2,Madrid,Gompertz,Forecast,3692.0,Logistic,False
+2026-05-01,2026-05,2026,5,2,Madrid,Gompertz,Forecast,3770.8,Logistic,False
+2026-06-01,2026-06,2026,6,2,Madrid,Gompertz,Forecast,3816.3,Logistic,False
+2026-07-01,2026-07,2026,7,3,Madrid,Gompertz,Forecast,3825.3,Logistic,False
+2026-08-01,2026-08,2026,8,3,Madrid,Gompertz,Forecast,3803.5,Logistic,False
+2026-09-01,2026-09,2026,9,3,Madrid,Gompertz,Forecast,3763.4,Logistic,False
+2026-10-01,2026-10,2026,10,4,Madrid,Gompertz,Forecast,3721.9,Logistic,False
+2026-11-01,2026-11,2026,11,4,Madrid,Gompertz,Forecast,3695.0,Logistic,False
+2026-12-01,2026-12,2026,12,4,Madrid,Gompertz,Forecast,3694.3,Logistic,False
+2027-01-01,2027-01,2027,1,1,Madrid,Gompertz,Forecast,3723.9,Logistic,False
+2027-02-01,2027-02,2027,2,1,Madrid,Gompertz,Forecast,3779.0,Logistic,False
+2027-03-01,2027-03,2027,3,1,Madrid,Gompertz,Forecast,3847.6,Logistic,False
+2027-04-01,2027-04,2027,4,2,Madrid,Gompertz,Forecast,3913.8,Logistic,False
+2027-05-01,2027-05,2027,5,2,Madrid,Gompertz,Forecast,3961.8,Logistic,False
+2027-06-01,2027-06,2027,6,2,Madrid,Gompertz,Forecast,3980.6,Logistic,False
+2027-07-01,2027-07,2027,7,3,Madrid,Gompertz,Forecast,3966.6,Logistic,False
+2027-08-01,2027-08,2027,8,3,Madrid,Gompertz,Forecast,3924.8,Logistic,False
+2027-09-01,2027-09,2027,9,3,Madrid,Gompertz,Forecast,3867.7,Logistic,False
+2027-10-01,2027-10,2027,10,4,Madrid,Gompertz,Forecast,3811.3,Logistic,False
+2027-11-01,2027-11,2027,11,4,Madrid,Gompertz,Forecast,3771.7,Logistic,False
+2027-12-01,2027-12,2027,12,4,Madrid,Gompertz,Forecast,3760.2,Logistic,False
+2026-01-01,2026-01,2026,1,1,Madrid,Ridge,Forecast,120428.6,Logistic,False
+2026-02-01,2026-02,2026,2,1,Madrid,Ridge,Forecast,3269016.4,Logistic,False
+2026-03-01,2026-03,2026,3,1,Madrid,Ridge,Forecast,3269016.4,Logistic,False
+2026-04-01,2026-04,2026,4,2,Madrid,Ridge,Forecast,3269016.4,Logistic,False
+2026-05-01,2026-05,2026,5,2,Madrid,Ridge,Forecast,0.0,Logistic,False
+2026-06-01,2026-06,2026,6,2,Madrid,Ridge,Forecast,0.0,Logistic,False
+2026-07-01,2026-07,2026,7,3,Madrid,Ridge,Forecast,0.0,Logistic,False
+2026-08-01,2026-08,2026,8,3,Madrid,Ridge,Forecast,0.0,Logistic,False
+2026-09-01,2026-09,2026,9,3,Madrid,Ridge,Forecast,0.0,Logistic,False
+2026-10-01,2026-10,2026,10,4,Madrid,Ridge,Forecast,0.0,Logistic,False
+2026-11-01,2026-11,2026,11,4,Madrid,Ridge,Forecast,374536.9,Logistic,False
+2026-12-01,2026-12,2026,12,4,Madrid,Ridge,Forecast,3269016.4,Logistic,False
+2027-01-01,2027-01,2027,1,1,Madrid,Ridge,Forecast,3269016.4,Logistic,False
+2027-02-01,2027-02,2027,2,1,Madrid,Ridge,Forecast,3269016.4,Logistic,False
+2027-03-01,2027-03,2027,3,1,Madrid,Ridge,Forecast,0.0,Logistic,False
+2027-04-01,2027-04,2027,4,2,Madrid,Ridge,Forecast,0.0,Logistic,False
+2027-05-01,2027-05,2027,5,2,Madrid,Ridge,Forecast,0.0,Logistic,False
+2027-06-01,2027-06,2027,6,2,Madrid,Ridge,Forecast,0.0,Logistic,False
+2027-07-01,2027-07,2027,7,3,Madrid,Ridge,Forecast,0.0,Logistic,False
+2027-08-01,2027-08,2027,8,3,Madrid,Ridge,Forecast,0.0,Logistic,False
+2027-09-01,2027-09,2027,9,3,Madrid,Ridge,Forecast,1254133.1,Logistic,False
+2027-10-01,2027-10,2027,10,4,Madrid,Ridge,Forecast,3269016.4,Logistic,False
+2027-11-01,2027-11,2027,11,4,Madrid,Ridge,Forecast,3269016.4,Logistic,False
+2027-12-01,2027-12,2027,12,4,Madrid,Ridge,Forecast,3269016.4,Logistic,False
+2026-01-01,2026-01,2026,1,1,Madrid,Random Forest,Forecast,2932.9,Logistic,False
+2026-02-01,2026-02,2026,2,1,Madrid,Random Forest,Forecast,2932.3,Logistic,False
+2026-03-01,2026-03,2026,3,1,Madrid,Random Forest,Forecast,2932.6,Logistic,False
+2026-04-01,2026-04,2026,4,2,Madrid,Random Forest,Forecast,2949.1,Logistic,False
+2026-05-01,2026-05,2026,5,2,Madrid,Random Forest,Forecast,2979.8,Logistic,False
+2026-06-01,2026-06,2026,6,2,Madrid,Random Forest,Forecast,3001.1,Logistic,False
+2026-07-01,2026-07,2026,7,3,Madrid,Random Forest,Forecast,2968.1,Logistic,False
+2026-08-01,2026-08,2026,8,3,Madrid,Random Forest,Forecast,2927.1,Logistic,False
+2026-09-01,2026-09,2026,9,3,Madrid,Random Forest,Forecast,2967.5,Logistic,False
+2026-10-01,2026-10,2026,10,4,Madrid,Random Forest,Forecast,2965.1,Logistic,False
+2026-11-01,2026-11,2026,11,4,Madrid,Random Forest,Forecast,2982.8,Logistic,False
+2026-12-01,2026-12,2026,12,4,Madrid,Random Forest,Forecast,2964.1,Logistic,False
+2027-01-01,2027-01,2027,1,1,Madrid,Random Forest,Forecast,2929.0,Logistic,False
+2027-02-01,2027-02,2027,2,1,Madrid,Random Forest,Forecast,2932.3,Logistic,False
+2027-03-01,2027-03,2027,3,1,Madrid,Random Forest,Forecast,2932.6,Logistic,False
+2027-04-01,2027-04,2027,4,2,Madrid,Random Forest,Forecast,2949.1,Logistic,False
+2027-05-01,2027-05,2027,5,2,Madrid,Random Forest,Forecast,2979.8,Logistic,False
+2027-06-01,2027-06,2027,6,2,Madrid,Random Forest,Forecast,3001.1,Logistic,False
+2027-07-01,2027-07,2027,7,3,Madrid,Random Forest,Forecast,2968.1,Logistic,False
+2027-08-01,2027-08,2027,8,3,Madrid,Random Forest,Forecast,2927.1,Logistic,False
+2027-09-01,2027-09,2027,9,3,Madrid,Random Forest,Forecast,2967.5,Logistic,False
+2027-10-01,2027-10,2027,10,4,Madrid,Random Forest,Forecast,2965.1,Logistic,False
+2027-11-01,2027-11,2027,11,4,Madrid,Random Forest,Forecast,2982.8,Logistic,False
+2027-12-01,2027-12,2027,12,4,Madrid,Random Forest,Forecast,2964.1,Logistic,False
+2026-01-01,2026-01,2026,1,1,Madrid,XGBoost,Forecast,2552.1,Logistic,False
+2026-02-01,2026-02,2026,2,1,Madrid,XGBoost,Forecast,2552.1,Logistic,False
+2026-03-01,2026-03,2026,3,1,Madrid,XGBoost,Forecast,2571.1,Logistic,False
+2026-04-01,2026-04,2026,4,2,Madrid,XGBoost,Forecast,2556.2,Logistic,False
+2026-05-01,2026-05,2026,5,2,Madrid,XGBoost,Forecast,2612.9,Logistic,False
+2026-06-01,2026-06,2026,6,2,Madrid,XGBoost,Forecast,2755.5,Logistic,False
+2026-07-01,2026-07,2026,7,3,Madrid,XGBoost,Forecast,2755.5,Logistic,False
+2026-08-01,2026-08,2026,8,3,Madrid,XGBoost,Forecast,2744.4,Logistic,False
+2026-09-01,2026-09,2026,9,3,Madrid,XGBoost,Forecast,2743.5,Logistic,False
+2026-10-01,2026-10,2026,10,4,Madrid,XGBoost,Forecast,2743.5,Logistic,False
+2026-11-01,2026-11,2026,11,4,Madrid,XGBoost,Forecast,2746.0,Logistic,False
+2026-12-01,2026-12,2026,12,4,Madrid,XGBoost,Forecast,2743.5,Logistic,False
+2027-01-01,2027-01,2027,1,1,Madrid,XGBoost,Forecast,2552.1,Logistic,False
+2027-02-01,2027-02,2027,2,1,Madrid,XGBoost,Forecast,2552.1,Logistic,False
+2027-03-01,2027-03,2027,3,1,Madrid,XGBoost,Forecast,2571.1,Logistic,False
+2027-04-01,2027-04,2027,4,2,Madrid,XGBoost,Forecast,2556.2,Logistic,False
+2027-05-01,2027-05,2027,5,2,Madrid,XGBoost,Forecast,2612.9,Logistic,False
+2027-06-01,2027-06,2027,6,2,Madrid,XGBoost,Forecast,2755.5,Logistic,False
+2027-07-01,2027-07,2027,7,3,Madrid,XGBoost,Forecast,2755.5,Logistic,False
+2027-08-01,2027-08,2027,8,3,Madrid,XGBoost,Forecast,2744.4,Logistic,False
+2027-09-01,2027-09,2027,9,3,Madrid,XGBoost,Forecast,2743.5,Logistic,False
+2027-10-01,2027-10,2027,10,4,Madrid,XGBoost,Forecast,2743.5,Logistic,False
+2027-11-01,2027-11,2027,11,4,Madrid,XGBoost,Forecast,2746.0,Logistic,False
+2027-12-01,2027-12,2027,12,4,Madrid,XGBoost,Forecast,2743.5,Logistic,False
+2026-01-01,2026-01,2026,1,1,Madrid,Diesel Share,Forecast,40752.3,Logistic,False
+2026-02-01,2026-02,2026,2,1,Madrid,Diesel Share,Forecast,11628.0,Logistic,False
+2026-03-01,2026-03,2026,3,1,Madrid,Diesel Share,Forecast,10697.7,Logistic,False
+2026-04-01,2026-04,2026,4,2,Madrid,Diesel Share,Forecast,3770.9,Logistic,False
+2026-05-01,2026-05,2026,5,2,Madrid,Diesel Share,Forecast,45116.1,Logistic,False
+2026-06-01,2026-06,2026,6,2,Madrid,Diesel Share,Forecast,5025.9,Logistic,False
+2026-07-01,2026-07,2026,7,3,Madrid,Diesel Share,Forecast,17657.2,Logistic,False
+2026-08-01,2026-08,2026,8,3,Madrid,Diesel Share,Forecast,5957.2,Logistic,False
+2026-09-01,2026-09,2026,9,3,Madrid,Diesel Share,Forecast,44228.7,Logistic,False
+2026-10-01,2026-10,2026,10,4,Madrid,Diesel Share,Forecast,9641.5,Logistic,False
+2026-11-01,2026-11,2026,11,4,Madrid,Diesel Share,Forecast,18897.6,Logistic,False
+2026-12-01,2026-12,2026,12,4,Madrid,Diesel Share,Forecast,7382.2,Logistic,False
+2027-01-01,2027-01,2027,1,1,Madrid,Diesel Share,Forecast,40752.3,Logistic,False
+2027-02-01,2027-02,2027,2,1,Madrid,Diesel Share,Forecast,5625.8,Logistic,False
+2027-03-01,2027-03,2027,3,1,Madrid,Diesel Share,Forecast,32498.8,Logistic,False
+2027-04-01,2027-04,2027,4,2,Madrid,Diesel Share,Forecast,1917.3,Logistic,False
+2027-05-01,2027-05,2027,5,2,Madrid,Diesel Share,Forecast,45116.1,Logistic,False
+2027-06-01,2027-06,2027,6,2,Madrid,Diesel Share,Forecast,2468.4,Logistic,False
+2027-07-01,2027-07,2027,7,3,Madrid,Diesel Share,Forecast,46106.4,Logistic,False
+2027-08-01,2027-08,2027,8,3,Madrid,Diesel Share,Forecast,1244.1,Logistic,False
+2027-09-01,2027-09,2027,9,3,Madrid,Diesel Share,Forecast,44228.7,Logistic,False
+2027-10-01,2027-10,2027,10,4,Madrid,Diesel Share,Forecast,4130.8,Logistic,False
+2027-11-01,2027-11,2027,11,4,Madrid,Diesel Share,Forecast,42950.4,Logistic,False
+2027-12-01,2027-12,2027,12,4,Madrid,Diesel Share,Forecast,2495.8,Logistic,False
+2026-01-01,2026-01,2026,1,1,Cataluña,SARIMA,Forecast,3497.8,XGBoost,False
+2026-02-01,2026-02,2026,2,1,Cataluña,SARIMA,Forecast,3628.5,XGBoost,False
+2026-03-01,2026-03,2026,3,1,Cataluña,SARIMA,Forecast,3754.7,XGBoost,False
+2026-04-01,2026-04,2026,4,2,Cataluña,SARIMA,Forecast,3876.1,XGBoost,False
+2026-05-01,2026-05,2026,5,2,Cataluña,SARIMA,Forecast,3987.9,XGBoost,False
+2026-06-01,2026-06,2026,6,2,Cataluña,SARIMA,Forecast,4088.8,XGBoost,False
+2026-07-01,2026-07,2026,7,3,Cataluña,SARIMA,Forecast,4181.6,XGBoost,False
+2026-08-01,2026-08,2026,8,3,Cataluña,SARIMA,Forecast,4254.5,XGBoost,False
+2026-09-01,2026-09,2026,9,3,Cataluña,SARIMA,Forecast,4324.4,XGBoost,False
+2026-10-01,2026-10,2026,10,4,Cataluña,SARIMA,Forecast,4406.3,XGBoost,False
+2026-11-01,2026-11,2026,11,4,Cataluña,SARIMA,Forecast,4465.2,XGBoost,False
+2026-12-01,2026-12,2026,12,4,Cataluña,SARIMA,Forecast,4526.6,XGBoost,False
+2027-01-01,2027-01,2027,1,1,Cataluña,SARIMA,Forecast,4581.1,XGBoost,False
+2027-02-01,2027-02,2027,2,1,Cataluña,SARIMA,Forecast,4630.7,XGBoost,False
+2027-03-01,2027-03,2027,3,1,Cataluña,SARIMA,Forecast,4675.9,XGBoost,False
+2027-04-01,2027-04,2027,4,2,Cataluña,SARIMA,Forecast,4717.1,XGBoost,False
+2027-05-01,2027-05,2027,5,2,Cataluña,SARIMA,Forecast,4754.4,XGBoost,False
+2027-06-01,2027-06,2027,6,2,Cataluña,SARIMA,Forecast,4788.3,XGBoost,False
+2027-07-01,2027-07,2027,7,3,Cataluña,SARIMA,Forecast,4819.0,XGBoost,False
+2027-08-01,2027-08,2027,8,3,Cataluña,SARIMA,Forecast,4846.7,XGBoost,False
+2027-09-01,2027-09,2027,9,3,Cataluña,SARIMA,Forecast,4871.8,XGBoost,False
+2027-10-01,2027-10,2027,10,4,Cataluña,SARIMA,Forecast,4894.7,XGBoost,False
+2027-11-01,2027-11,2027,11,4,Cataluña,SARIMA,Forecast,4915.2,XGBoost,False
+2027-12-01,2027-12,2027,12,4,Cataluña,SARIMA,Forecast,4933.9,XGBoost,False
+2026-01-01,2026-01,2026,1,1,Cataluña,Logistic,Forecast,3564.4,XGBoost,False
+2026-02-01,2026-02,2026,2,1,Cataluña,Logistic,Forecast,3634.8,XGBoost,False
+2026-03-01,2026-03,2026,3,1,Cataluña,Logistic,Forecast,3710.2,XGBoost,False
+2026-04-01,2026-04,2026,4,2,Cataluña,Logistic,Forecast,3780.1,XGBoost,False
+2026-05-01,2026-05,2026,5,2,Cataluña,Logistic,Forecast,3833.6,XGBoost,False
+2026-06-01,2026-06,2026,6,2,Cataluña,Logistic,Forecast,3862.5,XGBoost,False
+2026-07-01,2026-07,2026,7,3,Cataluña,Logistic,Forecast,3863.9,XGBoost,False
+2026-08-01,2026-08,2026,8,3,Cataluña,Logistic,Forecast,3841.3,XGBoost,False
+2026-09-01,2026-09,2026,9,3,Cataluña,Logistic,Forecast,3803.9,XGBoost,False
+2026-10-01,2026-10,2026,10,4,Cataluña,Logistic,Forecast,3764.0,XGBoost,False
+2026-11-01,2026-11,2026,11,4,Cataluña,Logistic,Forecast,3734.3,XGBoost,False
+2026-12-01,2026-12,2026,12,4,Cataluña,Logistic,Forecast,3724.2,XGBoost,False
+2027-01-01,2027-01,2027,1,1,Cataluña,Logistic,Forecast,3737.6,XGBoost,False
+2027-02-01,2027-02,2027,2,1,Cataluña,Logistic,Forecast,3771.8,XGBoost,False
+2027-03-01,2027-03,2027,3,1,Cataluña,Logistic,Forecast,3818.4,XGBoost,False
+2027-04-01,2027-04,2027,4,2,Cataluña,Logistic,Forecast,3865.4,XGBoost,False
+2027-05-01,2027-05,2027,5,2,Cataluña,Logistic,Forecast,3900.8,XGBoost,False
+2027-06-01,2027-06,2027,6,2,Cataluña,Logistic,Forecast,3915.3,XGBoost,False
+2027-07-01,2027-07,2027,7,3,Cataluña,Logistic,Forecast,3905.3,XGBoost,False
+2027-08-01,2027-08,2027,8,3,Cataluña,Logistic,Forecast,3873.8,XGBoost,False
+2027-09-01,2027-09,2027,9,3,Cataluña,Logistic,Forecast,3829.4,XGBoost,False
+2027-10-01,2027-10,2027,10,4,Cataluña,Logistic,Forecast,3784.0,XGBoost,False
+2027-11-01,2027-11,2027,11,4,Cataluña,Logistic,Forecast,3750.0,XGBoost,False
+2027-12-01,2027-12,2027,12,4,Cataluña,Logistic,Forecast,3736.5,XGBoost,False
+2026-01-01,2026-01,2026,1,1,Cataluña,Gompertz,Forecast,3484.5,XGBoost,False
+2026-02-01,2026-02,2026,2,1,Cataluña,Gompertz,Forecast,3566.6,XGBoost,False
+2026-03-01,2026-03,2026,3,1,Cataluña,Gompertz,Forecast,3656.4,XGBoost,False
+2026-04-01,2026-04,2026,4,2,Cataluña,Gompertz,Forecast,3741.2,XGBoost,False
+2026-05-01,2026-05,2026,5,2,Cataluña,Gompertz,Forecast,3807.9,XGBoost,False
+2026-06-01,2026-06,2026,6,2,Cataluña,Gompertz,Forecast,3846.8,XGBoost,False
+2026-07-01,2026-07,2026,7,3,Cataluña,Gompertz,Forecast,3854.6,XGBoost,False
+2026-08-01,2026-08,2026,8,3,Cataluña,Gompertz,Forecast,3835.2,XGBoost,False
+2026-09-01,2026-09,2026,9,3,Cataluña,Gompertz,Forecast,3798.8,XGBoost,False
+2026-10-01,2026-10,2026,10,4,Cataluña,Gompertz,Forecast,3759.5,XGBoost,False
+2026-11-01,2026-11,2026,11,4,Cataluña,Gompertz,Forecast,3731.6,XGBoost,False
+2026-12-01,2026-12,2026,12,4,Cataluña,Gompertz,Forecast,3725.7,XGBoost,False
+2027-01-01,2027-01,2027,1,1,Cataluña,Gompertz,Forecast,3745.9,XGBoost,False
+2027-02-01,2027-02,2027,2,1,Cataluña,Gompertz,Forecast,3789.2,XGBoost,False
+2027-03-01,2027-03,2027,3,1,Cataluña,Gompertz,Forecast,3845.7,XGBoost,False
+2027-04-01,2027-04,2027,4,2,Cataluña,Gompertz,Forecast,3902.1,XGBoost,False
+2027-05-01,2027-05,2027,5,2,Cataluña,Gompertz,Forecast,3944.5,XGBoost,False
+2027-06-01,2027-06,2027,6,2,Cataluña,Gompertz,Forecast,3962.8,XGBoost,False
+2027-07-01,2027-07,2027,7,3,Cataluña,Gompertz,Forecast,3952.9,XGBoost,False
+2027-08-01,2027-08,2027,8,3,Cataluña,Gompertz,Forecast,3918.5,XGBoost,False
+2027-09-01,2027-09,2027,9,3,Cataluña,Gompertz,Forecast,3869.4,XGBoost,False
+2027-10-01,2027-10,2027,10,4,Cataluña,Gompertz,Forecast,3819.3,XGBoost,False
+2027-11-01,2027-11,2027,11,4,Cataluña,Gompertz,Forecast,3782.3,XGBoost,False
+2027-12-01,2027-12,2027,12,4,Cataluña,Gompertz,Forecast,3768.6,XGBoost,False
+2026-01-01,2026-01,2026,1,1,Cataluña,Ridge,Forecast,6623.6,XGBoost,False
+2026-02-01,2026-02,2026,2,1,Cataluña,Ridge,Forecast,22861.7,XGBoost,False
+2026-03-01,2026-03,2026,3,1,Cataluña,Ridge,Forecast,1671133.1,XGBoost,False
+2026-04-01,2026-04,2026,4,2,Cataluña,Ridge,Forecast,3269016.4,XGBoost,False
+2026-05-01,2026-05,2026,5,2,Cataluña,Ridge,Forecast,3269016.4,XGBoost,False
+2026-06-01,2026-06,2026,6,2,Cataluña,Ridge,Forecast,3269016.4,XGBoost,False
+2026-07-01,2026-07,2026,7,3,Cataluña,Ridge,Forecast,3269016.4,XGBoost,False
+2026-08-01,2026-08,2026,8,3,Cataluña,Ridge,Forecast,3269016.4,XGBoost,False
+2026-09-01,2026-09,2026,9,3,Cataluña,Ridge,Forecast,3269016.4,XGBoost,False
+2026-10-01,2026-10,2026,10,4,Cataluña,Ridge,Forecast,3269016.4,XGBoost,False
+2026-11-01,2026-11,2026,11,4,Cataluña,Ridge,Forecast,3269016.4,XGBoost,False
+2026-12-01,2026-12,2026,12,4,Cataluña,Ridge,Forecast,3269016.4,XGBoost,False
+2027-01-01,2027-01,2027,1,1,Cataluña,Ridge,Forecast,3269016.4,XGBoost,False
+2027-02-01,2027-02,2027,2,1,Cataluña,Ridge,Forecast,3269016.4,XGBoost,False
+2027-03-01,2027-03,2027,3,1,Cataluña,Ridge,Forecast,3269016.4,XGBoost,False
+2027-04-01,2027-04,2027,4,2,Cataluña,Ridge,Forecast,3269016.4,XGBoost,False
+2027-05-01,2027-05,2027,5,2,Cataluña,Ridge,Forecast,3269016.4,XGBoost,False
+2027-06-01,2027-06,2027,6,2,Cataluña,Ridge,Forecast,3269016.4,XGBoost,False
+2027-07-01,2027-07,2027,7,3,Cataluña,Ridge,Forecast,3269016.4,XGBoost,False
+2027-08-01,2027-08,2027,8,3,Cataluña,Ridge,Forecast,3269016.4,XGBoost,False
+2027-09-01,2027-09,2027,9,3,Cataluña,Ridge,Forecast,3269016.4,XGBoost,False
+2027-10-01,2027-10,2027,10,4,Cataluña,Ridge,Forecast,3269016.4,XGBoost,False
+2027-11-01,2027-11,2027,11,4,Cataluña,Ridge,Forecast,3269016.4,XGBoost,False
+2027-12-01,2027-12,2027,12,4,Cataluña,Ridge,Forecast,3269016.4,XGBoost,False
+2026-01-01,2026-01,2026,1,1,Cataluña,Random Forest,Forecast,3139.6,XGBoost,False
+2026-02-01,2026-02,2026,2,1,Cataluña,Random Forest,Forecast,2956.4,XGBoost,False
+2026-03-01,2026-03,2026,3,1,Cataluña,Random Forest,Forecast,2922.3,XGBoost,False
+2026-04-01,2026-04,2026,4,2,Cataluña,Random Forest,Forecast,3116.7,XGBoost,False
+2026-05-01,2026-05,2026,5,2,Cataluña,Random Forest,Forecast,3179.5,XGBoost,False
+2026-06-01,2026-06,2026,6,2,Cataluña,Random Forest,Forecast,3186.3,XGBoost,False
+2026-07-01,2026-07,2026,7,3,Cataluña,Random Forest,Forecast,3182.7,XGBoost,False
+2026-08-01,2026-08,2026,8,3,Cataluña,Random Forest,Forecast,3172.0,XGBoost,False
+2026-09-01,2026-09,2026,9,3,Cataluña,Random Forest,Forecast,2973.4,XGBoost,False
+2026-10-01,2026-10,2026,10,4,Cataluña,Random Forest,Forecast,3091.0,XGBoost,False
+2026-11-01,2026-11,2026,11,4,Cataluña,Random Forest,Forecast,3157.9,XGBoost,False
+2026-12-01,2026-12,2026,12,4,Cataluña,Random Forest,Forecast,3151.1,XGBoost,False
+2027-01-01,2027-01,2027,1,1,Cataluña,Random Forest,Forecast,3150.1,XGBoost,False
+2027-02-01,2027-02,2027,2,1,Cataluña,Random Forest,Forecast,2962.3,XGBoost,False
+2027-03-01,2027-03,2027,3,1,Cataluña,Random Forest,Forecast,2923.8,XGBoost,False
+2027-04-01,2027-04,2027,4,2,Cataluña,Random Forest,Forecast,3116.7,XGBoost,False
+2027-05-01,2027-05,2027,5,2,Cataluña,Random Forest,Forecast,3179.5,XGBoost,False
+2027-06-01,2027-06,2027,6,2,Cataluña,Random Forest,Forecast,3186.3,XGBoost,False
+2027-07-01,2027-07,2027,7,3,Cataluña,Random Forest,Forecast,3182.7,XGBoost,False
+2027-08-01,2027-08,2027,8,3,Cataluña,Random Forest,Forecast,3172.0,XGBoost,False
+2027-09-01,2027-09,2027,9,3,Cataluña,Random Forest,Forecast,2973.4,XGBoost,False
+2027-10-01,2027-10,2027,10,4,Cataluña,Random Forest,Forecast,3091.0,XGBoost,False
+2027-11-01,2027-11,2027,11,4,Cataluña,Random Forest,Forecast,3157.9,XGBoost,False
+2027-12-01,2027-12,2027,12,4,Cataluña,Random Forest,Forecast,3151.1,XGBoost,False
+2026-01-01,2026-01,2026,1,1,Cataluña,XGBoost,Forecast,2700.9,XGBoost,True
+2026-02-01,2026-02,2026,2,1,Cataluña,XGBoost,Forecast,2626.7,XGBoost,True
+2026-03-01,2026-03,2026,3,1,Cataluña,XGBoost,Forecast,2739.7,XGBoost,True
+2026-04-01,2026-04,2026,4,2,Cataluña,XGBoost,Forecast,2868.4,XGBoost,True
+2026-05-01,2026-05,2026,5,2,Cataluña,XGBoost,Forecast,2876.1,XGBoost,True
+2026-06-01,2026-06,2026,6,2,Cataluña,XGBoost,Forecast,2854.6,XGBoost,True
+2026-07-01,2026-07,2026,7,3,Cataluña,XGBoost,Forecast,2876.1,XGBoost,True
+2026-08-01,2026-08,2026,8,3,Cataluña,XGBoost,Forecast,2876.1,XGBoost,True
+2026-09-01,2026-09,2026,9,3,Cataluña,XGBoost,Forecast,2682.9,XGBoost,True
+2026-10-01,2026-10,2026,10,4,Cataluña,XGBoost,Forecast,2876.1,XGBoost,True
+2026-11-01,2026-11,2026,11,4,Cataluña,XGBoost,Forecast,2876.1,XGBoost,True
+2026-12-01,2026-12,2026,12,4,Cataluña,XGBoost,Forecast,2876.1,XGBoost,True
+2027-01-01,2027-01,2027,1,1,Cataluña,XGBoost,Forecast,2700.9,XGBoost,True
+2027-02-01,2027-02,2027,2,1,Cataluña,XGBoost,Forecast,2626.7,XGBoost,True
+2027-03-01,2027-03,2027,3,1,Cataluña,XGBoost,Forecast,2739.7,XGBoost,True
+2027-04-01,2027-04,2027,4,2,Cataluña,XGBoost,Forecast,2868.4,XGBoost,True
+2027-05-01,2027-05,2027,5,2,Cataluña,XGBoost,Forecast,2876.1,XGBoost,True
+2027-06-01,2027-06,2027,6,2,Cataluña,XGBoost,Forecast,2854.6,XGBoost,True
+2027-07-01,2027-07,2027,7,3,Cataluña,XGBoost,Forecast,2876.1,XGBoost,True
+2027-08-01,2027-08,2027,8,3,Cataluña,XGBoost,Forecast,2876.1,XGBoost,True
+2027-09-01,2027-09,2027,9,3,Cataluña,XGBoost,Forecast,2682.9,XGBoost,True
+2027-10-01,2027-10,2027,10,4,Cataluña,XGBoost,Forecast,2876.1,XGBoost,True
+2027-11-01,2027-11,2027,11,4,Cataluña,XGBoost,Forecast,2876.1,XGBoost,True
+2027-12-01,2027-12,2027,12,4,Cataluña,XGBoost,Forecast,2876.1,XGBoost,True
+2026-01-01,2026-01,2026,1,1,Cataluña,Diesel Share,Forecast,7147.3,XGBoost,False
+2026-02-01,2026-02,2026,2,1,Cataluña,Diesel Share,Forecast,23390.0,XGBoost,False
+2026-03-01,2026-03,2026,3,1,Cataluña,Diesel Share,Forecast,88214.1,XGBoost,False
+2026-04-01,2026-04,2026,4,2,Cataluña,Diesel Share,Forecast,90093.9,XGBoost,False
+2026-05-01,2026-05,2026,5,2,Cataluña,Diesel Share,Forecast,93559.2,XGBoost,False
+2026-06-01,2026-06,2026,6,2,Cataluña,Diesel Share,Forecast,89942.1,XGBoost,False
+2026-07-01,2026-07,2026,7,3,Cataluña,Diesel Share,Forecast,98753.1,XGBoost,False
+2026-08-01,2026-08,2026,8,3,Cataluña,Diesel Share,Forecast,82139.4,XGBoost,False
+2026-09-01,2026-09,2026,9,3,Cataluña,Diesel Share,Forecast,86334.9,XGBoost,False
+2026-10-01,2026-10,2026,10,4,Cataluña,Diesel Share,Forecast,93233.4,XGBoost,False
+2026-11-01,2026-11,2026,11,4,Cataluña,Diesel Share,Forecast,87174.9,XGBoost,False
+2026-12-01,2026-12,2026,12,4,Cataluña,Diesel Share,Forecast,92969.1,XGBoost,False
+2027-01-01,2027-01,2027,1,1,Cataluña,Diesel Share,Forecast,82690.8,XGBoost,False
+2027-02-01,2027-02,2027,2,1,Cataluña,Diesel Share,Forecast,82336.2,XGBoost,False
+2027-03-01,2027-03,2027,3,1,Cataluña,Diesel Share,Forecast,88214.1,XGBoost,False
+2027-04-01,2027-04,2027,4,2,Cataluña,Diesel Share,Forecast,90093.9,XGBoost,False
+2027-05-01,2027-05,2027,5,2,Cataluña,Diesel Share,Forecast,93559.2,XGBoost,False
+2027-06-01,2027-06,2027,6,2,Cataluña,Diesel Share,Forecast,89942.1,XGBoost,False
+2027-07-01,2027-07,2027,7,3,Cataluña,Diesel Share,Forecast,98753.1,XGBoost,False
+2027-08-01,2027-08,2027,8,3,Cataluña,Diesel Share,Forecast,82139.4,XGBoost,False
+2027-09-01,2027-09,2027,9,3,Cataluña,Diesel Share,Forecast,86334.9,XGBoost,False
+2027-10-01,2027-10,2027,10,4,Cataluña,Diesel Share,Forecast,93233.4,XGBoost,False
+2027-11-01,2027-11,2027,11,4,Cataluña,Diesel Share,Forecast,87174.9,XGBoost,False
+2027-12-01,2027-12,2027,12,4,Cataluña,Diesel Share,Forecast,92969.1,XGBoost,False
 2026-01-01,2026-01,2026,1,1,Andalucía,SARIMA,Forecast,2122.2,Logistic,False
 2026-02-01,2026-02,2026,2,1,Andalucía,SARIMA,Forecast,2236.0,Logistic,False
 2026-03-01,2026-03,2026,3,1,Andalucía,SARIMA,Forecast,2221.1,Logistic,False

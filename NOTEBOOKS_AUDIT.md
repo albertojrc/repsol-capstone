@@ -35,6 +35,13 @@ pipeline for reproducible final artifacts.
   `Cataluña` and `Andalucía`.
 - Kept notebook methodology unchanged.
 
+## Main-Branch Phase 2 Note
+
+The non-pooling Phase 2 validation upgrade was implemented in
+`scripts/05_modeling_with_cnmc.py`, not in notebook 07. Notebook 07 remains a
+historical/exploratory artifact; use `PHASE2_NON_POOLING_REPORT.md` and the
+script outputs for current main-branch results.
+
 ## Remaining Caveat
 
 The notebooks should not be used as the authoritative final pipeline unless they are

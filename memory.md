@@ -5,6 +5,50 @@
 
 ---
 
+## 2026-06-21 Main-Branch Phase 2 Non-Pooling Update
+
+`main` now includes the non-pooling parts of Phase 2. Regional pooling remains
+exclusive to branch `enrico`.
+
+Current production source of truth:
+
+```powershell
+.\.venv\Scripts\python scripts/03_clean_cnmc_petroleum.py
+.\.venv\Scripts\python scripts/02_master_dataset_builder.py
+.\.venv\Scripts\python scripts/04_build_features.py
+.\.venv\Scripts\python scripts/05_modeling_with_cnmc.py
+```
+
+Main-branch Phase 2 decisions:
+
+- The one-step model-selection gate was replaced by recursive multi-step
+  walk-forward validation inside the 2023-2024 training period.
+- ML holdout evaluation now forecasts recursively from the 2024-12 origin,
+  instead of using actual 2025 target lag values.
+- A no-regression acceptance gate compares each Phase 2 proposal against the
+  Phase 1 selected model on the 2025 holdout.
+- No pooled regional features, pooled regional models, or pooled output files
+  were added to `main`.
+
+Final selected models on `main`:
+
+| Target | Selected model | 2025 MAPE | 2025 R2 |
+|---|---|---:|---:|
+| Nacional | SARIMA | 29.0% | -0.009 |
+| Madrid | Logistic | 73.6% | -8.273 |
+| Catalonia | XGBoost | 61.6% | -8.432 |
+| Andalusia | Logistic | 48.4% | -1.555 |
+| Valencia | Gompertz | 34.2% | -1.246 |
+
+Average selected MAPE improved from 94.6% to 49.4%. The stronger pooled
+Catalonia result remains on `enrico`; do not conflate that branch with `main`.
+
+New lineage file:
+
+- `data/outputs/phase2_non_pooling_model_acceptance.csv`
+
+---
+
 ## 2026-06-21 Phase 1 Cleanup Update
 
 Phase 1 addressed reproducibility, stale documentation, notebook/script drift,

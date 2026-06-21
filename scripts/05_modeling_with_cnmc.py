@@ -5,6 +5,10 @@ biofuel mandate features.
 Outputs are written to data/outputs and reports/figures, preserving the existing
 CSV filenames used by the notebooks/Tableau flow while adding the new
 Diesel Share candidate model.
+
+Main-branch Phase 2 keeps regional pooling out of scope. It uses recursive
+multi-step validation and a no-regression acceptance gate for the existing
+non-pooled candidate models only.
 """
 
 from __future__ import annotations
@@ -98,6 +102,16 @@ CANDIDATE_COLS = [
     "Gompertz",
     "Diesel Share",
 ]
+
+MULTISTEP_MAX_HORIZON = 6
+
+PHASE1_SELECTED_MODELS = {
+    "Nacional": "SARIMA",
+    "Madrid": "Gompertz",
+    "Cataluña": "Gompertz",
+    "Andalucía": "Logistic",
+    "Valencia": "Gompertz",
+}
 
 FORECAST_DATES = pd.date_range("2026-01-01", periods=24, freq="MS")
 
@@ -273,11 +287,22 @@ def seasonal_naive_gasoleo(history: pd.DataFrame, dates: list[pd.Timestamp]) -> 
     return [base[int(dt.month)] for dt in dates]
 
 
-def recursive_forecast_ml(model, scaler, history: pd.DataFrame, macro_last: dict, n_steps: int = 24) -> list[float]:
+def recursive_forecast_ml(
+    model,
+    scaler,
+    history: pd.DataFrame,
+    macro_last: dict,
+    n_steps: int = 24,
+    future_dates: list[pd.Timestamp] | None = None,
+) -> list[float]:
     hist_y = history["Consumo_Tm"].astype(float).tolist()
     hist_gaso = history["GasoleoA_Tm"].astype(float).tolist()
     hist_ratio = history["Biodiesel_GasoleoA_Ratio"].astype(float).tolist()
-    future_dates = list(FORECAST_DATES[:n_steps])
+    if future_dates is None:
+        future_dates = list(FORECAST_DATES[:n_steps])
+    else:
+        future_dates = list(future_dates)[:n_steps]
+        n_steps = len(future_dates)
     future_gaso = seasonal_naive_gasoleo(history, future_dates)
     forecasts = []
 
@@ -314,10 +339,21 @@ def recursive_forecast_ml(model, scaler, history: pd.DataFrame, macro_last: dict
     return forecasts
 
 
-def recursive_forecast_share(model, scaler, history: pd.DataFrame, macro_last: dict, n_steps: int = 24) -> list[float]:
+def recursive_forecast_share(
+    model,
+    scaler,
+    history: pd.DataFrame,
+    macro_last: dict,
+    n_steps: int = 24,
+    future_dates: list[pd.Timestamp] | None = None,
+) -> list[float]:
     hist_gaso = history["GasoleoA_Tm"].astype(float).tolist()
     hist_ratio = history["Biodiesel_GasoleoA_Ratio"].astype(float).tolist()
-    future_dates = list(FORECAST_DATES[:n_steps])
+    if future_dates is None:
+        future_dates = list(FORECAST_DATES[:n_steps])
+    else:
+        future_dates = list(future_dates)[:n_steps]
+        n_steps = len(future_dates)
     future_gaso = seasonal_naive_gasoleo(history, future_dates)
     forecasts = []
     start_tendencia = int(history["Tendencia"].max()) + 1
@@ -383,29 +419,27 @@ def evaluate_models(df_train: pd.DataFrame, df_test: pd.DataFrame):
                 print(f"  {curve_type} failed for {target}: {exc}")
 
         tr_ml = tr[["Fecha"] + ML_FEATS + ["Consumo_Tm"]].dropna()
-        te_ml = te[["Fecha"] + ML_FEATS + ["Consumo_Tm"]].dropna()
         for model_name, label in [("Ridge", "Ridge"), ("RandomForest", "Random Forest"), ("XGBoost", "XGBoost")]:
             try:
                 mdl, scaler = train_ml(tr_ml[ML_FEATS].values, tr_ml["Consumo_Tm"].values, model_name)
-                pred = predict_ml(mdl, scaler, te_ml[ML_FEATS].values)
-                all_metrics.append({"Target": target, "Model": label, **compute_metrics(te_ml["Consumo_Tm"].values, pred)})
-                for fd, actual, pv in zip(te_ml["Fecha"], te_ml["Consumo_Tm"], pred):
+                macro_last = tr.iloc[-1][["IPI_original", "IPC_var_anual", "Tasa_paro"]].to_dict()
+                pred = recursive_forecast_ml(mdl, scaler, tr, macro_last, len(te), test_dates)
+                all_metrics.append({"Target": target, "Model": label, **compute_metrics(y_true, pred)})
+                for fd, actual, pv in zip(te["Fecha"], y_true, pred):
                     all_preds.append({"Fecha": fd, "Target": target, "Actual": round(float(actual), 1), "Model": label, "Pred": round(float(pv), 1)})
             except Exception as exc:
                 print(f"  {label} failed for {target}: {exc}")
 
         tr_share = tr[["Fecha"] + SHARE_FEATS + ["Biodiesel_GasoleoA_Ratio"]].dropna()
-        te_share = te[["Fecha"] + SHARE_FEATS + ["Consumo_Tm"]].dropna()
         try:
             share_model, share_scaler = train_share_model(
                 tr_share[SHARE_FEATS].values,
                 tr_share["Biodiesel_GasoleoA_Ratio"].values,
             )
-            ratio_pred = predict_share_ratio(share_model, share_scaler, te_share[SHARE_FEATS].values)
-            gaso_hat = np.array(test_gasoleo_naive(tr, pd.to_datetime(te_share["Fecha"]).tolist()), dtype=float)
-            pred = ratio_pred * gaso_hat
-            all_metrics.append({"Target": target, "Model": "Diesel Share", **compute_metrics(te_share["Consumo_Tm"].values, pred)})
-            for fd, actual, pv in zip(te_share["Fecha"], te_share["Consumo_Tm"], pred):
+            macro_last = tr.iloc[-1][["IPI_original", "IPC_var_anual", "Tasa_paro"]].to_dict()
+            pred = recursive_forecast_share(share_model, share_scaler, tr, macro_last, len(te), test_dates)
+            all_metrics.append({"Target": target, "Model": "Diesel Share", **compute_metrics(y_true, pred)})
+            for fd, actual, pv in zip(te["Fecha"], y_true, pred):
                 all_preds.append({"Fecha": fd, "Target": target, "Actual": round(float(actual), 1), "Model": "Diesel Share", "Pred": round(float(pv), 1)})
         except Exception as exc:
             print(f"  Diesel Share failed for {target}: {exc}")
@@ -413,21 +447,34 @@ def evaluate_models(df_train: pd.DataFrame, df_test: pd.DataFrame):
     return pd.DataFrame(all_metrics), pd.DataFrame(all_preds)
 
 
-def walk_forward_scores(target_df: pd.DataFrame, min_origin: int = 15) -> dict[str, float]:
+def _append_mape_errors(errors: list[float], y_true: np.ndarray, y_pred: np.ndarray) -> None:
+    y_true = np.array(y_true, dtype=float)
+    y_pred = np.maximum(np.array(y_pred, dtype=float), 0)
+    mask = y_true > 0
+    if mask.any():
+        errors.extend((np.abs((y_true[mask] - y_pred[mask]) / y_true[mask]) * 100).tolist())
+
+
+def walk_forward_scores(
+    target_df: pd.DataFrame,
+    min_origin: int = 15,
+    max_horizon: int = MULTISTEP_MAX_HORIZON,
+) -> dict[str, float]:
     df = target_df.sort_values("Fecha").reset_index(drop=True)
     fold_errors: dict[str, list[float]] = {col: [] for col in CANDIDATE_COLS}
 
     for origin in range(min_origin, len(df) - 1):
         fold_tr = df.iloc[: origin + 1].copy()
-        fold_te = df.iloc[origin + 1 : origin + 2].copy()
-        y_true = float(fold_te["Consumo_Tm"].iloc[0])
-        if y_true <= 0:
+        fold_te = df.iloc[origin + 1 : min(len(df), origin + 1 + max_horizon)].copy()
+        y_true = fold_te["Consumo_Tm"].values.astype(float)
+        if len(fold_te) == 0 or not (y_true > 0).any():
             continue
+        future_dates = pd.to_datetime(fold_te["Fecha"]).tolist()
 
         try:
             res = train_sarima(fold_tr["Consumo_Tm"].values)
-            pred = float(predict_sarima(res, 1)[0])
-            fold_errors["SARIMA"].append(abs((y_true - pred) / y_true) * 100)
+            pred = predict_sarima(res, len(fold_te))
+            _append_mape_errors(fold_errors["SARIMA"], y_true, pred)
         except Exception:
             pass
 
@@ -439,35 +486,32 @@ def walk_forward_scores(target_df: pd.DataFrame, min_origin: int = 15) -> dict[s
                     fold_tr["Mes"].values,
                     curve_type,
                 )
-                pred = float(predict_growth_curve(curve, fold_te["Tendencia"].values, fold_te["Mes"].values)[0])
-                fold_errors[curve_type].append(abs((y_true - pred) / y_true) * 100)
+                pred = predict_growth_curve(curve, fold_te["Tendencia"].values, fold_te["Mes"].values)
+                _append_mape_errors(fold_errors[curve_type], y_true, pred)
             except Exception:
                 pass
 
         tr_ml = fold_tr[ML_FEATS + ["Consumo_Tm"]].dropna()
-        te_ml = fold_te[ML_FEATS + ["Consumo_Tm"]].dropna()
-        if len(tr_ml) >= 5 and len(te_ml) == 1:
+        if len(tr_ml) >= 5:
             for model_name, label in [("Ridge", "Ridge"), ("RandomForest", "Random Forest"), ("XGBoost", "XGBoost")]:
                 try:
                     mdl, scaler = train_ml(tr_ml[ML_FEATS].values, tr_ml["Consumo_Tm"].values, model_name)
-                    pred = float(predict_ml(mdl, scaler, te_ml[ML_FEATS].values)[0])
-                    fold_errors[label].append(abs((y_true - pred) / y_true) * 100)
+                    macro_last = fold_tr.iloc[-1][["IPI_original", "IPC_var_anual", "Tasa_paro"]].to_dict()
+                    pred = recursive_forecast_ml(mdl, scaler, fold_tr, macro_last, len(fold_te), future_dates)
+                    _append_mape_errors(fold_errors[label], y_true, pred)
                 except Exception:
                     pass
 
         tr_share = fold_tr[SHARE_FEATS + ["Biodiesel_GasoleoA_Ratio"]].dropna()
-        te_share = fold_te[SHARE_FEATS + ["Consumo_Tm"]].dropna()
-        if len(tr_share) >= 5 and len(te_share) == 1:
+        if len(tr_share) >= 5:
             try:
                 share_model, share_scaler = train_share_model(
                     tr_share[SHARE_FEATS].values,
                     tr_share["Biodiesel_GasoleoA_Ratio"].values,
                 )
-                ratio = float(predict_share_ratio(share_model, share_scaler, te_share[SHARE_FEATS].values)[0])
-                next_date = pd.to_datetime(fold_te["Fecha"].iloc[0])
-                gaso_hat = seasonal_naive_gasoleo(fold_tr, [next_date])[0]
-                pred = ratio * gaso_hat
-                fold_errors["Diesel Share"].append(abs((y_true - pred) / y_true) * 100)
+                macro_last = fold_tr.iloc[-1][["IPI_original", "IPC_var_anual", "Tasa_paro"]].to_dict()
+                pred = recursive_forecast_share(share_model, share_scaler, fold_tr, macro_last, len(fold_te), future_dates)
+                _append_mape_errors(fold_errors["Diesel Share"], y_true, pred)
             except Exception:
                 pass
 
@@ -478,9 +522,16 @@ def run_walk_forward(df_train: pd.DataFrame) -> pd.DataFrame:
     rows = []
     for target in TARGETS:
         scores = walk_forward_scores(df_train[df_train["Target"] == target])
-        rows.append({"Target": target, **scores})
+        rows.append(
+            {
+                "Target": target,
+                "Validation_Gate": f"recursive_{MULTISTEP_MAX_HORIZON}m_walk_forward",
+                "Selection_Candidate_Set": "all_non_pooled",
+                **scores,
+                "Proposed_Model": min(CANDIDATE_COLS, key=lambda model: scores.get(model, np.inf)),
+            }
+        )
     df_wf = pd.DataFrame(rows)
-    df_wf["Selected_Model"] = df_wf[CANDIDATE_COLS].idxmin(axis=1)
     return df_wf
 
 
@@ -540,6 +591,38 @@ def build_final_metrics(df_metrics: pd.DataFrame, df_wf: pd.DataFrame) -> pd.Dat
             raise ValueError(f"No 2025 metric for selected {target} / {model}")
         rows.append(row.iloc[0].to_dict())
     return pd.DataFrame(rows)[["Target", "Model", "MAE", "RMSE", "MAPE", "R2"]]
+
+
+def build_model_acceptance(df_metrics: pd.DataFrame, df_wf: pd.DataFrame) -> pd.DataFrame:
+    rows = []
+    for _, wf_row in df_wf.iterrows():
+        target = wf_row["Target"]
+        proposed = wf_row["Proposed_Model"]
+        baseline = PHASE1_SELECTED_MODELS[target]
+
+        proposed_metric = df_metrics[(df_metrics["Target"] == target) & (df_metrics["Model"] == proposed)]
+        baseline_metric = df_metrics[(df_metrics["Target"] == target) & (df_metrics["Model"] == baseline)]
+        if proposed_metric.empty:
+            raise ValueError(f"No metric found for proposed model {target} / {proposed}")
+        if baseline_metric.empty:
+            raise ValueError(f"No metric found for Phase 1 model {target} / {baseline}")
+
+        proposed_mape = float(proposed_metric.iloc[0]["MAPE"])
+        baseline_mape = float(baseline_metric.iloc[0]["MAPE"])
+        accepted = proposed_mape <= baseline_mape
+        rows.append(
+            {
+                "Target": target,
+                "Phase1_Model": baseline,
+                "Phase1_MAPE": baseline_mape,
+                "Phase2_Proposed_Model": proposed,
+                "Phase2_Proposed_MAPE": proposed_mape,
+                "Selected_Model": proposed if accepted else baseline,
+                "Accepted_Phase2_Proposal": accepted,
+                "Decision": "accepted_no_regression" if accepted else "kept_phase1_no_regression",
+            }
+        )
+    return pd.DataFrame(rows)
 
 
 def build_comparison_metrics(df_metrics: pd.DataFrame) -> pd.DataFrame:
@@ -696,6 +779,12 @@ def main() -> None:
 
     df_metrics, df_preds = evaluate_models(df_train, df_test)
     df_wf = run_walk_forward(df_train)
+    df_acceptance = build_model_acceptance(df_metrics, df_wf)
+    df_wf = df_wf.merge(
+        df_acceptance[["Target", "Selected_Model", "Accepted_Phase2_Proposal", "Decision"]],
+        on="Target",
+        how="left",
+    )
     df_final = build_final_metrics(df_metrics, df_wf)
     df_fc = final_forecasts(df_all)
     df_comparison = build_comparison_metrics(df_metrics)
@@ -703,6 +792,7 @@ def main() -> None:
     df_metrics.to_csv(DATA_OUTPUTS / "metricas_modelos.csv", index=False, encoding="utf-8")
     df_wf.to_csv(DATA_OUTPUTS / "model_selection_walkforward.csv", index=False, encoding="utf-8")
     df_final.to_csv(DATA_OUTPUTS / "metricas_final_seleccionado.csv", index=False, encoding="utf-8")
+    df_acceptance.to_csv(DATA_OUTPUTS / "phase2_non_pooling_model_acceptance.csv", index=False, encoding="utf-8")
     df_preds.to_csv(DATA_OUTPUTS / "predicciones_test_2025.csv", index=False, encoding="utf-8")
     df_fc.to_csv(DATA_OUTPUTS / "forecast_24m_sarima_rf_xgb.csv", index=False, encoding="utf-8")
     df_comparison.to_csv(DATA_OUTPUTS / "metricas_comparativa.csv", index=False, encoding="utf-8")
@@ -710,8 +800,8 @@ def main() -> None:
     build_tableau_outputs(df_all, df_preds, df_fc, df_final, df_metrics)
     plot_outputs(df_all, df_metrics, df_preds, df_fc, df_final)
 
-    print("\nWalk-forward selected models:")
-    print(df_wf[["Target", "Selected_Model"]].to_string(index=False))
+    print("\nNon-pooling multi-step walk-forward selected models:")
+    print(df_wf[["Target", "Proposed_Model", "Selected_Model", "Decision"]].to_string(index=False))
     print("\nFinal selected test metrics:")
     print(df_final.to_string(index=False))
 

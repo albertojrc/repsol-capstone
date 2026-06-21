@@ -1,0 +1,6 @@
+Target,Phase1_Model,Phase1_MAPE,Phase2_Proposed_Model,Phase2_Proposed_MAPE,Selected_Model,Accepted_Phase2_Proposal,Decision
+Nacional,SARIMA,29.0,Logistic,36.7,SARIMA,False,kept_phase1_no_regression
+Madrid,Gompertz,197.1,Logistic,73.6,Logistic,True,accepted_no_regression
+Cataluña,Gompertz,164.2,XGBoost,61.6,XGBoost,True,accepted_no_regression
+Andalucía,Logistic,48.4,SARIMA,52.5,Logistic,False,kept_phase1_no_regression
+Valencia,Gompertz,34.2,SARIMA,57.4,Gompertz,False,kept_phase1_no_regression
