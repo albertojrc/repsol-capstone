@@ -10,9 +10,9 @@ Inputs  (data/inputs/):
     precios_combustibles_2025.csv
 
 Outputs (data/inputs/):
-    master_dataset.csv          — 720 rows × 17 columns (primary)
-    master_dataset.xlsx         — same data + metadata sheet
-    master_dataset_metadata.json — variable dictionary
+    master_dataset.csv          - 720 rows x 22 columns (primary)
+    master_dataset.xlsx         - same data + metadata sheet
+    master_dataset_metadata.json - variable dictionary
 
 Run from repo root:
     python scripts/02_master_dataset_builder.py
@@ -29,8 +29,9 @@ warnings.filterwarnings("ignore")
 
 REPO_ROOT   = Path(__file__).resolve().parent.parent
 DATA_INPUTS = REPO_ROOT / "data" / "inputs"
+DATA_PROCESSED = REPO_ROOT / "data" / "processed"
 
-# ── Province → CCAA mapping (all 52 provinces) ────────────────────────────────
+# Province to CCAA mapping (all 52 provinces).
 PROVINCE_CCAA = {
     "Albacete":              "Castilla - La Mancha",
     "Alicante/Alacant":      "Comunitat Valenciana",
@@ -123,12 +124,33 @@ def load_brent() -> pd.DataFrame:
     return df[["Fecha", price_col]].rename(columns={price_col: "Precio_Brent_USD"})
 
 
+def load_cnmc_diesel_market_features() -> pd.DataFrame:
+    """Load CNMC diesel-market features through the original 2025-12 forecast origin."""
+    path = DATA_PROCESSED / "cnmc_diesel_market_features.csv"
+    if not path.exists():
+        raise FileNotFoundError(
+            f"{path} not found. Run scripts/03_clean_cnmc_petroleum.py first."
+        )
+    cols = [
+        "Fecha",
+        "CCAA",
+        "CNMC_Biodiesel_Tm",
+        "GasoleoA_Tm",
+        "DieselPool_Tm",
+        "Biodiesel_GasoleoA_Ratio",
+        "Biodiesel_DieselPool_Share",
+    ]
+    df = pd.read_csv(path, usecols=cols)
+    df["Fecha"] = df["Fecha"].astype(str).str[:7]
+    return df[df["Fecha"] <= "2025-12"].copy()
+
+
 def load_and_aggregate_prices() -> pd.DataFrame:
     frames = []
     for year in [2023, 2024, 2025]:
         path = DATA_INPUTS / f"precios_combustibles_{year}.csv"
         if not path.exists():
-            print(f"  Warning: {path.name} not found — skipping year {year}")
+            print(f"  Warning: {path.name} not found - skipping year {year}")
             continue
         chunk = pd.read_csv(path, sep=None, engine="python", decimal=",", thousands=".")
         # Normalise column names regardless of exact wording
@@ -200,8 +222,11 @@ def build_master() -> pd.DataFrame:
     print("Loading Brent price...")
     brent = load_brent()
 
-    print("Aggregating fuel prices (daily×province → monthly×CCAA)...")
+    print("Aggregating fuel prices (daily x province -> monthly x CCAA)...")
     prices = load_and_aggregate_prices()
+
+    print("Loading CNMC diesel-market features...")
+    cnmc = load_cnmc_diesel_market_features()
 
     print("Building master dataset...")
     master = consumo.copy()
@@ -210,6 +235,23 @@ def build_master() -> pd.DataFrame:
     master = master.merge(macro, on="Fecha", how="left")
     master = master.merge(brent, on="Fecha", how="left")
     master = master.merge(prices, on=["Fecha", "CCAA"], how="left")
+    master = master.merge(cnmc, on=["Fecha", "CCAA"], how="left")
+
+    if master["GasoleoA_Tm"].isna().any():
+        missing = master.loc[master["GasoleoA_Tm"].isna(), ["Fecha", "CCAA"]].head(20)
+        raise ValueError(
+            "Missing CNMC diesel-market features after master merge:\n"
+            + missing.to_string(index=False)
+        )
+
+    biodiesel_diff = (
+        master["Consumo_Tm"].astype(float) - master["CNMC_Biodiesel_Tm"].astype(float)
+    ).abs().max()
+    if biodiesel_diff > 1e-9:
+        raise ValueError(
+            "CNMC_Biodiesel_Tm does not reconcile to Consumo_Tm after merge. "
+            f"Max abs diff: {biodiesel_diff}"
+        )
 
     col_order = [
         "Fecha", "CCAA", "Consumo_Tm", "Target",
@@ -217,6 +259,8 @@ def build_master() -> pd.DataFrame:
         "Precio_Brent_USD",
         "PVP_Gasoleo_A", "PVP_Gasoleo_Premium", "PVP_Gasolina95", "PVP_Gasolina98",
         "PAI_Gasoleo_A", "PAI_Gasoleo_Premium", "PAI_Gasolina95", "PAI_Gasolina98",
+        "CNMC_Biodiesel_Tm", "GasoleoA_Tm", "DieselPool_Tm",
+        "Biodiesel_GasoleoA_Ratio", "Biodiesel_DieselPool_Share",
     ]
     col_order = [c for c in col_order if c in master.columns]
     master = master[col_order].sort_values(["Fecha", "CCAA"]).reset_index(drop=True)
@@ -226,10 +270,10 @@ def build_master() -> pd.DataFrame:
 
 METADATA = {
     "dataset": "master_dataset",
-    "description": "Monthly biodiesel demand + macroeconomic + Brent + fuel price variables by CCAA (2023-01 to 2025-12)",
+    "description": "Monthly biodiesel demand + macroeconomic + Brent + fuel price + CNMC diesel-market variables by CCAA (2023-01 to 2025-12)",
     "primary_key": ["Fecha", "CCAA"],
     "rows": 720,
-    "columns": 17,
+    "columns": 22,
     "date_range": {"start": "2023-01", "end": "2025-12"},
     "known_nulls": "36 NaN rows in PVP_Gasolina98 / PAI_Gasolina98 — Melilla does not sell Gasolina 98",
     "variables": {
@@ -250,6 +294,11 @@ METADATA = {
         "PAI_Gasoleo_Premium": {"type": "float", "unit": "€/L", "description": "Net price Gasóleo Premium — CCAA monthly mean"},
         "PAI_Gasolina95": {"type": "float", "unit": "€/L", "description": "Net price Gasolina 95 E5 — CCAA monthly mean"},
         "PAI_Gasolina98": {"type": "float", "unit": "€/L", "description": "Net price Gasolina 98 — CCAA monthly mean (NaN for Melilla)"},
+        "CNMC_Biodiesel_Tm": {"type": "float", "unit": "metric tonnes", "source": "CNMC", "description": "CNMC biodiesel consumption, reconciled to Consumo_Tm"},
+        "GasoleoA_Tm": {"type": "float", "unit": "metric tonnes", "source": "CNMC", "description": "Monthly Gasoleo A market consumption by CCAA/national total"},
+        "DieselPool_Tm": {"type": "float", "unit": "metric tonnes", "source": "CNMC", "description": "Biodiesel + Gasoleo A/B/C + Otros Gasoleos consumption"},
+        "Biodiesel_GasoleoA_Ratio": {"type": "float", "source": "CNMC", "description": "Biodiesel consumption divided by Gasoleo A consumption"},
+        "Biodiesel_DieselPool_Share": {"type": "float", "source": "CNMC", "description": "Biodiesel consumption divided by the diesel-pool proxy"},
     },
 }
 
@@ -259,10 +308,10 @@ def save_outputs(master: pd.DataFrame) -> None:
     xlsx_path = DATA_INPUTS / "master_dataset.xlsx"
     json_path = DATA_INPUTS / "master_dataset_metadata.json"
 
-    print(f"Saving CSV → {csv_path.name}")
+    print(f"Saving CSV -> {csv_path.name}")
     master.to_csv(csv_path, index=False)
 
-    print(f"Saving XLSX → {xlsx_path.name}")
+    print(f"Saving XLSX -> {xlsx_path.name}")
     with pd.ExcelWriter(xlsx_path, engine="openpyxl") as writer:
         master.to_excel(writer, sheet_name="master_dataset", index=False)
 
@@ -273,7 +322,7 @@ def save_outputs(master: pd.DataFrame) -> None:
             meta_rows.append(row)
         pd.DataFrame(meta_rows).to_excel(writer, sheet_name="metadata", index=False)
 
-    print(f"Saving JSON metadata → {json_path.name}")
+    print(f"Saving JSON metadata -> {json_path.name}")
     with open(json_path, "w", encoding="utf-8") as f:
         json.dump(METADATA, f, ensure_ascii=False, indent=2)
 
@@ -285,7 +334,7 @@ def main() -> None:
 
     master = build_master()
 
-    print(f"\nMaster dataset: {master.shape[0]} rows × {master.shape[1]} columns")
+    print(f"\nMaster dataset: {master.shape[0]} rows x {master.shape[1]} columns")
     null_count = master.isnull().sum().sum()
     null_pct   = null_count / master.size * 100
     print(f"Null values: {null_count} ({null_pct:.1f}%)")

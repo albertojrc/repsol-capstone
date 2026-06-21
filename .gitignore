@@ -24,6 +24,7 @@ share/python-wheels/
 MANIFEST
 
 # Virtual environments
+.venv/
 venv/
 ENV/
 env/
@@ -45,6 +46,12 @@ data/raw/
 data/processed/
 *.CSV
 *.xlsx
+# Override: track the small CNMC petroleum-consumption source and processed features
+!data/raw/
+!data/raw/consumos_mensuales_petroleo/
+!data/raw/consumos_mensuales_petroleo/*.csv
+!data/processed/
+!data/processed/cnmc_*.csv
 # Override: track all CSVs in the new semantic folders (must come after *.CSV)
 !data/inputs/*.csv
 !data/features/*.csv
@@ -58,6 +65,8 @@ models/*.joblib
 
 # OS
 .DS_Store
+._*
+**/._*
 Icon?
 Thumbs.db
 

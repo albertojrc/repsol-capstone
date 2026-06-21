@@ -1,251 +1,125 @@
 # Data Audit Report
-## Repsol Diesel Nexa — Capstone Project
 
-**Generated:** 2026-06-10  
-**Scope:** All CSV files in `data/inputs/`, `data/features/`, `data/outputs/`  
-**Total datasets audited:** 25
+Generated / refreshed: 2026-06-21
+Scope: tracked production datasets, feature tables, outputs, and known optional artifacts.
 
----
+## Executive Summary
 
-## 1. Input Datasets (`data/inputs/`)
+The production data pipeline is coherent at the dataset level: national demand
+reconciles to the sum of the CCAA rows, the five delivery targets are present, and
+the script path builds causal lag features for the modeling table.
 
-### 1.1 `master_dataset.csv` — PRIMARY SOURCE
-| Attribute | Value |
-|-----------|-------|
-| Shape | 720 rows × 17 columns |
-| Date range | 2023-01 → 2025-12 |
-| Primary key | `Fecha` + `CCAA` |
-| Null % | 0.6% (36 NaN rows in Gasolina98 — Melilla only, expected) |
-| Built by | `notebooks/04_master_dataset.ipynb` |
+The project is not modeling-final yet. The selected 2025 holdout metrics are weak
+for several regional targets, especially Madrid and Cataluña. Phase 1 cleanup keeps
+the current methodology unchanged and focuses on reproducibility, documentation,
+lineage, and repo hygiene.
 
-**Columns:**
+## Production Inputs
 
-| Column | Type | Description | Source |
-|--------|------|-------------|--------|
-| Fecha | str (YYYY-MM) | Month | — |
-| CCAA | str | Comunidad Autónoma (19 + ESPAÑA + Melilla + Ceuta) | — |
-| Consumo_Tm | float | Monthly biodiesel consumption in metric tonnes | consumo_biodiesel_ccaa.csv |
-| Target | int (0/1) | 1 for 5 modelling targets (ESPAÑA, Andalucía, Cataluña, Madrid, Valencia) | derived |
-| IPI_original | float | Industrial Production Index (original series) | macro_indicadores_ine.csv |
-| IPI_ajustado | float | IPI seasonally adjusted | macro_indicadores_ine.csv |
-| IPC_var_anual | float | CPI annual variation % | macro_indicadores_ine.csv |
-| Tasa_paro | float | Unemployment rate % | macro_indicadores_ine.csv |
-| Precio_Brent_USD | float | Brent crude oil price (USD/barrel) | brent_oil_price_monthly_2023_onwards.csv |
-| PVP_Gasoleo_A | float | Retail price Gasóleo A (€/L) — CCAA monthly mean | precios_combustibles_*.csv |
-| PVP_Gasoleo_Premium | float | Retail price Gasóleo Premium (€/L) | precios_combustibles_*.csv |
-| PVP_Gasolina95 | float | Retail price Gasolina 95 E5 (€/L) | precios_combustibles_*.csv |
-| PVP_Gasolina98 | float | Retail price Gasolina 98 (€/L) | precios_combustibles_*.csv |
-| PAI_Gasoleo_A | float | Net (pre-tax) price Gasóleo A (€/L) | precios_combustibles_*.csv |
-| PAI_Gasoleo_Premium | float | Net price Gasóleo Premium (€/L) | precios_combustibles_*.csv |
-| PAI_Gasolina95 | float | Net price Gasolina 95 E5 (€/L) | precios_combustibles_*.csv |
-| PAI_Gasolina98 | float | Net price Gasolina 98 (€/L) | precios_combustibles_*.csv |
+| File | Shape | Date Range | Notes |
+|---|---:|---|---|
+| `data/inputs/master_dataset.csv` | 720 x 22 | 2023-01 to 2025-12 | Primary production table. Primary key is `Fecha` + `CCAA`. |
+| `data/inputs/consumo_biodiesel_ccaa.csv` | 720 x 3 | 2023-01 to 2025-12 | Biodiesel target input by CCAA plus national row. |
+| `data/inputs/consumo_biodiesel_targets.csv` | 180 x 4 | 2023-01 to 2025-12 | Five modeled targets only. Superseded by `master_dataset.csv` in production scripts. |
+| `data/inputs/consumo_biodiesel_provincial.csv` | 1872 x 5 | 2023-01 to 2025-12 | Province-level source, not used in the CCAA-level model. |
+| `data/inputs/macro_indicadores_ine.csv` | 36 x 5 | 2023-01 to 2025-12 | National macro indicators, broadcast to regions. |
+| `data/inputs/brent_oil_price_monthly_2023_onwards.csv` | 41 x 5 | 2023-01 to 2026-05 | Only rows through 2025-12 enter the master dataset. |
+| `data/inputs/precios_combustibles_2023.csv` | 75553 x 5 | 2023-01-01 to 2023-12-31 | Optional price-ablation source. |
+| `data/inputs/precios_combustibles_2024.csv` | 75762 x 5 | 2024-01-01 to 2024-12-31 | Optional price-ablation source. |
+| `data/inputs/precios_combustibles_2025.csv` | 75524 x 5 | 2025-01-01 to 2025-12-31 | Optional price-ablation source. |
+| `data/inputs/mandato_biocarburantes.csv` | 15 x 5 | Annual schedule | Deterministic mandate features. |
+| `data/inputs/turismo_visitantes_ccaa.csv` | 15 x 9 | 2025-10 only | Not used; single-month coverage cannot support a monthly time series model. |
 
-**Known issues:**
-- `PVP_Gasolina98` and `PAI_Gasolina98` have 36 NaN rows (all for Melilla) — Gasolina 98 is not sold in Melilla. This is expected and documented.
-- ESPAÑA rows for fuel price columns are filled with the national mean across all CCAAs (province-level price data has no "ESPAÑA" entry).
+## Processed CNMC Tables
 
----
+| File | Shape | Date Range | Notes |
+|---|---:|---|---|
+| `data/processed/cnmc_consumos_petroleo_provincial.csv` | 27664 x 7 | 2023-01 to 2026-02 | Cleaned province-product-month CNMC data. |
+| `data/processed/cnmc_consumos_petroleo_ccaa.csv` | 10640 x 5 | 2023-01 to 2026-02 | CCAA-product-month table plus computed `ESPAÑA`. |
+| `data/processed/cnmc_diesel_market_features.csv` | 760 x 7 | 2023-01 to 2026-02 | Diesel-market features. Master builder filters to 2025-12. |
 
-### 1.2 `consumo_biodiesel_ccaa.csv`
-| Attribute | Value |
-|-----------|-------|
-| Shape | 720 rows × 3 columns |
-| Date range | 2023-01 → 2025-12 |
-| Columns | Fecha, CCAA, Consumo_Tm |
-| Null % | 0% |
-| Description | Monthly biodiesel consumption by CCAA (all 19 + ESPAÑA + Melilla + Ceuta) |
-| Used in | `notebooks/04_master_dataset.ipynb` (merged into master_dataset) |
+Validation checks in the script path:
 
----
+- Raw CNMC product names and province mappings are validated.
+- CNMC biodiesel reconciles exactly to `Consumo_Tm` for 2023-2025.
+- National `Consumo_Tm`, `CNMC_Biodiesel_Tm`, `GasoleoA_Tm`, and `DieselPool_Tm` reconcile exactly to the sum of regional rows.
+- The production master and modeling feature tables contain no 2026 rows.
 
-### 1.3 `consumo_biodiesel_targets.csv`
-| Attribute | Value |
-|-----------|-------|
-| Shape | 180 rows × 4 columns |
-| Date range | 2023-01 → 2025-12 |
-| Columns | Fecha, CCAA, Consumo_Tm, Target |
-| Null % | 0% |
-| Description | Consumption for the 5 modelling targets with short Target labels (Nacional/Madrid/Cataluña/Andalucía/Valencia) |
-| Used in | `notebooks/05_feature_engineering.ipynb`, `notebooks/06_price_features.ipynb` |
-| Note | Superseded by `master_dataset.csv` for data loading. Target column contains short labels. |
+## Modeling Feature Tables
 
----
+| File | Shape | Split | Notes |
+|---|---:|---|---|
+| `data/features/features_modelo_completo.csv` | 180 x 36 | 2023-01 to 2025-12 | Five targets x 36 months. |
+| `data/features/features_train.csv` | 120 x 36 | 2023-01 to 2024-12 | Temporal train split. |
+| `data/features/features_test.csv` | 60 x 36 | 2025-01 to 2025-12 | Temporal holdout split. |
+| `data/features/features_precios_combustibles.csv` | 36 x 81 | 2023-01 to 2025-12 | Optional price-ablation features. |
 
-### 1.4 `consumo_biodiesel_provincial.csv`
-| Attribute | Value |
-|-----------|-------|
-| Shape | 1872 rows × 5 columns |
-| Date range | 2023-01 → 2025-12 |
-| Columns | Fecha, Provincia, CCAA, Consumo_Tm, Porcentaje_CCAA |
-| Null % | 0% |
-| Description | Monthly biodiesel consumption by province (52 provinces) |
-| Merged into master | NO — province-level granularity not compatible with CCAA-level master |
-| Used in | Not used in current modelling pipeline. Available for future provincial analysis. |
+Expected feature nulls:
 
----
+- Lag and rolling columns are null in early months by construction.
+- `features_test.csv` has no nulls in the model-used rows.
 
-### 1.5 `macro_indicadores_ine.csv`
-| Attribute | Value |
-|-----------|-------|
-| Shape | 36 rows × 5 columns |
-| Date range | 2023-01 → 2025-12 |
-| Columns | Fecha, IPI_original, IPI_ajustado, IPC_var_anual, Tasa_paro |
-| Null % | 0% |
-| Description | National macroeconomic indicators from INE (National Statistics Institute) |
-| Merged into master | YES — joined to all CCAA rows (same national values repeated per CCAA) |
-| Note | Superseded by `master_dataset.csv` for data loading. |
+Known data issues:
 
----
+- `PVP_Gasolina98` and `PAI_Gasolina98` have 36 null rows in `master_dataset.csv`, all for Melilla. This is expected because Gasolina 98 is not sold there.
+- Many non-target CCAA rows have zero biodiesel consumption in early months. The modeled five-target table has 14 zero target rows, all in 2023, reflecting early/low adoption periods.
+- National fuel-price rows are simple monthly means across CCAA rows, not demand-weighted prices.
 
-### 1.6 `brent_oil_price_monthly_2023_onwards.csv`
-| Attribute | Value |
-|-----------|-------|
-| Shape | 41 rows × 5 columns |
-| Date range | 2023-01 → 2026-05 |
-| Columns | Date, Price, Open, High, Low (USD/barrel) |
-| Null % | 0% |
-| Description | Monthly Brent crude oil price |
-| Merged into master | YES — joined as `Precio_Brent_USD` |
-| Note | Has 5 extra months beyond master_dataset date range (2026-01 to 2026-05) |
+## Outputs
 
----
+| File | Current Role |
+|---|---|
+| `metricas_modelos.csv` | Metrics for the current CNMC-aware candidate models. |
+| `model_selection_walkforward.csv` | Expanding-window one-step model-selection scores over the training period. |
+| `metricas_final_seleccionado.csv` | 2025 holdout metrics for the selected model per target. |
+| `predicciones_test_2025.csv` | 2025 predictions for all current candidates. |
+| `forecast_24m_sarima_rf_xgb.csv` | 2026-2027 forecasts for all current candidates. Legacy filename. |
+| `metricas_modelos_con_precios.csv` | Optional price-ablation metrics from notebook 08. |
+| `forecast_24m_con_precios.csv` | Optional price-ablation forecasts from notebook 08. |
+| `metricas_comparativa.csv` | Combined current metrics plus optional price-ablation metrics when available. |
+| `tableau_dashboard.csv` | Historical, test prediction, and forecast rows for dashboarding. |
+| `tableau_metricas.csv` | Dashboard metrics table with selected-model flags. |
+| `tableau_forecast_pivot.csv` | Selected forecast pivoted by target. |
+| `tableau_export_legacy.csv` | Historical plus selected forecast in legacy long format. |
 
-### 1.7 `precios_combustibles_2023.csv` / `2024.csv` / `2025.csv`
-| Attribute | Value |
-|-----------|-------|
-| Shape | ~75,500 rows × 5 columns each (daily × station × product) |
-| Date range | 2023-01-01 → 2025-12-31 |
-| Columns | Fecha, Provincia, Producto, PVP, PAI |
-| Null % | 0% |
-| Description | Daily retail fuel prices by gas station province and product type |
-| Merged into master | YES — aggregated to monthly×CCAA via province→CCAA mapping, then pivoted wide |
-| Products tracked | Gasóleo A habitual, Gasóleo Premium, Gasolina 95 E5, Gasolina 98 |
-| Aggregation | daily×province → monthly×CCAA (mean PVP and PAI), ESPAÑA filled with national mean |
+## Current Selected Model Quality
 
----
+| Target | Selected Model | 2025 MAPE | 2025 R2 | Readiness |
+|---|---|---:|---:|---|
+| Nacional | SARIMA | 29.0% | -0.009 | Borderline but usable as a baseline. |
+| Madrid | Gompertz | 197.1% | -101.018 | Critical modeling risk. |
+| Cataluña | Gompertz | 164.2% | -91.269 | Critical modeling risk. |
+| Andalucía | Logistic | 48.4% | -1.555 | Weak. |
+| Valencia | Gompertz | 34.2% | -1.246 | Weak but less severe. |
 
-### 1.8 `turismo_visitantes_ccaa.csv`
-| Attribute | Value |
-|-----------|-------|
-| Shape | 15 rows × 9 columns |
-| Date range | 2025-10 only (single month) |
-| Null % | 0% |
-| Description | Tourist visitors by CCAA for October 2025 |
-| Merged into master | NO — single month, cannot form a time series |
-| Used in | Not yet integrated. Reserved for future multi-year tourism dataset. |
+These limitations are not fixed in Phase 1 because the user requested no modeling
+methodology changes.
 
----
+## Dataset Lineage
 
-## 2. Feature Datasets (`data/features/`)
+```text
+CNMC raw CSVs
+  -> scripts/03_clean_cnmc_petroleum.py
+  -> data/processed/cnmc_*.csv
 
-### 2.1 `features_modelo_completo.csv`
-| Attribute | Value |
-|-----------|-------|
-| Shape | 180 rows × 25 columns |
-| Date range | 2023-01 → 2025-12 |
-| Null % | 3.2% (lag features are NaN for first months) |
-| Description | Full feature matrix for all 5 targets — lag features, rolling means, macro lags, sin/cos seasonality |
-| Built by | `notebooks/05_feature_engineering.ipynb` |
-
----
-
-### 2.2 `features_train.csv` / `features_test.csv`
-| Attribute | Value |
-|-----------|-------|
-| Shapes | 120 × 25 (train) / 60 × 25 (test) |
-| Split | Train: 2023-01 → 2024-12 / Test: 2025-01 → 2025-12 |
-| Null % | 4.8% train / 0% test |
-| Built by | `notebooks/05_feature_engineering.ipynb` |
-
----
-
-### 2.3 `features_precios_combustibles.csv`
-| Attribute | Value |
-|-----------|-------|
-| Shape | 36 rows × 81 columns |
-| Date range | 2023-01 → 2025-12 |
-| Null % | 0% |
-| Description | Monthly fuel price features with regional lag_1 columns (81 price series) |
-| Built by | `notebooks/06_price_features.ipynb` |
-| Note | Must be read with explicit `sep=','` — comma in column names can confuse auto-detection |
-
----
-
-## 3. Output Datasets (`data/outputs/`)
-
-### 3.1 `metricas_modelos.csv`
-| Shape | 15 × 5 | Models × Targets, columns: Target, Model, MAE, RMSE, MAPE |
-
-### 3.2 `predicciones_test_2025.csv`
-| Shape | 180 × 5 | All model predictions on 2025 test set (all 5 targets × 3 models × 12 months) |
-
-### 3.3 `forecast_24m_sarima_rf_xgb.csv`
-| Shape | 360 × 4 | 24-month forecasts (2026-01 → 2027-12), all 5 targets × 4 models |
-
-### 3.4 `metricas_modelos_con_precios.csv`
-| Shape | 10 × 5 | Price-augmented ML model metrics (RF+Precios, XGB+Precios) |
-
-### 3.5 `predicciones_test_2025_con_precios.csv`
-| Shape | 120 × 5 | Price-augmented model predictions (2025 test set) |
-
-### 3.6 `forecast_24m_con_precios.csv`
-| Shape | 240 × 4 | 24-month forecasts from price-augmented ML models |
-
-### 3.7 `metricas_comparativa.csv`
-| Shape | 25 × 5 | Side-by-side comparison: baseline vs price-augmented vs SARIMA |
-
-### 3.8 `tableau_dashboard.csv`
-| Shape | 720 × 10 | Flat file for Tableau: historical + test + forecasts, all models |
-
-### 3.9 `tableau_metricas.csv`
-| Shape | 15 × 9 | Model metrics enriched with Rank, Mejor_Modelo, label columns |
-
-### 3.10 `tableau_forecast_pivot.csv`
-| Shape | 24 × 9 | SARIMA 24-month forecast pivoted (months × regions) |
-
-### 3.11 `tableau_export_legacy.csv`
-| Shape | 300 × 5 | Historical + SARIMA forecast (long format, legacy export) |
-
----
-
-## 4. Data Quality Summary
-
-| Issue | Affected file | Rows | Action |
-|-------|--------------|------|--------|
-| Gasolina98 NaN (Melilla) | master_dataset.csv | 36 | Expected — no Gasolina 98 in Melilla. Documented. |
-| ESPAÑA missing from price raw data | precios_combustibles_*.csv | — | Filled with national mean across CCAAs per month. |
-| Single-month tourism data | turismo_visitantes_ccaa.csv | 15 | Cannot merge — reserved for future use. |
-| Provincial consumption (wrong granularity) | consumo_biodiesel_provincial.csv | 1872 | Cannot merge — CCAA-level master only. |
-
----
-
-## 5. Dataset Lineage
-
-```
-RAW INPUTS
-├── consumo_biodiesel_ccaa.csv        ─┐
-├── macro_indicadores_ine.csv          ├── 04_master_dataset.ipynb → master_dataset.csv
-├── brent_oil_price_monthly_*.csv      │
-└── precios_combustibles_2023/24/25   ─┘
+consumo_biodiesel_ccaa.csv
+macro_indicadores_ine.csv
+brent_oil_price_monthly_2023_onwards.csv
+precios_combustibles_2023/24/25.csv
+cnmc_diesel_market_features.csv
+  -> scripts/02_master_dataset_builder.py
+  -> data/inputs/master_dataset.csv
 
 master_dataset.csv
-└── 05_feature_engineering.ipynb → features_modelo_completo.csv
-                                     features_train.csv
-                                     features_test.csv
-└── 07_modeling.ipynb → metricas_modelos.csv
-                         predicciones_test_2025.csv
-                         forecast_24m_sarima_rf_xgb.csv
-└── 09_evaluation.ipynb (reads outputs, produces figures)
-└── ~~07_tableau_prep.ipynb~~ (deleted) tableau_dashboard.csv
-                              tableau_metricas.csv
-                              tableau_forecast_pivot.csv
-└── 06_price_features.ipynb → features_precios_combustibles.csv
-└── 08_modeling_with_prices.ipynb → metricas_modelos_con_precios.csv
-                                     predicciones_test_2025_con_precios.csv
-                                     forecast_24m_con_precios.csv
-                                     metricas_comparativa.csv
+mandato_biocarburantes.csv
+  -> scripts/04_build_features.py
+  -> data/features/features_modelo_completo.csv
+  -> data/features/features_train.csv
+  -> data/features/features_test.csv
 
-NOT MERGED (see datasets_excluded_from_master.md)
-├── consumo_biodiesel_provincial.csv
-└── turismo_visitantes_ccaa.csv
+features_*.csv
+  -> scripts/05_modeling_with_cnmc.py
+  -> data/outputs/*.csv
+  -> reports/figures/07_model_comparison.png
+  -> reports/figures/11_forecast_24m.png
 ```
