@@ -227,30 +227,30 @@ Fecha,Target,Model,Type,Valor
 2027-10,Madrid,Logistic,Forecast,3772.0
 2027-11,Madrid,Logistic,Forecast,3737.0
 2027-12,Madrid,Logistic,Forecast,3729.3
-2026-01,Cataluña,XGBoost,Forecast,2700.9
-2026-02,Cataluña,XGBoost,Forecast,2626.7
-2026-03,Cataluña,XGBoost,Forecast,2739.7
-2026-04,Cataluña,XGBoost,Forecast,2868.4
-2026-05,Cataluña,XGBoost,Forecast,2876.1
-2026-06,Cataluña,XGBoost,Forecast,2854.6
-2026-07,Cataluña,XGBoost,Forecast,2876.1
-2026-08,Cataluña,XGBoost,Forecast,2876.1
-2026-09,Cataluña,XGBoost,Forecast,2682.9
-2026-10,Cataluña,XGBoost,Forecast,2876.1
-2026-11,Cataluña,XGBoost,Forecast,2876.1
-2026-12,Cataluña,XGBoost,Forecast,2876.1
-2027-01,Cataluña,XGBoost,Forecast,2700.9
-2027-02,Cataluña,XGBoost,Forecast,2626.7
-2027-03,Cataluña,XGBoost,Forecast,2739.7
-2027-04,Cataluña,XGBoost,Forecast,2868.4
-2027-05,Cataluña,XGBoost,Forecast,2876.1
-2027-06,Cataluña,XGBoost,Forecast,2854.6
-2027-07,Cataluña,XGBoost,Forecast,2876.1
-2027-08,Cataluña,XGBoost,Forecast,2876.1
-2027-09,Cataluña,XGBoost,Forecast,2682.9
-2027-10,Cataluña,XGBoost,Forecast,2876.1
-2027-11,Cataluña,XGBoost,Forecast,2876.1
-2027-12,Cataluña,XGBoost,Forecast,2876.1
+2026-01,Cataluña,Pooled Random Forest,Forecast,2822.1
+2026-02,Cataluña,Pooled Random Forest,Forecast,2822.1
+2026-03,Cataluña,Pooled Random Forest,Forecast,2822.1
+2026-04,Cataluña,Pooled Random Forest,Forecast,2822.1
+2026-05,Cataluña,Pooled Random Forest,Forecast,2822.1
+2026-06,Cataluña,Pooled Random Forest,Forecast,2822.1
+2026-07,Cataluña,Pooled Random Forest,Forecast,2822.1
+2026-08,Cataluña,Pooled Random Forest,Forecast,2822.1
+2026-09,Cataluña,Pooled Random Forest,Forecast,2822.1
+2026-10,Cataluña,Pooled Random Forest,Forecast,2822.1
+2026-11,Cataluña,Pooled Random Forest,Forecast,2822.1
+2026-12,Cataluña,Pooled Random Forest,Forecast,2822.1
+2027-01,Cataluña,Pooled Random Forest,Forecast,2822.1
+2027-02,Cataluña,Pooled Random Forest,Forecast,2822.1
+2027-03,Cataluña,Pooled Random Forest,Forecast,2822.1
+2027-04,Cataluña,Pooled Random Forest,Forecast,2822.1
+2027-05,Cataluña,Pooled Random Forest,Forecast,2822.1
+2027-06,Cataluña,Pooled Random Forest,Forecast,2822.1
+2027-07,Cataluña,Pooled Random Forest,Forecast,2822.1
+2027-08,Cataluña,Pooled Random Forest,Forecast,2822.1
+2027-09,Cataluña,Pooled Random Forest,Forecast,2822.1
+2027-10,Cataluña,Pooled Random Forest,Forecast,2822.1
+2027-11,Cataluña,Pooled Random Forest,Forecast,2822.1
+2027-12,Cataluña,Pooled Random Forest,Forecast,2822.1
 2026-01,Andalucía,Logistic,Forecast,1992.8
 2026-02,Andalucía,Logistic,Forecast,2112.8
 2026-03,Andalucía,Logistic,Forecast,2265.1

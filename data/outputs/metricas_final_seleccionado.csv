@@ -1,6 +1,6 @@
 Target,Model,MAE,RMSE,MAPE,R2
 Nacional,SARIMA,4278.0,4921.8,29.0,-0.009
 Madrid,Logistic,1924.0,2057.2,73.6,-8.273
-Cataluña,XGBoost,1825.5,1926.3,61.6,-8.432
+Cataluña,Pooled Random Forest,1424.3,1556.5,46.8,-5.158
 Andalucía,Logistic,833.8,1006.7,48.4,-1.555
 Valencia,Gompertz,360.3,446.6,34.2,-1.246

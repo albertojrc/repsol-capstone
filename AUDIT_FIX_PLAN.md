@@ -32,27 +32,26 @@ Explicitly out of scope for Phase 1: changing the modeling methodology.
 - Rebuilt the production artifacts from the script path through feature
   generation and modeling outputs.
 
-## Completed In Main-Branch Phase 2
+## Completed In Phase 2 On `enrico`
 
-- Kept regional pooling out of `main`; pooling remains exclusive to `enrico`.
-- Replaced the one-step model-selection gate with recursive multi-step
-  walk-forward validation.
-- Made ML holdout evaluation recursive, so 2025 predictions do not use actual
-  future target lags.
+- Preserved the Phase 1 cleanup from `main` on the `enrico` branch.
+- Replaced the one-step model-selection gate with a recursive multi-step
+  walk-forward gate inside the 2023-2024 training period.
+- Tested pooled regional ML models in the official script pipeline.
+- Kept `Nacional` separate from pooled regional modeling.
 - Added a no-regression acceptance gate versus the Phase 1 selected models.
-- Accepted non-pooling Phase 2 changes only where they improved 2025 holdout
-  MAPE:
+- Accepted Phase 2 changes only for Madrid and Catalonia:
   - Madrid: Gompertz -> Logistic, MAPE 197.1% -> 73.6%.
-  - Catalonia: Gompertz -> XGBoost, MAPE 164.2% -> 61.6%.
-- Kept Nacional, Andalusia, and Valencia at their Phase 1 selections because the
-  Phase 2 proposals regressed.
-- Added `PHASE2_NON_POOLING_REPORT.md` and
-  `data/outputs/phase2_non_pooling_model_acceptance.csv`.
+  - Catalonia: Gompertz -> Pooled Random Forest, MAPE 164.2% -> 46.8%.
+- Rejected Phase 2 proposals for Nacional, Andalusia, and Valencia because they
+  did not improve the Phase 1 selected holdout result.
+- Added `PHASE2_MODELING_REPORT.md` and `data/outputs/phase2_*.csv` lineage
+  files documenting the production decision.
 
-## Still Open After Main-Branch Phase 2
+## Still Open After Phase 2
 
 - Add automated tests around dataset shapes, target mappings, and output lineage.
+- Explain the Catalonia pooled Random Forest as a conservative plateau forecast;
+  tree models do not extrapolate structural growth curves.
 - Keep HVO / renewable diesel outside the target unless new usable regional data
   becomes available.
-- Keep the pooled regional experiment isolated on `enrico` unless the team
-  explicitly decides to promote it later.

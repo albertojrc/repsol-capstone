@@ -1,0 +1,5 @@
+Target,Production_Model,Production_MAPE,Best_Pooled_Model,Best_Pooled_MAPE,Best_Pooled_Beats_Production,Production_Uses_Pooled_ML,Decision
+Madrid,Logistic,73.6,Pooled Random Forest,43.0,True,False,rejected_for_production_training_gate_did_not_select_it
+Cataluña,Pooled Random Forest,46.8,Pooled Random Forest,46.8,False,True,accepted_for_target_by_training_gate_and_holdout_no_regression
+Andalucía,Logistic,48.4,Pooled XGBoost,48.4,False,False,rejected_for_production_no_holdout_improvement
+Valencia,Gompertz,34.2,Pooled XGBoost,35.6,False,False,rejected_for_production_no_holdout_improvement

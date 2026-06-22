@@ -5,12 +5,12 @@
 
 ---
 
-## 2026-06-21 Main-Branch Phase 2 Non-Pooling Update
+## 2026-06-21 Phase 2 Modeling Productionization (`enrico`)
 
-`main` now includes the non-pooling parts of Phase 2. Regional pooling remains
-exclusive to branch `enrico`.
+Phase 2 has now been implemented on branch `enrico` in the official script
+pipeline. `main` remains the stable Phase 1 branch.
 
-Current production source of truth:
+Current production source of truth is still:
 
 ```powershell
 .\.venv\Scripts\python scripts/03_clean_cnmc_petroleum.py
@@ -19,33 +19,43 @@ Current production source of truth:
 .\.venv\Scripts\python scripts/05_modeling_with_cnmc.py
 ```
 
-Main-branch Phase 2 decisions:
+Phase 2 modeling decisions:
 
-- The one-step model-selection gate was replaced by recursive multi-step
+- The old one-step model-selection gate was replaced with recursive multi-step
   walk-forward validation inside the 2023-2024 training period.
-- ML holdout evaluation now forecasts recursively from the 2024-12 origin,
-  instead of using actual 2025 target lag values.
-- A no-regression acceptance gate compares each Phase 2 proposal against the
-  Phase 1 selected model on the 2025 holdout.
-- No pooled regional features, pooled regional models, or pooled output files
-  were added to `main`.
+- The gate evaluates ML models recursively, so predicted months feed future lag
+  features instead of using actual future target lags.
+- `Nacional` is never pooled with regional series.
+- Regional pooling is tested only for Madrid, Catalonia, Andalusia, and Valencia.
+- A no-regression acceptance gate compares the Phase 2 proposal with the Phase 1
+  selected model on the 2025 holdout. A Phase 2 proposal is adopted only if it
+  does not worsen the Phase 1 holdout MAPE.
 
-Final selected models on `main`:
+Final selected models after Phase 2:
 
 | Target | Selected model | 2025 MAPE | 2025 R2 |
 |---|---|---:|---:|
 | Nacional | SARIMA | 29.0% | -0.009 |
 | Madrid | Logistic | 73.6% | -8.273 |
-| Catalonia | XGBoost | 61.6% | -8.432 |
+| Catalonia | Pooled Random Forest | 46.8% | -5.158 |
 | Andalusia | Logistic | 48.4% | -1.555 |
 | Valencia | Gompertz | 34.2% | -1.246 |
 
-Average selected MAPE improved from 94.6% to 49.4%. The stronger pooled
-Catalonia result remains on `enrico`; do not conflate that branch with `main`.
+Average selected MAPE improved from 94.6% to 46.4%. The pooled regional model is
+accepted only for Catalonia. Madrid's best pooled holdout metric is better than
+the selected Logistic model, but it is not used because the training-only gate
+did not select it; using it would be test-set cherry-picking.
 
-New lineage file:
+New Phase 2 lineage files:
 
-- `data/outputs/phase2_non_pooling_model_acceptance.csv`
+- `PHASE2_MODELING_REPORT.md`
+- `data/outputs/phase2_model_acceptance.csv`
+- `data/outputs/phase2_pooling_experiment_metrics.csv`
+- `data/outputs/phase2_pooling_decision.csv`
+
+Remaining caveat: Catalonia's pooled Random Forest forecast is a conservative
+plateau forecast. This is not an extrapolating structural growth curve; it is
+kept because it improves validation and avoids explosive behavior.
 
 ---
 
@@ -382,6 +392,32 @@ A wide research review of additional forecasting approaches was conducted (SARIM
 Following on from the model-research pass, SARIMAX (SARIMA + the same three already-vetted `_lag1` macro regressors used by Ridge/RF/XGBoost: `IPI_original_lag1`, `IPC_var_anual_lag1`, `Tasa_paro_lag1`) was implemented as an 8th walk-forward candidate in `07_modeling.ipynb`, fully wired into the main training loop, walk-forward CV, and 24-month forecast section. **Result: SARIMAX lost the walk-forward comparison for every single target**, often by a wide margin (e.g. Nacional 43.7% vs. SARIMA's 12.5%; Andalucía 91.6% vs. Logistic's 16.7%). The final selected model per target came back byte-identical to before the experiment. All changes were fully reverted via `git checkout` — **no SARIMAX code exists in the repo today.**
 **Do not re-add plain SARIMAX with these same 3 macro exogenous regressors without a reason to expect a different outcome** — it has already been tried and failed on this exact feature set. It might be worth revisiting only *after* the regional-pooling change (more effective training rows could change this result), or with a different/richer set of exogenous regressors (e.g. fuel price lags, which were not included in this test since `07_modeling.ipynb` doesn't currently load the price-feature table).
 
+### Regional pooling investigated, and the walk-forward gate found to be flawed (2026-06-21, branch `enrico`, NOT yet implemented in notebooks)
+
+This session pursued the long-standing **#1 priority: pool the 5 regional series**. The investigation produced three findings; all prototyping was done in throwaway `/tmp` scripts (not in the repo). **No notebook or output CSV has been changed — the committed model selections are still the 2026-06-16 ones.** The work below is a recommendation pending user approval.
+
+**Repsol constraint clarified up front:** Repsol instructed the team **not to "add up the regions."** The user confirmed this applies to the **output only** (never deliver one combined/summed demand number — each region must keep its own separate forecast), *not* to how a model is fit internally. "Pooling" here therefore means *jointly fitting one model on the stacked regional panel with region as a feature, while still emitting a separate forecast per region* — nothing is ever summed. Per the user's decision, **Nacional is excluded from pooling** (it is the national total, i.e. the sum of its own components, so pooling a total with its components is statistically improper). Pooling was scoped to the **4 regional series only** (Madrid, Cataluña, Andalucía, Valencia).
+
+1. **Naive ML pooling was tried and REJECTED.** Pooled Ridge/RF/XGBoost were fit on the stacked 4-region panel (84 usable rows vs ~21/region — the 4× data gain that motivates pooling), using log1p level features (`log1p(Lag_1/2/3, Roll_mean_3/6)` for scale-robust, multiplicative dynamics) + calendar + `_lag1` macro + region fixed-effect dummies, target `log1p(Consumo_Tm)`. Run through the existing 1-step walk-forward gate, **Pooled Ridge "won" for Cataluña** (1-step WF MAPE 32.0 → 18.4). **But on the real 2025 holdout it was catastrophic** (Cataluña recursive-12 MAPE ≈ 606% vs the committed Gompertz's 164%). Reason: a linear/ML pooled model has **no saturation ceiling**, so over a 12-month horizon it re-creates exactly the unbounded-extrapolation blow-up that the Logistic/Gompertz curves were added to fix. **Conclusion: generic panel-regression pooling is not a win here** — same rejection class as the SARIMAX experiment. Do not re-add it without a saturating formulation.
+
+2. **This exposed a real flaw in the model-selection gate.** The 1-step-ahead walk-forward gate (the project's sanctioned selection rule) *would have adopted Pooled Ridge for Cataluña* — a model we can see is far worse on the actual 12-month task. The 1-step gate is **blind to multi-month blow-ups** because one step out the trend hasn't diverged yet. Verified directly: plain Ridge scores a deceptive 27–75% under the 1-step gate but **15,000–477,000%** under a multi-step recursive evaluation — which matches its true holdout behaviour (14,000–353,000%). So the 1-step gate can silently bless exploding models.
+
+3. **A multi-step gate was prototyped and a recommended fix identified.** A **rolling-origin, multi-step walk-forward** gate was built that evaluates each model *as it is actually deployed*: ML models forecast **recursively** (each prediction feeds the next month's lags), SARIMA/curves forecast directly; errors aggregated over the full remaining (or a capped-6-month, equal-weight-per-horizon) path inside 2023-2024 only. It correctly explodes Ridge and never selects an unbounded extrapolator. **But the multi-step gate alone regresses Andalucía (48→64%) and Valencia (34→57%)** on the holdout — a *fundamental* limit, not a gate bug: the **training window (2023-24) is pure explosive growth, the test window (2025) is the saturation bend**, so a training-confined CV rewards non-saturating models (SARIMA/XGBoost) that track the growth phase, while the growth curves' structural ceiling is what actually pays off in 2025. No training-only CV can fully anticipate a regime change that only appears in the test period.
+
+   **RECOMMENDED approach (not yet implemented): multi-step gate + a saturation prior.** Replace the 1-step gate with the multi-step recursive gate, **and** restrict the 4 regional adoption series to the saturating curves (Logistic/Gompertz); Nacional keeps the full candidate set (it is large/smooth and SARIMA legitimately wins there). The saturation prior constrains the *candidate set* by domain knowledge (adoption demonstrably saturates) — it is decided before seeing test results and is *not* test-set selection. Confirmed effect vs the currently-committed models on the 2025 holdout:
+
+   | Target | Committed now | Recommended | 2025 MAPE | 2025 R² |
+   |---|---|---|---|---|
+   | Nacional | SARIMA | SARIMA (unchanged) | 29.0% | -0.0 |
+   | Madrid | Gompertz | **Logistic** | **197.1% → 73.6%** | -101.0 → **-8.3** |
+   | Cataluña | Gompertz | Gompertz (unchanged) | 164.2% | -91.3 |
+   | Andalucía | Logistic | Gompertz | 48.4% → 48.3% (tie) | -1.6 → -1.5 |
+   | Valencia | Gompertz | Gompertz (unchanged) | 34.2% | -1.2 |
+   | **Average** | | | **94.6% → 69.9%** | |
+
+   Net: **one meaningful change (Madrid Gompertz→Logistic, 197%→74%), zero regressions.** Cataluña (164%) is left unfixed — a genuine data-size/regime-change limit, honestly acknowledged. Selections cross-checked stable across both multi-step gate variants (full-remaining and capped-6).
+
+**Status of this work:** recommendation only, captured on branch `enrico`. The notebook (07) gate rewrite + 4-region curve restriction + re-run of 07→08→09 is **not done** — awaiting user go-ahead. When implemented, the multi-step gate's recursive ML evaluation must (a) hold macro `_lag1` constant at the last known value across the path (leak-free), and (b) build feature rows by name (`feat_values[f] for f in ML_FEATS`), never by position.
 ### Biofuel mandate features added (2026-06-19)
 
 #### Background: what the mandate is
@@ -534,6 +570,8 @@ the current pipeline. Models are refit from scratch by the production script.
 - **Gasolina 98 is genuinely not sold in Melilla** — the resulting 36 NaN rows in `master_dataset.csv` are expected, not a data quality bug.
 - **Provincial-level consumption and single-month tourism data are deliberately excluded** from the master dataset (see `datasets_excluded_from_master.md`) — granularity mismatch and insufficient time coverage, respectively.
 - **DGT vehicle fleet data is a known gap**, not yet sourced (no public API; needs manual download).
+- **Repsol instruction: never "add up the regions" in the deliverable.** Each region's forecast must be reported separately — no single combined/summed regional demand figure. This constrains the *output*, not internal model fitting; joint ("pooled") fitting that still emits per-region forecasts is allowed (see Section 4, 2026-06-21). Nacional is the national total and is kept separate from / never pooled with its component regions.
+- **Saturation prior (proposed, not yet adopted):** the 4 regional series are known a-priori to be adoption curves approaching saturation, which justifies restricting *their* candidate set to saturating curves (Logistic/Gompertz). This constrains the hypothesis space by domain knowledge and is distinct from (and compatible with) the "never select on the test set" rule. Nacional is exempt (SARIMA legitimately wins). See Section 4.
 
 ---
 
@@ -568,6 +606,7 @@ python scripts/05_modeling_with_cnmc.py
 
 **Verification status:** A full leakage audit was performed, two critical leaks and a model-selection bias were fixed, and the fix was independently double-checked. The growth-curve addition was independently re-verified for leakage and reproducibility on 2026-06-16. The CNMC integration was verified on 2026-06-19:
 
+**Git status (2026-06-21):** `main` is in sync with `origin/main` (the earlier leakage-fix, growth-curve, and SARIMAX-log commits — `37ead38`, `d60cbef`, `9f93e82` — are all pushed). Current work is on branch **`enrico`**, which so far contains only this `memory.md` update documenting the 2026-06-21 pooling investigation and the recommended multi-step-gate fix — no notebook/model changes yet.
 - raw CNMC files parse cleanly,
 - CNMC biodiesel reconciles exactly to the existing target,
 - national `ESPAÑA` Gasoleo A is independently summed from all 19 CCAA,
@@ -587,7 +626,7 @@ git log --oneline --decorate -5
 **Outstanding documentation debt:** `DATA_AUDIT_REPORT.md` and `NOTEBOOKS_AUDIT.md` (both dated 2026-06-10) predate the leakage fixes, growth-curve work, and CNMC integration. Their model lists, row counts, and pipeline descriptions are stale. They have not been regenerated; this `memory.md` file and the current scripts are the source of truth until those audit docs are refreshed.
 
 **Next priorities (not yet started), in order of expected impact:**
-1. **Pool the 5 regional series into one model** instead of fitting each independently — directly targets the small-effective-sample-size problem (~21-23 rows/target today) that's the most fundamental constraint on model quality. Confirmed as the top recommendation by both the original deep-dive analysis *and* the later external model-research pass (Section 4) — not yet implemented. **This is the current single highest-priority next step.**
+1. **Implement the multi-step gate + saturation prior in notebook 07** (see Section 4, 2026-06-21). This supersedes the old "pool the regions" priority: naive ML pooling was investigated and rejected (it re-creates unbounded blow-ups), but the investigation revealed the 1-step walk-forward gate can bless exploding models, and a multi-step recursive gate + restricting the 4 regional series to saturating curves improves the holdout (Madrid 197%→74%, avg 94.6%→69.9%) with zero regressions. **This is the current single highest-priority next step.** Work-in-progress recommendation lives on branch `enrico`; notebook rewrite + 07→08→09 re-run still to do.
 2. **Reduce feature collinearity for Ridge** (`Tendencia`/`Lag_1`/`Lag_2`/`Lag_3`/`Roll_mean_3`/`Roll_mean_6` were found pairwise-correlated at 0.84-1.00) — e.g. switch to Elastic Net, which the model-research pass flagged as a near-zero-cost fix for exactly this problem. Lower priority than #1 since the growth curves already made Ridge's worst failure modes moot in practice, but the underlying collinearity is still unaddressed.
 3. SARIMAX has already been tried (plain macro exogenous regressors) and rejected — see Section 4. Don't repeat that exact test; if exogenous-variable modelling is revisited, do it after #1 (pooling) or with a richer regressor set (e.g. fuel prices).
 4. Source DGT vehicle fleet data (currently a placeholder).
