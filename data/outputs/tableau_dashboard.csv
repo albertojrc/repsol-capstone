@@ -899,18 +899,18 @@ Fecha_Date,Fecha,Anyo,Mes,Trimestre,Target,Model,Type,Valor,Selected_Model,Is_Se
 2026-10-01,2026-10,2026,10,4,Nacional,Diesel Share,Forecast,325239.9,SARIMA,False
 2026-11-01,2026-11,2026,11,4,Nacional,Diesel Share,Forecast,85851.2,SARIMA,False
 2026-12-01,2026-12,2026,12,4,Nacional,Diesel Share,Forecast,120514.4,SARIMA,False
-2027-01-01,2027-01,2027,1,1,Nacional,Diesel Share,Forecast,288184.5,SARIMA,False
+2027-01-01,2027-01,2027,1,1,Nacional,Diesel Share,Forecast,515378.4,SARIMA,False
 2027-02-01,2027-02,2027,2,1,Nacional,Diesel Share,Forecast,511861.2,SARIMA,False
 2027-03-01,2027-03,2027,3,1,Nacional,Diesel Share,Forecast,543906.9,SARIMA,False
-2027-04-01,2027-04,2027,4,2,Nacional,Diesel Share,Forecast,442929.8,SARIMA,False
-2027-05-01,2027-05,2027,5,2,Nacional,Diesel Share,Forecast,192657.8,SARIMA,False
-2027-06-01,2027-06,2027,6,2,Nacional,Diesel Share,Forecast,122746.9,SARIMA,False
-2027-07-01,2027-07,2027,7,3,Nacional,Diesel Share,Forecast,319039.3,SARIMA,False
+2027-04-01,2027-04,2027,4,2,Nacional,Diesel Share,Forecast,550966.2,SARIMA,False
+2027-05-01,2027-05,2027,5,2,Nacional,Diesel Share,Forecast,566857.2,SARIMA,False
+2027-06-01,2027-06,2027,6,2,Nacional,Diesel Share,Forecast,557502.9,SARIMA,False
+2027-07-01,2027-07,2027,7,3,Nacional,Diesel Share,Forecast,596590.5,SARIMA,False
 2027-08-01,2027-08,2027,8,3,Nacional,Diesel Share,Forecast,524634.9,SARIMA,False
 2027-09-01,2027-09,2027,9,3,Nacional,Diesel Share,Forecast,540870.3,SARIMA,False
 2027-10-01,2027-10,2027,10,4,Nacional,Diesel Share,Forecast,576250.2,SARIMA,False
-2027-11-01,2027-11,2027,11,4,Nacional,Diesel Share,Forecast,316429.2,SARIMA,False
-2027-12-01,2027-12,2027,12,4,Nacional,Diesel Share,Forecast,230670.0,SARIMA,False
+2027-11-01,2027-11,2027,11,4,Nacional,Diesel Share,Forecast,519253.2,SARIMA,False
+2027-12-01,2027-12,2027,12,4,Nacional,Diesel Share,Forecast,545792.1,SARIMA,False
 2026-01-01,2026-01,2026,1,1,Madrid,SARIMA,Forecast,3106.4,Logistic,False
 2026-02-01,2026-02,2026,2,1,Madrid,SARIMA,Forecast,3234.6,Logistic,False
 2026-03-01,2026-03,2026,3,1,Madrid,SARIMA,Forecast,3361.2,Logistic,False
@@ -1003,10 +1003,10 @@ Fecha_Date,Fecha,Anyo,Mes,Trimestre,Target,Model,Type,Valor,Selected_Model,Is_Se
 2027-06-01,2027-06,2027,6,2,Madrid,Ridge,Forecast,0.0,Logistic,False
 2027-07-01,2027-07,2027,7,3,Madrid,Ridge,Forecast,0.0,Logistic,False
 2027-08-01,2027-08,2027,8,3,Madrid,Ridge,Forecast,0.0,Logistic,False
-2027-09-01,2027-09,2027,9,3,Madrid,Ridge,Forecast,1254133.1,Logistic,False
+2027-09-01,2027-09,2027,9,3,Madrid,Ridge,Forecast,3269016.4,Logistic,False
 2027-10-01,2027-10,2027,10,4,Madrid,Ridge,Forecast,3269016.4,Logistic,False
 2027-11-01,2027-11,2027,11,4,Madrid,Ridge,Forecast,3269016.4,Logistic,False
-2027-12-01,2027-12,2027,12,4,Madrid,Ridge,Forecast,3269016.4,Logistic,False
+2027-12-01,2027-12,2027,12,4,Madrid,Ridge,Forecast,0.0,Logistic,False
 2026-01-01,2026-01,2026,1,1,Madrid,Random Forest,Forecast,2932.9,Logistic,False
 2026-02-01,2026-02,2026,2,1,Madrid,Random Forest,Forecast,2932.3,Logistic,False
 2026-03-01,2026-03,2026,3,1,Madrid,Random Forest,Forecast,2932.6,Logistic,False
@@ -1068,17 +1068,17 @@ Fecha_Date,Fecha,Anyo,Mes,Trimestre,Target,Model,Type,Valor,Selected_Model,Is_Se
 2026-11-01,2026-11,2026,11,4,Madrid,Diesel Share,Forecast,18897.6,Logistic,False
 2026-12-01,2026-12,2026,12,4,Madrid,Diesel Share,Forecast,7382.2,Logistic,False
 2027-01-01,2027-01,2027,1,1,Madrid,Diesel Share,Forecast,40752.3,Logistic,False
-2027-02-01,2027-02,2027,2,1,Madrid,Diesel Share,Forecast,5625.8,Logistic,False
-2027-03-01,2027-03,2027,3,1,Madrid,Diesel Share,Forecast,32498.8,Logistic,False
-2027-04-01,2027-04,2027,4,2,Madrid,Diesel Share,Forecast,1917.3,Logistic,False
+2027-02-01,2027-02,2027,2,1,Madrid,Diesel Share,Forecast,39587.4,Logistic,False
+2027-03-01,2027-03,2027,3,1,Madrid,Diesel Share,Forecast,16935.7,Logistic,False
+2027-04-01,2027-04,2027,4,2,Madrid,Diesel Share,Forecast,7903.7,Logistic,False
 2027-05-01,2027-05,2027,5,2,Madrid,Diesel Share,Forecast,45116.1,Logistic,False
-2027-06-01,2027-06,2027,6,2,Madrid,Diesel Share,Forecast,2468.4,Logistic,False
-2027-07-01,2027-07,2027,7,3,Madrid,Diesel Share,Forecast,46106.4,Logistic,False
-2027-08-01,2027-08,2027,8,3,Madrid,Diesel Share,Forecast,1244.1,Logistic,False
+2027-06-01,2027-06,2027,6,2,Madrid,Diesel Share,Forecast,46326.0,Logistic,False
+2027-07-01,2027-07,2027,7,3,Madrid,Diesel Share,Forecast,13358.7,Logistic,False
+2027-08-01,2027-08,2027,8,3,Madrid,Diesel Share,Forecast,16821.4,Logistic,False
 2027-09-01,2027-09,2027,9,3,Madrid,Diesel Share,Forecast,44228.7,Logistic,False
-2027-10-01,2027-10,2027,10,4,Madrid,Diesel Share,Forecast,4130.8,Logistic,False
-2027-11-01,2027-11,2027,11,4,Madrid,Diesel Share,Forecast,42950.4,Logistic,False
-2027-12-01,2027-12,2027,12,4,Madrid,Diesel Share,Forecast,2495.8,Logistic,False
+2027-10-01,2027-10,2027,10,4,Madrid,Diesel Share,Forecast,47358.9,Logistic,False
+2027-11-01,2027-11,2027,11,4,Madrid,Diesel Share,Forecast,11071.7,Logistic,False
+2027-12-01,2027-12,2027,12,4,Madrid,Diesel Share,Forecast,38270.1,Logistic,False
 2026-01-01,2026-01,2026,1,1,Cataluña,SARIMA,Forecast,3497.8,Pooled Random Forest,False
 2026-02-01,2026-02,2026,2,1,Cataluña,SARIMA,Forecast,3628.5,Pooled Random Forest,False
 2026-03-01,2026-03,2026,3,1,Cataluña,SARIMA,Forecast,3754.7,Pooled Random Forest,False
@@ -1403,17 +1403,17 @@ Fecha_Date,Fecha,Anyo,Mes,Trimestre,Target,Model,Type,Valor,Selected_Model,Is_Se
 2026-10-01,2026-10,2026,10,4,Andalucía,Diesel Share,Forecast,1.2,Logistic,False
 2026-11-01,2026-11,2026,11,4,Andalucía,Diesel Share,Forecast,82854.6,Logistic,False
 2026-12-01,2026-12,2026,12,4,Andalucía,Diesel Share,Forecast,89531.1,Logistic,False
-2027-01-01,2027-01,2027,1,1,Andalucía,Diesel Share,Forecast,1.7,Logistic,False
+2027-01-01,2027-01,2027,1,1,Andalucía,Diesel Share,Forecast,136.4,Logistic,False
 2027-02-01,2027-02,2027,2,1,Andalucía,Diesel Share,Forecast,0.0,Logistic,False
-2027-03-01,2027-03,2027,3,1,Andalucía,Diesel Share,Forecast,0.8,Logistic,False
+2027-03-01,2027-03,2027,3,1,Andalucía,Diesel Share,Forecast,60.3,Logistic,False
 2027-04-01,2027-04,2027,4,2,Andalucía,Diesel Share,Forecast,89914.5,Logistic,False
 2027-05-01,2027-05,2027,5,2,Andalucía,Diesel Share,Forecast,94347.3,Logistic,False
-2027-06-01,2027-06,2027,6,2,Andalucía,Diesel Share,Forecast,2.3,Logistic,False
+2027-06-01,2027-06,2027,6,2,Andalucía,Diesel Share,Forecast,179.7,Logistic,False
 2027-07-01,2027-07,2027,7,3,Andalucía,Diesel Share,Forecast,0.0,Logistic,False
-2027-08-01,2027-08,2027,8,3,Andalucía,Diesel Share,Forecast,3.1,Logistic,False
+2027-08-01,2027-08,2027,8,3,Andalucía,Diesel Share,Forecast,242.6,Logistic,False
 2027-09-01,2027-09,2027,9,3,Andalucía,Diesel Share,Forecast,87435.6,Logistic,False
 2027-10-01,2027-10,2027,10,4,Andalucía,Diesel Share,Forecast,92889.0,Logistic,False
-2027-11-01,2027-11,2027,11,4,Andalucía,Diesel Share,Forecast,16.2,Logistic,False
+2027-11-01,2027-11,2027,11,4,Andalucía,Diesel Share,Forecast,1231.8,Logistic,False
 2027-12-01,2027-12,2027,12,4,Andalucía,Diesel Share,Forecast,0.0,Logistic,False
 2026-01-01,2026-01,2026,1,1,Valencia,SARIMA,Forecast,1286.6,Gompertz,False
 2026-02-01,2026-02,2026,2,1,Valencia,SARIMA,Forecast,1279.8,Gompertz,False
@@ -1595,18 +1595,18 @@ Fecha_Date,Fecha,Anyo,Mes,Trimestre,Target,Model,Type,Valor,Selected_Model,Is_Se
 2026-10-01,2026-10,2026,10,4,Madrid,Pooled Ridge,Forecast,6937.8,Logistic,False
 2026-11-01,2026-11,2026,11,4,Madrid,Pooled Ridge,Forecast,0.0,Logistic,False
 2026-12-01,2026-12,2026,12,4,Madrid,Pooled Ridge,Forecast,0.0,Logistic,False
-2027-01-01,2027-01,2027,1,1,Madrid,Pooled Ridge,Forecast,491.8,Logistic,False
-2027-02-01,2027-02,2027,2,1,Madrid,Pooled Ridge,Forecast,9402.1,Logistic,False
-2027-03-01,2027-03,2027,3,1,Madrid,Pooled Ridge,Forecast,80695.5,Logistic,False
-2027-04-01,2027-04,2027,4,2,Madrid,Pooled Ridge,Forecast,233989.2,Logistic,False
-2027-05-01,2027-05,2027,5,2,Madrid,Pooled Ridge,Forecast,5687.7,Logistic,False
+2027-01-01,2027-01,2027,1,1,Madrid,Pooled Ridge,Forecast,2098.9,Logistic,False
+2027-02-01,2027-02,2027,2,1,Madrid,Pooled Ridge,Forecast,72603.3,Logistic,False
+2027-03-01,2027-03,2027,3,1,Madrid,Pooled Ridge,Forecast,1025845.6,Logistic,False
+2027-04-01,2027-04,2027,4,2,Madrid,Pooled Ridge,Forecast,429619.5,Logistic,False
+2027-05-01,2027-05,2027,5,2,Madrid,Pooled Ridge,Forecast,0.0,Logistic,False
 2027-06-01,2027-06,2027,6,2,Madrid,Pooled Ridge,Forecast,0.0,Logistic,False
 2027-07-01,2027-07,2027,7,3,Madrid,Pooled Ridge,Forecast,0.0,Logistic,False
-2027-08-01,2027-08,2027,8,3,Madrid,Pooled Ridge,Forecast,848.9,Logistic,False
-2027-09-01,2027-09,2027,9,3,Madrid,Pooled Ridge,Forecast,18889.2,Logistic,False
-2027-10-01,2027-10,2027,10,4,Madrid,Pooled Ridge,Forecast,177685.9,Logistic,False
-2027-11-01,2027-11,2027,11,4,Madrid,Pooled Ridge,Forecast,369954.0,Logistic,False
-2027-12-01,2027-12,2027,12,4,Madrid,Pooled Ridge,Forecast,50.0,Logistic,False
+2027-08-01,2027-08,2027,8,3,Madrid,Pooled Ridge,Forecast,4501.6,Logistic,False
+2027-09-01,2027-09,2027,9,3,Madrid,Pooled Ridge,Forecast,149277.8,Logistic,False
+2027-10-01,2027-10,2027,10,4,Madrid,Pooled Ridge,Forecast,2283264.5,Logistic,False
+2027-11-01,2027-11,2027,11,4,Madrid,Pooled Ridge,Forecast,189481.8,Logistic,False
+2027-12-01,2027-12,2027,12,4,Madrid,Pooled Ridge,Forecast,0.0,Logistic,False
 2026-01-01,2026-01,2026,1,1,Cataluña,Pooled Ridge,Forecast,45684.4,Pooled Random Forest,False
 2026-02-01,2026-02,2026,2,1,Cataluña,Pooled Ridge,Forecast,144355.0,Pooled Random Forest,False
 2026-03-01,2026-03,2026,3,1,Cataluña,Pooled Ridge,Forecast,95278.7,Pooled Random Forest,False
@@ -1619,18 +1619,18 @@ Fecha_Date,Fecha,Anyo,Mes,Trimestre,Target,Model,Type,Valor,Selected_Model,Is_Se
 2026-10-01,2026-10,2026,10,4,Cataluña,Pooled Ridge,Forecast,25223.4,Pooled Random Forest,False
 2026-11-01,2026-11,2026,11,4,Cataluña,Pooled Ridge,Forecast,0.0,Pooled Random Forest,False
 2026-12-01,2026-12,2026,12,4,Cataluña,Pooled Ridge,Forecast,0.0,Pooled Random Forest,False
-2027-01-01,2027-01,2027,1,1,Cataluña,Pooled Ridge,Forecast,400.8,Pooled Random Forest,False
-2027-02-01,2027-02,2027,2,1,Cataluña,Pooled Ridge,Forecast,9809.8,Pooled Random Forest,False
-2027-03-01,2027-03,2027,3,1,Cataluña,Pooled Ridge,Forecast,91236.7,Pooled Random Forest,False
-2027-04-01,2027-04,2027,4,2,Cataluña,Pooled Ridge,Forecast,363957.8,Pooled Random Forest,False
-2027-05-01,2027-05,2027,5,2,Cataluña,Pooled Ridge,Forecast,81862.7,Pooled Random Forest,False
-2027-06-01,2027-06,2027,6,2,Cataluña,Pooled Ridge,Forecast,0.1,Pooled Random Forest,False
+2027-01-01,2027-01,2027,1,1,Cataluña,Pooled Ridge,Forecast,1711.0,Pooled Random Forest,False
+2027-02-01,2027-02,2027,2,1,Cataluña,Pooled Ridge,Forecast,75567.2,Pooled Random Forest,False
+2027-03-01,2027-03,2027,3,1,Cataluña,Pooled Ridge,Forecast,1136233.0,Pooled Random Forest,False
+2027-04-01,2027-04,2027,4,2,Cataluña,Pooled Ridge,Forecast,2156795.8,Pooled Random Forest,False
+2027-05-01,2027-05,2027,5,2,Cataluña,Pooled Ridge,Forecast,0.0,Pooled Random Forest,False
+2027-06-01,2027-06,2027,6,2,Cataluña,Pooled Ridge,Forecast,0.0,Pooled Random Forest,False
 2027-07-01,2027-07,2027,7,3,Cataluña,Pooled Ridge,Forecast,0.0,Pooled Random Forest,False
-2027-08-01,2027-08,2027,8,3,Cataluña,Pooled Ridge,Forecast,128.5,Pooled Random Forest,False
-2027-09-01,2027-09,2027,9,3,Cataluña,Pooled Ridge,Forecast,9933.7,Pooled Random Forest,False
-2027-10-01,2027-10,2027,10,4,Cataluña,Pooled Ridge,Forecast,121214.6,Pooled Random Forest,False
-2027-11-01,2027-11,2027,11,4,Cataluña,Pooled Ridge,Forecast,606833.0,Pooled Random Forest,False
-2027-12-01,2027-12,2027,12,4,Cataluña,Pooled Ridge,Forecast,98125.3,Pooled Random Forest,False
+2027-08-01,2027-08,2027,8,3,Cataluña,Pooled Ridge,Forecast,5034.4,Pooled Random Forest,False
+2027-09-01,2027-09,2027,9,3,Cataluña,Pooled Ridge,Forecast,173451.5,Pooled Random Forest,False
+2027-10-01,2027-10,2027,10,4,Cataluña,Pooled Ridge,Forecast,2687401.9,Pooled Random Forest,False
+2027-11-01,2027-11,2027,11,4,Cataluña,Pooled Ridge,Forecast,1340412.3,Pooled Random Forest,False
+2027-12-01,2027-12,2027,12,4,Cataluña,Pooled Ridge,Forecast,0.0,Pooled Random Forest,False
 2026-01-01,2026-01,2026,1,1,Andalucía,Pooled Ridge,Forecast,23583.6,Logistic,False
 2026-02-01,2026-02,2026,2,1,Andalucía,Pooled Ridge,Forecast,70223.3,Logistic,False
 2026-03-01,2026-03,2026,3,1,Andalucía,Pooled Ridge,Forecast,82978.6,Logistic,False
@@ -1643,18 +1643,18 @@ Fecha_Date,Fecha,Anyo,Mes,Trimestre,Target,Model,Type,Valor,Selected_Model,Is_Se
 2026-10-01,2026-10,2026,10,4,Andalucía,Pooled Ridge,Forecast,15311.1,Logistic,False
 2026-11-01,2026-11,2026,11,4,Andalucía,Pooled Ridge,Forecast,60.7,Logistic,False
 2026-12-01,2026-12,2026,12,4,Andalucía,Pooled Ridge,Forecast,55.5,Logistic,False
-2027-01-01,2027-01,2027,1,1,Andalucía,Pooled Ridge,Forecast,3443.5,Logistic,False
-2027-02-01,2027-02,2027,2,1,Andalucía,Pooled Ridge,Forecast,29607.9,Logistic,False
-2027-03-01,2027-03,2027,3,1,Andalucía,Pooled Ridge,Forecast,127950.9,Logistic,False
-2027-04-01,2027-04,2027,4,2,Andalucía,Pooled Ridge,Forecast,157304.9,Logistic,False
-2027-05-01,2027-05,2027,5,2,Andalucía,Pooled Ridge,Forecast,4921.7,Logistic,False
-2027-06-01,2027-06,2027,6,2,Andalucía,Pooled Ridge,Forecast,24.7,Logistic,False
-2027-07-01,2027-07,2027,7,3,Andalucía,Pooled Ridge,Forecast,85.1,Logistic,False
-2027-08-01,2027-08,2027,8,3,Andalucía,Pooled Ridge,Forecast,8058.0,Logistic,False
-2027-09-01,2027-09,2027,9,3,Andalucía,Pooled Ridge,Forecast,70898.4,Logistic,False
-2027-10-01,2027-10,2027,10,4,Andalucía,Pooled Ridge,Forecast,293888.6,Logistic,False
-2027-11-01,2027-11,2027,11,4,Andalucía,Pooled Ridge,Forecast,113709.9,Logistic,False
-2027-12-01,2027-12,2027,12,4,Andalucía,Pooled Ridge,Forecast,19.2,Logistic,False
+2027-01-01,2027-01,2027,1,1,Andalucía,Pooled Ridge,Forecast,14676.6,Logistic,False
+2027-02-01,2027-02,2027,2,1,Andalucía,Pooled Ridge,Forecast,230732.1,Logistic,False
+2027-03-01,2027-03,2027,3,1,Andalucía,Pooled Ridge,Forecast,1360999.9,Logistic,False
+2027-04-01,2027-04,2027,4,2,Andalucía,Pooled Ridge,Forecast,8858.3,Logistic,False
+2027-05-01,2027-05,2027,5,2,Andalucía,Pooled Ridge,Forecast,0.0,Logistic,False
+2027-06-01,2027-06,2027,6,2,Andalucía,Pooled Ridge,Forecast,0.0,Logistic,False
+2027-07-01,2027-07,2027,7,3,Andalucía,Pooled Ridge,Forecast,2554.6,Logistic,False
+2027-08-01,2027-08,2027,8,3,Andalucía,Pooled Ridge,Forecast,83430.5,Logistic,False
+2027-09-01,2027-09,2027,9,3,Andalucía,Pooled Ridge,Forecast,1126905.0,Logistic,False
+2027-10-01,2027-10,2027,10,4,Andalucía,Pooled Ridge,Forecast,1813416.1,Logistic,False
+2027-11-01,2027-11,2027,11,4,Andalucía,Pooled Ridge,Forecast,0.0,Logistic,False
+2027-12-01,2027-12,2027,12,4,Andalucía,Pooled Ridge,Forecast,0.0,Logistic,False
 2026-01-01,2026-01,2026,1,1,Valencia,Pooled Ridge,Forecast,14246.3,Gompertz,False
 2026-02-01,2026-02,2026,2,1,Valencia,Pooled Ridge,Forecast,40007.8,Gompertz,False
 2026-03-01,2026-03,2026,3,1,Valencia,Pooled Ridge,Forecast,43517.8,Gompertz,False
@@ -1667,18 +1667,18 @@ Fecha_Date,Fecha,Anyo,Mes,Trimestre,Target,Model,Type,Valor,Selected_Model,Is_Se
 2026-10-01,2026-10,2026,10,4,Valencia,Pooled Ridge,Forecast,6801.2,Gompertz,False
 2026-11-01,2026-11,2026,11,4,Valencia,Pooled Ridge,Forecast,31.7,Gompertz,False
 2026-12-01,2026-12,2026,12,4,Valencia,Pooled Ridge,Forecast,39.7,Gompertz,False
-2027-01-01,2027-01,2027,1,1,Valencia,Pooled Ridge,Forecast,2295.0,Gompertz,False
-2027-02-01,2027-02,2027,2,1,Valencia,Pooled Ridge,Forecast,18108.0,Gompertz,False
-2027-03-01,2027-03,2027,3,1,Valencia,Pooled Ridge,Forecast,73780.0,Gompertz,False
-2027-04-01,2027-04,2027,4,2,Valencia,Pooled Ridge,Forecast,83287.3,Gompertz,False
-2027-05-01,2027-05,2027,5,2,Valencia,Pooled Ridge,Forecast,2289.1,Gompertz,False
-2027-06-01,2027-06,2027,6,2,Valencia,Pooled Ridge,Forecast,15.7,Gompertz,False
-2027-07-01,2027-07,2027,7,3,Valencia,Pooled Ridge,Forecast,69.7,Gompertz,False
-2027-08-01,2027-08,2027,8,3,Valencia,Pooled Ridge,Forecast,5447.2,Gompertz,False
-2027-09-01,2027-09,2027,9,3,Valencia,Pooled Ridge,Forecast,44651.1,Gompertz,False
-2027-10-01,2027-10,2027,10,4,Valencia,Pooled Ridge,Forecast,168261.3,Gompertz,False
-2027-11-01,2027-11,2027,11,4,Valencia,Pooled Ridge,Forecast,50200.7,Gompertz,False
-2027-12-01,2027-12,2027,12,4,Valencia,Pooled Ridge,Forecast,5.9,Gompertz,False
+2027-01-01,2027-01,2027,1,1,Valencia,Pooled Ridge,Forecast,9782.6,Gompertz,False
+2027-02-01,2027-02,2027,2,1,Valencia,Pooled Ridge,Forecast,141442.5,Gompertz,False
+2027-03-01,2027-03,2027,3,1,Valencia,Pooled Ridge,Forecast,743678.5,Gompertz,False
+2027-04-01,2027-04,2027,4,2,Valencia,Pooled Ridge,Forecast,2875.4,Gompertz,False
+2027-05-01,2027-05,2027,5,2,Valencia,Pooled Ridge,Forecast,0.0,Gompertz,False
+2027-06-01,2027-06,2027,6,2,Valencia,Pooled Ridge,Forecast,0.0,Gompertz,False
+2027-07-01,2027-07,2027,7,3,Valencia,Pooled Ridge,Forecast,2182.5,Gompertz,False
+2027-08-01,2027-08,2027,8,3,Valencia,Pooled Ridge,Forecast,59928.9,Gompertz,False
+2027-09-01,2027-09,2027,9,3,Valencia,Pooled Ridge,Forecast,735323.3,Gompertz,False
+2027-10-01,2027-10,2027,10,4,Valencia,Pooled Ridge,Forecast,638839.0,Gompertz,False
+2027-11-01,2027-11,2027,11,4,Valencia,Pooled Ridge,Forecast,0.0,Gompertz,False
+2027-12-01,2027-12,2027,12,4,Valencia,Pooled Ridge,Forecast,0.0,Gompertz,False
 2026-01-01,2026-01,2026,1,1,Madrid,Pooled Random Forest,Forecast,2822.1,Logistic,False
 2026-02-01,2026-02,2026,2,1,Madrid,Pooled Random Forest,Forecast,2822.1,Logistic,False
 2026-03-01,2026-03,2026,3,1,Madrid,Pooled Random Forest,Forecast,2822.1,Logistic,False

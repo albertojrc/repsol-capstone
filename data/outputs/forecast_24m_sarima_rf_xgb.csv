@@ -155,18 +155,18 @@ Fecha,Target,Model,Forecast
 2026-10,Nacional,Diesel Share,325239.9
 2026-11,Nacional,Diesel Share,85851.2
 2026-12,Nacional,Diesel Share,120514.4
-2027-01,Nacional,Diesel Share,288184.5
+2027-01,Nacional,Diesel Share,515378.4
 2027-02,Nacional,Diesel Share,511861.2
 2027-03,Nacional,Diesel Share,543906.9
-2027-04,Nacional,Diesel Share,442929.8
-2027-05,Nacional,Diesel Share,192657.8
-2027-06,Nacional,Diesel Share,122746.9
-2027-07,Nacional,Diesel Share,319039.3
+2027-04,Nacional,Diesel Share,550966.2
+2027-05,Nacional,Diesel Share,566857.2
+2027-06,Nacional,Diesel Share,557502.9
+2027-07,Nacional,Diesel Share,596590.5
 2027-08,Nacional,Diesel Share,524634.9
 2027-09,Nacional,Diesel Share,540870.3
 2027-10,Nacional,Diesel Share,576250.2
-2027-11,Nacional,Diesel Share,316429.2
-2027-12,Nacional,Diesel Share,230670.0
+2027-11,Nacional,Diesel Share,519253.2
+2027-12,Nacional,Diesel Share,545792.1
 2026-01,Madrid,SARIMA,3106.4
 2026-02,Madrid,SARIMA,3234.6
 2026-03,Madrid,SARIMA,3361.2
@@ -259,10 +259,10 @@ Fecha,Target,Model,Forecast
 2027-06,Madrid,Ridge,0.0
 2027-07,Madrid,Ridge,0.0
 2027-08,Madrid,Ridge,0.0
-2027-09,Madrid,Ridge,1254133.1
+2027-09,Madrid,Ridge,3269016.4
 2027-10,Madrid,Ridge,3269016.4
 2027-11,Madrid,Ridge,3269016.4
-2027-12,Madrid,Ridge,3269016.4
+2027-12,Madrid,Ridge,0.0
 2026-01,Madrid,Random Forest,2932.9
 2026-02,Madrid,Random Forest,2932.3
 2026-03,Madrid,Random Forest,2932.6
@@ -324,17 +324,17 @@ Fecha,Target,Model,Forecast
 2026-11,Madrid,Diesel Share,18897.6
 2026-12,Madrid,Diesel Share,7382.2
 2027-01,Madrid,Diesel Share,40752.3
-2027-02,Madrid,Diesel Share,5625.8
-2027-03,Madrid,Diesel Share,32498.8
-2027-04,Madrid,Diesel Share,1917.3
+2027-02,Madrid,Diesel Share,39587.4
+2027-03,Madrid,Diesel Share,16935.7
+2027-04,Madrid,Diesel Share,7903.7
 2027-05,Madrid,Diesel Share,45116.1
-2027-06,Madrid,Diesel Share,2468.4
-2027-07,Madrid,Diesel Share,46106.4
-2027-08,Madrid,Diesel Share,1244.1
+2027-06,Madrid,Diesel Share,46326.0
+2027-07,Madrid,Diesel Share,13358.7
+2027-08,Madrid,Diesel Share,16821.4
 2027-09,Madrid,Diesel Share,44228.7
-2027-10,Madrid,Diesel Share,4130.8
-2027-11,Madrid,Diesel Share,42950.4
-2027-12,Madrid,Diesel Share,2495.8
+2027-10,Madrid,Diesel Share,47358.9
+2027-11,Madrid,Diesel Share,11071.7
+2027-12,Madrid,Diesel Share,38270.1
 2026-01,Cataluña,SARIMA,3497.8
 2026-02,Cataluña,SARIMA,3628.5
 2026-03,Cataluña,SARIMA,3754.7
@@ -659,17 +659,17 @@ Fecha,Target,Model,Forecast
 2026-10,Andalucía,Diesel Share,1.2
 2026-11,Andalucía,Diesel Share,82854.6
 2026-12,Andalucía,Diesel Share,89531.1
-2027-01,Andalucía,Diesel Share,1.7
+2027-01,Andalucía,Diesel Share,136.4
 2027-02,Andalucía,Diesel Share,0.0
-2027-03,Andalucía,Diesel Share,0.8
+2027-03,Andalucía,Diesel Share,60.3
 2027-04,Andalucía,Diesel Share,89914.5
 2027-05,Andalucía,Diesel Share,94347.3
-2027-06,Andalucía,Diesel Share,2.3
+2027-06,Andalucía,Diesel Share,179.7
 2027-07,Andalucía,Diesel Share,0.0
-2027-08,Andalucía,Diesel Share,3.1
+2027-08,Andalucía,Diesel Share,242.6
 2027-09,Andalucía,Diesel Share,87435.6
 2027-10,Andalucía,Diesel Share,92889.0
-2027-11,Andalucía,Diesel Share,16.2
+2027-11,Andalucía,Diesel Share,1231.8
 2027-12,Andalucía,Diesel Share,0.0
 2026-01,Valencia,SARIMA,1286.6
 2026-02,Valencia,SARIMA,1279.8
@@ -851,18 +851,18 @@ Fecha,Target,Model,Forecast
 2026-10,Madrid,Pooled Ridge,6937.8
 2026-11,Madrid,Pooled Ridge,0.0
 2026-12,Madrid,Pooled Ridge,0.0
-2027-01,Madrid,Pooled Ridge,491.8
-2027-02,Madrid,Pooled Ridge,9402.1
-2027-03,Madrid,Pooled Ridge,80695.5
-2027-04,Madrid,Pooled Ridge,233989.2
-2027-05,Madrid,Pooled Ridge,5687.7
+2027-01,Madrid,Pooled Ridge,2098.9
+2027-02,Madrid,Pooled Ridge,72603.3
+2027-03,Madrid,Pooled Ridge,1025845.6
+2027-04,Madrid,Pooled Ridge,429619.5
+2027-05,Madrid,Pooled Ridge,0.0
 2027-06,Madrid,Pooled Ridge,0.0
 2027-07,Madrid,Pooled Ridge,0.0
-2027-08,Madrid,Pooled Ridge,848.9
-2027-09,Madrid,Pooled Ridge,18889.2
-2027-10,Madrid,Pooled Ridge,177685.9
-2027-11,Madrid,Pooled Ridge,369954.0
-2027-12,Madrid,Pooled Ridge,50.0
+2027-08,Madrid,Pooled Ridge,4501.6
+2027-09,Madrid,Pooled Ridge,149277.8
+2027-10,Madrid,Pooled Ridge,2283264.5
+2027-11,Madrid,Pooled Ridge,189481.8
+2027-12,Madrid,Pooled Ridge,0.0
 2026-01,Cataluña,Pooled Ridge,45684.4
 2026-02,Cataluña,Pooled Ridge,144355.0
 2026-03,Cataluña,Pooled Ridge,95278.7
@@ -875,18 +875,18 @@ Fecha,Target,Model,Forecast
 2026-10,Cataluña,Pooled Ridge,25223.4
 2026-11,Cataluña,Pooled Ridge,0.0
 2026-12,Cataluña,Pooled Ridge,0.0
-2027-01,Cataluña,Pooled Ridge,400.8
-2027-02,Cataluña,Pooled Ridge,9809.8
-2027-03,Cataluña,Pooled Ridge,91236.7
-2027-04,Cataluña,Pooled Ridge,363957.8
-2027-05,Cataluña,Pooled Ridge,81862.7
-2027-06,Cataluña,Pooled Ridge,0.1
+2027-01,Cataluña,Pooled Ridge,1711.0
+2027-02,Cataluña,Pooled Ridge,75567.2
+2027-03,Cataluña,Pooled Ridge,1136233.0
+2027-04,Cataluña,Pooled Ridge,2156795.8
+2027-05,Cataluña,Pooled Ridge,0.0
+2027-06,Cataluña,Pooled Ridge,0.0
 2027-07,Cataluña,Pooled Ridge,0.0
-2027-08,Cataluña,Pooled Ridge,128.5
-2027-09,Cataluña,Pooled Ridge,9933.7
-2027-10,Cataluña,Pooled Ridge,121214.6
-2027-11,Cataluña,Pooled Ridge,606833.0
-2027-12,Cataluña,Pooled Ridge,98125.3
+2027-08,Cataluña,Pooled Ridge,5034.4
+2027-09,Cataluña,Pooled Ridge,173451.5
+2027-10,Cataluña,Pooled Ridge,2687401.9
+2027-11,Cataluña,Pooled Ridge,1340412.3
+2027-12,Cataluña,Pooled Ridge,0.0
 2026-01,Andalucía,Pooled Ridge,23583.6
 2026-02,Andalucía,Pooled Ridge,70223.3
 2026-03,Andalucía,Pooled Ridge,82978.6
@@ -899,18 +899,18 @@ Fecha,Target,Model,Forecast
 2026-10,Andalucía,Pooled Ridge,15311.1
 2026-11,Andalucía,Pooled Ridge,60.7
 2026-12,Andalucía,Pooled Ridge,55.5
-2027-01,Andalucía,Pooled Ridge,3443.5
-2027-02,Andalucía,Pooled Ridge,29607.9
-2027-03,Andalucía,Pooled Ridge,127950.9
-2027-04,Andalucía,Pooled Ridge,157304.9
-2027-05,Andalucía,Pooled Ridge,4921.7
-2027-06,Andalucía,Pooled Ridge,24.7
-2027-07,Andalucía,Pooled Ridge,85.1
-2027-08,Andalucía,Pooled Ridge,8058.0
-2027-09,Andalucía,Pooled Ridge,70898.4
-2027-10,Andalucía,Pooled Ridge,293888.6
-2027-11,Andalucía,Pooled Ridge,113709.9
-2027-12,Andalucía,Pooled Ridge,19.2
+2027-01,Andalucía,Pooled Ridge,14676.6
+2027-02,Andalucía,Pooled Ridge,230732.1
+2027-03,Andalucía,Pooled Ridge,1360999.9
+2027-04,Andalucía,Pooled Ridge,8858.3
+2027-05,Andalucía,Pooled Ridge,0.0
+2027-06,Andalucía,Pooled Ridge,0.0
+2027-07,Andalucía,Pooled Ridge,2554.6
+2027-08,Andalucía,Pooled Ridge,83430.5
+2027-09,Andalucía,Pooled Ridge,1126905.0
+2027-10,Andalucía,Pooled Ridge,1813416.1
+2027-11,Andalucía,Pooled Ridge,0.0
+2027-12,Andalucía,Pooled Ridge,0.0
 2026-01,Valencia,Pooled Ridge,14246.3
 2026-02,Valencia,Pooled Ridge,40007.8
 2026-03,Valencia,Pooled Ridge,43517.8
@@ -923,18 +923,18 @@ Fecha,Target,Model,Forecast
 2026-10,Valencia,Pooled Ridge,6801.2
 2026-11,Valencia,Pooled Ridge,31.7
 2026-12,Valencia,Pooled Ridge,39.7
-2027-01,Valencia,Pooled Ridge,2295.0
-2027-02,Valencia,Pooled Ridge,18108.0
-2027-03,Valencia,Pooled Ridge,73780.0
-2027-04,Valencia,Pooled Ridge,83287.3
-2027-05,Valencia,Pooled Ridge,2289.1
-2027-06,Valencia,Pooled Ridge,15.7
-2027-07,Valencia,Pooled Ridge,69.7
-2027-08,Valencia,Pooled Ridge,5447.2
-2027-09,Valencia,Pooled Ridge,44651.1
-2027-10,Valencia,Pooled Ridge,168261.3
-2027-11,Valencia,Pooled Ridge,50200.7
-2027-12,Valencia,Pooled Ridge,5.9
+2027-01,Valencia,Pooled Ridge,9782.6
+2027-02,Valencia,Pooled Ridge,141442.5
+2027-03,Valencia,Pooled Ridge,743678.5
+2027-04,Valencia,Pooled Ridge,2875.4
+2027-05,Valencia,Pooled Ridge,0.0
+2027-06,Valencia,Pooled Ridge,0.0
+2027-07,Valencia,Pooled Ridge,2182.5
+2027-08,Valencia,Pooled Ridge,59928.9
+2027-09,Valencia,Pooled Ridge,735323.3
+2027-10,Valencia,Pooled Ridge,638839.0
+2027-11,Valencia,Pooled Ridge,0.0
+2027-12,Valencia,Pooled Ridge,0.0
 2026-01,Madrid,Pooled Random Forest,2822.1
 2026-02,Madrid,Pooled Random Forest,2822.1
 2026-03,Madrid,Pooled Random Forest,2822.1

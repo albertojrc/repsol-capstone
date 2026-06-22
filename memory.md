@@ -423,7 +423,7 @@ This session pursued the long-standing **#1 priority: pool the 5 regional series
 #### Background: what the mandate is
 Spain has two distinct legislative drivers that directly determine how much biodiesel must be blended into the diesel pool:
 
-1. **Mandato de Energia (Mandato_Energia_Pct)**: Annual national biofuel blending obligation (% of energy content of all transport fuels) set by successive Royal Decrees. Increased year-on-year: 10.5% (2023), 11.0% (2024), 11.5% (2025), **14.0% (2026, RD 5/2026 signed 10 Jan 2026)**, 14.0% (2027 carry-forward).
+1. **Mandato de Energia (Mandato_Energia_Pct)**: Annual national biofuel blending obligation (% of energy content of all transport fuels) set by successive Royal Decrees and project assumptions. Increased year-on-year: 10.5% (2023), 11.0% (2024), 11.5% (2025), **14.0% (2026, RD 5/2026 signed 10 Jan 2026)**, 15.5% (2027 projected using +1.5 percentage points).
 2. **Mandato de Mezcla Biodiesel (Mandato_Biodiesel_Blend_Pct)**: Volumetric biodiesel-into-Gasoleo-A blend requirement introduced by Decreto 61/2023. Activated August 2024 at 3%; rises to 7.5% from 2028. Zero before August 2024.
 
 Both are deterministic policy variables -- not forecasts, no uncertainty -- so they can be used as features without leakage risk. Their future values are known from the legislation.
@@ -432,7 +432,7 @@ Both are deterministic policy variables -- not forecasts, no uncertainty -- so t
 A new input file `data/inputs/mandato_biocarburantes.csv` was created with the full mandate schedule 2016-2030 (annual rows). Notebooks 05, 07, and 08 were updated, and the current script path was also updated so CNMC and mandate features coexist in the same production feature tables:
 
 - **`05_feature_engineering.ipynb` / `scripts/04_build_features.py`**: Mandate CSV loaded, joined at monthly granularity (with the `Mandato_Biodiesel_Blend_Pct` set to 0.0 for all months before August 2024), and merged onto the feature matrix. The current script output has 36 columns: 34 CNMC-aware columns plus 2 mandate columns.
-- **`07_modeling.ipynb` / `scripts/05_modeling_with_cnmc.py`**: `ML_FEATS` now contains 18 features: 12 baseline calendar/target/macro features, 4 lagged CNMC diesel-market features, and 2 mandate features. The recursive ML forecast function passes mandate values forward using legislated 2026-2027 values: `Mandato_Energia_Pct = 14.0` (RD 5/2026), `Mandato_Biodiesel_Blend_Pct = 3.0` (Decreto 61/2023, 3% through 2027).
+- **`07_modeling.ipynb` / `scripts/05_modeling_with_cnmc.py`**: `ML_FEATS` now contains 18 features: 12 baseline calendar/target/macro features, 4 lagged CNMC diesel-market features, and 2 mandate features. The recursive ML forecast function passes mandate values forward using the 2026-2027 schedule: `Mandato_Energia_Pct = 14.0` in 2026 and `15.5` in 2027, with `Mandato_Biodiesel_Blend_Pct = 3.0` (Decreto 61/2023, 3% through 2027).
 - **`08_modeling_with_prices.ipynb`**: Same `ML_BASE` extension and recursive forecast update as notebook 07.
 
 #### Numeric outcome -- mandate did NOT improve forecasts
