@@ -47,6 +47,18 @@ MAPE, but it is rejected by the final no-pooling policy.
 reconciliation, temporal split boundaries, causal lag features, the no-pooled
 final selected model policy, and Tableau export consistency.
 
+SARIMA robustness update:
+
+- `scripts/05_modeling_with_cnmc.py` now runs a constrained SARIMA grid search
+  inside the 2023-2024 training period.
+- Results are saved to `data/outputs/sarima_grid_search_results.csv`.
+- Grid-selected SARIMA orders are accepted for production only if they do not
+  regress versus the default `(1, 1, 1)(1, 0, 0, 12)` order on the 2025
+  acceptance period; results are saved to `data/outputs/sarima_order_acceptance.csv`.
+- For the final SARIMA-selected production targets, Nacional and Catalonia, the
+  default SARIMA order remains the production order after the no-regression
+  check.
+
 ---
 
 ## 2026-06-21 Phase 2 Modeling Productionization (`enrico`)
@@ -685,6 +697,7 @@ git log --oneline --decorate -5
 
 - **Read this file first**, before doing any other work in this repository, in any new session.
 - Treat this file as project memory, but prefer the refreshed `README.md`, `DATA_AUDIT_REPORT.md`, and `NOTEBOOKS_AUDIT.md` for current delivery instructions and file shapes.
+- **Memory maintenance rule:** `memory.md` is not automatic. Any person or AI assistant making a major project change must update this file in the same work session, pull request, or commit. This applies to teammate changes too: if a teammate changes the model, data, scope, outputs, or headline conclusions, the teammate or reviewer should add a dated memory entry.
 - Before relying on any specific claim in this file that names a file, function, or result (e.g., "`ML_FEATS` contains X", "Gompertz is selected for Madrid"), **verify it against the actual current repo state** — re-read the relevant notebook cell or re-run the relevant CSV check — rather than assuming this file is still accurate. Treat this file as a snapshot in time, not a live source.
 - **Never reintroduce the two leaks fixed in Section 4**: (a) never use contemporaneous (non-lagged) `IPI_original`/`IPC_var_anual`/`Tasa_paro` as a model feature, only `_lag1`; (b) never let quarterly macro data (like EPA unemployment) get forward-filled into months before it would actually have been published.
 - **Never use contemporaneous CNMC market variables as model features for the same month.** `GasoleoA_Tm` and `Biodiesel_GasoleoA_Ratio` must enter models through lagged/rolling-lagged features only, unless the forecast design explicitly changes and is documented.
@@ -693,4 +706,6 @@ git log --oneline --decorate -5
 - **Never select a model family using test-set performance.** Any new candidate model must go through the same walk-forward CV gate (inside 2023-2024 only) as the existing seven, and must only be adopted if it wins or ties that CV — exactly as was done for the Logistic/Gompertz and Diesel Share additions.
 - **When editing notebook `.ipynb` files programmatically** (via `nbformat`), always re-read the file fresh from disk immediately after writing to confirm the edit actually persisted — a real bug this session came from a bundled multi-edit script that crashed before its `nbformat.write()` call, silently discarding an earlier successful edit in the same script. Prefer one isolated read-modify-write-verify script per logical change over bundling several edits together.
 - **When changing a feature list** (`ML_FEATS`, `ML_BASE`, `ML_PRICE`), grep for any code elsewhere that builds a model input row by **fixed position** (`np.array([[...]])` with positional values) rather than by feature name — this exact bug class broke the recursive forecast functions in both notebook 07 and 08 once before, and would break silently again.
-- **Update this file** whenever a major change happens: a new model is added/removed, a new leak is found and fixed, the target/scope changes, a new data source is integrated, or the git/commit state materially changes. Keep Section 9 ("Current Status") especially current, since it's the section most likely to go stale fastest.
+- **Update this file** whenever a major change happens: a new model is added/removed, SARIMA orders or model-selection logic change, a new leak is found and fixed, the target/scope changes, a new data source is integrated, the forecast origin or validation policy changes, output/dashboard files change materially, business interpretation changes, or the git/commit state materially changes.
+- **How to update it:** add a dated entry near the top for new major work, state what changed, why it matters, which files/outputs changed, and how it was verified. Also refresh Section 9 ("Current Status") when headline results, risks, or next priorities change.
+- **When not to update it:** skip memory updates for tiny typo, formatting, or presentation-only changes that do not affect data, models, outputs, interpretation, or collaborator workflow.

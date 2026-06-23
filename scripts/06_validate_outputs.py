@@ -147,12 +147,41 @@ def validate_model_outputs() -> None:
     final = read_csv(DATA_OUTPUTS / "metricas_final_seleccionado.csv")
     acceptance = read_csv(DATA_OUTPUTS / "phase2_model_acceptance.csv")
     pooling = read_csv(DATA_OUTPUTS / "phase2_pooling_decision.csv")
+    sarima_grid = read_csv(DATA_OUTPUTS / "sarima_grid_search_results.csv")
+    sarima_acceptance = read_csv(DATA_OUTPUTS / "sarima_order_acceptance.csv")
     forecasts = read_csv(DATA_OUTPUTS / "forecast_24m_sarima_rf_xgb.csv")
     pivot = read_csv(DATA_OUTPUTS / "tableau_forecast_pivot.csv")
 
     selected = dict(zip(final["Target"], final["Model"]))
     require(selected == FINAL_MODEL_POLICY, f"Final selected models violate policy: {selected}")
     require(not final["Model"].str.startswith("Pooled").any(), "Final selection contains a pooled model")
+
+    required_sarima_cols = {"Target", "p", "d", "q", "P", "D", "Q", "m", "WalkForward_MAPE", "Selected"}
+    missing_sarima_cols = required_sarima_cols.difference(sarima_grid.columns)
+    require(not missing_sarima_cols, f"sarima_grid_search_results missing columns: {sorted(missing_sarima_cols)}")
+    require(set(sarima_grid["Target"].unique()) == set(TARGETS), "SARIMA grid target set mismatch")
+    selected_sarima_counts = sarima_grid.groupby("Target")["Selected"].sum().to_dict()
+    require(
+        selected_sarima_counts == {target: 1 for target in TARGETS},
+        f"Expected one selected SARIMA order per target, got {selected_sarima_counts}",
+    )
+    required_sarima_acceptance_cols = {
+        "Target",
+        "Grid_Selected_Order",
+        "Grid_Selected_Seasonal_Order",
+        "Default_2025_MAPE",
+        "Grid_Selected_2025_MAPE",
+        "Production_Order",
+        "Production_Seasonal_Order",
+        "Decision",
+    }
+    missing_sarima_acceptance_cols = required_sarima_acceptance_cols.difference(sarima_acceptance.columns)
+    require(
+        not missing_sarima_acceptance_cols,
+        f"sarima_order_acceptance missing columns: {sorted(missing_sarima_acceptance_cols)}",
+    )
+    require(set(sarima_acceptance["Target"].unique()) == set(TARGETS), "SARIMA acceptance target set mismatch")
+    require(len(sarima_acceptance) == len(TARGETS), "SARIMA acceptance should have one row per target")
 
     required_acceptance_cols = {
         "Target",

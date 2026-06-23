@@ -137,6 +137,26 @@ POOLED_MODELS = [
 ]
 POOLED_LABELS = [label for label, _ in POOLED_MODELS]
 ALL_MODEL_COLS = CANDIDATE_COLS + POOLED_LABELS
+
+DEFAULT_SARIMA_ORDER = (1, 1, 1)
+DEFAULT_SARIMA_SEASONAL_ORDER = (1, 0, 0, 12)
+SARIMA_GRID = [
+    ((1, 1, 1), (1, 0, 0, 12)),
+    ((0, 1, 1), (1, 0, 0, 12)),
+    ((1, 1, 0), (1, 0, 0, 12)),
+    ((2, 1, 1), (1, 0, 0, 12)),
+    ((1, 1, 2), (1, 0, 0, 12)),
+    ((0, 1, 2), (1, 0, 0, 12)),
+    ((2, 1, 0), (1, 0, 0, 12)),
+    ((1, 0, 1), (1, 0, 0, 12)),
+    ((1, 1, 1), (0, 0, 0, 12)),
+    ((0, 1, 1), (0, 0, 0, 12)),
+    ((1, 1, 0), (0, 0, 0, 12)),
+    ((1, 1, 1), (0, 1, 0, 12)),
+    ((0, 1, 1), (0, 1, 0, 12)),
+    ((1, 1, 0), (0, 1, 0, 12)),
+    ((1, 1, 1), (1, 0, 1, 12)),
+]
 PHASE1_SELECTED_MODELS = {
     TARGETS[0]: "SARIMA",
     TARGETS[1]: "Gompertz",
@@ -194,11 +214,15 @@ def compute_metrics(y_true: np.ndarray, y_pred: np.ndarray) -> dict[str, float]:
     return {"MAE": round(mae, 1), "RMSE": round(rmse, 1), "MAPE": round(mape, 1), "R2": round(r2, 3)}
 
 
-def train_sarima(y_train: np.ndarray):
+def train_sarima(
+    y_train: np.ndarray,
+    order: tuple[int, int, int] = DEFAULT_SARIMA_ORDER,
+    seasonal_order: tuple[int, int, int, int] = DEFAULT_SARIMA_SEASONAL_ORDER,
+):
     model = SARIMAX(
         np.log1p(y_train),
-        order=(1, 1, 1),
-        seasonal_order=(1, 0, 0, 12),
+        order=order,
+        seasonal_order=seasonal_order,
         enforce_stationarity=False,
         enforce_invertibility=False,
     )
@@ -207,6 +231,12 @@ def train_sarima(y_train: np.ndarray):
 
 def predict_sarima(result, n_steps: int) -> np.ndarray:
     return np.maximum(np.expm1(result.forecast(steps=n_steps)), 0)
+
+
+def sarima_parameter_count(order: tuple[int, int, int], seasonal_order: tuple[int, int, int, int]) -> int:
+    p, _, q = order
+    seasonal_p, _, seasonal_q, _ = seasonal_order
+    return int(p + q + seasonal_p + seasonal_q)
 
 
 def _logistic_fn(t, L, k, t0):
@@ -427,7 +457,11 @@ def test_gasoleo_naive(train_history: pd.DataFrame, test_dates: list[pd.Timestam
     return seasonal_naive_gasoleo(train_history, test_dates)
 
 
-def evaluate_models(df_train: pd.DataFrame, df_test: pd.DataFrame):
+def evaluate_models(
+    df_train: pd.DataFrame,
+    df_test: pd.DataFrame,
+    sarima_orders: dict[str, tuple[tuple[int, int, int], tuple[int, int, int, int]]],
+):
     all_metrics = []
     all_preds = []
 
@@ -437,9 +471,13 @@ def evaluate_models(df_train: pd.DataFrame, df_test: pd.DataFrame):
         te = df_test[df_test["Target"] == target].sort_values("Fecha")
         y_true = te["Consumo_Tm"].values.astype(float)
         test_dates = pd.to_datetime(te["Fecha"]).tolist()
+        sarima_order, sarima_seasonal_order = sarima_orders.get(
+            target,
+            (DEFAULT_SARIMA_ORDER, DEFAULT_SARIMA_SEASONAL_ORDER),
+        )
 
         try:
-            res = train_sarima(tr["Consumo_Tm"].values)
+            res = train_sarima(tr["Consumo_Tm"].values, sarima_order, sarima_seasonal_order)
             pred = predict_sarima(res, len(te))
             all_metrics.append({"Target": target, "Model": "SARIMA", **compute_metrics(y_true, pred)})
             for fd, actual, pv in zip(te["Fecha"], y_true, pred):
@@ -494,6 +532,202 @@ def _append_mape_errors(errors: list[float], y_true: np.ndarray, y_pred: np.ndar
         errors.extend((np.abs((y_true[mask] - y_pred[mask]) / y_true[mask]) * 100).tolist())
 
 
+def sarima_walk_forward_score(
+    target_df: pd.DataFrame,
+    order: tuple[int, int, int],
+    seasonal_order: tuple[int, int, int, int],
+    min_origin: int = 15,
+    max_horizon: int = MULTISTEP_MAX_HORIZON,
+) -> tuple[float, int, int]:
+    df = target_df.sort_values("Fecha").reset_index(drop=True)
+    errors: list[float] = []
+    successful_folds = 0
+
+    for origin in range(min_origin, len(df) - 1):
+        fold_tr = df.iloc[: origin + 1].copy()
+        fold_te = df.iloc[origin + 1 : min(len(df), origin + 1 + max_horizon)].copy()
+        y_true = fold_te["Consumo_Tm"].values.astype(float)
+        if len(fold_te) == 0 or not (y_true > 0).any():
+            continue
+        try:
+            res = train_sarima(fold_tr["Consumo_Tm"].values, order, seasonal_order)
+            pred = predict_sarima(res, len(fold_te))
+            before = len(errors)
+            _append_mape_errors(errors, y_true, pred)
+            if len(errors) > before:
+                successful_folds += 1
+        except Exception:
+            continue
+
+    return (
+        float(np.median(errors)) if errors else np.inf,
+        len(errors),
+        successful_folds,
+    )
+
+
+def tune_sarima_orders(
+    df_train: pd.DataFrame,
+) -> tuple[pd.DataFrame, dict[str, tuple[tuple[int, int, int], tuple[int, int, int, int]]]]:
+    rows = []
+    selected_orders: dict[str, tuple[tuple[int, int, int], tuple[int, int, int, int]]] = {}
+
+    for target in TARGETS:
+        target_df = df_train[df_train["Target"] == target].sort_values("Fecha")
+        for order, seasonal_order in SARIMA_GRID:
+            score, error_count, successful_folds = sarima_walk_forward_score(target_df, order, seasonal_order)
+            p, d, q = order
+            seasonal_p, seasonal_d, seasonal_q, m = seasonal_order
+            rows.append(
+                {
+                    "Target": target,
+                    "p": p,
+                    "d": d,
+                    "q": q,
+                    "P": seasonal_p,
+                    "D": seasonal_d,
+                    "Q": seasonal_q,
+                    "m": m,
+                    "Parameter_Count": sarima_parameter_count(order, seasonal_order),
+                    "WalkForward_MAPE": round(score, 3) if np.isfinite(score) else np.inf,
+                    "Error_Count": error_count,
+                    "Successful_Folds": successful_folds,
+                    "Selected": False,
+                }
+            )
+
+        target_rows = pd.DataFrame([row for row in rows if row["Target"] == target])
+        finite = target_rows[np.isfinite(target_rows["WalkForward_MAPE"])].copy()
+        if finite.empty:
+            selected_order = DEFAULT_SARIMA_ORDER
+            selected_seasonal_order = DEFAULT_SARIMA_SEASONAL_ORDER
+        else:
+            best = finite.sort_values(
+                ["WalkForward_MAPE", "Parameter_Count", "p", "d", "q", "P", "D", "Q", "m"]
+            ).iloc[0]
+            selected_order = (int(best["p"]), int(best["d"]), int(best["q"]))
+            selected_seasonal_order = (int(best["P"]), int(best["D"]), int(best["Q"]), int(best["m"]))
+        selected_orders[target] = (selected_order, selected_seasonal_order)
+
+    results = pd.DataFrame(rows)
+    for target, (order, seasonal_order) in selected_orders.items():
+        p, d, q = order
+        seasonal_p, seasonal_d, seasonal_q, m = seasonal_order
+        mask = (
+            results["Target"].eq(target)
+            & results["p"].eq(p)
+            & results["d"].eq(d)
+            & results["q"].eq(q)
+            & results["P"].eq(seasonal_p)
+            & results["D"].eq(seasonal_d)
+            & results["Q"].eq(seasonal_q)
+            & results["m"].eq(m)
+        )
+        results.loc[mask, "Selected"] = True
+    return results, selected_orders
+
+
+def sarima_2025_mape(
+    df_train: pd.DataFrame,
+    df_test: pd.DataFrame,
+    target: str,
+    order: tuple[int, int, int],
+    seasonal_order: tuple[int, int, int, int],
+) -> float:
+    tr = df_train[df_train["Target"] == target].sort_values("Fecha")
+    te = df_test[df_test["Target"] == target].sort_values("Fecha")
+    res = train_sarima(tr["Consumo_Tm"].values, order, seasonal_order)
+    pred = predict_sarima(res, len(te))
+    return float(compute_metrics(te["Consumo_Tm"].values.astype(float), pred)["MAPE"])
+
+
+def accept_sarima_orders(
+    df_train: pd.DataFrame,
+    df_test: pd.DataFrame,
+    df_sarima_grid: pd.DataFrame,
+    grid_orders: dict[str, tuple[tuple[int, int, int], tuple[int, int, int, int]]],
+) -> tuple[pd.DataFrame, dict[str, tuple[tuple[int, int, int], tuple[int, int, int, int]]]]:
+    rows = []
+    production_orders: dict[str, tuple[tuple[int, int, int], tuple[int, int, int, int]]] = {}
+
+    for target in TARGETS:
+        grid_order, grid_seasonal_order = grid_orders.get(
+            target,
+            (DEFAULT_SARIMA_ORDER, DEFAULT_SARIMA_SEASONAL_ORDER),
+        )
+        grid_row = df_sarima_grid[
+            df_sarima_grid["Target"].eq(target) & df_sarima_grid["Selected"]
+        ].iloc[0]
+
+        try:
+            default_mape = sarima_2025_mape(
+                df_train,
+                df_test,
+                target,
+                DEFAULT_SARIMA_ORDER,
+                DEFAULT_SARIMA_SEASONAL_ORDER,
+            )
+            grid_mape = sarima_2025_mape(df_train, df_test, target, grid_order, grid_seasonal_order)
+        except Exception as exc:
+            default_mape = np.inf
+            grid_mape = np.inf
+            print(f"SARIMA order acceptance failed for {target}: {exc}")
+
+        if grid_order == DEFAULT_SARIMA_ORDER and grid_seasonal_order == DEFAULT_SARIMA_SEASONAL_ORDER:
+            accepted = True
+            production_order = grid_order
+            production_seasonal_order = grid_seasonal_order
+            decision = "default_order_selected_by_grid"
+        elif grid_mape <= default_mape:
+            accepted = True
+            production_order = grid_order
+            production_seasonal_order = grid_seasonal_order
+            decision = "accepted_no_regression_vs_default_sarima"
+        else:
+            accepted = False
+            production_order = DEFAULT_SARIMA_ORDER
+            production_seasonal_order = DEFAULT_SARIMA_SEASONAL_ORDER
+            decision = "kept_default_sarima_no_regression"
+
+        production_orders[target] = (production_order, production_seasonal_order)
+        p, d, q = grid_order
+        seasonal_p, seasonal_d, seasonal_q, m = grid_seasonal_order
+        prod_p, prod_d, prod_q = production_order
+        prod_p_seasonal, prod_d_seasonal, prod_q_seasonal, prod_m = production_seasonal_order
+        rows.append(
+            {
+                "Target": target,
+                "Default_Order": str(DEFAULT_SARIMA_ORDER),
+                "Default_Seasonal_Order": str(DEFAULT_SARIMA_SEASONAL_ORDER),
+                "Grid_Selected_Order": str(grid_order),
+                "Grid_Selected_Seasonal_Order": str(grid_seasonal_order),
+                "Grid_WalkForward_MAPE": float(grid_row["WalkForward_MAPE"]),
+                "Default_2025_MAPE": round(default_mape, 1) if np.isfinite(default_mape) else np.inf,
+                "Grid_Selected_2025_MAPE": round(grid_mape, 1) if np.isfinite(grid_mape) else np.inf,
+                "Production_Order": str(production_order),
+                "Production_Seasonal_Order": str(production_seasonal_order),
+                "Production_p": prod_p,
+                "Production_d": prod_d,
+                "Production_q": prod_q,
+                "Production_P": prod_p_seasonal,
+                "Production_D": prod_d_seasonal,
+                "Production_Q": prod_q_seasonal,
+                "Production_m": prod_m,
+                "Accepted_Grid_Order": accepted,
+                "Decision": decision,
+                "Grid_p": p,
+                "Grid_d": d,
+                "Grid_q": q,
+                "Grid_P": seasonal_p,
+                "Grid_D": seasonal_d,
+                "Grid_Q": seasonal_q,
+                "Grid_m": m,
+            }
+        )
+
+    return pd.DataFrame(rows), production_orders
+
+
 def selection_candidates_for_target(target: str) -> list[str]:
     if target == "Nacional":
         return CANDIDATE_COLS
@@ -502,6 +736,8 @@ def selection_candidates_for_target(target: str) -> list[str]:
 
 def walk_forward_scores(
     target_df: pd.DataFrame,
+    sarima_order: tuple[int, int, int],
+    sarima_seasonal_order: tuple[int, int, int, int],
     min_origin: int = 15,
     max_horizon: int = MULTISTEP_MAX_HORIZON,
 ) -> dict[str, float]:
@@ -517,7 +753,7 @@ def walk_forward_scores(
         future_dates = pd.to_datetime(fold_te["Fecha"]).tolist()
 
         try:
-            res = train_sarima(fold_tr["Consumo_Tm"].values)
+            res = train_sarima(fold_tr["Consumo_Tm"].values, sarima_order, sarima_seasonal_order)
             pred = predict_sarima(res, len(fold_te))
             _append_mape_errors(fold_errors["SARIMA"], y_true, pred)
         except Exception:
@@ -615,11 +851,22 @@ def pooled_walk_forward_scores(
     }
 
 
-def run_walk_forward(df_train: pd.DataFrame) -> pd.DataFrame:
+def run_walk_forward(
+    df_train: pd.DataFrame,
+    sarima_orders: dict[str, tuple[tuple[int, int, int], tuple[int, int, int, int]]],
+) -> pd.DataFrame:
     pooled_scores = pooled_walk_forward_scores(df_train)
     rows = []
     for target in TARGETS:
-        scores = walk_forward_scores(df_train[df_train["Target"] == target])
+        sarima_order, sarima_seasonal_order = sarima_orders.get(
+            target,
+            (DEFAULT_SARIMA_ORDER, DEFAULT_SARIMA_SEASONAL_ORDER),
+        )
+        scores = walk_forward_scores(
+            df_train[df_train["Target"] == target],
+            sarima_order,
+            sarima_seasonal_order,
+        )
         for label in POOLED_LABELS:
             scores[label] = pooled_scores.get(target, {}).get(label, np.inf)
         allowed = selection_candidates_for_target(target)
@@ -811,15 +1058,22 @@ def build_pooling_decision(df_final: pd.DataFrame, df_pooled: pd.DataFrame) -> p
     return decision
 
 
-def final_forecasts(df_all: pd.DataFrame) -> pd.DataFrame:
+def final_forecasts(
+    df_all: pd.DataFrame,
+    sarima_orders: dict[str, tuple[tuple[int, int, int], tuple[int, int, int, int]]],
+) -> pd.DataFrame:
     rows = []
     forecast_labels = [d.strftime("%Y-%m") for d in FORECAST_DATES]
     for target in TARGETS:
         full = df_all[df_all["Target"] == target].sort_values("Fecha").copy()
         macro_last = full.iloc[-1][["IPI_original", "IPC_var_anual", "Tasa_paro"]].to_dict()
+        sarima_order, sarima_seasonal_order = sarima_orders.get(
+            target,
+            (DEFAULT_SARIMA_ORDER, DEFAULT_SARIMA_SEASONAL_ORDER),
+        )
 
         try:
-            res = train_sarima(full["Consumo_Tm"].values)
+            res = train_sarima(full["Consumo_Tm"].values, sarima_order, sarima_seasonal_order)
             for fecha, val in zip(forecast_labels, predict_sarima(res, len(forecast_labels))):
                 rows.append({"Fecha": fecha, "Target": target, "Model": "SARIMA", "Forecast": round(float(val), 1)})
         except Exception as exc:
@@ -1038,11 +1292,18 @@ def main() -> None:
     if (df_all["Fecha"] >= "2026-01").any():
         raise ValueError("features_modelo_completo contains 2026 rows; original forecast origin must stay 2025-12")
 
-    df_individual_metrics, df_individual_preds = evaluate_models(df_train, df_test)
+    df_sarima_grid, grid_sarima_orders = tune_sarima_orders(df_train)
+    df_sarima_acceptance, sarima_orders = accept_sarima_orders(
+        df_train,
+        df_test,
+        df_sarima_grid,
+        grid_sarima_orders,
+    )
+    df_individual_metrics, df_individual_preds = evaluate_models(df_train, df_test, sarima_orders)
     df_pooled, df_pooled_preds = evaluate_pooled_ml_experiment(df_train, df_test)
     df_metrics = pd.concat([df_individual_metrics, df_pooled.drop(columns=["Status"])], ignore_index=True)
     df_preds = pd.concat([df_individual_preds, df_pooled_preds], ignore_index=True)
-    df_wf = run_walk_forward(df_train)
+    df_wf = run_walk_forward(df_train, sarima_orders)
     df_acceptance = build_model_acceptance(df_metrics, df_wf)
     df_wf = df_wf.merge(
         df_acceptance[["Target", "Selected_Model", "Accepted_Phase2_Proposal", "Decision"]],
@@ -1051,10 +1312,12 @@ def main() -> None:
     )
     df_final = build_final_metrics(df_metrics, df_wf)
     df_pooling_decision = build_pooling_decision(df_final, df_pooled)
-    df_fc = final_forecasts(df_all)
+    df_fc = final_forecasts(df_all, sarima_orders)
     df_comparison = build_comparison_metrics(df_metrics)
 
     df_metrics.to_csv(DATA_OUTPUTS / "metricas_modelos.csv", index=False, encoding="utf-8")
+    df_sarima_grid.to_csv(DATA_OUTPUTS / "sarima_grid_search_results.csv", index=False, encoding="utf-8")
+    df_sarima_acceptance.to_csv(DATA_OUTPUTS / "sarima_order_acceptance.csv", index=False, encoding="utf-8")
     df_wf.to_csv(DATA_OUTPUTS / "model_selection_walkforward.csv", index=False, encoding="utf-8")
     df_final.to_csv(DATA_OUTPUTS / "metricas_final_seleccionado.csv", index=False, encoding="utf-8")
     df_pooled.to_csv(DATA_OUTPUTS / "phase2_pooling_experiment_metrics.csv", index=False, encoding="utf-8")
@@ -1069,6 +1332,27 @@ def main() -> None:
 
     print("\nMulti-step walk-forward selected models:")
     print(df_wf[["Target", "Selection_Candidate_Set", "Proposed_Model", "Selected_Model", "Decision"]].to_string(index=False))
+    print("\nSelected SARIMA orders from training-only grid search:")
+    print(
+        df_sarima_grid[df_sarima_grid["Selected"]][
+            ["Target", "p", "d", "q", "P", "D", "Q", "m", "WalkForward_MAPE", "Successful_Folds"]
+        ].to_string(index=False)
+    )
+    print("\nProduction SARIMA order acceptance:")
+    print(
+        df_sarima_acceptance[
+            [
+                "Target",
+                "Grid_Selected_Order",
+                "Grid_Selected_Seasonal_Order",
+                "Default_2025_MAPE",
+                "Grid_Selected_2025_MAPE",
+                "Production_Order",
+                "Production_Seasonal_Order",
+                "Decision",
+            ]
+        ].to_string(index=False)
+    )
     print("\nFinal selected 2025 validation metrics:")
     print(df_final.to_string(index=False))
     print("\nPooled regional ML decision:")

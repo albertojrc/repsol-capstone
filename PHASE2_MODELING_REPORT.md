@@ -40,6 +40,12 @@ regional ML remains in the outputs as a sensitivity experiment, but it is not
 used in `metricas_final_seleccionado.csv`, the selected Tableau forecast pivot,
 or the selected forecast figure.
 
+SARIMA parameters are also tested with a constrained training-only grid search.
+The grid-selected SARIMA order is then checked against the default
+`(1, 1, 1)(1, 0, 0, 12)` order on the 2025 acceptance period. This makes the
+parameter search visible without letting a training-CV winner silently weaken
+the production forecast.
+
 ## Selection Result
 
 | Target | Phase 1 Model | Phase 1 MAPE | Phase 2 Proposed | Proposed MAPE | Final Model | Decision |
@@ -52,6 +58,33 @@ or the selected forecast figure.
 
 Average selected 2025 validation MAPE improves from 94.6% in the Phase 1
 baseline to 46.5% after Phase 2 and the final no-pooling policy.
+
+## SARIMA Grid Search
+
+The constrained SARIMA grid selected the following training-period walk-forward
+winners:
+
+| Target | Grid-selected order | Grid-selected seasonal order | Training WF MAPE |
+|---|---|---|---:|
+| Nacional | `(1, 1, 0)` | `(1, 0, 0, 12)` | 30.023 |
+| Madrid | `(1, 1, 1)` | `(1, 0, 0, 12)` | 27.292 |
+| Catalonia | `(0, 1, 1)` | `(1, 0, 0, 12)` | 57.011 |
+| Andalusia | `(0, 1, 1)` | `(0, 0, 0, 12)` | 30.949 |
+| Valencia | `(1, 1, 2)` | `(1, 0, 0, 12)` | 19.335 |
+
+The 2025 no-regression acceptance check then produced:
+
+| Target | Default 2025 MAPE | Grid 2025 MAPE | Production SARIMA order | Decision |
+|---|---:|---:|---|---|
+| Nacional | 29.0% | 34.4% | `(1, 1, 1)(1, 0, 0, 12)` | Kept default SARIMA |
+| Madrid | 318.6% | 318.6% | `(1, 1, 1)(1, 0, 0, 12)` | Default order selected by grid |
+| Catalonia | 47.2% | 49.6% | `(1, 1, 1)(1, 0, 0, 12)` | Kept default SARIMA |
+| Andalusia | 52.5% | 50.2% | `(0, 1, 1)(0, 0, 0, 12)` | Accepted grid order |
+| Valencia | 57.4% | 60.9% | `(1, 1, 1)(1, 0, 0, 12)` | Kept default SARIMA |
+
+This does not change the final selected model table because SARIMA is selected
+only for Nacional and Catalonia in the final production set, and both keep the
+default SARIMA order after the acceptance check.
 
 ## Pooling Result
 
@@ -93,6 +126,10 @@ non-pooled.
   for pooled regional ML sensitivity candidates.
 - `data/outputs/phase2_pooling_decision.csv`: pooled-model decision summary with
   the no-pooling final policy flag.
+- `data/outputs/sarima_grid_search_results.csv`: training-only SARIMA
+  parameter-search diagnostics.
+- `data/outputs/sarima_order_acceptance.csv`: SARIMA order no-regression
+  acceptance against the default order.
 
 The standard outputs are also regenerated:
 

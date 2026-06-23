@@ -27,10 +27,11 @@ script outputs.
 | `07_modeling.ipynb` | Superseded by script | Use `scripts/05_modeling_with_cnmc.py` for current modeling outputs. |
 | `08_modeling_with_prices.ipynb` | Optional ablation support | Price-region mapping bug fixed. It is not the production modeling path. |
 | `09_evaluation.ipynb` | Superseded by script | Script now writes the final figures and dashboard outputs. It can rebuild CNMC-aware master/features if older exploratory notebooks leave stale feature tables behind. |
-| `10_final_models.ipynb` | Narrative summary | Documents the final non-pooled selected model set and 2025 validation metrics. |
-| `10_1_final_models.ipynb` | Catalonia no-pooling detail | Explains why Catalonia uses SARIMA in the final selected set while pooled Random Forest remains a sensitivity result. |
+| `10_final_models.ipynb` | Narrative summary | Documents the final non-pooled selected model set, SARIMA grid-search acceptance, and 2025 validation metrics. |
+| `10_1_final_models.ipynb` | Catalonia no-pooling detail | Explains why Catalonia uses SARIMA in the final selected set, including the SARIMA grid-search no-regression check, while pooled Random Forest remains a sensitivity result. |
 | `11_mini_demand_model.ipynb` | Removed upstream | Superseded by notebook 12 in the latest `main`; not part of the current notebook set. |
 | `12_mini_trend_regulation_model.ipynb` | Mini regulation model | Narrative regulation/trend scenario model. Not part of the production forecast selection. |
+| `13_business_interpretation_and_recommendations.ipynb` | Business interpretation | Reads production outputs, restates selected results by target, shows SARIMA grid-search acceptance, generates regional train/validation/forecast plots, and documents model limitations, feature interpretation, internal Repsol data needs, and recommendations. |
 
 ## Fixes Applied
 
@@ -48,6 +49,10 @@ script outputs.
   final non-pooled policy and Catalonia SARIMA selection.
 - Preserved the upstream removal of `11_mini_demand_model.ipynb`, which is
   superseded by notebook 12 in the current `main` branch.
+- Added `13_business_interpretation_and_recommendations.ipynb` as the
+  business-facing interpretation layer.
+- Added SARIMA grid-search and SARIMA order-acceptance tables to notebooks 10,
+  10.1, and 13.
 
 ## Remaining Caveat
 

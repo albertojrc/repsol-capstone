@@ -18,6 +18,10 @@ The final delivery policy is no pooling. Pooled regional ML remains available as
 a documented sensitivity experiment, but the selected production forecast uses
 only non-pooled target-level models.
 
+SARIMA parameters are now evaluated through a constrained training-only grid
+search. Grid winners are recorded, then accepted for production only if they do
+not regress versus the default SARIMA order on the 2025 acceptance period.
+
 ## Production Inputs
 
 | File | Shape | Date Range | Notes |
@@ -74,6 +78,8 @@ Known data issues:
 | File | Current Role |
 |---|---|
 | `metricas_modelos.csv` | Metrics for the current CNMC-aware candidates, including pooled regional ML. |
+| `sarima_grid_search_results.csv` | Training-only walk-forward SARIMA grid-search diagnostics for each target. |
+| `sarima_order_acceptance.csv` | 2025 no-regression acceptance check comparing grid-selected SARIMA orders with the default SARIMA order. |
 | `model_selection_walkforward.csv` | Recursive multi-step model-selection scores over the training period. |
 | `metricas_final_seleccionado.csv` | 2025 validation metrics for the selected model per target. |
 | `predicciones_test_2025.csv` | 2025 predictions for all current candidates. |
@@ -103,6 +109,11 @@ Average selected MAPE improved from 94.6% in Phase 1 to 46.5% after Phase 2 and
 the no-pooling final policy.
 Remaining risk: all selected R2 values are still negative except near-zero national
 SARIMA, so the forecasts should be presented as directional planning estimates.
+
+SARIMA grid-search note: the training-only grid selected alternative orders for
+Nacional and Cataluña, but both were rejected by the 2025 no-regression
+acceptance check. The production SARIMA order for both final SARIMA-selected
+targets remains `(1, 1, 1)(1, 0, 0, 12)`.
 
 ## Dataset Lineage
 

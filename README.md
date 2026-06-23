@@ -46,7 +46,7 @@ This rebuilds:
 - `data/features/features_modelo_completo.csv`
 - `data/features/features_train.csv`
 - `data/features/features_test.csv`
-- model metrics, 2025 predictions, 2026-2027 forecasts, Tableau exports, and final figures
+- model metrics, SARIMA grid-search diagnostics, 2025 predictions, 2026-2027 forecasts, Tableau exports, and final figures
 
 `forecast_24m_sarima_rf_xgb.csv` is a legacy filename. It now contains all current
 candidate families used by the CNMC-aware script, including SARIMA, Ridge, Random
@@ -79,6 +79,30 @@ The notebooks are retained for exploration and narrative context. The scripts in
 are intentionally cleared to avoid stale local paths, warnings, and old results being
 mistaken for a fresh run.
 
+`notebooks/13_business_interpretation_and_recommendations.ipynb` adds the
+business-facing interpretation layer: selected-model results by region, regional
+train/validation/forecast plots, model limitations, feature interpretation, Repsol
+internal-data needs, and recommendations.
+
+## Project Memory Maintenance
+
+`memory.md` is the long-term project log. It is not updated automatically, so any
+person or assistant making a major project change should update it in the same
+work session, pull request, or commit.
+
+Update `memory.md` when a change affects:
+
+- dataset sources, coverage, merge logic, or target definitions
+- feature engineering, leakage controls, or validation policy
+- model families, model-selection logic, SARIMA orders, or final selected models
+- output files, dashboard exports, forecast origin, or headline metrics
+- business interpretation, project scope, or important caveats
+- git/branch state that future collaborators need to understand
+
+Tiny formatting edits do not need a memory update. If unsure, add a short dated
+entry near the top of `memory.md` and state what changed, why it matters, and how
+it was verified.
+
 ## Phase 2 Modeling
 
 The `enrico` branch productionizes the Phase 2 modeling upgrade. The script now
@@ -86,6 +110,11 @@ uses a recursive multi-step walk-forward gate and a no-regression acceptance che
 against the Phase 1 selected models. The 2025 period is treated as a validation
 and acceptance period, not as a pristine final test. Regional pooling is tested as
 a sensitivity experiment, but the final production model set is non-pooled.
+
+SARIMA parameters are now tested through a constrained training-only grid search.
+The grid-selected SARIMA order is adopted for production only if it does not
+regress versus the default SARIMA order on the 2025 acceptance period. The final
+selected model set below is unchanged after that no-regression check.
 
 | Target | Selected model | 2025 MAPE |
 |---|---|---:|

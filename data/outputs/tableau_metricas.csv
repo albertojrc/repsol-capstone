@@ -20,7 +20,7 @@ Cataluña,Ridge,2725203.4,2981410.9,91437.5,-22594875.075,10.0,SARIMA,False,9143
 Cataluña,Random Forest,1767.4,1878.0,59.3,-7.965,4.0,SARIMA,False,59.3%
 Cataluña,XGBoost,1825.5,1926.3,61.6,-8.432,5.0,SARIMA,False,61.6%
 Cataluña,Diesel Share,72129.9,77391.6,2448.4,-15223.895,8.0,SARIMA,False,2448.4%
-Andalucía,SARIMA,897.9,1077.0,52.5,-1.924,5.0,Logistic,False,52.5%
+Andalucía,SARIMA,865.2,1041.2,50.2,-1.733,5.0,Logistic,False,50.2%
 Andalucía,Logistic,833.8,1006.7,48.4,-1.555,2.0,Logistic,True,48.4%
 Andalucía,Gompertz,830.4,1002.4,48.3,-1.533,1.0,Logistic,False,48.3%
 Andalucía,Ridge,2995471.9,3128349.3,238283.1,-24671458.892,10.0,Logistic,False,238283.1%

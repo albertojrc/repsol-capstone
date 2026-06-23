@@ -70,6 +70,14 @@ Explicitly out of scope for Phase 1: changing the modeling methodology.
 - Added `scripts/06_validate_outputs.py` to assert dataset shapes, temporal
   split boundaries, lag causality, no-pooled final selection, and dashboard
   export consistency after rebuilds.
+- Added constrained SARIMA grid search in the production modeling script, with a
+  2025 no-regression acceptance check against the default SARIMA order.
+- Added `sarima_grid_search_results.csv` and `sarima_order_acceptance.csv` output
+  lineage, and documented the result in notebooks 10, 10.1, and 13.
+- Added an explicit project-memory maintenance rule in `README.md` and
+  `memory.md`: major data, model, output, scope, validation, or interpretation
+  changes should update `memory.md` in the same work session, pull request, or
+  commit.
 
 ## Still Open After Final Cleanup
 

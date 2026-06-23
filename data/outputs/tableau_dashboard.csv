@@ -431,18 +431,18 @@ Fecha_Date,Fecha,Anyo,Mes,Trimestre,Target,Model,Type,Valor,Selected_Model,Is_Se
 2025-10-01,2025-10,2025,10,4,Cataluña,Diesel Share,Test Prediction,90954.6,SARIMA,False
 2025-11-01,2025-11,2025,11,4,Cataluña,Diesel Share,Test Prediction,83437.2,SARIMA,False
 2025-12-01,2025-12,2025,12,4,Cataluña,Diesel Share,Test Prediction,86083.5,SARIMA,False
-2025-01-01,2025-01,2025,1,1,Andalucía,SARIMA,Test Prediction,683.8,Logistic,False
-2025-02-01,2025-02,2025,2,1,Andalucía,SARIMA,Test Prediction,692.1,Logistic,False
-2025-03-01,2025-03,2025,3,1,Andalucía,SARIMA,Test Prediction,680.0,Logistic,False
-2025-04-01,2025-04,2025,4,2,Andalucía,SARIMA,Test Prediction,661.6,Logistic,False
-2025-05-01,2025-05,2025,5,2,Andalucía,SARIMA,Test Prediction,623.6,Logistic,False
-2025-06-01,2025-06,2025,6,2,Andalucía,SARIMA,Test Prediction,616.9,Logistic,False
-2025-07-01,2025-07,2025,7,3,Andalucía,SARIMA,Test Prediction,599.7,Logistic,False
-2025-08-01,2025-08,2025,8,3,Andalucía,SARIMA,Test Prediction,602.1,Logistic,False
-2025-09-01,2025-09,2025,9,3,Andalucía,SARIMA,Test Prediction,614.3,Logistic,False
-2025-10-01,2025-10,2025,10,4,Andalucía,SARIMA,Test Prediction,607.8,Logistic,False
-2025-11-01,2025-11,2025,11,4,Andalucía,SARIMA,Test Prediction,600.3,Logistic,False
-2025-12-01,2025-12,2025,12,4,Andalucía,SARIMA,Test Prediction,595.3,Logistic,False
+2025-01-01,2025-01,2025,1,1,Andalucía,SARIMA,Test Prediction,652.2,Logistic,False
+2025-02-01,2025-02,2025,2,1,Andalucía,SARIMA,Test Prediction,652.2,Logistic,False
+2025-03-01,2025-03,2025,3,1,Andalucía,SARIMA,Test Prediction,652.2,Logistic,False
+2025-04-01,2025-04,2025,4,2,Andalucía,SARIMA,Test Prediction,652.2,Logistic,False
+2025-05-01,2025-05,2025,5,2,Andalucía,SARIMA,Test Prediction,652.2,Logistic,False
+2025-06-01,2025-06,2025,6,2,Andalucía,SARIMA,Test Prediction,652.2,Logistic,False
+2025-07-01,2025-07,2025,7,3,Andalucía,SARIMA,Test Prediction,652.2,Logistic,False
+2025-08-01,2025-08,2025,8,3,Andalucía,SARIMA,Test Prediction,652.2,Logistic,False
+2025-09-01,2025-09,2025,9,3,Andalucía,SARIMA,Test Prediction,652.2,Logistic,False
+2025-10-01,2025-10,2025,10,4,Andalucía,SARIMA,Test Prediction,652.2,Logistic,False
+2025-11-01,2025-11,2025,11,4,Andalucía,SARIMA,Test Prediction,652.2,Logistic,False
+2025-12-01,2025-12,2025,12,4,Andalucía,SARIMA,Test Prediction,652.2,Logistic,False
 2025-01-01,2025-01,2025,1,1,Andalucía,Logistic,Test Prediction,654.6,Logistic,True
 2025-02-01,2025-02,2025,2,1,Andalucía,Logistic,Test Prediction,663.5,Logistic,True
 2025-03-01,2025-03,2025,3,1,Andalucía,Logistic,Test Prediction,672.6,Logistic,True
@@ -1247,30 +1247,30 @@ Fecha_Date,Fecha,Anyo,Mes,Trimestre,Target,Model,Type,Valor,Selected_Model,Is_Se
 2027-10-01,2027-10,2027,10,4,Cataluña,Diesel Share,Forecast,93233.4,SARIMA,False
 2027-11-01,2027-11,2027,11,4,Cataluña,Diesel Share,Forecast,87174.9,SARIMA,False
 2027-12-01,2027-12,2027,12,4,Cataluña,Diesel Share,Forecast,92969.1,SARIMA,False
-2026-01-01,2026-01,2026,1,1,Andalucía,SARIMA,Forecast,2122.2,Logistic,False
-2026-02-01,2026-02,2026,2,1,Andalucía,SARIMA,Forecast,2236.0,Logistic,False
-2026-03-01,2026-03,2026,3,1,Andalucía,SARIMA,Forecast,2221.1,Logistic,False
-2026-04-01,2026-04,2026,4,2,Andalucía,SARIMA,Forecast,2224.0,Logistic,False
-2026-05-01,2026-05,2026,5,2,Andalucía,SARIMA,Forecast,2167.2,Logistic,False
-2026-06-01,2026-06,2026,6,2,Andalucía,SARIMA,Forecast,2135.2,Logistic,False
-2026-07-01,2026-07,2026,7,3,Andalucía,SARIMA,Forecast,2112.8,Logistic,False
-2026-08-01,2026-08,2026,8,3,Andalucía,SARIMA,Forecast,2157.3,Logistic,False
-2026-09-01,2026-09,2026,9,3,Andalucía,SARIMA,Forecast,2172.0,Logistic,False
-2026-10-01,2026-10,2026,10,4,Andalucía,SARIMA,Forecast,2170.3,Logistic,False
-2026-11-01,2026-11,2026,11,4,Andalucía,SARIMA,Forecast,2175.7,Logistic,False
-2026-12-01,2026-12,2026,12,4,Andalucía,SARIMA,Forecast,2152.3,Logistic,False
-2027-01-01,2027-01,2027,1,1,Andalucía,SARIMA,Forecast,2140.2,Logistic,False
-2027-02-01,2027-02,2027,2,1,Andalucía,SARIMA,Forecast,2134.2,Logistic,False
-2027-03-01,2027-03,2027,3,1,Andalucía,SARIMA,Forecast,2134.9,Logistic,False
-2027-04-01,2027-04,2027,4,2,Andalucía,SARIMA,Forecast,2134.8,Logistic,False
-2027-05-01,2027-05,2027,5,2,Andalucía,SARIMA,Forecast,2137.8,Logistic,False
-2027-06-01,2027-06,2027,6,2,Andalucía,SARIMA,Forecast,2139.5,Logistic,False
-2027-07-01,2027-07,2027,7,3,Andalucía,SARIMA,Forecast,2140.7,Logistic,False
-2027-08-01,2027-08,2027,8,3,Andalucía,SARIMA,Forecast,2138.3,Logistic,False
-2027-09-01,2027-09,2027,9,3,Andalucía,SARIMA,Forecast,2137.5,Logistic,False
-2027-10-01,2027-10,2027,10,4,Andalucía,SARIMA,Forecast,2137.6,Logistic,False
-2027-11-01,2027-11,2027,11,4,Andalucía,SARIMA,Forecast,2137.3,Logistic,False
-2027-12-01,2027-12,2027,12,4,Andalucía,SARIMA,Forecast,2138.6,Logistic,False
+2026-01-01,2026-01,2026,1,1,Andalucía,SARIMA,Forecast,1820.7,Logistic,False
+2026-02-01,2026-02,2026,2,1,Andalucía,SARIMA,Forecast,1820.7,Logistic,False
+2026-03-01,2026-03,2026,3,1,Andalucía,SARIMA,Forecast,1820.7,Logistic,False
+2026-04-01,2026-04,2026,4,2,Andalucía,SARIMA,Forecast,1820.7,Logistic,False
+2026-05-01,2026-05,2026,5,2,Andalucía,SARIMA,Forecast,1820.7,Logistic,False
+2026-06-01,2026-06,2026,6,2,Andalucía,SARIMA,Forecast,1820.7,Logistic,False
+2026-07-01,2026-07,2026,7,3,Andalucía,SARIMA,Forecast,1820.7,Logistic,False
+2026-08-01,2026-08,2026,8,3,Andalucía,SARIMA,Forecast,1820.7,Logistic,False
+2026-09-01,2026-09,2026,9,3,Andalucía,SARIMA,Forecast,1820.7,Logistic,False
+2026-10-01,2026-10,2026,10,4,Andalucía,SARIMA,Forecast,1820.7,Logistic,False
+2026-11-01,2026-11,2026,11,4,Andalucía,SARIMA,Forecast,1820.7,Logistic,False
+2026-12-01,2026-12,2026,12,4,Andalucía,SARIMA,Forecast,1820.7,Logistic,False
+2027-01-01,2027-01,2027,1,1,Andalucía,SARIMA,Forecast,1820.7,Logistic,False
+2027-02-01,2027-02,2027,2,1,Andalucía,SARIMA,Forecast,1820.7,Logistic,False
+2027-03-01,2027-03,2027,3,1,Andalucía,SARIMA,Forecast,1820.7,Logistic,False
+2027-04-01,2027-04,2027,4,2,Andalucía,SARIMA,Forecast,1820.7,Logistic,False
+2027-05-01,2027-05,2027,5,2,Andalucía,SARIMA,Forecast,1820.7,Logistic,False
+2027-06-01,2027-06,2027,6,2,Andalucía,SARIMA,Forecast,1820.7,Logistic,False
+2027-07-01,2027-07,2027,7,3,Andalucía,SARIMA,Forecast,1820.7,Logistic,False
+2027-08-01,2027-08,2027,8,3,Andalucía,SARIMA,Forecast,1820.7,Logistic,False
+2027-09-01,2027-09,2027,9,3,Andalucía,SARIMA,Forecast,1820.7,Logistic,False
+2027-10-01,2027-10,2027,10,4,Andalucía,SARIMA,Forecast,1820.7,Logistic,False
+2027-11-01,2027-11,2027,11,4,Andalucía,SARIMA,Forecast,1820.7,Logistic,False
+2027-12-01,2027-12,2027,12,4,Andalucía,SARIMA,Forecast,1820.7,Logistic,False
 2026-01-01,2026-01,2026,1,1,Andalucía,Logistic,Forecast,1992.8,Logistic,True
 2026-02-01,2026-02,2026,2,1,Andalucía,Logistic,Forecast,2112.8,Logistic,True
 2026-03-01,2026-03,2026,3,1,Andalucía,Logistic,Forecast,2265.1,Logistic,True

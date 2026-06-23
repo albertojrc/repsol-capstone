@@ -3,7 +3,7 @@ Andalucía,Gompertz,830.4,1002.4,48.3,-1.533
 Andalucía,Logistic,833.8,1006.7,48.4,-1.555
 Andalucía,Pooled XGBoost,826.8,992.3,48.4,-1.482
 Andalucía,Pooled Random Forest,852.2,1026.8,49.5,-1.658
-Andalucía,SARIMA,897.9,1077.0,52.5,-1.924
+Andalucía,SARIMA,865.2,1041.2,50.2,-1.733
 Andalucía,Random Forest,984.6,1172.1,56.6,-2.464
 Andalucía,RF+Precios,991.5,1172.9,57.6,
 Andalucía,XGB+Precios,1046.3,1194.4,65.1,
