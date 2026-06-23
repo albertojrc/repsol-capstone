@@ -1,6 +1,6 @@
 # Data Audit Report
 
-Generated / refreshed: 2026-06-21
+Generated / refreshed: 2026-06-23
 Scope: tracked production datasets, feature tables, outputs, and known optional artifacts.
 
 ## Executive Summary
@@ -12,7 +12,11 @@ the script path builds causal lag features for the modeling table.
 Phase 2 improves the modeling layer on branch `enrico`: model selection now uses
 recursive multi-step walk-forward validation, pooled regional ML is tested in the
 official script path, and a no-regression acceptance gate prevents Phase 2 changes
-from weakening the Phase 1 selected models on the 2025 holdout.
+from weakening the Phase 1 selected models on the 2025 validation period.
+
+The final delivery policy is no pooling. Pooled regional ML remains available as
+a documented sensitivity experiment, but the selected production forecast uses
+only non-pooled target-level models.
 
 ## Production Inputs
 
@@ -51,7 +55,7 @@ Validation checks in the script path:
 |---|---:|---|---|
 | `data/features/features_modelo_completo.csv` | 180 x 36 | 2023-01 to 2025-12 | Five targets x 36 months. |
 | `data/features/features_train.csv` | 120 x 36 | 2023-01 to 2024-12 | Temporal train split. |
-| `data/features/features_test.csv` | 60 x 36 | 2025-01 to 2025-12 | Temporal holdout split. |
+| `data/features/features_test.csv` | 60 x 36 | 2025-01 to 2025-12 | Temporal validation / acceptance split. |
 | `data/features/features_precios_combustibles.csv` | 36 x 81 | 2023-01 to 2025-12 | Optional price-ablation features. |
 
 Expected feature nulls:
@@ -71,12 +75,12 @@ Known data issues:
 |---|---|
 | `metricas_modelos.csv` | Metrics for the current CNMC-aware candidates, including pooled regional ML. |
 | `model_selection_walkforward.csv` | Recursive multi-step model-selection scores over the training period. |
-| `metricas_final_seleccionado.csv` | 2025 holdout metrics for the selected model per target. |
+| `metricas_final_seleccionado.csv` | 2025 validation metrics for the selected model per target. |
 | `predicciones_test_2025.csv` | 2025 predictions for all current candidates. |
 | `forecast_24m_sarima_rf_xgb.csv` | 2026-2027 forecasts for all current candidates. Legacy filename. |
-| `phase2_model_acceptance.csv` | Phase 1 model, Phase 2 proposed model, final selected model, and no-regression decision. |
-| `phase2_pooling_experiment_metrics.csv` | 2025 holdout metrics for pooled regional ML candidates. |
-| `phase2_pooling_decision.csv` | Target-level accept/reject explanation for pooled ML. |
+| `phase2_model_acceptance.csv` | Phase 1 model, Phase 2 proposed model, no-pooling final policy, final selected model, and acceptance decision. |
+| `phase2_pooling_experiment_metrics.csv` | 2025 validation metrics for pooled regional ML candidates. |
+| `phase2_pooling_decision.csv` | Target-level accept/reject explanation for pooled ML, including the no-pooling final policy. |
 | `metricas_modelos_con_precios.csv` | Optional price-ablation metrics from notebook 08. |
 | `forecast_24m_con_precios.csv` | Optional price-ablation forecasts from notebook 08. |
 | `metricas_comparativa.csv` | Combined current metrics plus optional price-ablation metrics when available. |
@@ -91,11 +95,12 @@ Known data issues:
 |---|---|---:|---:|---|
 | Nacional | SARIMA | 29.0% | -0.009 | Kept from Phase 1; Phase 2 proposal regressed. |
 | Madrid | Logistic | 73.6% | -8.273 | Improved versus Phase 1 Gompertz. |
-| Cataluña | Pooled Random Forest | 46.8% | -5.158 | Pooled regional model accepted. |
+| Cataluña | SARIMA | 47.2% | -5.620 | Best non-pooled validation alternative under the final no-pooling policy. |
 | Andalucía | Logistic | 48.4% | -1.555 | Kept from Phase 1; pooled proposal regressed slightly. |
 | Valencia | Gompertz | 34.2% | -1.246 | Weak but less severe. |
 
-Average selected MAPE improved from 94.6% in Phase 1 to 46.4% in Phase 2.
+Average selected MAPE improved from 94.6% in Phase 1 to 46.5% after Phase 2 and
+the no-pooling final policy.
 Remaining risk: all selected R2 values are still negative except near-zero national
 SARIMA, so the forecasts should be presented as directional planning estimates.
 

@@ -1,6 +1,7 @@
 # Audit Fix Plan
 
 Created: 2026-06-21
+Last updated: 2026-06-23
 
 ## Phase 1 Scope
 
@@ -40,18 +41,43 @@ Explicitly out of scope for Phase 1: changing the modeling methodology.
 - Tested pooled regional ML models in the official script pipeline.
 - Kept `Nacional` separate from pooled regional modeling.
 - Added a no-regression acceptance gate versus the Phase 1 selected models.
-- Accepted Phase 2 changes only for Madrid and Catalonia:
+- Accepted Phase 2 changes only for Madrid and Catalonia before the final
+  no-pooling delivery policy:
   - Madrid: Gompertz -> Logistic, MAPE 197.1% -> 73.6%.
-  - Catalonia: Gompertz -> Pooled Random Forest, MAPE 164.2% -> 46.8%.
+  - Catalonia: Gompertz -> Pooled Random Forest, MAPE 164.2% -> 46.8%
+    as a pooled sensitivity result.
 - Rejected Phase 2 proposals for Nacional, Andalusia, and Valencia because they
-  did not improve the Phase 1 selected holdout result.
+  did not improve the Phase 1 selected 2025 validation result.
 - Added `PHASE2_MODELING_REPORT.md` and `data/outputs/phase2_*.csv` lineage
   files documenting the production decision.
 
-## Still Open After Phase 2
+## Completed In Final Audit Cleanup
 
-- Add automated tests around dataset shapes, target mappings, and output lineage.
-- Explain the Catalonia pooled Random Forest as a conservative plateau forecast;
-  tree models do not extrapolate structural growth curves.
+- Adopted the final no-pooling policy for production selected models.
+- Set Catalonia's final production model to SARIMA, the best non-pooled 2025
+  validation alternative, while keeping pooled Random Forest as sensitivity
+  output.
+- Reframed the 2025 period as validation / acceptance rather than a pristine
+  final test.
+- Updated README and audit reports to align with the script pipeline, final
+  model policy, and current output roles.
+- Fixed notebook compatibility issues found during the audit:
+  - `09_evaluation.ipynb` pandas frequency aliases.
+  - `09_evaluation.ipynb` stale ML feature list.
+  - preserved the upstream removal of `11_mini_demand_model.ipynb`, which is
+    superseded by notebook 12.
+- Cleared notebook outputs and execution counts again after content updates.
+- Added `scripts/06_validate_outputs.py` to assert dataset shapes, temporal
+  split boundaries, lag causality, no-pooled final selection, and dashboard
+  export consistency after rebuilds.
+
+## Still Open After Final Cleanup
+
+- Treat the forecasts as directional planning scenarios because all selected
+  target-level R2 values remain weak or negative.
+- Explain Catalonia's selected SARIMA as the final non-pooled choice and the
+  pooled Random Forest as a lower-MAPE sensitivity result rejected by policy.
+- Consider a stronger backtesting design if more historical data becomes
+  available.
 - Keep HVO / renewable diesel outside the target unless new usable regional data
   becomes available.

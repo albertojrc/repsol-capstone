@@ -1,7 +1,51 @@
 # Project Memory - Repsol Eco-Fuels Demand Forecasting Capstone
 
-**Last updated:** 2026-06-21
+**Last updated:** 2026-06-23
 **Maintainer note:** This file is the long-term source of truth for this project. See [Section 10](#10-future-instructions-for-claude) for how Claude should use and maintain it.
+
+---
+
+## 2026-06-23 Final No-Pooling Delivery Cleanup
+
+This section supersedes earlier notes that describe pooled Catalonia as the
+final production model.
+
+Current production source of truth:
+
+```powershell
+.\.venv\Scripts\python scripts/03_clean_cnmc_petroleum.py
+.\.venv\Scripts\python scripts/02_master_dataset_builder.py
+.\.venv\Scripts\python scripts/04_build_features.py
+.\.venv\Scripts\python scripts/05_modeling_with_cnmc.py
+.\.venv\Scripts\python scripts/06_validate_outputs.py
+```
+
+Final delivery decisions:
+
+- The 2025 period is a validation / acceptance period, not a pristine final
+  test.
+- Scripts are the production source of truth; notebooks are exploratory,
+  narrative, or optional ablation assets.
+- The final selected production model set is non-pooled.
+- Pooled regional ML remains in the outputs as a sensitivity experiment only.
+
+Final selected models:
+
+| Target | Selected model | 2025 MAPE | 2025 R2 |
+|---|---|---:|---:|
+| Nacional | SARIMA | 29.0% | -0.009 |
+| Madrid | Logistic | 73.6% | -8.273 |
+| Catalonia | SARIMA | 47.2% | -5.620 |
+| Andalusia | Logistic | 48.4% | -1.555 |
+| Valencia | Gompertz | 34.2% | -1.246 |
+
+Average selected 2025 validation MAPE is 46.5%. The previous pooled Random
+Forest result for Catalonia remains a useful sensitivity comparison at 46.8%
+MAPE, but it is rejected by the final no-pooling policy.
+
+`scripts/06_validate_outputs.py` now verifies master-data shape and
+reconciliation, temporal split boundaries, causal lag features, the no-pooled
+final selected model policy, and Tableau export consistency.
 
 ---
 
@@ -28,23 +72,26 @@ Phase 2 modeling decisions:
 - `Nacional` is never pooled with regional series.
 - Regional pooling is tested only for Madrid, Catalonia, Andalusia, and Valencia.
 - A no-regression acceptance gate compares the Phase 2 proposal with the Phase 1
-  selected model on the 2025 holdout. A Phase 2 proposal is adopted only if it
-  does not worsen the Phase 1 holdout MAPE.
+  selected model on the 2025 validation period. A Phase 2 proposal is adopted
+  only if it does not worsen the Phase 1 validation MAPE.
+- The final delivery policy is no pooling, so pooled regional ML is retained as
+  sensitivity output but not as the production selected model.
 
-Final selected models after Phase 2:
+Final selected production models after Phase 2 and the no-pooling policy:
 
 | Target | Selected model | 2025 MAPE | 2025 R2 |
 |---|---|---:|---:|
 | Nacional | SARIMA | 29.0% | -0.009 |
 | Madrid | Logistic | 73.6% | -8.273 |
-| Catalonia | Pooled Random Forest | 46.8% | -5.158 |
+| Catalonia | SARIMA | 47.2% | -5.620 |
 | Andalusia | Logistic | 48.4% | -1.555 |
 | Valencia | Gompertz | 34.2% | -1.246 |
 
-Average selected MAPE improved from 94.6% to 46.4%. The pooled regional model is
-accepted only for Catalonia. Madrid's best pooled holdout metric is better than
-the selected Logistic model, but it is not used because the training-only gate
-did not select it; using it would be test-set cherry-picking.
+Average selected MAPE improved from 94.6% to 46.5%. The pooled regional model is
+not used in the final selected model set. Madrid's best pooled validation metric
+is better than the selected Logistic model, but it is not used because the
+training-only gate did not select it; Catalonia's pooled Random Forest is not
+used because the final delivery policy is non-pooled.
 
 New Phase 2 lineage files:
 
@@ -53,9 +100,9 @@ New Phase 2 lineage files:
 - `data/outputs/phase2_pooling_experiment_metrics.csv`
 - `data/outputs/phase2_pooling_decision.csv`
 
-Remaining caveat: Catalonia's pooled Random Forest forecast is a conservative
-plateau forecast. This is not an extrapolating structural growth curve; it is
-kept because it improves validation and avoids explosive behavior.
+Remaining caveat: Catalonia's selected SARIMA forecast is the final non-pooled
+choice but can extrapolate more trend than the pooled Random Forest sensitivity
+forecast. Explain this clearly in the deliverable.
 
 ---
 
@@ -614,7 +661,7 @@ python scripts/05_modeling_with_cnmc.py
 - CNMC model inputs are lagged only,
 - and mandate features are present with the biodiesel blend requirement set to 0.0 before August 2024.
 
-**Important modeling caveat:** The pipeline is believed leakage-free, but the absolute model fit remains poor for Madrid and Cataluña. CNMC improves the project's business structure, not the core statistical limitation. The next serious improvement should be a pooled/panel regional model or another approach that increases effective sample size.
+**Important modeling caveat:** The pipeline is believed leakage-free, but the absolute model fit remains weak. CNMC improves the project's business structure, not the core statistical limitation. Pooled regional ML is now documented as a sensitivity experiment only; the final selected model set is non-pooled.
 
 **Git status:** As of this update, local `main` contains unpushed commits beyond `origin/main`, including the leakage fixes, growth-curve additions, research notes, CNMC integration, and this documentation update. Before pushing, verify with:
 
@@ -623,15 +670,14 @@ git status --short --branch
 git log --oneline --decorate -5
 ```
 
-**Outstanding documentation debt:** `DATA_AUDIT_REPORT.md` and `NOTEBOOKS_AUDIT.md` (both dated 2026-06-10) predate the leakage fixes, growth-curve work, and CNMC integration. Their model lists, row counts, and pipeline descriptions are stale. They have not been regenerated; this `memory.md` file and the current scripts are the source of truth until those audit docs are refreshed.
+**Outstanding documentation debt:** The current README, `DATA_AUDIT_REPORT.md`, `NOTEBOOKS_AUDIT.md`, and `PHASE2_MODELING_REPORT.md` have been refreshed for the final no-pooling policy. Older historical sections in this memory file should be treated as chronology, not current instructions.
 
-**Next priorities (not yet started), in order of expected impact:**
-1. **Implement the multi-step gate + saturation prior in notebook 07** (see Section 4, 2026-06-21). This supersedes the old "pool the regions" priority: naive ML pooling was investigated and rejected (it re-creates unbounded blow-ups), but the investigation revealed the 1-step walk-forward gate can bless exploding models, and a multi-step recursive gate + restricting the 4 regional series to saturating curves improves the holdout (Madrid 197%→74%, avg 94.6%→69.9%) with zero regressions. **This is the current single highest-priority next step.** Work-in-progress recommendation lives on branch `enrico`; notebook rewrite + 07→08→09 re-run still to do.
-2. **Reduce feature collinearity for Ridge** (`Tendencia`/`Lag_1`/`Lag_2`/`Lag_3`/`Roll_mean_3`/`Roll_mean_6` were found pairwise-correlated at 0.84-1.00) — e.g. switch to Elastic Net, which the model-research pass flagged as a near-zero-cost fix for exactly this problem. Lower priority than #1 since the growth curves already made Ridge's worst failure modes moot in practice, but the underlying collinearity is still unaddressed.
-3. SARIMAX has already been tried (plain macro exogenous regressors) and rejected — see Section 4. Don't repeat that exact test; if exogenous-variable modelling is revisited, do it after #1 (pooling) or with a richer regressor set (e.g. fuel prices).
-4. Source DGT vehicle fleet data (currently a placeholder).
-5. Regenerate `DATA_AUDIT_REPORT.md` and `NOTEBOOKS_AUDIT.md` so they reflect the current CNMC-aware script path.
-6. Decide whether/when to push the pending local commits to `origin/main`.
+**Next priorities, in order of expected impact:**
+1. Preserve the current script-first workflow and run `scripts/06_validate_outputs.py` after every full rebuild.
+2. Treat final forecasts as directional planning scenarios because selected-model R2 values remain weak or negative.
+3. Consider stronger backtesting only if more history becomes available; the current 2023-2025 window is too short to provide a pristine final test.
+4. Source DGT vehicle fleet data if the project needs a new external driver.
+5. SARIMAX has already been tried with plain macro exogenous regressors and rejected; do not repeat that exact test without a richer regressor set or a changed design.
 
 ---
 

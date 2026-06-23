@@ -227,30 +227,30 @@ Fecha,Target,Model,Type,Valor
 2027-10,Madrid,Logistic,Forecast,3772.0
 2027-11,Madrid,Logistic,Forecast,3737.0
 2027-12,Madrid,Logistic,Forecast,3729.3
-2026-01,Cataluña,Pooled Random Forest,Forecast,2822.1
-2026-02,Cataluña,Pooled Random Forest,Forecast,2822.1
-2026-03,Cataluña,Pooled Random Forest,Forecast,2822.1
-2026-04,Cataluña,Pooled Random Forest,Forecast,2822.1
-2026-05,Cataluña,Pooled Random Forest,Forecast,2822.1
-2026-06,Cataluña,Pooled Random Forest,Forecast,2822.1
-2026-07,Cataluña,Pooled Random Forest,Forecast,2822.1
-2026-08,Cataluña,Pooled Random Forest,Forecast,2822.1
-2026-09,Cataluña,Pooled Random Forest,Forecast,2822.1
-2026-10,Cataluña,Pooled Random Forest,Forecast,2822.1
-2026-11,Cataluña,Pooled Random Forest,Forecast,2822.1
-2026-12,Cataluña,Pooled Random Forest,Forecast,2822.1
-2027-01,Cataluña,Pooled Random Forest,Forecast,2822.1
-2027-02,Cataluña,Pooled Random Forest,Forecast,2822.1
-2027-03,Cataluña,Pooled Random Forest,Forecast,2822.1
-2027-04,Cataluña,Pooled Random Forest,Forecast,2822.1
-2027-05,Cataluña,Pooled Random Forest,Forecast,2822.1
-2027-06,Cataluña,Pooled Random Forest,Forecast,2822.1
-2027-07,Cataluña,Pooled Random Forest,Forecast,2822.1
-2027-08,Cataluña,Pooled Random Forest,Forecast,2822.1
-2027-09,Cataluña,Pooled Random Forest,Forecast,2822.1
-2027-10,Cataluña,Pooled Random Forest,Forecast,2822.1
-2027-11,Cataluña,Pooled Random Forest,Forecast,2822.1
-2027-12,Cataluña,Pooled Random Forest,Forecast,2822.1
+2026-01,Cataluña,SARIMA,Forecast,3497.8
+2026-02,Cataluña,SARIMA,Forecast,3628.5
+2026-03,Cataluña,SARIMA,Forecast,3754.7
+2026-04,Cataluña,SARIMA,Forecast,3876.1
+2026-05,Cataluña,SARIMA,Forecast,3987.9
+2026-06,Cataluña,SARIMA,Forecast,4088.8
+2026-07,Cataluña,SARIMA,Forecast,4181.6
+2026-08,Cataluña,SARIMA,Forecast,4254.5
+2026-09,Cataluña,SARIMA,Forecast,4324.4
+2026-10,Cataluña,SARIMA,Forecast,4406.3
+2026-11,Cataluña,SARIMA,Forecast,4465.2
+2026-12,Cataluña,SARIMA,Forecast,4526.6
+2027-01,Cataluña,SARIMA,Forecast,4581.1
+2027-02,Cataluña,SARIMA,Forecast,4630.7
+2027-03,Cataluña,SARIMA,Forecast,4675.9
+2027-04,Cataluña,SARIMA,Forecast,4717.1
+2027-05,Cataluña,SARIMA,Forecast,4754.4
+2027-06,Cataluña,SARIMA,Forecast,4788.3
+2027-07,Cataluña,SARIMA,Forecast,4819.0
+2027-08,Cataluña,SARIMA,Forecast,4846.7
+2027-09,Cataluña,SARIMA,Forecast,4871.8
+2027-10,Cataluña,SARIMA,Forecast,4894.7
+2027-11,Cataluña,SARIMA,Forecast,4915.2
+2027-12,Cataluña,SARIMA,Forecast,4933.9
 2026-01,Andalucía,Logistic,Forecast,1992.8
 2026-02,Andalucía,Logistic,Forecast,2112.8
 2026-03,Andalucía,Logistic,Forecast,2265.1

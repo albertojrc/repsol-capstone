@@ -36,6 +36,7 @@ Run these commands from the repository root:
 .\.venv\Scripts\python scripts/02_master_dataset_builder.py
 .\.venv\Scripts\python scripts/04_build_features.py
 .\.venv\Scripts\python scripts/05_modeling_with_cnmc.py
+.\.venv\Scripts\python scripts/06_validate_outputs.py
 ```
 
 This rebuilds:
@@ -50,7 +51,8 @@ This rebuilds:
 `forecast_24m_sarima_rf_xgb.csv` is a legacy filename. It now contains all current
 candidate families used by the CNMC-aware script, including SARIMA, Ridge, Random
 Forest, XGBoost, Logistic, Gompertz, Diesel Share, and the Phase 2 pooled regional
-ML candidates.
+ML sensitivity candidates. The production selected forecast follows the final
+no-pooling policy.
 
 ## Data Sources
 
@@ -81,19 +83,20 @@ mistaken for a fresh run.
 
 The `enrico` branch productionizes the Phase 2 modeling upgrade. The script now
 uses a recursive multi-step walk-forward gate and a no-regression acceptance check
-against the Phase 1 selected models. Regional pooling is tested in the production
-pipeline and accepted only where it improves real validation without weakening the
-final selected set.
+against the Phase 1 selected models. The 2025 period is treated as a validation
+and acceptance period, not as a pristine final test. Regional pooling is tested as
+a sensitivity experiment, but the final production model set is non-pooled.
 
 | Target | Selected model | 2025 MAPE |
 |---|---|---:|
 | Nacional | SARIMA | 29.0% |
 | Madrid | Logistic | 73.6% |
-| Cataluña | Pooled Random Forest | 46.8% |
+| Cataluña | SARIMA | 47.2% |
 | Andalucía | Logistic | 48.4% |
 | Valencia | Gompertz | 34.2% |
 
-See `PHASE2_MODELING_REPORT.md` for the before/after comparison, pooling decision,
+The average selected 2025 validation MAPE is 46.5%. See
+`PHASE2_MODELING_REPORT.md` for the before/after comparison, pooling decision,
 and remaining limitations.
 
 ## Repository Layout

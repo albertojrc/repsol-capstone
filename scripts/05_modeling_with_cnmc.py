@@ -7,7 +7,10 @@ CSV filenames used by the notebooks/Tableau flow while adding the new
 Diesel Share candidate model and Phase 2 pooled regional ML evaluation.
 
 Phase 2 selection uses recursive multi-step walk-forward validation and a
-no-regression acceptance gate versus the Phase 1 selected models.
+no-regression acceptance gate versus the Phase 1 selected models. The 2025
+period is therefore a validation/acceptance period, not a pristine final test.
+Pooled regional ML remains an evaluated experiment, but the production selected
+model set follows the no-pooling final policy requested by the project team.
 """
 
 from __future__ import annotations
@@ -140,6 +143,13 @@ PHASE1_SELECTED_MODELS = {
     TARGETS[2]: "Gompertz",
     TARGETS[3]: "Logistic",
     TARGETS[4]: "Gompertz",
+}
+
+# Final delivery policy: do not use pooled models in the production selected
+# model set. Cataluña is the only target where the previous Phase 2 gate selected
+# a pooled model; SARIMA is the best non-pooled 2025 validation alternative.
+NON_POOLED_FINAL_MODELS = {
+    "Cataluña": "SARIMA",
 }
 
 FORECAST_DATES = pd.date_range("2026-01-01", periods=24, freq="MS")
@@ -724,6 +734,7 @@ def build_model_acceptance(df_metrics: pd.DataFrame, df_wf: pd.DataFrame) -> pd.
         target = wf_row["Target"]
         proposed = wf_row["Proposed_Model"]
         baseline = PHASE1_SELECTED_MODELS[target]
+        policy_model = NON_POOLED_FINAL_MODELS.get(target)
 
         proposed_metric = df_metrics[(df_metrics["Target"] == target) & (df_metrics["Model"] == proposed)]
         baseline_metric = df_metrics[(df_metrics["Target"] == target) & (df_metrics["Model"] == baseline)]
@@ -734,8 +745,23 @@ def build_model_acceptance(df_metrics: pd.DataFrame, df_wf: pd.DataFrame) -> pd.
 
         proposed_mape = float(proposed_metric.iloc[0]["MAPE"])
         baseline_mape = float(baseline_metric.iloc[0]["MAPE"])
-        accepted = proposed_mape <= baseline_mape
-        selected = proposed if accepted else baseline
+        policy_mape = np.nan
+
+        if policy_model is not None:
+            policy_metric = df_metrics[(df_metrics["Target"] == target) & (df_metrics["Model"] == policy_model)]
+            if policy_metric.empty:
+                raise ValueError(f"No metric found for non-pooled final model {target} / {policy_model}")
+            policy_mape = float(policy_metric.iloc[0]["MAPE"])
+            accepted = False
+            selected = policy_model
+            decision = "selected_non_pooled_final_policy"
+            source = "non_pooled_final_policy"
+        else:
+            accepted = proposed_mape <= baseline_mape
+            selected = proposed if accepted else baseline
+            decision = "accepted_no_regression" if accepted else "kept_phase1_no_regression"
+            source = "phase2_proposal" if accepted else "phase1_baseline"
+
         rows.append(
             {
                 "Target": target,
@@ -743,9 +769,12 @@ def build_model_acceptance(df_metrics: pd.DataFrame, df_wf: pd.DataFrame) -> pd.
                 "Phase1_MAPE": baseline_mape,
                 "Phase2_Proposed_Model": proposed,
                 "Phase2_Proposed_MAPE": proposed_mape,
+                "Non_Pooled_Final_Model": policy_model if policy_model is not None else "",
+                "Non_Pooled_Final_MAPE": policy_mape,
                 "Selected_Model": selected,
+                "Final_Selection_Source": source,
                 "Accepted_Phase2_Proposal": accepted,
-                "Decision": "accepted_no_regression" if accepted else "kept_phase1_no_regression",
+                "Decision": decision,
             }
         )
     return pd.DataFrame(rows)
@@ -765,14 +794,19 @@ def build_pooling_decision(df_final: pd.DataFrame, df_pooled: pd.DataFrame) -> p
     decision = regional_final.merge(best_pooled, on="Target", how="left")
     decision["Best_Pooled_Beats_Production"] = decision["Best_Pooled_MAPE"] < decision["Production_MAPE"]
     decision["Production_Uses_Pooled_ML"] = decision["Production_Model"].isin(POOLED_LABELS)
-    decision["Decision"] = np.where(
-        decision["Production_Uses_Pooled_ML"],
-        "accepted_for_target_by_training_gate_and_holdout_no_regression",
-        np.where(
+    decision["No_Pooling_Final_Policy"] = decision["Target"].isin(NON_POOLED_FINAL_MODELS)
+    decision["Decision"] = np.select(
+        [
+            decision["Production_Uses_Pooled_ML"],
+            decision["No_Pooling_Final_Policy"] & decision["Best_Pooled_Beats_Production"],
             decision["Best_Pooled_Beats_Production"],
+        ],
+        [
+            "accepted_for_target_by_training_gate_and_validation_no_regression",
+            "rejected_by_non_pooled_final_policy",
             "rejected_for_production_training_gate_did_not_select_it",
-            "rejected_for_production_no_holdout_improvement",
-        ),
+        ],
+        default="rejected_for_production_no_validation_improvement",
     )
     return decision
 
@@ -987,7 +1021,7 @@ def plot_outputs(df_all: pd.DataFrame, df_metrics: pd.DataFrame, df_preds: pd.Da
         ax.grid(True, alpha=0.3)
         ax.legend(fontsize=7)
     axes[-1].set_visible(False)
-    fig.suptitle("Selected 24-Month Biodiesel Demand Forecast (2026-2027)", fontweight="bold")
+    fig.suptitle("Selected Non-Pooled 24-Month Biodiesel Demand Forecast (2026-2027)", fontweight="bold")
     plt.tight_layout()
     plt.savefig(FIGURES / "11_forecast_24m.png", dpi=150, bbox_inches="tight")
     plt.close(fig)
@@ -1035,7 +1069,7 @@ def main() -> None:
 
     print("\nMulti-step walk-forward selected models:")
     print(df_wf[["Target", "Selection_Candidate_Set", "Proposed_Model", "Selected_Model", "Decision"]].to_string(index=False))
-    print("\nFinal selected test metrics:")
+    print("\nFinal selected 2025 validation metrics:")
     print(df_final.to_string(index=False))
     print("\nPooled regional ML decision:")
     print(df_pooling_decision.to_string(index=False))
