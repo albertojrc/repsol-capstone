@@ -2,47 +2,47 @@ Target,Model,MAE,RMSE,MAPE,R2,Rank,Selected_Model,Mejor_Modelo,MAPE_Label
 Nacional,SARIMA,5312.2,5773.6,34.4,-0.388,1.0,Logistic,False,34.4%
 Nacional,Logistic,6228.7,6999.4,36.7,-1.041,2.0,Logistic,True,36.7%
 Nacional,Gompertz,15625.4,19146.0,82.7,-14.268,5.0,Logistic,False,82.7%
-Nacional,Ridge,2749652.7,2969388.6,14763.5,-367254.006,7.0,Logistic,False,14763.5%
-Nacional,Random Forest,10990.7,11986.5,56.8,-4.984,3.0,Logistic,False,56.8%
-Nacional,XGBoost,11937.4,12695.1,63.4,-5.713,4.0,Logistic,False,63.4%
-Nacional,Diesel Share,445352.4,482636.7,2389.3,-9701.292,6.0,Logistic,False,2389.3%
-Madrid,SARIMA,9097.7,11968.5,318.6,-312.865,7.0,Logistic,False,318.6%
+Nacional,Ridge,2752307.2,2969827.7,14788.2,-367362.649,7.0,Logistic,False,14788.2%
+Nacional,Random Forest,11007.0,11985.7,57.0,-4.984,3.0,Logistic,False,57.0%
+Nacional,XGBoost,11814.5,12587.2,62.6,-5.599,4.0,Logistic,False,62.6%
+Nacional,Diesel Share,446108.8,482720.0,2396.4,-9704.643,6.0,Logistic,False,2396.4%
+Madrid,SARIMA,9097.7,11968.5,318.6,-312.865,8.0,Logistic,False,318.6%
 Madrid,Logistic,1924.0,2057.2,73.6,-8.273,5.0,Logistic,True,73.6%
-Madrid,Gompertz,5538.4,6823.5,197.1,-101.018,6.0,Logistic,False,197.1%
-Madrid,Ridge,1643946.6,2309624.0,55396.4,-11688250.398,9.0,Logistic,False,55396.4%
-Madrid,Random Forest,1814.2,1938.2,64.5,-7.231,4.0,Logistic,False,64.5%
-Madrid,XGBoost,1743.3,1868.1,61.9,-6.647,3.0,Logistic,False,61.9%
-Madrid,Diesel Share,15472.0,24107.2,543.1,-1272.392,8.0,Logistic,False,543.1%
+Madrid,Gompertz,5538.4,6823.5,197.1,-101.018,7.0,Logistic,False,197.1%
+Madrid,Ridge,1482539.8,2147524.0,51196.2,-10105155.451,9.0,Logistic,False,51196.2%
+Madrid,Random Forest,1802.1,1926.8,64.0,-7.135,3.0,Logistic,False,64.0%
+Madrid,XGBoost,1840.0,1949.9,66.0,-7.331,4.0,Logistic,False,66.0%
+Madrid,Diesel Share,4110.7,5820.5,146.1,-73.232,6.0,Logistic,False,146.1%
 Cataluña,SARIMA,1557.8,1794.1,50.1,-7.182,2.0,SARIMA,True,50.1%
 Cataluña,Logistic,2299.1,2498.6,80.2,-14.869,6.0,SARIMA,False,80.2%
 Cataluña,Gompertz,4929.6,6024.8,164.2,-91.269,7.0,SARIMA,False,164.2%
-Cataluña,Ridge,2725203.4,2981410.9,91437.5,-22594875.075,10.0,SARIMA,False,91437.5%
-Cataluña,Random Forest,1767.4,1878.0,59.3,-7.965,4.0,SARIMA,False,59.3%
-Cataluña,XGBoost,1825.5,1926.3,61.6,-8.432,5.0,SARIMA,False,61.6%
-Cataluña,Diesel Share,72129.9,77391.6,2448.4,-15223.895,8.0,SARIMA,False,2448.4%
+Cataluña,Ridge,2728884.5,2981486.1,91633.0,-22596014.694,10.0,SARIMA,False,91633.0%
+Cataluña,Random Forest,1773.4,1882.6,59.6,-8.009,4.0,SARIMA,False,59.6%
+Cataluña,XGBoost,1786.5,1891.6,60.1,-8.095,5.0,SARIMA,False,60.1%
+Cataluña,Diesel Share,75940.1,79340.6,2650.8,-16000.354,8.0,SARIMA,False,2650.8%
 Andalucía,SARIMA,898.8,1077.9,52.6,-1.929,5.0,SARIMA,True,52.6%
-Andalucía,Logistic,833.8,1006.7,48.4,-1.555,3.0,SARIMA,False,48.4%
-Andalucía,Gompertz,830.4,1002.4,48.3,-1.533,2.0,SARIMA,False,48.3%
-Andalucía,Ridge,2995471.9,3128349.3,238283.1,-24671458.892,10.0,SARIMA,False,238283.1%
-Andalucía,Random Forest,984.6,1172.1,56.6,-2.464,6.0,SARIMA,False,56.6%
-Andalucía,XGBoost,1053.4,1202.9,65.5,-2.648,7.0,SARIMA,False,65.5%
-Andalucía,Diesel Share,79229.8,82376.6,6275.1,-17105.946,8.0,SARIMA,False,6275.1%
+Andalucía,Logistic,833.8,1006.7,48.4,-1.555,4.0,SARIMA,False,48.4%
+Andalucía,Gompertz,830.4,1002.4,48.3,-1.533,3.0,SARIMA,False,48.3%
+Andalucía,Ridge,2995478.8,3128349.3,238284.3,-24671459.021,10.0,SARIMA,False,238284.3%
+Andalucía,Random Forest,986.9,1174.0,56.7,-2.475,6.0,SARIMA,False,56.7%
+Andalucía,XGBoost,1056.0,1203.7,65.9,-2.653,7.0,SARIMA,False,65.9%
+Andalucía,Diesel Share,79291.0,82380.9,6285.5,-17107.698,8.0,SARIMA,False,6285.5%
 Valencia,SARIMA,640.7,719.4,66.0,-4.828,6.0,Gompertz,False,66.0%
-Valencia,Logistic,365.4,453.3,34.7,-1.314,2.0,Gompertz,False,34.7%
-Valencia,Gompertz,360.3,446.6,34.2,-1.246,1.0,Gompertz,True,34.2%
-Valencia,Ridge,2997317.0,3128951.3,353660.8,-110241323.387,10.0,Gompertz,False,353660.8%
-Valencia,Random Forest,586.6,648.6,61.7,-3.736,5.0,Gompertz,False,61.7%
-Valencia,XGBoost,527.7,610.0,52.8,-3.19,4.0,Gompertz,False,52.8%
-Valencia,Diesel Share,48508.3,48748.3,5980.6,-26757.695,8.0,Gompertz,False,5980.6%
-Madrid,Pooled Ridge,2747279.3,2982777.8,97649.1,-19494350.41,10.0,Logistic,False,97649.1%
-Cataluña,Pooled Ridge,2724326.4,2981399.7,91390.8,-22594704.857,9.0,SARIMA,False,91390.8%
-Andalucía,Pooled Ridge,1911686.1,2495349.1,103355.0,-15697373.088,9.0,SARIMA,False,103355.0%
-Valencia,Pooled Ridge,1909472.0,2495924.7,177416.1,-70147108.446,9.0,Gompertz,False,177416.1%
-Madrid,Pooled Random Forest,1031.4,1211.4,34.2,-2.215,1.0,Logistic,False,34.2%
-Cataluña,Pooled Random Forest,1190.6,1349.2,38.2,-3.627,1.0,SARIMA,False,38.2%
-Andalucía,Pooled Random Forest,291.5,410.2,21.5,0.576,1.0,SARIMA,False,21.5%
-Valencia,Pooled Random Forest,637.7,669.6,79.5,-4.048,7.0,Gompertz,False,79.5%
-Madrid,Pooled XGBoost,1595.6,1720.5,56.3,-5.486,2.0,Logistic,False,56.3%
-Cataluña,Pooled XGBoost,1738.2,1840.0,58.6,-7.606,3.0,SARIMA,False,58.6%
-Andalucía,Pooled XGBoost,826.8,992.3,48.4,-1.482,4.0,SARIMA,False,48.4%
-Valencia,Pooled XGBoost,270.7,328.1,35.6,-0.212,3.0,Gompertz,False,35.6%
+Valencia,Logistic,365.4,453.3,34.7,-1.314,3.0,Gompertz,False,34.7%
+Valencia,Gompertz,360.3,446.6,34.2,-1.246,2.0,Gompertz,True,34.2%
+Valencia,Ridge,2997401.0,3128951.8,353679.0,-110241360.183,10.0,Gompertz,False,353679.0%
+Valencia,Random Forest,573.2,637.9,59.9,-3.581,5.0,Gompertz,False,59.9%
+Valencia,XGBoost,522.3,605.5,52.1,-3.128,4.0,Gompertz,False,52.1%
+Valencia,Diesel Share,48799.2,48965.8,6043.6,-26997.108,8.0,Gompertz,False,6043.6%
+Madrid,Pooled Ridge,2781590.6,2988579.3,99741.2,-19570256.119,10.0,Logistic,False,99741.2%
+Cataluña,Pooled Ridge,2724621.8,2981402.6,91406.5,-22594749.868,9.0,SARIMA,False,91406.5%
+Andalucía,Pooled Ridge,1911003.8,2495337.1,103303.3,-15697221.36,9.0,SARIMA,False,103303.3%
+Valencia,Pooled Ridge,1909234.0,2495922.6,177385.0,-70146990.261,9.0,Gompertz,False,177385.0%
+Madrid,Pooled Random Forest,1002.7,1176.8,33.3,-2.034,1.0,Logistic,False,33.3%
+Cataluña,Pooled Random Forest,1142.4,1303.1,36.4,-3.316,1.0,SARIMA,False,36.4%
+Andalucía,Pooled Random Forest,271.7,383.5,20.9,0.629,1.0,SARIMA,False,20.9%
+Valencia,Pooled Random Forest,665.6,697.0,82.5,-4.47,7.0,Gompertz,False,82.5%
+Madrid,Pooled XGBoost,1597.8,1725.2,56.2,-5.522,2.0,Logistic,False,56.2%
+Cataluña,Pooled XGBoost,1730.3,1835.4,58.2,-7.563,3.0,SARIMA,False,58.2%
+Andalucía,Pooled XGBoost,818.2,984.1,48.2,-1.441,2.0,SARIMA,False,48.2%
+Valencia,Pooled XGBoost,243.4,306.1,31.8,-0.055,1.0,Gompertz,False,31.8%

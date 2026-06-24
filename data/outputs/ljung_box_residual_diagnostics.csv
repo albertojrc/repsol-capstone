@@ -1,0 +1,6 @@
+Target,Model,N_obs,Ljung_Box_lag,Ljung_Box_stat,Ljung_Box_pvalue,Significant_autocorr_p<0.05
+Nacional,Logistic,12,4,7.98,0.092,False
+Madrid,Logistic,12,4,8.788,0.067,False
+Cataluña,SARIMA,12,4,9.841,0.043,True
+Andalucía,SARIMA,12,4,10.523,0.032,True
+Valencia,Gompertz,12,4,6.25,0.181,False

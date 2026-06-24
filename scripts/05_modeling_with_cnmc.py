@@ -77,7 +77,6 @@ DIESEL_FEATS = [
 
 MANDATE_FEATS = [
     "Mandato_Energia_Pct",
-    "Mandato_Biodiesel_Blend_Pct",
 ]
 
 ML_FEATS = BASE_ML_FEATS + DIESEL_FEATS + MANDATE_FEATS
@@ -217,8 +216,6 @@ def mandate_values_for_date(dt: pd.Timestamp) -> dict[str, float]:
     if row.empty:
         raise ValueError(f"No mandate schedule row for year {dt.year}")
     values = row.iloc[0][MANDATE_FEATS].astype(float).to_dict()
-    if dt < pd.Timestamp("2024-08-01"):
-        values["Mandato_Biodiesel_Blend_Pct"] = 0.0
     return values
 
 
@@ -301,6 +298,26 @@ def train_sarima(
 
 def predict_sarima(result, n_steps: int) -> np.ndarray:
     return np.maximum(np.expm1(result.forecast(steps=n_steps)), 0)
+
+
+def predict_sarima_with_ci(result, n_steps: int, alpha: float = 0.05) -> pd.DataFrame:
+    """
+    Calibrated prediction interval from the SARIMA fit's own forecast-error
+    variance (statsmodels get_forecast().conf_int()), back-transformed out of
+    log1p space. Unlike the heuristic MAPE/RMSE-scaled "error band" used
+    elsewhere in this script for the forecast chart, this interval reflects
+    the fitted model's own uncertainty estimate, not a post-hoc accuracy proxy.
+    """
+    forecast_obj = result.get_forecast(steps=n_steps)
+    # predicted_mean/conf_int return plain ndarrays here (the model was fit on
+    # a bare np.ndarray, not a pandas Series with a date index) -- np.asarray
+    # handles that case and the Series/DataFrame case identically.
+    mean_log = np.asarray(forecast_obj.predicted_mean)
+    ci_log = np.asarray(forecast_obj.conf_int(alpha=alpha))
+    mean = np.maximum(np.expm1(mean_log), 0)
+    lower = np.maximum(np.expm1(ci_log[:, 0]), 0)
+    upper = np.maximum(np.expm1(ci_log[:, 1]), 0)
+    return pd.DataFrame({"Forecast": mean, "CI_Lower": lower, "CI_Upper": upper})
 
 
 def train_sarimax(
@@ -494,6 +511,7 @@ def recursive_forecast_ml(
     macro_last: dict,
     n_steps: int = 24,
     future_dates: list[pd.Timestamp] | None = None,
+    mandate_override: dict | None = None,
 ) -> list[float]:
     hist_y = history["Consumo_Tm"].astype(float).tolist()
     hist_gaso = history["GasoleoA_Tm"].astype(float).tolist()
@@ -509,7 +527,7 @@ def recursive_forecast_ml(
     start_tendencia = int(history["Tendencia"].max()) + 1
     for step, (dt, gaso_t) in enumerate(zip(future_dates, future_gaso)):
         mes = int(dt.month)
-        mandate = mandate_values_for_date(dt)
+        mandate = mandate_override if mandate_override is not None else mandate_values_for_date(dt)
         feat_values = {
             "Tendencia": start_tendencia + step,
             "Mes": mes,
@@ -1188,9 +1206,10 @@ def build_pooling_decision(df_final: pd.DataFrame, df_pooled: pd.DataFrame) -> p
 def final_forecasts(
     df_all: pd.DataFrame,
     sarima_orders: dict[str, tuple[tuple[int, int, int], tuple[int, int, int, int]]],
-) -> tuple[pd.DataFrame, pd.DataFrame]:
+) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     rows = []
     degenerate_log = []
+    ci_rows = []
     forecast_labels = [d.strftime("%Y-%m") for d in FORECAST_DATES]
     for target in TARGETS:
         full = df_all[df_all["Target"] == target].sort_values("Fecha").copy()
@@ -1204,6 +1223,18 @@ def final_forecasts(
             res = train_sarima(full["Consumo_Tm"].values, sarima_order, sarima_seasonal_order)
             for fecha, val in zip(forecast_labels, predict_sarima(res, len(forecast_labels))):
                 rows.append({"Fecha": fecha, "Target": target, "Model": "SARIMA", "Forecast": round(float(val), 1)})
+            ci_df = predict_sarima_with_ci(res, len(forecast_labels))
+            for fecha, ci_row in zip(forecast_labels, ci_df.itertuples(index=False)):
+                ci_rows.append(
+                    {
+                        "Fecha": fecha,
+                        "Target": target,
+                        "Model": "SARIMA",
+                        "Forecast": round(float(ci_row.Forecast), 1),
+                        "CI_Lower": round(float(ci_row.CI_Lower), 1),
+                        "CI_Upper": round(float(ci_row.CI_Upper), 1),
+                    }
+                )
         except Exception as exc:
             print(f"Forecast SARIMA failed for {target}: {exc}")
             if "degenerate" in str(exc):
@@ -1265,7 +1296,102 @@ def final_forecasts(
             except Exception as exc:
                 print(f"Forecast {label} failed for {target}: {exc}")
 
-    return pd.DataFrame(rows), pd.DataFrame(degenerate_log)
+    return pd.DataFrame(rows), pd.DataFrame(degenerate_log), pd.DataFrame(ci_rows)
+
+
+# Mild-recession shock applied on top of the last observed macro values.
+# Not a tail event -- roughly the scale of a soft slowdown, not a crisis.
+MACRO_DOWNTURN_SHOCK = {"Tasa_paro_add": 2.0, "IPI_original_mult": 0.95, "IPC_var_anual_add": 1.0}
+
+
+def build_scenario_sensitivity(
+    df_all: pd.DataFrame, df_final: pd.DataFrame
+) -> pd.DataFrame:
+    """
+    Lightweight sensitivity analysis for the 24-month forecast (audit Finding
+    7.5: the production forecast holds macro and mandate inputs at a single
+    fixed scenario with no documented alternative). Re-runs the feature-aware
+    ML candidates (Ridge, Random Forest, XGBoost -- the only headline
+    candidates that actually consume macro/mandate features) under three
+    scenarios:
+      - Neutral: same assumptions as the production forecast (macro held at
+        its last observed value, mandate per the legislated/projected schedule).
+      - Macro_Downturn: Tasa_paro +2pp, IPI_original x0.95, IPC_var_anual +1pp
+        for the full 2026-2027 horizon (see MACRO_DOWNTURN_SHOCK).
+      - Mandate_Delayed: the energy-mandate increase scheduled for 2026 (RD
+        5/2026, 11.5% -> 14.0%) does not happen on time; the mandate is held
+        at its 2025 legislated level for the full forecast horizon instead.
+
+    CAVEAT 1: none of the 5 currently walk-forward-selected production models
+    use macro or mandate features at all (SARIMA/Logistic/Gompertz are
+    univariate by construction). This sensitivity analysis is informative
+    about the feature-aware candidates' behaviour, not about the production
+    forecast itself -- see the Selected_Model_Uses_Scenario_Inputs column.
+
+    CAVEAT 2 (verified empirically, not a bug): Random Forest and XGBoost
+    show IDENTICAL forecasts for Neutral vs. Mandate_Delayed. This is because
+    Mandato_Energia_Pct only ranges 10.5-11.5 in the training data (2023-2024)
+    -- both the legislated 2026/2027 values (14.0/15.5) and the delayed-2025
+    value (11.5) sit at or beyond the training maximum, so every tree split on
+    this feature routes them to the same terminal leaves. Tree-based models
+    cannot extrapolate beyond an observed feature range; this was confirmed by
+    overriding the value to an absurd 999.0 and getting the same prediction.
+    Ridge DOES respond to the mandate value, but its own catastrophic
+    explosive extrapolation (already documented elsewhere in this project)
+    saturates to essentially the same runaway trajectory regardless of which
+    plausible mandate value starts it off, so its scenario sensitivity is not
+    practically informative either. Net result: macro shocks are the only
+    scenario dimension with a usable signal for RF/XGBoost in this dataset.
+    """
+    forecast_labels = [d.strftime("%Y-%m") for d in FORECAST_DATES]
+    selected_models = dict(zip(df_final["Target"], df_final["Model"]))
+    mandate_2025 = mandate_values_for_date(pd.Timestamp("2025-06-01"))
+    rows = []
+
+    for target in TARGETS:
+        full = df_all[df_all["Target"] == target].sort_values("Fecha").copy()
+        macro_base = full.iloc[-1][["IPI_original", "IPC_var_anual", "Tasa_paro"]].to_dict()
+        macro_downturn = {
+            "IPI_original": macro_base["IPI_original"] * MACRO_DOWNTURN_SHOCK["IPI_original_mult"],
+            "IPC_var_anual": macro_base["IPC_var_anual"] + MACRO_DOWNTURN_SHOCK["IPC_var_anual_add"],
+            "Tasa_paro": macro_base["Tasa_paro"] + MACRO_DOWNTURN_SHOCK["Tasa_paro_add"],
+        }
+        scenarios = [
+            ("Neutral", macro_base, None),
+            ("Macro_Downturn", macro_downturn, None),
+            ("Mandate_Delayed", macro_base, mandate_2025),
+        ]
+
+        tr_ml = full[ML_FEATS + ["Consumo_Tm"]].dropna()
+        for model_name, label in [("Ridge", "Ridge"), ("RandomForest", "Random Forest"), ("XGBoost", "XGBoost")]:
+            try:
+                mdl, scaler = train_ml(tr_ml[ML_FEATS].values, tr_ml["Consumo_Tm"].values, model_name)
+            except Exception as exc:
+                print(f"Scenario sensitivity: training {label} failed for {target}: {exc}")
+                continue
+            for scenario_name, macro_scenario, mandate_override in scenarios:
+                try:
+                    forecast = recursive_forecast_ml(
+                        mdl, scaler, full, macro_scenario, len(forecast_labels),
+                        mandate_override=mandate_override,
+                    )
+                except Exception as exc:
+                    print(f"Scenario {scenario_name} forecast {label} failed for {target}: {exc}")
+                    continue
+                for fecha, val in zip(forecast_labels, forecast):
+                    rows.append(
+                        {
+                            "Target": target,
+                            "Model": label,
+                            "Scenario": scenario_name,
+                            "Fecha": fecha,
+                            "Forecast": round(float(val), 1),
+                            "Selected_Model_Uses_Scenario_Inputs": selected_models.get(target) in
+                            ("Ridge", "Random Forest", "XGBoost", "SARIMAX"),
+                        }
+                    )
+
+    return pd.DataFrame(rows)
 
 
 def build_final_metrics(df_metrics: pd.DataFrame, df_wf: pd.DataFrame) -> pd.DataFrame:
@@ -1383,7 +1509,14 @@ def build_tableau_outputs(df_all: pd.DataFrame, df_preds: pd.DataFrame, df_fc: p
     legacy.to_csv(DATA_OUTPUTS / "tableau_export_legacy.csv", index=False, encoding="utf-8")
 
 
-def plot_outputs(df_all: pd.DataFrame, df_metrics: pd.DataFrame, df_preds: pd.DataFrame, df_fc: pd.DataFrame, df_final: pd.DataFrame) -> None:
+def plot_outputs(
+    df_all: pd.DataFrame,
+    df_metrics: pd.DataFrame,
+    df_preds: pd.DataFrame,
+    df_fc: pd.DataFrame,
+    df_final: pd.DataFrame,
+    df_sarima_ci: pd.DataFrame,
+) -> None:
     selected = dict(zip(df_final["Target"], df_final["Model"]))
     selected_error = df_final.set_index("Target")[["MAPE", "RMSE"]].to_dict("index")
 
@@ -1422,18 +1555,38 @@ def plot_outputs(df_all: pd.DataFrame, df_metrics: pd.DataFrame, df_preds: pd.Da
             ax.plot(pred["Fecha_dt"], pred["Pred"], color=TARGET_COLORS[target], linestyle="--", linewidth=2, label=f"2025 prediction ({sel})")
         ax.plot(fc["Fecha_dt"], fc["Forecast"], color=TARGET_COLORS[target], linewidth=2.5, label=f"Forecast ({sel})")
         ax.axvline(pd.to_datetime("2026-01-01"), color="gray", linestyle=":", linewidth=1.5)
-        err = selected_error.get(target, {"MAPE": 20.0, "RMSE": 0.0})
-        pct_width = fc["Forecast"] * (float(err["MAPE"]) / 100.0)
-        abs_width = pd.Series(float(err["RMSE"]), index=fc.index)
-        band_width = np.maximum(pct_width.values, abs_width.values)
-        ax.fill_between(
-            fc["Fecha_dt"],
-            np.maximum(fc["Forecast"].values - band_width, 0),
-            fc["Forecast"].values + band_width,
-            color=TARGET_COLORS[target],
-            alpha=0.12,
-            label="2025 error band",
-        )
+
+        if sel == "SARIMA":
+            # Calibrated 95% prediction interval from the SARIMA fit itself,
+            # not a post-hoc accuracy proxy (see predict_sarima_with_ci).
+            ci = df_sarima_ci[df_sarima_ci["Target"] == target].copy()
+            ci["Fecha_dt"] = pd.to_datetime(ci["Fecha"])
+            ci = ci.sort_values("Fecha_dt")
+            ax.fill_between(
+                ci["Fecha_dt"],
+                ci["CI_Lower"],
+                ci["CI_Upper"],
+                color=TARGET_COLORS[target],
+                alpha=0.15,
+                label="95% prediction interval (calibrated)",
+            )
+        else:
+            # No native calibrated interval for curve-fit models (Logistic/
+            # Gompertz) without bootstrapping -- this band is an illustrative
+            # accuracy proxy (scaled by the 2025 holdout error), not a
+            # statistical confidence/prediction interval.
+            err = selected_error.get(target, {"MAPE": 20.0, "RMSE": 0.0})
+            pct_width = fc["Forecast"] * (float(err["MAPE"]) / 100.0)
+            abs_width = pd.Series(float(err["RMSE"]), index=fc.index)
+            band_width = np.maximum(pct_width.values, abs_width.values)
+            ax.fill_between(
+                fc["Fecha_dt"],
+                np.maximum(fc["Forecast"].values - band_width, 0),
+                fc["Forecast"].values + band_width,
+                color=TARGET_COLORS[target],
+                alpha=0.12,
+                label="illustrative error band (not calibrated)",
+            )
         ax.set_title(f"{target} - selected: {sel}", color=TARGET_COLORS[target], fontweight="bold")
         ax.set_ylabel("Consumo (Tm)")
         ax.grid(True, alpha=0.3)
@@ -1480,10 +1633,11 @@ def main() -> None:
     df_preds = pd.concat([df_individual_preds, df_pooled_preds], ignore_index=True)
     df_final = build_final_metrics(df_metrics, df_wf)
     df_pooling_decision = build_pooling_decision(df_final, df_pooled)
-    df_fc, df_degenerate_fc = final_forecasts(df_all, sarima_orders)
+    df_fc, df_degenerate_fc, df_sarima_ci = final_forecasts(df_all, sarima_orders)
     df_selected_fc = build_selected_forecast(df_fc, df_final)
     df_comparison = build_comparison_metrics(df_metrics)
     df_degenerate = pd.concat([df_degenerate_eval, df_degenerate_fc], ignore_index=True)
+    df_scenarios = build_scenario_sensitivity(df_all, df_final)
 
     selected_degenerate = df_degenerate[df_degenerate["Stage"] == "2025_holdout_evaluation"].merge(
         df_final[["Target", "Model"]], on=["Target", "Model"], how="inner"
@@ -1509,9 +1663,11 @@ def main() -> None:
     df_selected_fc.to_csv(DATA_OUTPUTS / "forecast_24m_selected.csv", index=False, encoding="utf-8")
     df_comparison.to_csv(DATA_OUTPUTS / "metricas_comparativa.csv", index=False, encoding="utf-8")
     df_degenerate.to_csv(DATA_OUTPUTS / "degenerate_fits.csv", index=False, encoding="utf-8")
+    df_sarima_ci.to_csv(DATA_OUTPUTS / "forecast_24m_sarima_confidence_intervals.csv", index=False, encoding="utf-8")
+    df_scenarios.to_csv(DATA_OUTPUTS / "scenario_sensitivity.csv", index=False, encoding="utf-8")
 
     build_tableau_outputs(df_all, df_preds, df_fc, df_final, df_metrics)
-    plot_outputs(df_all, df_metrics, df_preds, df_fc, df_final)
+    plot_outputs(df_all, df_metrics, df_preds, df_fc, df_final, df_sarima_ci)
 
     print("\nTraining-only multi-step walk-forward selections:")
     print(df_wf[["Target", "Selection_Candidate_Set", "Proposed_Model", "Selected_Model", "Decision"]].to_string(index=False))
@@ -1540,6 +1696,24 @@ def main() -> None:
     print(df_pooling_decision.to_string(index=False))
     print("\nDegenerate fits excluded (sigma2 collapse or non-convergence, never eligible to be selected):")
     print(df_degenerate.to_string(index=False) if not df_degenerate.empty else "  none")
+
+    print("\nScenario sensitivity (Random Forest, 2027 annual total, Tm) -- feature-aware candidates only:")
+    if not df_scenarios.empty:
+        rf_scenarios = df_scenarios[df_scenarios["Model"] == "Random Forest"].copy()
+        rf_scenarios["year"] = rf_scenarios["Fecha"].str[:4].astype(int)
+        rf_annual = rf_scenarios[rf_scenarios["year"] == 2027].groupby(["Target", "Scenario"])["Forecast"].sum().unstack()
+        print(rf_annual.to_string())
+        any_selected_responds = df_scenarios["Selected_Model_Uses_Scenario_Inputs"].any()
+        if not any_selected_responds:
+            print(
+                "  Note: none of the 5 currently walk-forward-selected production models use macro/mandate "
+                "inputs, so the production forecast itself is scenario-invariant -- see scenario_sensitivity.csv."
+            )
+        print(
+            "  Note: RF/XGBoost show identical Neutral vs Mandate_Delayed forecasts by design, not a bug -- "
+            "Mandato_Energia_Pct only ranges 10.5-11.5 in training, so both the legislated (14.0/15.5) and "
+            "delayed (11.5) values sit at/beyond every tree split threshold (see build_scenario_sensitivity docstring)."
+        )
 
     df_selected_fc["year"] = df_selected_fc["Fecha"].str[:4].astype(int)
     annual = df_selected_fc.groupby(["Target", "year"])["Forecast"].sum().unstack()

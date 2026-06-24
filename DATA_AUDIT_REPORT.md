@@ -67,7 +67,7 @@ the resulting model changes.
 | `data/inputs/precios_combustibles_2023.csv` | 75553 x 5 | 2023-01-01 to 2023-12-31 | Optional price-ablation source. |
 | `data/inputs/precios_combustibles_2024.csv` | 75762 x 5 | 2024-01-01 to 2024-12-31 | Optional price-ablation source. |
 | `data/inputs/precios_combustibles_2025.csv` | 75524 x 5 | 2025-01-01 to 2025-12-31 | Optional price-ablation source. |
-| `data/inputs/mandato_biocarburantes.csv` | 15 x 5 | Annual schedule | Deterministic mandate features. |
+| `data/inputs/mandato_biocarburantes.csv` | 15 x 4 | Annual schedule (2016-2030) | One deterministic mandate feature (`Mandato_Energia_Pct`). All BOE citations verified (2026-06-25); 2027-2030 are the team's own +1.5pp/year projection, not legislated values -- see `Status`/`Fuente` columns. |
 | `data/inputs/turismo_visitantes_ccaa.csv` | 15 x 9 | 2025-10 only | Not used; single-month coverage cannot support a monthly time series model. |
 
 ## Processed CNMC Tables
@@ -89,9 +89,9 @@ Validation checks in the script path:
 
 | File | Shape | Split | Notes |
 |---|---:|---|---|
-| `data/features/features_modelo_completo.csv` | 180 x 36 | 2023-01 to 2025-12 | Five targets x 36 months. |
-| `data/features/features_train.csv` | 120 x 36 | 2023-01 to 2024-12 | Temporal train split. |
-| `data/features/features_test.csv` | 60 x 36 | 2025-01 to 2025-12 | Temporal holdout split; loaded only after model selection is fixed. |
+| `data/features/features_modelo_completo.csv` | 180 x 35 | 2023-01 to 2025-12 | Five targets x 36 months. |
+| `data/features/features_train.csv` | 120 x 35 | 2023-01 to 2024-12 | Temporal train split. |
+| `data/features/features_test.csv` | 60 x 35 | 2025-01 to 2025-12 | Temporal holdout split; loaded only after model selection is fixed. |
 | `data/features/features_precios_combustibles.csv` | 36 x 81 | 2023-01 to 2025-12 | Optional price-ablation features. |
 
 Expected feature nulls:

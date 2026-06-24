@@ -32,7 +32,7 @@ TARGET_LABEL = {
 BASE_LAGS = [1, 2, 3, 12]
 MACRO_COLS = ["IPI_original", "IPI_ajustado", "IPC_var_anual", "Tasa_paro"]
 DIESEL_MARKET_COLS = ["GasoleoA_Tm", "Biodiesel_GasoleoA_Ratio"]
-MANDATE_COLS = ["Mandato_Energia_Pct", "Mandato_Biodiesel_Blend_Pct"]
+MANDATE_COLS = ["Mandato_Energia_Pct"]
 
 
 def load_targets(master: pd.DataFrame) -> pd.DataFrame:
@@ -87,9 +87,6 @@ def add_mandate_features(df: pd.DataFrame) -> pd.DataFrame:
     if missing.sum() > 0:
         raise ValueError(f"Missing mandate values after merge: {missing.to_dict()}")
 
-    # Decreto 61/2023 activates the biodiesel blend requirement from Aug 2024.
-    fecha_dt = pd.to_datetime(out["Fecha"])
-    out.loc[fecha_dt < pd.Timestamp("2024-08-01"), "Mandato_Biodiesel_Blend_Pct"] = 0.0
     return out
 
 
@@ -175,8 +172,6 @@ def validate_features(df: pd.DataFrame) -> None:
 
     if df[MANDATE_COLS].isna().sum().sum() > 0:
         raise ValueError("Mandate features contain nulls")
-    if (df[pd.to_datetime(df["Fecha"]) < pd.Timestamp("2024-08-01")]["Mandato_Biodiesel_Blend_Pct"] != 0).any():
-        raise ValueError("Mandato_Biodiesel_Blend_Pct must be 0 before Aug 2024")
 
 
 def main() -> None:

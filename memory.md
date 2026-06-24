@@ -1,9 +1,166 @@
 # Project Memory - Repsol Eco-Fuels Demand Forecasting Capstone
 
-**Last updated:** 2026-06-24
+**Last updated:** 2026-06-25
 **Maintainer note:** This file is the long-term source of truth for this project. See [Section 10](#10-future-instructions-for-claude) for how Claude should use and maintain it.
 
 ---
+
+## 2026-06-25 Audit Fixes: Mandate Data Integrity, Residual Diagnostics, Calibrated Intervals, Sensitivity Analysis (`sacha`)
+
+A formal 11-section audit (user-supplied prompt, full report delivered 2026-06-24)
+surfaced six "Major" findings. All six were fixed and re-verified end to end
+(full `03->02->04->05->06` pipeline rerun, validator passed, all touched
+notebooks re-executed via the `repsol-venv` kernel with zero errors).
+
+### 1. Mandate schedule data integrity (`data/inputs/mandato_biocarburantes.csv`)
+
+Two separate problems, found by actually researching the BOE (web search,
+not memory -- the system clock for this session is genuinely 2026-06, so
+post-training-cutoff Spanish regulatory searches return real results):
+
+- **Non-monotonic `Mandato_Energia_Pct`**: 2027 was 15.5% but 2028-2030 dropped
+  back to 14.0%, breaking the ratchet every other year follows. User chose to
+  continue the +1.5pp/year projection: 2028=17.0%, 2029=18.5%, 2030=20.0%.
+- **Fabricated/miscited "Decreto 61/2023"**: cited as the source of
+  `Mandato_Biodiesel_Blend_Pct` (a 3%->7.5% volumetric biodiesel blend
+  mandate). Direct BOE search for "Real Decreto 61/2023" returns nothing
+  matching that description at all. The only real decree numbered 61 is
+  **RD 61/2006**, which sets a *maximum* 7% FAME blend wall for engine
+  compatibility -- the opposite of a rising minimum mandate, and a completely
+  different instrument. The real 2024 biofuel-mechanism order is **Orden
+  TED/728/2024** (15 Jul 2024), but it does not contain the claimed 3%/7.5%
+  figures either. User chose: **remove the feature entirely** rather than
+  keep an unverifiable number or guess at a replacement citation.
+
+What WAS verified as accurate against BOE directly:
+- RD 1085/2015: 2016-2020 figures (4.3/5/6/7/8.5%) match BOE exactly.
+- RD 205/2021: sets 2021-2022 objectives (9.5%/10.0%), confirmed real; date
+  was off by one day in our citation (31 mar -> corrected to 30 mar 2021).
+- RD 376/2022: sets 2023-2026 baseline at 10.5/11/11.5/**12**% (before RD
+  5/2026 amended 2026 up to 14%) -- our 10.5/11/11.5 figures match exactly;
+  date was off by one day (18 may -> corrected to 17 may 2022).
+- RD 5/2026: real, confirmed via BOE-A-2026-560. Signed 8 Jan 2026, raises
+  2026 from 12%->14%, published in BOE 10 Jan 2026 (our citation said "10 ene
+  2026" for the decree's own date; corrected to distinguish signing vs.
+  publication date).
+
+**Net effect**: `mandato_biocarburantes.csv` is now 4 columns (was 5),
+`ML_FEATS`/`MANDATE_FEATS` lost `Mandato_Biodiesel_Blend_Pct` everywhere
+(scripts 04/05/06, notebooks 05/07/08/09). Feature tables are 35 columns
+(was 36). **Selected models and 2025 holdout metrics are byte-identical to
+before this fix** -- confirmed by direct comparison -- because none of the
+5 winning models (Logistic, Logistic, SARIMA, SARIMA, Gompertz) ever used
+the mandate features at all.
+
+### 2. Formal residual diagnostics added to `09_evaluation.ipynb`
+
+The notebook's own Section 3 markdown promised "ACF of residuals (remaining
+autocorrelation = model misspecification)" but never ran one (`plot_acf`/
+`plot_pacf` were imported, never called -- a leakage-audit-adjacent finding
+from the 2026-06-24 report). Added a new subsection (3b) with Ljung-Box test
++ ACF/PACF plots on each target's selected-model 2025 test residuals.
+
+**Result**: Cataluña (SARIMA, p=0.043) and Andalucía (SARIMA, p=0.032) show
+statistically significant residual autocorrelation at the 5% level; Nacional
+(Logistic), Madrid (Logistic), Valencia (Gompertz) do not. Caveat: only 12
+test points per target -- treat as a coarse screen. Outputs:
+`data/outputs/ljung_box_residual_diagnostics.csv`,
+`reports/figures/09b_residual_acf_pacf.png`.
+
+### 3. Price-feature ablation re-scored without test-set peeking
+
+`06_price_features.ipynb`'s go/no-go gate and `08_modeling_with_prices.ipynb`'s
+"does adding prices help" comparison both used full-window correlation / 2025
+test-set MAPE -- the same leakage pattern as picking a model family by test
+MAPE, just applied to a feature-set decision instead. Fixed both to decide
+using train-only (2023-2024) walk-forward MAPE:
+- Notebook 06: added `df_corr_train` (correlation computed on 2023-2024 rows
+  only) as the actual decision input; full-window correlation kept for
+  context, explicitly labeled diagnostic-only.
+- Notebook 08: added `walk_forward_mape()` (mirrors the production walk-forward
+  pattern in `scripts/05`) computing RF/XGBoost walk-forward MAPE with and
+  without price features on the same 2023-2024 folds. Output:
+  `data/outputs/price_features_walkforward.csv`.
+
+**Result**: price features do NOT clearly help under the honest criterion --
+RF improves in 1/5 targets, XGBoost in 0/5. The original full-window
+correlation (r ~= -0.81) overstated their value. Does not change production
+model selection (none of the 5 selected models use price features).
+
+### 4. Calibrated SARIMA prediction intervals
+
+The forecast chart (`reports/figures/11_forecast_24m.png`) previously showed
+only a heuristic MAPE/RMSE-scaled band, honestly labeled "error band" but not
+a real statistical interval. Added `predict_sarima_with_ci()` in
+`scripts/05_modeling_with_cnmc.py`, using the SARIMA fit's own
+`get_forecast().conf_int()` (back-transformed from log1p). `final_forecasts()`
+now returns a 3-tuple including `df_sarima_ci`, saved to
+`data/outputs/forecast_24m_sarima_confidence_intervals.csv`.
+
+For SARIMA-selected targets (Cataluña, Andalucía), the chart now shows this
+real 95% interval instead of the heuristic band. **Honest finding, not a
+bug**: the calibrated interval is dramatically wider than the old heuristic
+band by month 24 (e.g. Cataluña Dec 2027: point forecast 3398 Tm, but the
+calibrated 95% interval is [49, 232,394] Tm) -- a log1p-space SARIMA fit's
+forecast-error variance compounds over a 24-step horizon and explodes
+asymmetrically after `expm1` back-transformation. This reveals the true
+statistical uncertainty at a 24-month horizon is far larger than the old
+band implied. Logistic/Gompertz targets keep the heuristic band, now
+explicitly labeled "illustrative error band (not calibrated)" since no
+native interval exists for curve-fit models without bootstrapping.
+
+### 5. Sensitivity analysis for macro/mandate assumptions
+
+The 24-month forecast held macro at "last known value" and mandate at its
+legislated/projected schedule with no alternative scenario anywhere. Added
+`build_scenario_sensitivity()` to `scripts/05_modeling_with_cnmc.py`: re-runs
+Ridge/Random Forest/XGBoost (the only headline candidates that consume
+macro/mandate features) under three scenarios (Neutral, Macro_Downturn:
+Tasa_paro+2pp/IPI_original x0.95/IPC_var_anual+1pp, Mandate_Delayed: mandate
+held at its 2025 level instead of stepping up). Output:
+`data/outputs/scenario_sensitivity.csv`. Required adding a `mandate_override`
+parameter to `recursive_forecast_ml()` (additive, default `None`, zero
+behavior change for existing callers).
+
+**Genuine finding, verified empirically, not a bug**: Random Forest and
+XGBoost show IDENTICAL forecasts for Neutral vs. Mandate_Delayed. Verified
+this is correct by overriding the mandate value to an absurd 999.0 and
+getting the exact same prediction as 11.5 or 14.0 -- `Mandato_Energia_Pct`
+only ranges 10.5-11.5 in the 2023-2024 training data, so every value at or
+beyond that range (11.5 delayed, 14.0/15.5 legislated, or 999 as a sanity
+check) routes to the same terminal leaves in every tree. This is the
+textbook tree-model extrapolation limitation: trees cannot extrapolate
+beyond an observed feature range. Ridge DOES respond to the mandate value
+linearly, but its own previously-documented catastrophic explosive
+extrapolation swamps the effect (saturates to the same runaway trajectory
+regardless of starting mandate value), so its scenario sensitivity isn't
+practically informative either. Macro shocks ARE a usable signal for
+RF/XGBoost (Tasa_paro/IPI_original/IPC_var_anual vary enough within the
+training window for trees to have learned real splits on them).
+
+None of the 5 currently-selected production models use macro/mandate inputs
+at all, so **the production forecast itself remains scenario-invariant**
+regardless of this finding -- flagged explicitly via the
+`Selected_Model_Uses_Scenario_Inputs` column in the output CSV and in the
+script's printed summary.
+
+### What was NOT done, and why
+
+- Did not attempt to find a real replacement citation for the removed
+  biodiesel-blend mandate feature -- the user chose removal over guessing.
+- Did not rewrite notebook 09's pre-existing stale narrative text (cell-18's
+  "KNOWN LIMITATIONS" prose, cell-19's results table) to match current
+  production numbers -- that staleness predates this fix, was already flagged
+  in the 2026-06-24 audit (Section 11, notebook redundancy/staleness, "known,
+  accepted, not fixed"), and rewriting it was out of scope for this specific
+  six-item fix list.
+- Did not add calibrated intervals for Logistic/Gompertz (would need
+  bootstrapping, a larger change) -- the audit finding only required "at
+  least one" calibrated interval for SARIMA/SARIMAX-selected targets.
+- Did not fold the mini-model's (`12_mini_trend_regulation_model.ipynb`)
+  3-scenario approach into the main pipeline -- user explicitly chose the
+  lighter option (re-run feature-aware candidates under 2-3 scenarios)
+  over the heavier option (integrate the mini-model's scenario logic).
 
 ## 2026-06-24 SARIMAX Overfitting Fix: Degeneracy Gate Extended To Fit Quality (`sacha`)
 
@@ -517,9 +674,12 @@ The contemporaneous values `GasoleoA_Tm` and `Biodiesel_GasoleoA_Ratio` are reta
 
 Current feature outputs:
 
-- `data/features/features_modelo_completo.csv`: 180 rows x 36 columns
-- `data/features/features_train.csv`: 120 rows x 36 columns
-- `data/features/features_test.csv`: 60 rows x 36 columns
+- `data/features/features_modelo_completo.csv`: 180 rows x 35 columns
+- `data/features/features_train.csv`: 120 rows x 35 columns
+- `data/features/features_test.csv`: 60 rows x 35 columns
+
+(Was 36 columns through 2026-06-24; `Mandato_Biodiesel_Blend_Pct` was removed
+2026-06-25, see "Audit Fixes" section near the top of this file.)
 
 ### Modeling changes
 
@@ -739,18 +899,23 @@ This session pursued the long-standing **#1 priority: pool the 5 regional series
 ### Biofuel mandate features added (2026-06-19)
 
 #### Background: what the mandate is
-Spain has two distinct legislative drivers that directly determine how much biodiesel must be blended into the diesel pool:
+**SUPERSEDED 2026-06-25** -- this section originally described two mandate variables. The second one,
+`Mandato_Biodiesel_Blend_Pct`, was removed; see the "2026-06-25 Audit Fixes" section near the top of
+this file for why. Only `Mandato_Energia_Pct` remains as a feature. Kept below for history.
 
-1. **Mandato de Energia (Mandato_Energia_Pct)**: Annual national biofuel blending obligation (% of energy content of all transport fuels) set by successive Royal Decrees and project assumptions. Increased year-on-year: 10.5% (2023), 11.0% (2024), 11.5% (2025), **14.0% (2026, RD 5/2026 signed 10 Jan 2026)**, 15.5% (2027 projected using +1.5 percentage points).
-2. **Mandato de Mezcla Biodiesel (Mandato_Biodiesel_Blend_Pct)**: Volumetric biodiesel-into-Gasoleo-A blend requirement introduced by Decreto 61/2023. Activated August 2024 at 3%; rises to 7.5% from 2028. Zero before August 2024.
+Spain has (it turns out, only) one legislative driver of this type that directly determines how much
+biodiesel must be blended into the diesel pool:
 
-Both are deterministic policy variables -- not forecasts, no uncertainty -- so they can be used as features without leakage risk. Their future values are known from the legislation.
+1. **Mandato de Energia (Mandato_Energia_Pct)**: Annual national biofuel blending obligation (% of energy content of all transport fuels) set by successive Royal Decrees and project assumptions. Increased year-on-year: 10.5% (2023), 11.0% (2024), 11.5% (2025), **14.0% (2026, RD 5/2026 signed 8 Jan 2026, published BOE 10 Jan 2026)**, 15.5% (2027, **the team's own projection**, +1.5pp/year continued through 2030 to 20.0% -- no Real Decreto exists yet for 2027-2030).
+2. ~~**Mandato de Mezcla Biodiesel (Mandato_Biodiesel_Blend_Pct)**: Volumetric biodiesel-into-Gasoleo-A blend requirement introduced by Decreto 61/2023.~~ **Removed 2026-06-25: "Decreto 61/2023" does not exist in the BOE.** Searched directly; the only real decree numbered 61 is RD 61/2006, which sets a *maximum* 7% FAME blend wall for engine compatibility -- the opposite of a rising minimum mandate, and an unrelated instrument. No real source for the claimed 3%->7.5% figures was found anywhere.
+
+`Mandato_Energia_Pct` is a deterministic policy variable for 2023-2026 (legislated, BOE-verified) -- not a forecast, no uncertainty for those years. 2027-2030 are an internal projection, not legislation; this is disclosed in `data/inputs/mandato_biocarburantes.csv`'s `Status`/`Fuente` columns.
 
 #### What was built
-A new input file `data/inputs/mandato_biocarburantes.csv` was created with the full mandate schedule 2016-2030 (annual rows). Notebooks 05, 07, and 08 were updated, and the current script path was also updated so CNMC and mandate features coexist in the same production feature tables:
+A new input file `data/inputs/mandato_biocarburantes.csv` was created with the full mandate schedule 2016-2030 (annual rows, now 4 columns after the 2026-06-25 fix). Notebooks 05, 07, and 08 were updated, and the current script path was also updated so CNMC and mandate features coexist in the same production feature tables:
 
-- **`05_feature_engineering.ipynb` / `scripts/04_build_features.py`**: Mandate CSV loaded, joined at monthly granularity (with the `Mandato_Biodiesel_Blend_Pct` set to 0.0 for all months before August 2024), and merged onto the feature matrix. The current script output has 36 columns: 34 CNMC-aware columns plus 2 mandate columns.
-- **`07_modeling.ipynb` / `scripts/05_modeling_with_cnmc.py`**: `ML_FEATS` now contains 18 features: 12 baseline calendar/target/macro features, 4 lagged CNMC diesel-market features, and 2 mandate features. The recursive ML forecast function passes mandate values forward using the 2026-2027 schedule: `Mandato_Energia_Pct = 14.0` in 2026 and `15.5` in 2027, with `Mandato_Biodiesel_Blend_Pct = 3.0` (Decreto 61/2023, 3% through 2027).
+- **`05_feature_engineering.ipynb` / `scripts/04_build_features.py`**: Mandate CSV loaded, joined at monthly granularity, and merged onto the feature matrix. The current script output has 35 columns: 34 CNMC-aware columns plus 1 mandate column. (Was 36/2 before the 2026-06-25 fix.)
+- **`07_modeling.ipynb` / `scripts/05_modeling_with_cnmc.py`**: `ML_FEATS` now contains 17 features: 12 baseline calendar/target/macro features, 4 lagged CNMC diesel-market features, and 1 mandate feature. The recursive ML forecast function passes the mandate value forward using the per-year schedule: `Mandato_Energia_Pct = 14.0` in 2026 and `15.5` in 2027. (Was 18 features / 2 mandate values before the 2026-06-25 fix.)
 - **`08_modeling_with_prices.ipynb`**: Same `ML_BASE` extension and recursive forecast update as notebook 07.
 
 #### Numeric outcome -- mandate did NOT improve forecasts
@@ -857,7 +1022,7 @@ the current pipeline. Models are refit from scratch by the production script.
 | **Gompertz growth curve** *(added 2026-06-16)* | Statistical, saturating | `L·exp(-b·exp(-kt))` + same seasonal correction. |
 | **Diesel Share** *(added 2026-06-19)* | Ratio model | Models `Biodiesel_GasoleoA_Ratio` and converts the predicted ratio back into tonnes using seasonal-naive future `GasoleoA_Tm`. Tested as a candidate, but not selected. |
 
-**Feature set** (`ML_FEATS`, used by Ridge/RF/XGBoost only, 18 features total as of 2026-06-19): `Tendencia` (trend index), `Mes`, `sin_mes`/`cos_mes` (cyclical month encoding), `Lag_1`/`Lag_2`/`Lag_3` (target lags), `Roll_mean_3`/`Roll_mean_6` (rolling means), `IPI_original_lag1`, `IPC_var_anual_lag1`, `Tasa_paro_lag1` (lagged macro -- **never the contemporaneous value**, see Section 4), plus the lagged CNMC diesel-market features `GasoleoA_Tm_lag1`, `GasoleoA_Tm_roll3_lag1`, `Biodiesel_GasoleoA_Ratio_lag1`, `Biodiesel_GasoleoA_Ratio_roll3_lag1`, **plus `Mandato_Energia_Pct` and `Mandato_Biodiesel_Blend_Pct`** (deterministic policy features, no lag needed, future values read from the mandate schedule). `Lag_12` exists in the feature table but is excluded from the model feature lists due to excessive NaN loss.
+**Feature set** (`ML_FEATS`, used by Ridge/RF/XGBoost only, 17 features total as of 2026-06-25, was 18 with two mandate features before that date -- see "2026-06-25 Audit Fixes"): `Tendencia` (trend index), `Mes`, `sin_mes`/`cos_mes` (cyclical month encoding), `Lag_1`/`Lag_2`/`Lag_3` (target lags), `Roll_mean_3`/`Roll_mean_6` (rolling means), `IPI_original_lag1`, `IPC_var_anual_lag1`, `Tasa_paro_lag1` (lagged macro -- **never the contemporaneous value**, see Section 4), plus the lagged CNMC diesel-market features `GasoleoA_Tm_lag1`, `GasoleoA_Tm_roll3_lag1`, `Biodiesel_GasoleoA_Ratio_lag1`, `Biodiesel_GasoleoA_Ratio_roll3_lag1`, **plus `Mandato_Energia_Pct`** (deterministic policy feature, no lag needed, future values read from the mandate schedule). `Lag_12` exists in the feature table but is excluded from the model feature lists due to excessive NaN loss.
 
 **Evaluation metric:** MAPE is the primary ranking metric; MAE, RMSE, R² also reported. **R² is the more honest signal of absolute fit quality** — it is negative for every target except Nacional (≈0), meaning even the best models still underperform a naive mean in absolute terms; MAPE looks more flattering but can mask this.
 

@@ -55,7 +55,6 @@ MODEL_FEATURES = [
     "Biodiesel_GasoleoA_Ratio_lag1",
     "Biodiesel_GasoleoA_Ratio_roll3_lag1",
     "Mandato_Energia_Pct",
-    "Mandato_Biodiesel_Blend_Pct",
 ]
 
 
@@ -156,9 +155,9 @@ def validate_feature_tables() -> None:
     train = read_csv(DATA_FEATURES / "features_train.csv")
     test = read_csv(DATA_FEATURES / "features_test.csv")
 
-    require(full.shape == (180, 36), f"Unexpected full feature shape: {full.shape}")
-    require(train.shape == (120, 36), f"Unexpected train feature shape: {train.shape}")
-    require(test.shape == (60, 36), f"Unexpected test feature shape: {test.shape}")
+    require(full.shape == (180, 35), f"Unexpected full feature shape: {full.shape}")
+    require(train.shape == (120, 35), f"Unexpected train feature shape: {train.shape}")
+    require(test.shape == (60, 35), f"Unexpected test feature shape: {test.shape}")
     require(set(full["Target"].unique()) == set(TARGETS), "features_modelo_completo target set mismatch")
     require(not full.duplicated(["Fecha", "Target"]).any(), "Duplicate Fecha + Target rows in full features")
     require(train["Fecha"].max() == "2024-12", "features_train must end at 2024-12")
@@ -298,6 +297,24 @@ def validate_model_outputs() -> None:
     require(pivot.shape[0] == 24, f"tableau_forecast_pivot should have 24 rows, got {pivot.shape[0]}")
     missing_pivot_targets = [target for target in TARGETS if target not in pivot.columns]
     require(not missing_pivot_targets, f"tableau_forecast_pivot missing targets: {missing_pivot_targets}")
+
+    sarima_ci = read_csv(DATA_OUTPUTS / "forecast_24m_sarima_confidence_intervals.csv")
+    require(not sarima_ci.empty, "forecast_24m_sarima_confidence_intervals.csv should not be empty")
+    require(
+        (sarima_ci["CI_Lower"] <= sarima_ci["Forecast"]).all()
+        and (sarima_ci["Forecast"] <= sarima_ci["CI_Upper"]).all(),
+        "SARIMA forecast must fall within its own calibrated confidence interval",
+    )
+    require((sarima_ci["CI_Lower"] >= 0).all(), "SARIMA confidence interval lower bound must be non-negative")
+
+    scenarios = read_csv(DATA_OUTPUTS / "scenario_sensitivity.csv")
+    require(not scenarios.empty, "scenario_sensitivity.csv should not be empty")
+    expected_scenarios = {"Neutral", "Macro_Downturn", "Mandate_Delayed"}
+    require(
+        set(scenarios["Scenario"].unique()) == expected_scenarios,
+        f"scenario_sensitivity.csv should contain exactly {expected_scenarios}, got {set(scenarios['Scenario'].unique())}",
+    )
+    require(scenarios["Fecha"].nunique() == 24, "scenario_sensitivity.csv should cover 24 forecast months")
 
 
 def main() -> None:

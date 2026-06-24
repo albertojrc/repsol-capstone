@@ -1,13 +1,13 @@
 Target,Model,MAE,RMSE,MAPE,R2,Status
-Madrid,Pooled Ridge,2747279.3,2982777.8,97649.1,-19494350.41,tested
-Cataluña,Pooled Ridge,2724326.4,2981399.7,91390.8,-22594704.857,tested
-Andalucía,Pooled Ridge,1911686.1,2495349.1,103355.0,-15697373.088,tested
-Valencia,Pooled Ridge,1909472.0,2495924.7,177416.1,-70147108.446,tested
-Madrid,Pooled Random Forest,1031.4,1211.4,34.2,-2.215,tested
-Cataluña,Pooled Random Forest,1190.6,1349.2,38.2,-3.627,tested
-Andalucía,Pooled Random Forest,291.5,410.2,21.5,0.576,tested
-Valencia,Pooled Random Forest,637.7,669.6,79.5,-4.048,tested
-Madrid,Pooled XGBoost,1595.6,1720.5,56.3,-5.486,tested
-Cataluña,Pooled XGBoost,1738.2,1840.0,58.6,-7.606,tested
-Andalucía,Pooled XGBoost,826.8,992.3,48.4,-1.482,tested
-Valencia,Pooled XGBoost,270.7,328.1,35.6,-0.212,tested
+Madrid,Pooled Ridge,2781590.6,2988579.3,99741.2,-19570256.119,tested
+Cataluña,Pooled Ridge,2724621.8,2981402.6,91406.5,-22594749.868,tested
+Andalucía,Pooled Ridge,1911003.8,2495337.1,103303.3,-15697221.36,tested
+Valencia,Pooled Ridge,1909234.0,2495922.6,177385.0,-70146990.261,tested
+Madrid,Pooled Random Forest,1002.7,1176.8,33.3,-2.034,tested
+Cataluña,Pooled Random Forest,1142.4,1303.1,36.4,-3.316,tested
+Andalucía,Pooled Random Forest,271.7,383.5,20.9,0.629,tested
+Valencia,Pooled Random Forest,665.6,697.0,82.5,-4.47,tested
+Madrid,Pooled XGBoost,1597.8,1725.2,56.2,-5.522,tested
+Cataluña,Pooled XGBoost,1730.3,1835.4,58.2,-7.563,tested
+Andalucía,Pooled XGBoost,818.2,984.1,48.2,-1.441,tested
+Valencia,Pooled XGBoost,243.4,306.1,31.8,-0.055,tested
