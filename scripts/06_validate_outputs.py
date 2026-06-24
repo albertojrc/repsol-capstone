@@ -194,15 +194,44 @@ def validate_model_outputs() -> None:
     forecasts = read_csv(DATA_OUTPUTS / "forecast_24m_sarima_rf_xgb.csv")
     selected_forecasts = read_csv(DATA_OUTPUTS / "forecast_24m_selected.csv")
     pivot = read_csv(DATA_OUTPUTS / "tableau_forecast_pivot.csv")
+    degenerate = read_csv(DATA_OUTPUTS / "degenerate_fits.csv")
 
     selected = dict(zip(final["Target"], final["Model"]))
     require(set(selected) == set(TARGETS), f"Final selected target set mismatch: {selected}")
     invalid_models = sorted(set(final["Model"]) - HEADLINE_FINAL_MODELS)
     require(not invalid_models, f"Final selected models must be one of the 7 headline candidates, found: {invalid_models}")
+
+    # A candidate may legitimately be missing from metricas_modelos.csv for a
+    # given target if its fit was degenerate (sigma2 collapsed to near zero,
+    # or the optimizer never converged -- the signature of too many
+    # parameters for too few rows, observed for SARIMAX on 4 of 5 targets).
+    # Any OTHER missing candidate is a real bug, not an intentional exclusion.
     for target in TARGETS:
         target_models = set(metrics.loc[metrics["Target"].eq(target), "Model"])
         missing_headline = sorted(HEADLINE_FINAL_MODELS - target_models)
-        require(not missing_headline, f"{target} missing headline candidate metrics: {missing_headline}")
+        documented_degenerate = set(
+            degenerate.loc[
+                degenerate["Target"].eq(target) & degenerate["Stage"].eq("2025_holdout_evaluation"),
+                "Model",
+            ]
+        )
+        undocumented_missing = sorted(set(missing_headline) - documented_degenerate)
+        require(
+            not undocumented_missing,
+            f"{target} missing headline candidate metrics with no degeneracy record: {undocumented_missing}",
+        )
+
+    # The model actually selected for production must never be one we
+    # ourselves flagged as a degenerate fit -- selection happens upstream of
+    # evaluate_models in scripts/05, so this also catches any future
+    # regression where that ordering is broken.
+    selected_degenerate = degenerate[degenerate["Stage"].eq("2025_holdout_evaluation")].merge(
+        final[["Target", "Model"]], on=["Target", "Model"], how="inner"
+    )
+    require(
+        selected_degenerate.empty,
+        f"Selected model is flagged as a degenerate fit: {selected_degenerate.to_dict('records')}",
+    )
 
     required_sarima_cols = {"Target", "p", "d", "q", "P", "D", "Q", "m", "WalkForward_MAPE", "Selected"}
     missing_sarima_cols = required_sarima_cols.difference(sarima_grid.columns)

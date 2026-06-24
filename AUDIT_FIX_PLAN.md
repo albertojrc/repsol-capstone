@@ -108,14 +108,28 @@ regenerated. The shared-filename production outputs that notebooks 05/07/08
 overwrite when run (`data/features/*.csv`, several `data/outputs/*.csv`) were
 restored to the authoritative script-produced state afterward.
 
+## Completed: SARIMAX Degeneracy Fix (same day)
+
+The Cataluña SARIMAX result referenced below as "still open" was investigated
+and fixed. It was not a close call between two valid models: the SARIMAX fit
+never converged (`sigma2` collapsed to 5.07e-7), and the same failure was
+found on 4 of 5 targets. `scripts/05_modeling_with_cnmc.py` now rejects any
+SARIMA/SARIMAX fit that fails to converge or has near-zero residual variance,
+at the point of fitting. Cataluña now selects SARIMA (50.1% holdout MAPE, down
+from 92.3%); Nacional's selection also changed (SARIMA to Logistic) as a
+consistency side effect of applying the same check to plain SARIMA. See
+`memory.md` and `PHASE2_MODELING_REPORT.md` for the full investigation.
+
 ## Still Open After Final Cleanup
 
 - Treat the forecasts as directional planning scenarios because all selected
-  target-level R2 values remain weak or negative.
-- Cataluña's current selected model is SARIMAX, chosen by training-only
-  walk-forward by a very narrow margin over SARIMA (68.5% vs 69.6%), but it
-  is the weakest result in the current set on the 2025 holdout (92.3% MAPE).
-  This is disclosed in notebook 10 rather than overridden.
+  target-level R2 values remain negative.
+- Andalucía and Cataluña's forecasts are still fairly flat in absolute terms
+  (24-month ranges of 157.9 Tm and 64.6 Tm respectively). They pass the
+  pipeline's degeneracy checks, but this reflects a genuine small-sample
+  limitation (not enough clean seasonal history for a strongly seasonal
+  SARIMA order without overfitting), not something more pipeline engineering
+  resolves.
 - Consider a stronger backtesting design if more historical data becomes
   available.
 - Keep HVO / renewable diesel outside the target unless new usable regional data

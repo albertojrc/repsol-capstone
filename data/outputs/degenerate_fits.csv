@@ -1,0 +1,10 @@
+Target,Model,Stage,Reason
+Nacional,SARIMAX,2025_holdout_evaluation,degenerate SARIMAX fit: mle_did_not_converge
+Madrid,SARIMAX,2025_holdout_evaluation,degenerate SARIMAX fit: mle_did_not_converge
+Cataluña,SARIMAX,2025_holdout_evaluation,degenerate SARIMAX fit: mle_did_not_converge
+Andalucía,SARIMAX,2025_holdout_evaluation,degenerate SARIMAX fit: mle_did_not_converge
+Valencia,SARIMAX,2025_holdout_evaluation,degenerate SARIMAX fit: mle_did_not_converge
+Madrid,SARIMAX,production_24m_forecast,degenerate SARIMAX fit: mle_did_not_converge
+Cataluña,SARIMAX,production_24m_forecast,degenerate SARIMAX fit: mle_did_not_converge
+Andalucía,SARIMAX,production_24m_forecast,degenerate SARIMAX fit: mle_did_not_converge
+Valencia,SARIMAX,production_24m_forecast,degenerate SARIMAX fit: mle_did_not_converge

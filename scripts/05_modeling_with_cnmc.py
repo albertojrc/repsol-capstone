@@ -118,6 +118,17 @@ FORECAST_DEGENERACY_ATOL = 0.05
 FORECAST_MIN_RANGE_FLOOR = 1.0
 FORECAST_MIN_RANGE_RATIO = 0.005
 
+# A converged SARIMA/SARIMAX fit on this project's log1p(Consumo_Tm) scale has
+# sigma2 well above 0.1 in every healthy case observed (0.3-2.0). A fit with
+# sigma2 below this floor has not learned a generalizable residual process --
+# it has driven the in-sample error toward zero by spending almost all of its
+# degrees of freedom on parameters, which is the signature of a model with too
+# many regressors for too few training rows (SARIMAX's 9 exogenous features
+# plus ARMA/seasonal terms against ~22-34 rows is exactly this regime for 4 of
+# the 5 targets). Reject any such fit rather than let it compete on equal
+# footing with a genuinely identified model.
+SARIMA_SIGMA2_FLOOR = 1e-3
+
 BASELINE_MODEL_COLS = ["SARIMA", "Logistic", "Gompertz"]
 DIRECT_FEATURE_MODEL_COLS = ["SARIMAX", "Ridge", "Random Forest", "XGBoost"]
 
@@ -248,6 +259,27 @@ def forecast_degeneracy_reason(values: np.ndarray) -> str:
     return ""
 
 
+def fit_degeneracy_reason(result) -> str:
+    """Detect a SARIMA/SARIMAX fit that has not actually identified a model.
+
+    Checks the optimizer's own convergence flag and the fitted residual
+    variance (sigma2, the model's last parameter). A fit that did not
+    converge, or whose sigma2 has collapsed near zero, has spent its degrees
+    of freedom memorizing training noise rather than learning a
+    generalizable process -- the signature of too many parameters for too
+    few rows. Such a fit must not be allowed to compete on equal footing
+    with a genuinely identified one, regardless of how plausible its
+    in-sample MAPE looks.
+    """
+    converged = bool(result.mle_retvals.get("converged", True)) if hasattr(result, "mle_retvals") else True
+    if not converged:
+        return "mle_did_not_converge"
+    sigma2 = float(result.params[-1])
+    if not np.isfinite(sigma2) or sigma2 < SARIMA_SIGMA2_FLOOR:
+        return f"degenerate_sigma2_{sigma2:.3g}"
+    return ""
+
+
 def train_sarima(
     y_train: np.ndarray,
     order: tuple[int, int, int] = DEFAULT_SARIMA_ORDER,
@@ -260,7 +292,11 @@ def train_sarima(
         enforce_stationarity=False,
         enforce_invertibility=False,
     )
-    return model.fit(disp=False)
+    result = model.fit(disp=False)
+    reason = fit_degeneracy_reason(result)
+    if reason:
+        raise ValueError(f"degenerate SARIMA fit: {reason}")
+    return result
 
 
 def predict_sarima(result, n_steps: int) -> np.ndarray:
@@ -285,7 +321,11 @@ def train_sarimax(
         enforce_stationarity=False,
         enforce_invertibility=False,
     )
-    return model.fit(disp=False), scaler
+    result = model.fit(disp=False)
+    reason = fit_degeneracy_reason(result)
+    if reason:
+        raise ValueError(f"degenerate SARIMAX fit: {reason}")
+    return result, scaler
 
 
 def sarima_parameter_count(order: tuple[int, int, int], seasonal_order: tuple[int, int, int, int]) -> int:
@@ -555,6 +595,7 @@ def evaluate_models(
 ):
     all_metrics = []
     all_preds = []
+    degenerate_log = []
 
     for target in TARGETS:
         print(f"Evaluating {target}...")
@@ -575,6 +616,8 @@ def evaluate_models(
                 all_preds.append({"Fecha": fd, "Target": target, "Actual": round(actual, 1), "Model": "SARIMA", "Pred": round(float(pv), 1)})
         except Exception as exc:
             print(f"  SARIMA failed for {target}: {exc}")
+            if "degenerate" in str(exc):
+                degenerate_log.append({"Target": target, "Model": "SARIMA", "Stage": "2025_holdout_evaluation", "Reason": str(exc)})
 
         try:
             res_x, scaler_x = train_sarimax(tr, sarima_order, sarima_seasonal_order)
@@ -584,6 +627,8 @@ def evaluate_models(
                 all_preds.append({"Fecha": fd, "Target": target, "Actual": round(actual, 1), "Model": "SARIMAX", "Pred": round(float(pv), 1)})
         except Exception as exc:
             print(f"  SARIMAX failed for {target}: {exc}")
+            if "degenerate" in str(exc):
+                degenerate_log.append({"Target": target, "Model": "SARIMAX", "Stage": "2025_holdout_evaluation", "Reason": str(exc)})
 
         for curve_type in ["Logistic", "Gompertz"]:
             try:
@@ -621,7 +666,7 @@ def evaluate_models(
         except Exception as exc:
             print(f"  Diesel Share failed for {target}: {exc}")
 
-    return pd.DataFrame(all_metrics), pd.DataFrame(all_preds)
+    return pd.DataFrame(all_metrics), pd.DataFrame(all_preds), pd.DataFrame(degenerate_log)
 
 
 def _append_mape_errors(errors: list[float], y_true: np.ndarray, y_pred: np.ndarray) -> None:
@@ -668,21 +713,40 @@ def sarima_walk_forward_score(
 
 def tune_sarima_orders(
     df_train: pd.DataFrame,
+    df_all: pd.DataFrame,
 ) -> tuple[pd.DataFrame, dict[str, tuple[tuple[int, int, int], tuple[int, int, int, int]]]]:
     rows = []
     selected_orders: dict[str, tuple[tuple[int, int, int], tuple[int, int, int, int]]] = {}
 
     for target in TARGETS:
         target_df = df_train[df_train["Target"] == target].sort_values("Fecha")
+        full_df = df_all[df_all["Target"] == target].sort_values("Fecha")
         for order, seasonal_order in SARIMA_GRID:
             score, error_count, successful_folds = sarima_walk_forward_score(target_df, order, seasonal_order)
-            degeneracy_reason = ""
+
+            # Two independent stability checks. The training-window check
+            # matches the 2025 holdout evaluation; the full-history check
+            # matches what scripts/05's final_forecasts() actually refits and
+            # ships as the 2026-2027 forecast. An order can pass one and fail
+            # the other -- both must be checked, since only the full-history
+            # check sees the degeneracy that the production forecast itself
+            # would have shipped with.
+            train_reason = ""
             try:
                 stability_fit = train_sarima(target_df["Consumo_Tm"].values, order, seasonal_order)
                 stability_forecast = predict_sarima(stability_fit, 24)
-                degeneracy_reason = forecast_degeneracy_reason(stability_forecast)
+                train_reason = forecast_degeneracy_reason(stability_forecast)
             except Exception as exc:
-                degeneracy_reason = f"stability_check_failed_{type(exc).__name__}"
+                train_reason = f"stability_check_failed_{exc}"
+
+            full_history_reason = ""
+            try:
+                full_history_fit = train_sarima(full_df["Consumo_Tm"].values, order, seasonal_order)
+                full_history_forecast = predict_sarima(full_history_fit, 24)
+                full_history_reason = forecast_degeneracy_reason(full_history_forecast)
+            except Exception as exc:
+                full_history_reason = f"stability_check_failed_{exc}"
+
             p, d, q = order
             seasonal_p, seasonal_d, seasonal_q, m = seasonal_order
             rows.append(
@@ -699,15 +763,19 @@ def tune_sarima_orders(
                     "WalkForward_MAPE": round(score, 3) if np.isfinite(score) else np.inf,
                     "Error_Count": error_count,
                     "Successful_Folds": successful_folds,
-                    "Training_Origin_24m_Degenerate": bool(degeneracy_reason),
-                    "Training_Origin_24m_Degeneracy_Reason": degeneracy_reason,
+                    "Training_Origin_24m_Degenerate": bool(train_reason),
+                    "Training_Origin_24m_Degeneracy_Reason": train_reason,
+                    "FullHistory_Origin_24m_Degenerate": bool(full_history_reason),
+                    "FullHistory_Origin_24m_Degeneracy_Reason": full_history_reason,
                     "Selected": False,
                 }
             )
 
         target_rows = pd.DataFrame([row for row in rows if row["Target"] == target])
         finite = target_rows[np.isfinite(target_rows["WalkForward_MAPE"])].copy()
-        stable = finite[~finite["Training_Origin_24m_Degenerate"]].copy()
+        stable = finite[
+            ~finite["Training_Origin_24m_Degenerate"] & ~finite["FullHistory_Origin_24m_Degenerate"]
+        ].copy()
         if not stable.empty:
             finite = stable
         if finite.empty:
@@ -757,7 +825,10 @@ def build_sarima_order_selection(
         rejected_degenerate = int(
             df_sarima_grid[
                 df_sarima_grid["Target"].eq(target)
-                & df_sarima_grid["Training_Origin_24m_Degenerate"].astype(bool)
+                & (
+                    df_sarima_grid["Training_Origin_24m_Degenerate"].astype(bool)
+                    | df_sarima_grid["FullHistory_Origin_24m_Degenerate"].astype(bool)
+                )
             ].shape[0]
         )
         production_order = grid_order
@@ -781,7 +852,11 @@ def build_sarima_order_selection(
                 "Grid_Training_Origin_24m_Degeneracy_Reason": grid_row[
                     "Training_Origin_24m_Degeneracy_Reason"
                 ],
-                "Degenerate_Orders_Rejected_Training_Only": rejected_degenerate,
+                "Grid_FullHistory_Origin_24m_Degenerate": bool(grid_row["FullHistory_Origin_24m_Degenerate"]),
+                "Grid_FullHistory_Origin_24m_Degeneracy_Reason": grid_row[
+                    "FullHistory_Origin_24m_Degeneracy_Reason"
+                ],
+                "Degenerate_Orders_Rejected": rejected_degenerate,
                 "Production_Order": str(production_order),
                 "Production_Seasonal_Order": str(production_seasonal_order),
                 "Production_p": prod_p,
@@ -1113,8 +1188,9 @@ def build_pooling_decision(df_final: pd.DataFrame, df_pooled: pd.DataFrame) -> p
 def final_forecasts(
     df_all: pd.DataFrame,
     sarima_orders: dict[str, tuple[tuple[int, int, int], tuple[int, int, int, int]]],
-) -> pd.DataFrame:
+) -> tuple[pd.DataFrame, pd.DataFrame]:
     rows = []
+    degenerate_log = []
     forecast_labels = [d.strftime("%Y-%m") for d in FORECAST_DATES]
     for target in TARGETS:
         full = df_all[df_all["Target"] == target].sort_values("Fecha").copy()
@@ -1130,6 +1206,8 @@ def final_forecasts(
                 rows.append({"Fecha": fecha, "Target": target, "Model": "SARIMA", "Forecast": round(float(val), 1)})
         except Exception as exc:
             print(f"Forecast SARIMA failed for {target}: {exc}")
+            if "degenerate" in str(exc):
+                degenerate_log.append({"Target": target, "Model": "SARIMA", "Stage": "production_24m_forecast", "Reason": str(exc)})
 
         try:
             res_x, scaler_x = train_sarimax(full, sarima_order, sarima_seasonal_order)
@@ -1137,6 +1215,8 @@ def final_forecasts(
                 rows.append({"Fecha": fecha, "Target": target, "Model": "SARIMAX", "Forecast": round(float(val), 1)})
         except Exception as exc:
             print(f"Forecast SARIMAX failed for {target}: {exc}")
+            if "degenerate" in str(exc):
+                degenerate_log.append({"Target": target, "Model": "SARIMAX", "Stage": "production_24m_forecast", "Reason": str(exc)})
 
         future_t = np.arange(int(full["Tendencia"].max()) + 1, int(full["Tendencia"].max()) + 1 + len(forecast_labels))
         future_mes = np.array([d.month for d in FORECAST_DATES])
@@ -1185,7 +1265,7 @@ def final_forecasts(
             except Exception as exc:
                 print(f"Forecast {label} failed for {target}: {exc}")
 
-    return pd.DataFrame(rows)
+    return pd.DataFrame(rows), pd.DataFrame(degenerate_log)
 
 
 def build_final_metrics(df_metrics: pd.DataFrame, df_wf: pd.DataFrame) -> pd.DataFrame:
@@ -1376,7 +1456,7 @@ def main() -> None:
     if (df_all["Fecha"] >= "2026-01").any():
         raise ValueError("features_modelo_completo contains 2026 rows; original forecast origin must stay 2025-12")
 
-    df_sarima_grid, grid_sarima_orders = tune_sarima_orders(df_train)
+    df_sarima_grid, grid_sarima_orders = tune_sarima_orders(df_train, df_all)
     df_sarima_acceptance, sarima_orders = build_sarima_order_selection(df_sarima_grid, grid_sarima_orders)
     df_wf = run_walk_forward(df_train, sarima_orders)
     df_acceptance = build_model_acceptance(df_wf)
@@ -1394,15 +1474,25 @@ def main() -> None:
     )
 
     df_test = pd.read_csv(DATA_FEATURES / "features_test.csv")
-    df_individual_metrics, df_individual_preds = evaluate_models(df_train, df_test, sarima_orders)
+    df_individual_metrics, df_individual_preds, df_degenerate_eval = evaluate_models(df_train, df_test, sarima_orders)
     df_pooled, df_pooled_preds = evaluate_pooled_ml_experiment(df_train, df_test)
     df_metrics = pd.concat([df_individual_metrics, df_pooled.drop(columns=["Status"])], ignore_index=True)
     df_preds = pd.concat([df_individual_preds, df_pooled_preds], ignore_index=True)
     df_final = build_final_metrics(df_metrics, df_wf)
     df_pooling_decision = build_pooling_decision(df_final, df_pooled)
-    df_fc = final_forecasts(df_all, sarima_orders)
+    df_fc, df_degenerate_fc = final_forecasts(df_all, sarima_orders)
     df_selected_fc = build_selected_forecast(df_fc, df_final)
     df_comparison = build_comparison_metrics(df_metrics)
+    df_degenerate = pd.concat([df_degenerate_eval, df_degenerate_fc], ignore_index=True)
+
+    selected_degenerate = df_degenerate[df_degenerate["Stage"] == "2025_holdout_evaluation"].merge(
+        df_final[["Target", "Model"]], on=["Target", "Model"], how="inner"
+    )
+    if not selected_degenerate.empty:
+        raise ValueError(
+            "Final selected model is flagged as a degenerate fit, this should "
+            f"never happen: {selected_degenerate.to_dict('records')}"
+        )
 
     df_metrics.to_csv(DATA_OUTPUTS / "metricas_modelos.csv", index=False, encoding="utf-8")
     df_metrics.to_csv(DATA_OUTPUTS / "metricas_models.csv", index=False, encoding="utf-8")
@@ -1418,6 +1508,7 @@ def main() -> None:
     df_fc.to_csv(DATA_OUTPUTS / "forecast_24m_sarima_rf_xgb.csv", index=False, encoding="utf-8")
     df_selected_fc.to_csv(DATA_OUTPUTS / "forecast_24m_selected.csv", index=False, encoding="utf-8")
     df_comparison.to_csv(DATA_OUTPUTS / "metricas_comparativa.csv", index=False, encoding="utf-8")
+    df_degenerate.to_csv(DATA_OUTPUTS / "degenerate_fits.csv", index=False, encoding="utf-8")
 
     build_tableau_outputs(df_all, df_preds, df_fc, df_final, df_metrics)
     plot_outputs(df_all, df_metrics, df_preds, df_fc, df_final)
@@ -1447,6 +1538,8 @@ def main() -> None:
     print(df_final.to_string(index=False))
     print("\nPooled regional ML decision:")
     print(df_pooling_decision.to_string(index=False))
+    print("\nDegenerate fits excluded (sigma2 collapse or non-convergence, never eligible to be selected):")
+    print(df_degenerate.to_string(index=False) if not df_degenerate.empty else "  none")
 
     df_selected_fc["year"] = df_selected_fc["Fecha"].str[:4].astype(int)
     annual = df_selected_fc.groupby(["Target", "year"])["Forecast"].sum().unstack()

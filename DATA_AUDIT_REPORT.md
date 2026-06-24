@@ -42,6 +42,18 @@ All four have been fixed and the affected notebooks (05, 06, 07, 08, 09, 13)
 were re-executed end to end to confirm they run clean and to regenerate their
 figures. See `NOTEBOOKS_AUDIT.md` for the full notebook-by-notebook status.
 
+A separate, more serious issue was then found in the script pipeline itself:
+Cataluña's SARIMAX selection (92.3% 2025 holdout MAPE, the weakest result in
+the project) turned out to be a numerically degenerate fit -- 9 exogenous
+features plus ARMA/seasonal terms is too many parameters for the ~22-34 rows
+available per target, and the same non-convergence/near-zero-residual-variance
+signature was found on 4 of the 5 targets, not just Cataluña. Fixed by
+rejecting any SARIMA/SARIMAX fit that fails to converge or whose residual
+variance collapses, at the point of fitting, so the rejection propagates
+through every existing call site automatically. See "Current Selected Model
+Quality" below and `PHASE2_MODELING_REPORT.md` for the full investigation and
+the resulting model changes.
+
 ## Production Inputs
 
 | File | Shape | Date Range | Notes |
@@ -98,7 +110,7 @@ Known data issues:
 | File | Current Role |
 |---|---|
 | `metricas_modelos.csv` / `metricas_models.csv` | 2025 holdout metrics for all 7 headline candidates plus Diesel Share and pooled regional ML (duplicate filenames, same content). |
-| `sarima_grid_search_results.csv` | Training-only walk-forward SARIMA grid-search diagnostics for each target, including a degeneracy check on the training-window 24-month stability forecast. |
+| `sarima_grid_search_results.csv` | Training-only walk-forward SARIMA grid-search diagnostics for each target, including two independent degeneracy checks: one on the training-window 24-month stability forecast, one on the full-36-month-history 24-month stability forecast (the shape that actually ships). An order must pass both to be treated as stable. |
 | `sarima_order_acceptance.csv` | Records the training-only grid-selected SARIMA order adopted into production for each target. No 2025 data is used in this decision. |
 | `model_selection_walkforward.csv` | Recursive multi-step walk-forward scores for all 7 headline candidates per target, the training-only proposed model, and the final selected model. |
 | `metricas_final_seleccionado.csv` / `metricas_final_selected.csv` | 2025 holdout metrics for the model already selected by training-only walk-forward (duplicate filenames, same content). |
@@ -115,30 +127,35 @@ Known data issues:
 | `tableau_metricas.csv` | Dashboard metrics table with selected-model flags. |
 | `tableau_forecast_pivot.csv` | Selected forecast pivoted by target. |
 | `tableau_export_legacy.csv` | Historical plus selected forecast in legacy long format. |
+| `degenerate_fits.csv` | Every SARIMA/SARIMAX fit rejected for non-convergence or near-zero residual variance, with target, pipeline stage, and reason. SARIMAX appears here for 4 of 5 targets. |
 
 ## Current Selected Model Quality
 
 | Target | Selected Model | Training Walk-Forward MAPE | 2025 Holdout MAPE | 2025 Holdout R2 |
 |---|---|---:|---:|---:|
-| Nacional | SARIMA | 39.7% | 29.0% | -0.009 |
+| Nacional | Logistic | 43.1% | 36.7% | -1.041 |
 | Madrid | Logistic | 37.2% | 73.6% | -8.273 |
-| Cataluña | SARIMAX | 68.5% | 92.3% | -19.827 |
-| Andalucía | SARIMA | 53.9% | 49.7% | -1.662 |
+| Cataluña | SARIMA | 66.9% | 50.1% | -7.182 |
+| Andalucía | SARIMA | 48.8% | 52.6% | -1.929 |
 | Valencia | Gompertz | 57.3% | 34.2% | -1.246 |
 
-Average selected 2025 holdout MAPE is 55.8%. This is worse on average than the
-earlier (now superseded) policy-restricted selection's 46.5%, because that
-number partly reflected 2025-informed acceptance gates that have since been
-removed. Three of five targets (Nacional, Madrid, Valencia) select the exact
-same model either way; only Cataluña and Andalucía changed, and Cataluña's
-result is the weakest in the current set: SARIMAX won the training-only
-comparison by a very narrow margin over SARIMA (68.5 vs 69.6), but loses badly
-on the 2025 holdout. This is disclosed, not hidden, in notebook 10's summary
-cell.
+Average selected 2025 holdout MAPE is 49.4%. Cataluña's SARIMAX result (92.3%)
+is gone: that fit never converged (confirmed directly -- `sigma2` had
+collapsed to 5.07e-7 and statsmodels itself reported a non-convergence
+warning and a near-singular covariance matrix), and plain SARIMA, a fit that
+actually converges, now wins on the same leak-free evidence. Nacional's
+selected model also changed (SARIMA to Logistic) as a side effect of applying
+the same fit-quality check to plain SARIMA's order grid search for
+consistency: 3 of its 11 training-only folds for the previously-best order
+were themselves silently non-convergent.
 
-All selected R2 values are negative except the near-zero Nacional SARIMA, so
-forecasts should be presented as directional planning estimates, not precision
-demand commitments.
+All selected R2 values are negative, so forecasts should be presented as
+directional planning estimates, not precision demand commitments. Andalucía
+and Cataluña's forecasts remain fairly flat in absolute terms (24-month
+ranges of 157.9 Tm and 64.6 Tm respectively) -- both pass the pipeline's
+degeneracy checks, but this is a real small-sample limitation (not enough
+clean seasonal history to support a strongly seasonal SARIMA order without
+overfitting), not something further pipeline engineering resolves.
 
 ## Dataset Lineage
 

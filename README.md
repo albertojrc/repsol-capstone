@@ -69,7 +69,9 @@ The project does not currently use DGT vehicle data in the production dataset.
 - `data/features/features_modelo_completo.csv`: 180 rows x 36 columns
 - `data/features/features_train.csv`: 120 rows x 36 columns
 - `data/features/features_test.csv`: 60 rows x 36 columns
-- `data/outputs/forecast_24m_sarima_rf_xgb.csv`: 1248 rows x 4 columns
+- `data/outputs/forecast_24m_sarima_rf_xgb.csv`: 1152 rows x 4 columns (fewer than
+  the theoretical maximum because SARIMAX is excluded as a degenerate fit for
+  4 of 5 targets; see `data/outputs/degenerate_fits.csv`)
 - `data/outputs/forecast_24m_selected.csv`: 120 rows x 4 columns
 
 ## Notebooks
@@ -126,13 +128,33 @@ model is fixed, to report honest holdout MAE/RMSE/MAPE/R2. The code path in
 `scripts/05_modeling_with_cnmc.py` finalizes `Selected_Model` before loading
 `features_test.csv`.
 
+A SARIMA/SARIMAX fit is also rejected outright (treated the same as any other
+training failure, never eligible to be scored or selected) if it is
+numerically degenerate: the optimizer did not converge, or the fitted
+residual variance has collapsed to near zero. This is the same overfitting
+signature as a model having too many parameters for too few rows. SARIMAX's 9
+exogenous regressors plus ARMA/seasonal terms (~11 parameters against ~22-34
+training rows) hit this for 4 of the 5 targets -- it is excluded everywhere
+except where the fit genuinely converges. Every exclusion is written to
+`data/outputs/degenerate_fits.csv` with its target, stage, and reason.
+
 | Target | Selected model | Training walk-forward MAPE | 2025 holdout MAPE |
 |---|---|---:|---:|
-| Nacional | SARIMA | 39.7% | 29.0% |
+| Nacional | Logistic | 43.1% | 36.7% |
 | Madrid | Logistic | 37.2% | 73.6% |
-| Cataluña | SARIMAX | 68.5% | 92.3% |
-| Andalucía | SARIMA | 53.9% | 49.7% |
+| Cataluña | SARIMA | 66.9% | 50.1% |
+| Andalucía | SARIMA | 48.8% | 52.6% |
 | Valencia | Gompertz | 57.3% | 34.2% |
+
+Cataluña's SARIMAX result from an earlier version of this pipeline (92.3%
+holdout MAPE) is gone: that fit never converged and has been excluded, and
+plain SARIMA -- a real, converged fit -- now wins on the same leak-free
+training-only evidence. Nacional's selected model also changed from SARIMA to
+Logistic, not because of SARIMAX, but because the same degeneracy check was
+applied uniformly to plain SARIMA's order grid search too: 3 of Nacional's
+11 training-only walk-forward folds for its previously-best order had
+themselves been silently non-convergent, flattering its aggregated score
+before this fix.
 
 See `PHASE2_MODELING_REPORT.md` for the full seven-candidate table, diagnostic
 pooled-model results, forecast-shape validation, and remaining limitations.

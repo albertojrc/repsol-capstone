@@ -5,6 +5,134 @@
 
 ---
 
+## 2026-06-24 SARIMAX Overfitting Fix: Degeneracy Gate Extended To Fit Quality (`sacha`)
+
+This section supersedes the selected-model table in the "Training-Only
+Seven-Candidate Rebuild" entry below.
+
+### What was found
+
+Cataluña's selected model (SARIMAX, 92.3% 2025 holdout MAPE, the weakest
+result in the whole project) was investigated because the number looked odd.
+Root cause: SARIMAX fits 9 exogenous regressors plus ARMA/seasonal terms
+(~11 parameters) against only ~22-34 usable rows per target. Refitting the
+exact production model directly showed:
+
+- `sigma2` (the fitted residual variance) collapsed to ~1e-7-1e-8 for 4 of
+  the 5 targets (Nacional, Madrid, Cataluña, Valencia) -- only Andalucía's
+  fit was numerically healthy (sigma2 = 0.29).
+- statsmodels' own optimizer reported `ConvergenceWarning: Maximum
+  Likelihood optimization failed to converge` for those same 4 targets, and
+  for Cataluña additionally reported `Covariance matrix is singular or
+  near-singular, condition number 4.85e+22`.
+- Per-fold walk-forward errors for Cataluña's SARIMAX were wildly more
+  dispersed than plain SARIMA's (std 62.8 vs 25.0, one fold spiking to
+  283.9% MAPE) even though the two models' *median* training scores looked
+  close (68.5% vs 69.6%). The walk-forward gate's median aggregation -- a
+  deliberate, otherwise-sound choice to stop one bad fold dominating
+  selection -- was exactly what hid this: a model that is occasionally wildly
+  wrong and a model that is consistently mediocre can land on a similar
+  median, even though only one of them is trustworthy.
+- This is not a Cataluña-specific issue. It is a property of the
+  `SARIMAX_EXOG_FEATS` list (9 features) being too rich for this dataset's
+  size, regardless of target.
+
+### The fix
+
+`scripts/05_modeling_with_cnmc.py`:
+
+- Added `fit_degeneracy_reason()`: rejects a SARIMA/SARIMAX fit if the
+  optimizer's own `mle_retvals["converged"]` flag is false, or if `sigma2`
+  is below `SARIMA_SIGMA2_FLOOR = 1e-3`. Wired into `train_sarima()` and
+  `train_sarimax()` themselves (both raise on a degenerate fit), so every
+  existing call site (`evaluate_models`, `walk_forward_scores`,
+  `final_forecasts`, the SARIMA order grid search) inherits the check
+  automatically through their existing exception handling -- no call site
+  needed to be touched individually.
+- `evaluate_models()` and `final_forecasts()` now also collect every
+  degenerate exclusion into a new `data/outputs/degenerate_fits.csv`
+  (`Target, Model, Stage, Reason`) instead of only printing it to the
+  console, so the exclusion is auditable, not just logged transiently.
+- `scripts/06_validate_outputs.py` now reads that file: a headline candidate
+  may legitimately be missing from `metricas_modelos.csv` for a target only
+  if it is documented there; anything else missing is still a hard failure.
+  Also added a safety check that the final selected model for a target is
+  never one flagged degenerate for that target.
+- **Extended the same check to the SARIMA order grid search's existing
+  stability check**, and **added a second, independent stability check using
+  the full 36-month history** (`tune_sarima_orders()` previously only
+  re-simulated stability from the 24-month training window, which is not
+  what `final_forecasts()` actually refits and ships -- this gap let
+  Cataluña's grid-selected order `(0,1,1)(1,0,0,12)` pass the training-window
+  check but produce a literal zero-range flat forecast when refit on the
+  full history, caught only by `validate_selected_forecast_shape`'s separate
+  near-flat check during this fix's own verification run). New columns
+  `FullHistory_Origin_24m_Degenerate` / `_Reason` in
+  `sarima_grid_search_results.csv`; an order must pass both checks to be
+  treated as stable.
+
+### Consequence: SARIMAX is now excluded almost everywhere, by design
+
+After the fix, SARIMAX has zero training-walk-forward score (`inf`) for
+Nacional, Madrid, Cataluña, and Andalucía, and a real-but-poor score for
+Valencia (92.1%, still loses to Gompertz's 57.3%) -- it does not win any
+target. This was the explicit, deliberate choice made when picking the fix
+(see prior turn): leave `SARIMAX_EXOG_FEATS` untouched rather than trim it to
+make SARIMAX artificially competitive, and let the honest result be "SARIMAX
+is not viable at this sample size" rather than engineer around that finding.
+
+Applying the *same* fit-quality check to plain SARIMA (not just SARIMAX) was
+a deliberate consistency choice, not scope creep: the same overfitting risk
+exists in principle for any order in `SARIMA_GRID`, just far less often given
+SARIMA's much smaller parameter count. It had a real, traceable effect:
+**Nacional's selected model changed from SARIMA to Logistic** as a side
+effect -- 3 of the 11 training-only walk-forward folds for Nacional's
+previously-best order `(1,1,1)(1,0,0,12)` were themselves silently
+non-convergent, and excluding them raised that order's honest median MAPE
+from 39.7% to 51.9%, below Logistic's 43.1%, which is why a different order
+and ultimately a different model now wins for Nacional.
+
+### Final selected models after this fix
+
+| Target | Selected model | Training walk-forward MAPE | 2025 holdout MAPE | 2025 R2 |
+|---|---|---:|---:|---:|
+| Nacional | Logistic | 43.1% | 36.7% | -1.041 |
+| Madrid | Logistic | 37.2% | 73.6% | -8.273 |
+| Cataluña | SARIMA | 66.9% | 50.1% | -7.182 |
+| Andalucía | SARIMA | 48.8% | 52.6% | -1.929 |
+| Valencia | Gompertz | 57.3% | 34.2% | -1.246 |
+
+Cataluña's holdout MAPE improved from 92.3% to 50.1% -- still the second-worst
+in the set (after Madrid), and Cataluña's R2 (-7.182) is still the second most
+negative, but the forecast is no longer driven by a fit that statsmodels
+itself flagged as unreliable. Nacional's holdout MAPE improved slightly
+(29.0% to 36.7% is technically a regression in isolation, but the prior 29.0%
+was earned partly by training-CV folds that have since been shown to be
+non-convergent noise, not real skill -- the 36.7% is the more trustworthy
+number even though it looks worse).
+
+Andalucía's forecast is still fairly flat (range 157.9 Tm across 24 months,
+order `(1,1,2)(1,0,0,12)`) and Cataluña's is similarly tight (range 64.6 Tm),
+but both now pass `validate_selected_forecast_shape`'s degeneracy checks
+(unlike the literal zero-range flat forecast the grid's previously-selected
+Cataluña order produced before the full-history check was added). This is
+the same fundamental small-sample limitation described in the original
+Andalucía investigation (not enough clean seasonal history to support a
+strongly seasonal model without overfitting) -- now confirmed present for
+Cataluña and Andalucía both, and explicitly tested for, rather than
+discovered by accident.
+
+### What was *not* done, and why
+
+`SARIMAX_EXOG_FEATS` was deliberately left unchanged. The alternative
+(shrinking it so SARIMAX has a real chance of being a stable, legitimate
+winner somewhere) was offered and explicitly declined in favor of this
+gate-only fix. If SARIMAX's feature set is revisited later, it should be
+sized relative to the smallest target's usable training rows (~22), not
+chosen independently of sample size the way the current 9-feature list was.
+
+---
+
 ## 2026-06-24 Notebook Coherence Fixes (`sacha`)
 
 A coherence audit after the seven-candidate rebuild (below) found that an

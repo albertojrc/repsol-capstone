@@ -1,6 +1,6 @@
 Target,Final_Eligibility_Rule,Eligible_Final_Models,Selected_Model,Selected_Model_Training_WalkForward_MAPE,Final_Selection_Source,Decision
-Nacional,all_seven_independent_target_models_are_eligible,"SARIMA, SARIMAX, Logistic, Gompertz, Ridge, Random Forest, XGBoost",SARIMA,39.70051223214409,training_only_recursive_walk_forward,selected_by_training_only_walk_forward
+Nacional,all_seven_independent_target_models_are_eligible,"SARIMA, SARIMAX, Logistic, Gompertz, Ridge, Random Forest, XGBoost",Logistic,43.12044472266075,training_only_recursive_walk_forward,selected_by_training_only_walk_forward
 Madrid,all_seven_independent_target_models_are_eligible,"SARIMA, SARIMAX, Logistic, Gompertz, Ridge, Random Forest, XGBoost",Logistic,37.218453010916484,training_only_recursive_walk_forward,selected_by_training_only_walk_forward
-Cataluña,all_seven_independent_target_models_are_eligible,"SARIMA, SARIMAX, Logistic, Gompertz, Ridge, Random Forest, XGBoost",SARIMAX,68.49633730314734,training_only_recursive_walk_forward,selected_by_training_only_walk_forward
-Andalucía,all_seven_independent_target_models_are_eligible,"SARIMA, SARIMAX, Logistic, Gompertz, Ridge, Random Forest, XGBoost",SARIMA,53.90805165410243,training_only_recursive_walk_forward,selected_by_training_only_walk_forward
+Cataluña,all_seven_independent_target_models_are_eligible,"SARIMA, SARIMAX, Logistic, Gompertz, Ridge, Random Forest, XGBoost",SARIMA,66.90109831768636,training_only_recursive_walk_forward,selected_by_training_only_walk_forward
+Andalucía,all_seven_independent_target_models_are_eligible,"SARIMA, SARIMAX, Logistic, Gompertz, Ridge, Random Forest, XGBoost",SARIMA,48.83424446522009,training_only_recursive_walk_forward,selected_by_training_only_walk_forward
 Valencia,all_seven_independent_target_models_are_eligible,"SARIMA, SARIMAX, Logistic, Gompertz, Ridge, Random Forest, XGBoost",Gompertz,57.2678032281253,training_only_recursive_walk_forward,selected_by_training_only_walk_forward
