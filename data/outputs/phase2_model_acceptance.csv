@@ -1,6 +1,6 @@
-Target,Phase1_Model,Phase1_MAPE,Phase2_Proposed_Model,Phase2_Proposed_MAPE,Non_Pooled_Final_Model,Non_Pooled_Final_MAPE,Selected_Model,Final_Selection_Source,Accepted_Phase2_Proposal,Decision
-Nacional,SARIMA,29.0,Logistic,36.7,,,SARIMA,phase1_baseline,False,kept_phase1_no_regression
-Madrid,Gompertz,197.1,Logistic,73.6,,,Logistic,phase2_proposal,True,accepted_no_regression
-Cataluña,Gompertz,164.2,Pooled Random Forest,46.8,SARIMA,47.2,SARIMA,non_pooled_final_policy,False,selected_non_pooled_final_policy
-Andalucía,Logistic,48.4,Pooled Random Forest,49.5,,,Logistic,phase1_baseline,False,kept_phase1_no_regression
-Valencia,Gompertz,34.2,Logistic,34.7,,,Gompertz,phase1_baseline,False,kept_phase1_no_regression
+Target,Final_Eligibility_Rule,Eligible_Final_Models,Selected_Model,Selected_Model_Training_WalkForward_MAPE,Final_Selection_Source,Decision
+Nacional,all_seven_independent_target_models_are_eligible,"SARIMA, SARIMAX, Logistic, Gompertz, Ridge, Random Forest, XGBoost",SARIMA,39.70051223214409,training_only_recursive_walk_forward,selected_by_training_only_walk_forward
+Madrid,all_seven_independent_target_models_are_eligible,"SARIMA, SARIMAX, Logistic, Gompertz, Ridge, Random Forest, XGBoost",Logistic,37.218453010916484,training_only_recursive_walk_forward,selected_by_training_only_walk_forward
+Cataluña,all_seven_independent_target_models_are_eligible,"SARIMA, SARIMAX, Logistic, Gompertz, Ridge, Random Forest, XGBoost",SARIMAX,68.49633730314734,training_only_recursive_walk_forward,selected_by_training_only_walk_forward
+Andalucía,all_seven_independent_target_models_are_eligible,"SARIMA, SARIMAX, Logistic, Gompertz, Ridge, Random Forest, XGBoost",SARIMA,53.90805165410243,training_only_recursive_walk_forward,selected_by_training_only_walk_forward
+Valencia,all_seven_independent_target_models_are_eligible,"SARIMA, SARIMAX, Logistic, Gompertz, Ridge, Random Forest, XGBoost",Gompertz,57.2678032281253,training_only_recursive_walk_forward,selected_by_training_only_walk_forward

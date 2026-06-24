@@ -1,5 +1,5 @@
-Target,Production_Model,Production_MAPE,Best_Pooled_Model,Best_Pooled_MAPE,Best_Pooled_Beats_Production,Production_Uses_Pooled_ML,No_Pooling_Final_Policy,Decision
-Madrid,Logistic,73.6,Pooled Random Forest,43.0,True,False,False,rejected_for_production_training_gate_did_not_select_it
-Cataluña,SARIMA,47.2,Pooled Random Forest,46.8,True,False,True,rejected_by_non_pooled_final_policy
-Andalucía,Logistic,48.4,Pooled XGBoost,48.4,False,False,False,rejected_for_production_no_validation_improvement
-Valencia,Gompertz,34.2,Pooled XGBoost,35.6,False,False,False,rejected_for_production_no_validation_improvement
+Target,Production_Model,Production_MAPE,Best_Pooled_Model,Best_Pooled_MAPE,Best_Pooled_Beats_Production,Production_Uses_Pooled_ML,Final_Selection_Allows_Pooled_ML,Decision
+Madrid,Logistic,73.6,Pooled Random Forest,34.2,True,False,False,diagnostic_only_pooled_model_not_headline_eligible
+Cataluña,SARIMAX,92.3,Pooled Random Forest,38.2,True,False,False,diagnostic_only_pooled_model_not_headline_eligible
+Andalucía,SARIMA,49.7,Pooled Random Forest,21.5,True,False,False,diagnostic_only_pooled_model_not_headline_eligible
+Valencia,Gompertz,34.2,Pooled XGBoost,35.6,False,False,False,diagnostic_only_no_pooled_validation_improvement

@@ -21,12 +21,14 @@ DATA_FEATURES = REPO_ROOT / "data" / "features"
 DATA_OUTPUTS = REPO_ROOT / "data" / "outputs"
 
 TARGETS = ["Nacional", "Madrid", "Cataluña", "Andalucía", "Valencia"]
-FINAL_MODEL_POLICY = {
-    "Nacional": "SARIMA",
-    "Madrid": "Logistic",
-    "Cataluña": "SARIMA",
-    "Andalucía": "Logistic",
-    "Valencia": "Gompertz",
+HEADLINE_FINAL_MODELS = {
+    "SARIMA",
+    "SARIMAX",
+    "Logistic",
+    "Gompertz",
+    "Ridge",
+    "Random Forest",
+    "XGBoost",
 }
 TARGET_LABEL = {
     "ESPAÑA": "Nacional",
@@ -70,6 +72,45 @@ def read_csv(path: Path) -> pd.DataFrame:
 def assert_close(actual: pd.Series, expected: pd.Series, label: str, tolerance: float = 0.05) -> None:
     diff = (actual.sort_index() - expected.sort_index()).abs().max()
     require(float(diff) <= tolerance, f"{label} reconciliation mismatch. Max diff: {diff}")
+
+
+def is_repeating_cycle(values: np.ndarray, max_period: int = 12, tolerance: float = 0.05) -> tuple[bool, int | None]:
+    for period in range(1, min(max_period, len(values) - 1) + 1):
+        if np.allclose(values[period:], values[:-period], rtol=1e-6, atol=tolerance):
+            return True, period
+    return False, None
+
+
+def validate_selected_forecast_shape(selected_forecasts: pd.DataFrame) -> None:
+    for target in TARGETS:
+        path = selected_forecasts[selected_forecasts["Target"].eq(target)].sort_values("Fecha")
+        require(len(path) == 24, f"Selected forecast for {target} should contain 24 months")
+        values = path["Forecast"].astype(float).values
+        mean_level = max(float(np.mean(np.abs(values))), 1.0)
+        path_range = float(np.max(values) - np.min(values))
+        require(
+            path_range > max(1.0, 0.005 * mean_level),
+            f"Selected forecast for {target} is near-flat; range={path_range:.4f}",
+        )
+        repeats, period = is_repeating_cycle(values)
+        require(
+            not repeats,
+            f"Selected forecast for {target} repeats with period {period}; recursive forecast may be degenerate",
+        )
+
+    paths = {
+        target: selected_forecasts[selected_forecasts["Target"].eq(target)]
+        .sort_values("Fecha")["Forecast"]
+        .astype(float)
+        .values
+        for target in TARGETS
+    }
+    for i, target_a in enumerate(TARGETS):
+        for target_b in TARGETS[i + 1 :]:
+            require(
+                not np.allclose(paths[target_a], paths[target_b], rtol=1e-6, atol=0.05),
+                f"Selected forecasts for {target_a} and {target_b} are identical/near-identical",
+            )
 
 
 def validate_master_dataset() -> None:
@@ -145,16 +186,23 @@ def validate_feature_tables() -> None:
 
 def validate_model_outputs() -> None:
     final = read_csv(DATA_OUTPUTS / "metricas_final_seleccionado.csv")
+    metrics = read_csv(DATA_OUTPUTS / "metricas_modelos.csv")
     acceptance = read_csv(DATA_OUTPUTS / "phase2_model_acceptance.csv")
     pooling = read_csv(DATA_OUTPUTS / "phase2_pooling_decision.csv")
     sarima_grid = read_csv(DATA_OUTPUTS / "sarima_grid_search_results.csv")
     sarima_acceptance = read_csv(DATA_OUTPUTS / "sarima_order_acceptance.csv")
     forecasts = read_csv(DATA_OUTPUTS / "forecast_24m_sarima_rf_xgb.csv")
+    selected_forecasts = read_csv(DATA_OUTPUTS / "forecast_24m_selected.csv")
     pivot = read_csv(DATA_OUTPUTS / "tableau_forecast_pivot.csv")
 
     selected = dict(zip(final["Target"], final["Model"]))
-    require(selected == FINAL_MODEL_POLICY, f"Final selected models violate policy: {selected}")
-    require(not final["Model"].str.startswith("Pooled").any(), "Final selection contains a pooled model")
+    require(set(selected) == set(TARGETS), f"Final selected target set mismatch: {selected}")
+    invalid_models = sorted(set(final["Model"]) - HEADLINE_FINAL_MODELS)
+    require(not invalid_models, f"Final selected models must be one of the 7 headline candidates, found: {invalid_models}")
+    for target in TARGETS:
+        target_models = set(metrics.loc[metrics["Target"].eq(target), "Model"])
+        missing_headline = sorted(HEADLINE_FINAL_MODELS - target_models)
+        require(not missing_headline, f"{target} missing headline candidate metrics: {missing_headline}")
 
     required_sarima_cols = {"Target", "p", "d", "q", "P", "D", "Q", "m", "WalkForward_MAPE", "Selected"}
     missing_sarima_cols = required_sarima_cols.difference(sarima_grid.columns)
@@ -169,10 +217,10 @@ def validate_model_outputs() -> None:
         "Target",
         "Grid_Selected_Order",
         "Grid_Selected_Seasonal_Order",
-        "Default_2025_MAPE",
-        "Grid_Selected_2025_MAPE",
+        "Grid_WalkForward_MAPE",
         "Production_Order",
         "Production_Seasonal_Order",
+        "Selected_By_Training_WalkForward",
         "Decision",
     }
     missing_sarima_acceptance_cols = required_sarima_acceptance_cols.difference(sarima_acceptance.columns)
@@ -185,29 +233,22 @@ def validate_model_outputs() -> None:
 
     required_acceptance_cols = {
         "Target",
-        "Phase1_Model",
-        "Phase2_Proposed_Model",
-        "Non_Pooled_Final_Model",
+        "Final_Eligibility_Rule",
+        "Eligible_Final_Models",
         "Selected_Model",
+        "Selected_Model_Training_WalkForward_MAPE",
         "Final_Selection_Source",
         "Decision",
     }
     missing_cols = required_acceptance_cols.difference(acceptance.columns)
     require(not missing_cols, f"phase2_model_acceptance missing columns: {sorted(missing_cols)}")
-    cat = acceptance[acceptance["Target"] == "Cataluña"].iloc[0]
-    require(cat["Selected_Model"] == "SARIMA", "Cataluña final model should be SARIMA")
     require(
-        cat["Decision"] == "selected_non_pooled_final_policy",
-        "Cataluña acceptance decision should document the no-pooling final policy",
+        set(acceptance["Selected_Model"]).issubset(HEADLINE_FINAL_MODELS),
+        "All final selections must be one of the 7 headline candidates",
     )
 
-    require("No_Pooling_Final_Policy" in pooling.columns, "phase2_pooling_decision missing no-pooling policy flag")
-    cat_pool = pooling[pooling["Target"] == "Cataluña"].iloc[0]
-    require(bool(cat_pool["No_Pooling_Final_Policy"]), "Cataluña pooling decision should be policy-flagged")
-    require(
-        cat_pool["Decision"] == "rejected_by_non_pooled_final_policy",
-        "Cataluña pooled model should be rejected by final policy",
-    )
+    require("Final_Selection_Allows_Pooled_ML" in pooling.columns, "phase2_pooling_decision missing pooled-allowed flag")
+    require(not pooling["Final_Selection_Allows_Pooled_ML"].any(), "Pooled ML should remain diagnostic-only")
 
     require(forecasts["Fecha"].min() == "2026-01", "Forecast output must start at 2026-01")
     require(forecasts["Fecha"].max() == "2027-12", "Forecast output must end at 2027-12")
@@ -215,9 +256,15 @@ def validate_model_outputs() -> None:
     require(not forecasts.duplicated(["Fecha", "Target", "Model"]).any(), "Duplicate forecast rows")
     selected_forecast_rows = sum(
         len(forecasts[(forecasts["Target"] == target) & (forecasts["Model"] == model)])
-        for target, model in FINAL_MODEL_POLICY.items()
+        for target, model in selected.items()
     )
     require(selected_forecast_rows == 24 * len(TARGETS), "Selected forecast rows should be 120")
+    require(selected_forecasts.shape[0] == 24 * len(TARGETS), "Selected-only forecast should have 120 rows")
+    selected_only_pairs = selected_forecasts[["Target", "Model"]].drop_duplicates()
+    require(len(selected_only_pairs) == len(TARGETS), "Selected-only forecast should have one model per target")
+    selected_only = dict(zip(selected_only_pairs["Target"], selected_only_pairs["Model"]))
+    require(selected_only == selected, f"Selected-only forecast model set mismatch: {selected_only} vs {selected}")
+    validate_selected_forecast_shape(selected_forecasts)
 
     require(pivot.shape[0] == 24, f"tableau_forecast_pivot should have 24 rows, got {pivot.shape[0]}")
     missing_pivot_targets = [target for target in TARGETS if target not in pivot.columns]

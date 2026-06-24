@@ -1,7 +1,76 @@
 # Project Memory - Repsol Eco-Fuels Demand Forecasting Capstone
 
-**Last updated:** 2026-06-23
+**Last updated:** 2026-06-24
 **Maintainer note:** This file is the long-term source of truth for this project. See [Section 10](#10-future-instructions-for-claude) for how Claude should use and maintain it.
+
+---
+
+## 2026-06-24 Training-Only Seven-Candidate Rebuild (`sacha`)
+
+This section supersedes the earlier 2026-06-24 feature-aware-only attempt and
+the 2026-06-23 no-pooling delivery cleanup for the active `sacha` branch.
+
+The data pipeline is unchanged: keep data cleaning, the master dataset, feature
+engineering, CNMC joins, the mandate schedule, leakage-safe lags, and the plotting
+/ export infrastructure. Do not modify scripts 02, 03, or 04 unless a new data
+issue is independently found.
+
+The modeling layer now fits seven independent headline candidates for every
+target: SARIMA, SARIMAX, Logistic, Gompertz, Ridge, Random Forest, and XGBoost.
+All seven are eligible to win for every target. Diesel Share and pooled regional
+Ridge / Random Forest / XGBoost remain diagnostics only and cannot be selected
+as the headline forecast.
+
+The hard validation rule is restored: model-family selection uses only recursive
+multi-step walk-forward validation inside the 2023-2024 training window. The
+2025 holdout is loaded only after `Selected_Model` is fixed and is used only for
+reported MAE/RMSE/MAPE/R2. SARIMA order selection is also training-only; the old
+2025 no-regression gate is gone.
+
+Current selected production models:
+
+| Target | Selected model | Training WF MAPE | 2025 MAPE | 2025 R2 |
+|---|---|---:|---:|---:|
+| Nacional | SARIMA | 39.7% | 29.0% | -0.009 |
+| Madrid | Logistic | 37.2% | 73.6% | -8.273 |
+| Catalonia | SARIMAX | 68.5% | 92.3% | -19.827 |
+| Andalusia | SARIMA | 53.9% | 49.7% | -1.662 |
+| Valencia | Gompertz | 57.3% | 34.2% | -1.246 |
+
+Important caveat: Catalonia is selected as SARIMAX by a narrow training-only
+walk-forward margin, but the honest 2025 holdout is poor. Do not hide this in
+the business interpretation.
+
+New / changed outputs:
+
+- `data/outputs/model_selection_walkforward.csv` is the seven-candidate
+  training-only selection table.
+- `data/outputs/metricas_final_selected.csv` and
+  `data/outputs/metricas_final_seleccionado.csv` contain selected-model 2025
+  holdout metrics only after selection.
+- `data/outputs/forecast_24m_selected.csv` is the selected-only headline forecast.
+- `data/outputs/forecast_24m_sarima_rf_xgb.csv` remains the legacy all-model
+  forecast file.
+- `data/outputs/phase2_pooling_experiment_metrics.csv` and
+  `data/outputs/phase2_pooling_decision.csv` are diagnostic-only pooling outputs.
+- `scripts/06_validate_outputs.py` now fails on selected forecast degeneracy:
+  identical cross-target paths, near-flat paths, or exact short cycles.
+- `reports/figures/11_forecast_24m.png` now uses selected-model error-derived
+  bands instead of a fixed +/-20% cosmetic band.
+- Pooled Random Forest diagnostics now use higher tree capacity for the pooled
+  panel so region dummies survive recursive forecasting; a same-history /
+  different-region-dummy check confirms pooled RF and pooled XGBoost no longer
+  produce identical regional paths.
+
+Run path:
+
+```powershell
+.\.venv\Scripts\python scripts/03_clean_cnmc_petroleum.py
+.\.venv\Scripts\python scripts/02_master_dataset_builder.py
+.\.venv\Scripts\python scripts/04_build_features.py
+.\.venv\Scripts\python scripts/05_modeling_with_cnmc.py
+.\.venv\Scripts\python scripts/06_validate_outputs.py
+```
 
 ---
 
@@ -647,50 +716,49 @@ the current pipeline. Models are refit from scratch by the production script.
 The current script-based rebuild path is:
 
 ```powershell
-python scripts/03_clean_cnmc_petroleum.py
-python scripts/02_master_dataset_builder.py
-python scripts/04_build_features.py
-python scripts/05_modeling_with_cnmc.py
+.\.venv\Scripts\python scripts/03_clean_cnmc_petroleum.py
+.\.venv\Scripts\python scripts/02_master_dataset_builder.py
+.\.venv\Scripts\python scripts/04_build_features.py
+.\.venv\Scripts\python scripts/05_modeling_with_cnmc.py
+.\.venv\Scripts\python scripts/06_validate_outputs.py
 ```
 
-**Modelling pipeline:** Complete for the current candidate set (7 models). The walk-forward-selected model per target, and its honestly-reported 2025 test metric, are:
+**Modelling pipeline:** Complete for the current `sacha` candidate set. The headline selection is the lowest training-only recursive walk-forward MAPE among seven independent candidates per target. The 2025 metrics below are honest holdout metrics reported after selection:
 
-| Target | Model | MAPE | R² |
-|---|---|---|---|
-| Nacional | SARIMA | 29.0% | -0.009 |
-| Madrid | Gompertz | 197.1% | -101.0 |
-| Cataluña | Gompertz | 164.2% | -91.3 |
-| Andalucía | Logistic | 48.4% | -1.56 |
-| Valencia | Gompertz | 34.2% | -1.25 |
+| Target | Model | Training WF MAPE | 2025 MAPE | R2 |
+|---|---|---:|---:|---:|
+| Nacional | SARIMA | 39.7% | 29.0% | -0.009 |
+| Madrid | Logistic | 37.2% | 73.6% | -8.273 |
+| Catalonia | SARIMAX | 68.5% | 92.3% | -19.827 |
+| Andalusia | SARIMA | 53.9% | 49.7% | -1.662 |
+| Valencia | Gompertz | 57.3% | 34.2% | -1.246 |
 
-**Verification status:** A full leakage audit was performed, two critical leaks and a model-selection bias were fixed, and the fix was independently double-checked. The growth-curve addition was independently re-verified for leakage and reproducibility on 2026-06-16. The CNMC integration was verified on 2026-06-19:
+**Verification status:** A full leakage audit was performed, two critical leaks and a model-selection bias were fixed, and the fix was independently double-checked. The CNMC integration was verified on 2026-06-19. The 2026-06-24 `sacha` rebuild restores the hard no-test-set-selection rule:
 
-**Git status (2026-06-21):** `main` is in sync with `origin/main` (the earlier leakage-fix, growth-curve, and SARIMAX-log commits — `37ead38`, `d60cbef`, `9f93e82` — are all pushed). Current work is on branch **`enrico`**, which so far contains only this `memory.md` update documenting the 2026-06-21 pooling investigation and the recommended multi-step-gate fix — no notebook/model changes yet.
 - raw CNMC files parse cleanly,
 - CNMC biodiesel reconciles exactly to the existing target,
 - national `ESPAÑA` Gasoleo A is independently summed from all 19 CCAA,
 - no 2026 CNMC rows enter the model-origin data,
 - CNMC model inputs are lagged only,
-- and mandate features are present with the biodiesel blend requirement set to 0.0 before August 2024.
+- mandate features are present with the biodiesel blend requirement set to 0.0 before August 2024,
+- `Selected_Model` is fixed before `features_test.csv` is loaded in `scripts/05_modeling_with_cnmc.py`,
+- and `scripts/06_validate_outputs.py` passes, including selected-forecast degeneracy checks.
 
-**Important modeling caveat:** The pipeline is believed leakage-free, but the absolute model fit remains weak. CNMC improves the project's business structure, not the core statistical limitation. Pooled regional ML is now documented as a sensitivity experiment only; the final selected model set is non-pooled.
+**Important modeling caveat:** The pipeline is believed leakage-free, but the absolute model fit remains weak. CNMC and mandate features improve the project's business structure, but they do not automatically win every target. Pooled regional ML is documented as a sensitivity experiment only. Catalonia's selected SARIMAX result has a poor 2025 holdout MAPE and should be discussed plainly.
 
-**Git status:** As of this update, local `main` contains unpushed commits beyond `origin/main`, including the leakage fixes, growth-curve additions, research notes, CNMC integration, and this documentation update. Before pushing, verify with:
+**Git status:** Current work is on branch `sacha` with uncommitted modeling, validation, output, and documentation changes. Before pushing, verify with:
 
 ```powershell
 git status --short --branch
 git log --oneline --decorate -5
 ```
 
-**Outstanding documentation debt:** The current README, `DATA_AUDIT_REPORT.md`, `NOTEBOOKS_AUDIT.md`, and `PHASE2_MODELING_REPORT.md` have been refreshed for the final no-pooling policy. Older historical sections in this memory file should be treated as chronology, not current instructions.
-
 **Next priorities, in order of expected impact:**
 1. Preserve the current script-first workflow and run `scripts/06_validate_outputs.py` after every full rebuild.
 2. Treat final forecasts as directional planning scenarios because selected-model R2 values remain weak or negative.
 3. Consider stronger backtesting only if more history becomes available; the current 2023-2025 window is too short to provide a pristine final test.
 4. Source DGT vehicle fleet data if the project needs a new external driver.
-5. SARIMAX has already been tried with plain macro exogenous regressors and rejected; do not repeat that exact test without a richer regressor set or a changed design.
-
+5. If the business wants mandate impact ranges, add explicit scenarios rather than selecting on the 2025 holdout.
 ---
 
 ## 10. Future Instructions for Claude

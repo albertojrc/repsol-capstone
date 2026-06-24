@@ -49,10 +49,9 @@ This rebuilds:
 - model metrics, SARIMA grid-search diagnostics, 2025 predictions, 2026-2027 forecasts, Tableau exports, and final figures
 
 `forecast_24m_sarima_rf_xgb.csv` is a legacy filename. It now contains all current
-candidate families used by the CNMC-aware script, including SARIMA, Ridge, Random
-Forest, XGBoost, Logistic, Gompertz, Diesel Share, and the Phase 2 pooled regional
-ML sensitivity candidates. The production selected forecast follows the final
-no-pooling policy.
+candidate families used by the CNMC-aware script, including SARIMA, SARIMAX, Ridge,
+Random Forest, XGBoost, Logistic, Gompertz, Diesel Share, and pooled regional ML.
+The clean headline forecast is exported as `forecast_24m_selected.csv`.
 
 ## Data Sources
 
@@ -70,7 +69,8 @@ The project does not currently use DGT vehicle data in the production dataset.
 - `data/features/features_modelo_completo.csv`: 180 rows x 36 columns
 - `data/features/features_train.csv`: 120 rows x 36 columns
 - `data/features/features_test.csv`: 60 rows x 36 columns
-- `data/outputs/forecast_24m_sarima_rf_xgb.csv`: 1128 rows x 4 columns
+- `data/outputs/forecast_24m_sarima_rf_xgb.csv`: 1248 rows x 4 columns
+- `data/outputs/forecast_24m_selected.csv`: 120 rows x 4 columns
 
 ## Notebooks
 
@@ -103,30 +103,39 @@ Tiny formatting edits do not need a memory update. If unsure, add a short dated
 entry near the top of `memory.md` and state what changed, why it matters, and how
 it was verified.
 
-## Phase 2 Modeling
+## Model Selection
 
-The `enrico` branch productionizes the Phase 2 modeling upgrade. The script now
-uses a recursive multi-step walk-forward gate and a no-regression acceptance check
-against the Phase 1 selected models. The 2025 period is treated as a validation
-and acceptance period, not as a pristine final test. Regional pooling is tested as
-a sensitivity experiment, but the final production model set is non-pooled.
+The `sacha` branch rebuilds the modeling layer as an open seven-family
+competition for each target. Every target independently fits and ranks:
 
-SARIMA parameters are now tested through a constrained training-only grid search.
-The grid-selected SARIMA order is adopted for production only if it does not
-regress versus the default SARIMA order on the 2025 acceptance period. The final
-selected model set below is unchanged after that no-regression check.
+- SARIMA
+- SARIMAX, using lagged macro, lagged CNMC diesel-market, seasonal, and mandate features
+- Logistic growth curve
+- Gompertz growth curve
+- Ridge regression on the engineered feature set
+- Random Forest on the engineered feature set
+- XGBoost on the engineered feature set
 
-| Target | Selected model | 2025 MAPE |
-|---|---|---:|
-| Nacional | SARIMA | 29.0% |
-| Madrid | Logistic | 73.6% |
-| Cataluña | SARIMA | 47.2% |
-| Andalucía | Logistic | 48.4% |
-| Valencia | Gompertz | 34.2% |
+All seven are eligible to win for every target. Pooled regional Ridge / Random
+Forest / XGBoost and Diesel Share remain in `metricas_modelos.csv` as diagnostics
+and sensitivity comparisons, but they are not eligible for the headline forecast.
 
-The average selected 2025 validation MAPE is 46.5%. See
-`PHASE2_MODELING_REPORT.md` for the before/after comparison, pooling decision,
-and remaining limitations.
+Selection is made only by recursive multi-step walk-forward validation inside
+the 2023-2024 training window. The 2025 period is used only after the selected
+model is fixed, to report honest holdout MAE/RMSE/MAPE/R2. The code path in
+`scripts/05_modeling_with_cnmc.py` finalizes `Selected_Model` before loading
+`features_test.csv`.
+
+| Target | Selected model | Training walk-forward MAPE | 2025 holdout MAPE |
+|---|---|---:|---:|
+| Nacional | SARIMA | 39.7% | 29.0% |
+| Madrid | Logistic | 37.2% | 73.6% |
+| Cataluña | SARIMAX | 68.5% | 92.3% |
+| Andalucía | SARIMA | 53.9% | 49.7% |
+| Valencia | Gompertz | 57.3% | 34.2% |
+
+See `PHASE2_MODELING_REPORT.md` for the full seven-candidate table, diagnostic
+pooled-model results, forecast-shape validation, and remaining limitations.
 
 ## Repository Layout
 

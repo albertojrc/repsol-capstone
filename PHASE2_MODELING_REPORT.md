@@ -1,163 +1,133 @@
-# Phase 2 Modeling Report
+# Training-Only Model Selection Report
 
-Generated: 2026-06-23
+Generated: 2026-06-24
 
-Branch: `enrico`
+Branch: `sacha`
 
 ## Purpose
 
-Phase 2 productionizes the modeling investigation from the `enrico` branch while
-keeping the Phase 1 cleanup from `main`. The target remains monthly biodiesel
-demand in tonnes for Spain national demand plus Madrid, Catalonia, Andalusia,
-and Valencia.
+This branch rebuilds only the modeling layer. The data cleaning, master dataset,
+feature engineering, CNMC joins, mandate schedule, leakage-safe lags, plots, and
+exports are retained.
 
-This work is implemented in the official script pipeline, not in throwaway
-notebooks or scratch scripts. The 2025 period is used as a validation and
-acceptance period, not as a pristine final test set.
+The final design is not "feature-aware models only." Instead, each target gets an
+open seven-family comparison and the training-only evidence decides.
 
-## What Changed
+## Candidate Set
 
-The production modeling script now uses a recursive multi-step walk-forward
-validation gate instead of the previous one-step gate.
+For each target, the headline-eligible candidates are:
 
-The gate:
+- SARIMA
+- SARIMAX, using seasonal terms plus lagged macro, lagged CNMC diesel-market, and mandate features
+- Logistic growth curve
+- Gompertz growth curve
+- Ridge regression on the engineered feature set
+- Random Forest on the engineered feature set
+- XGBoost on the engineered feature set
 
-- uses only the 2023-2024 training period for model-selection proposals;
-- evaluates recursive paths up to 6 months ahead inside the training window;
-- evaluates ML models the same way they are deployed, with each predicted month
-  feeding the next month's lag features;
-- holds macro lag inputs at the last known value during recursive paths;
-- keeps `Nacional` separate from regional pooling;
-- lets the regional series consider Logistic, Gompertz, and pooled regional ML
-  sensitivity candidates.
+All seven are eligible to win for all five targets. Pooled Ridge, Pooled Random
+Forest, Pooled XGBoost, and Diesel Share remain in the metrics output as
+diagnostics only; they cannot be selected as the headline model.
 
-A no-regression acceptance gate then compares the proposed Phase 2 model against
-the Phase 1 selected model on the 2025 validation period. A proposed model is
-kept only if it does not worsen the Phase 1 validation MAPE.
+## Selection Rule
 
-Final delivery policy: the selected production model set is non-pooled. Pooled
-regional ML remains in the outputs as a sensitivity experiment, but it is not
-used in `metricas_final_seleccionado.csv`, the selected Tableau forecast pivot,
-or the selected forecast figure.
+Model-family selection is made only by recursive multi-step walk-forward
+validation inside the 2023-2024 training window. The 2025 holdout is loaded only
+after `Selected_Model` is fixed and is used only for reported MAE/RMSE/MAPE/R2.
 
-SARIMA parameters are also tested with a constrained training-only grid search.
-The grid-selected SARIMA order is then checked against the default
-`(1, 1, 1)(1, 0, 0, 12)` order on the 2025 acceptance period. This makes the
-parameter search visible without letting a training-CV winner silently weaken
-the production forecast.
+SARIMA order selection is also training-only. The SARIMA grid uses the same
+training-window walk-forward scores and rejects orders whose training-origin
+24-month forecast is degenerate before sorting by walk-forward MAPE. There is no
+2025 SARIMA no-regression gate.
 
-## Selection Result
+The walk-forward horizon is now 12 months so the selector sees longer recursive
+behavior rather than only short-horizon folds.
 
-| Target | Phase 1 Model | Phase 1 MAPE | Phase 2 Proposed | Proposed MAPE | Final Model | Decision |
-|---|---|---:|---|---:|---|---|
-| Nacional | SARIMA | 29.0% | Logistic | 36.7% | SARIMA | Kept Phase 1, no regression allowed |
-| Madrid | Gompertz | 197.1% | Logistic | 73.6% | Logistic | Accepted |
-| Catalonia | Gompertz | 164.2% | Pooled Random Forest | 46.8% | SARIMA | Selected by final no-pooling policy |
-| Andalusia | Logistic | 48.4% | Pooled Random Forest | 49.5% | Logistic | Kept Phase 1, no regression allowed |
-| Valencia | Gompertz | 34.2% | Logistic | 34.7% | Gompertz | Kept Phase 1, no regression allowed |
+## Seven-Candidate Walk-Forward Results
 
-Average selected 2025 validation MAPE improves from 94.6% in the Phase 1
-baseline to 46.5% after Phase 2 and the final no-pooling policy.
+MAPE values below are training-window walk-forward MAPEs.
 
-## SARIMA Grid Search
+| Target | SARIMA | SARIMAX | Logistic | Gompertz | Ridge | Random Forest | XGBoost | Selected |
+|---|---:|---:|---:|---:|---:|---:|---:|---|
+| Nacional | 39.7 | 54.2 | 43.1 | 43.6 | 86.1 | 79.6 | 77.1 | SARIMA |
+| Madrid | 73.2 | 94.3 | 37.2 | 59.2 | 6559.8 | 86.9 | 86.3 | Logistic |
+| Cataluña | 69.6 | 68.5 | 82.5 | 82.8 | 88.0 | 85.3 | 85.1 | SARIMAX |
+| Andalucía | 53.9 | 89.8 | 68.3 | 68.7 | 96.4 | 90.5 | 84.3 | SARIMA |
+| Valencia | 59.3 | 87.5 | 60.5 | 57.3 | 99.0 | 99.3 | 98.9 | Gompertz |
 
-The constrained SARIMA grid selected the following training-period walk-forward
-winners:
+## Honest 2025 Holdout Metrics
 
-| Target | Grid-selected order | Grid-selected seasonal order | Training WF MAPE |
-|---|---|---|---:|
-| Nacional | `(1, 1, 0)` | `(1, 0, 0, 12)` | 30.023 |
-| Madrid | `(1, 1, 1)` | `(1, 0, 0, 12)` | 27.292 |
-| Catalonia | `(0, 1, 1)` | `(1, 0, 0, 12)` | 57.011 |
-| Andalusia | `(0, 1, 1)` | `(0, 0, 0, 12)` | 30.949 |
-| Valencia | `(1, 1, 2)` | `(1, 0, 0, 12)` | 19.335 |
+These metrics are reported after selection and are not used to choose the model.
 
-The 2025 no-regression acceptance check then produced:
+| Target | Selected model | MAE | RMSE | MAPE | R2 |
+|---|---|---:|---:|---:|---:|
+| Nacional | SARIMA | 4,278.0 | 4,921.8 | 29.0% | -0.009 |
+| Madrid | Logistic | 1,924.0 | 2,057.2 | 73.6% | -8.273 |
+| Cataluña | SARIMAX | 2,722.3 | 2,862.4 | 92.3% | -19.827 |
+| Andalucía | SARIMA | 853.5 | 1,027.6 | 49.7% | -1.662 |
+| Valencia | Gompertz | 360.3 | 446.6 | 34.2% | -1.246 |
 
-| Target | Default 2025 MAPE | Grid 2025 MAPE | Production SARIMA order | Decision |
-|---|---:|---:|---|---|
-| Nacional | 29.0% | 34.4% | `(1, 1, 1)(1, 0, 0, 12)` | Kept default SARIMA |
-| Madrid | 318.6% | 318.6% | `(1, 1, 1)(1, 0, 0, 12)` | Default order selected by grid |
-| Catalonia | 47.2% | 49.6% | `(1, 1, 1)(1, 0, 0, 12)` | Kept default SARIMA |
-| Andalusia | 52.5% | 50.2% | `(0, 1, 1)(0, 0, 0, 12)` | Accepted grid order |
-| Valencia | 57.4% | 60.9% | `(1, 1, 1)(1, 0, 0, 12)` | Kept default SARIMA |
+## Forecast-Shape Checks
 
-This does not change the final selected model table because SARIMA is selected
-only for Nacional and Catalonia in the final production set, and both keep the
-default SARIMA order after the acceptance check.
+`scripts/06_validate_outputs.py` now fails if selected-model forecasts contain:
 
-## Pooling Result
+- identical or near-identical 24-month paths for two different targets
+- a near-flat selected forecast
+- an exact or near-exact repeating cycle shorter than the 24-month horizon
 
-Pooled regional ML was tested on the stacked regional panel for Madrid,
-Catalonia, Andalusia, and Valencia. `Nacional` was not pooled because it is the
-national total and should not be fit jointly with its component regions.
+The selected forecasts pass those checks. Manual inspection confirms no two
+targets are identical, no selected target is a flat constant, and no selected
+target exactly repeats its prior 12 months.
 
-The production decision is target-specific:
+## Uncertainty Band
 
-| Target | Production Model | Production MAPE | Best Pooled Model | Best Pooled MAPE | Production Decision |
-|---|---|---:|---|---:|---|
-| Madrid | Logistic | 73.6% | Pooled Random Forest | 43.0% | Rejected because the training-only gate did not select it |
-| Catalonia | SARIMA | 47.2% | Pooled Random Forest | 46.8% | Rejected by final no-pooling policy |
-| Andalusia | Logistic | 48.4% | Pooled XGBoost | 48.4% | No meaningful validation improvement |
-| Valencia | Gompertz | 34.2% | Pooled XGBoost | 35.6% | No validation improvement |
+`reports/figures/11_forecast_24m.png` no longer uses a cosmetic fixed +/-20%
+band. The selected forecast band is now derived from each target's selected-model
+2025 error, using the larger of the target's holdout RMSE and MAPE-scaled
+forecast level. This makes Madrid and Cataluña visibly wider than Nacional.
 
-Madrid's pooled validation metric is better than the selected Logistic model, but
-it is not adopted because doing so would choose directly from the 2025 validation
-period rather than from the training-only gate. Catalonia's pooled Random Forest
-is retained only as sensitivity output because the final model policy is
-non-pooled.
+## Diagnostic Results
 
-## Current Selected Models
+Pooled regional ML remains useful as a sensitivity check. In the 2025 holdout it
+beats the headline model for Madrid, Cataluña, and Andalucía, but it is retained
+only as a diagnostic because the headline production design is independent
+per-target modeling with no pooled winner.
 
-| Target | Final Model | 2025 MAPE | 2025 R2 |
-|---|---|---:|---:|
-| Nacional | SARIMA | 29.0% | -0.009 |
-| Madrid | Logistic | 73.6% | -8.273 |
-| Catalonia | SARIMA | 47.2% | -5.620 |
-| Andalusia | Logistic | 48.4% | -1.555 |
-| Valencia | Gompertz | 34.2% | -1.246 |
+The previous pooled Random Forest diagnostic could collapse to identical regional
+paths because the shallow trees ignored region dummies once recursive lag
+features stabilized. The pooled Random Forest now uses higher tree capacity for
+the larger pooled panel, and a controlled same-history/different-region-dummy
+check confirms that pooled RF and pooled XGBoost produce different regional
+paths. Direct per-target Random Forest keeps the conservative tiny-sample
+settings.
+
+Cataluña is the main warning case: training-only walk-forward selects SARIMAX by
+a narrow margin over SARIMA, but the never-used-for-selection 2025 holdout is
+weak at 92.3% MAPE. This should be stated plainly in the business interpretation.
 
 ## Output Files
 
-- `data/outputs/phase2_model_acceptance.csv`: proposed model, Phase 1 model,
-  no-pooling final policy, final selected model, and accept/reject decision per
-  target.
-- `data/outputs/phase2_pooling_experiment_metrics.csv`: 2025 validation metrics
-  for pooled regional ML sensitivity candidates.
-- `data/outputs/phase2_pooling_decision.csv`: pooled-model decision summary with
-  the no-pooling final policy flag.
-- `data/outputs/sarima_grid_search_results.csv`: training-only SARIMA
-  parameter-search diagnostics.
-- `data/outputs/sarima_order_acceptance.csv`: SARIMA order no-regression
-  acceptance against the default order.
-
-The standard outputs are also regenerated:
-
-- `metricas_modelos.csv`
-- `model_selection_walkforward.csv`
-- `metricas_final_seleccionado.csv`
-- `predicciones_test_2025.csv`
-- `forecast_24m_sarima_rf_xgb.csv`
-- `tableau_dashboard.csv`
-- `tableau_metricas.csv`
-- `tableau_forecast_pivot.csv`
-- `tableau_export_legacy.csv`
-- `reports/figures/07_model_comparison.png`
-- `reports/figures/11_forecast_24m.png`
+- `data/outputs/metricas_modelos.csv`: all independent candidates plus diagnostic pooled/Diesel Share metrics
+- `data/outputs/metricas_final_seleccionado.csv`: selected-model holdout metrics
+- `data/outputs/metricas_final_selected.csv`: English alias of selected metrics
+- `data/outputs/model_selection_walkforward.csv`: training-only seven-candidate selection table
+- `data/outputs/sarima_grid_search_results.csv`: training-only SARIMA order grid
+- `data/outputs/sarima_order_acceptance.csv`: training-only SARIMA production orders
+- `data/outputs/phase2_model_acceptance.csv`: selected-model lineage
+- `data/outputs/phase2_pooling_experiment_metrics.csv`: diagnostic pooled metrics
+- `data/outputs/phase2_pooling_decision.csv`: diagnostic-only pooled decision table
+- `data/outputs/forecast_24m_sarima_rf_xgb.csv`: legacy all-model forecast file
+- `data/outputs/forecast_24m_selected.csv`: selected-only headline forecast
+- `reports/figures/07_model_comparison.png`, `11_forecast_24m.png`: regenerated figures
 
 ## Remaining Limitations
 
-The project is more defensible after Phase 2, but it is still constrained by
-the small dataset. Each target has only 24 training months and roughly 21 usable
-ML rows after lag features.
+The sample is still very small: 24 training months and 12 holdout months per
+target. The 2025 holdout is now honest, but it is still only one year.
 
-R2 remains negative for every selected target except near-zero national SARIMA,
-so these forecasts should be presented as directional planning scenarios, not
-high-precision demand commitments. The 24-month forecast is especially sensitive
-to assumptions about mandate effects and demand saturation because validation
-only covers one future year.
+Some selected models are univariate because the training-only evidence selected
+them. This is intentional: engineered variables are evaluated in SARIMAX and the
+ML families, but they are not forced to win.
 
-Catalonia's selected non-pooled SARIMA forecast can continue an upward trend
-more aggressively than the pooled Random Forest sensitivity forecast. This is a
-known tradeoff of the no-pooling final policy and should be described in the
-deliverable rather than hidden.
+R2 remains negative for all selected targets. Treat the forecasts as directional
+planning inputs, not high-precision operational commitments.

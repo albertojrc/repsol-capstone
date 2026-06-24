@@ -3,14 +3,16 @@ Train, validate, and forecast biodiesel demand with CNMC diesel-market and
 biofuel mandate features.
 
 Outputs are written to data/outputs and reports/figures, preserving the existing
-CSV filenames used by the notebooks/Tableau flow while adding the new
-Diesel Share candidate model and Phase 2 pooled regional ML evaluation.
+CSV filenames used by the notebooks/Tableau flow.
 
-Phase 2 selection uses recursive multi-step walk-forward validation and a
-no-regression acceptance gate versus the Phase 1 selected models. The 2025
-period is therefore a validation/acceptance period, not a pristine final test.
-Pooled regional ML remains an evaluated experiment, but the production selected
-model set follows the no-pooling final policy requested by the project team.
+Headline model selection is a 7-family open competition for each target:
+SARIMA, SARIMAX, Logistic, Gompertz, Ridge, Random Forest, and XGBoost. The
+winner is selected only by recursive multi-step walk-forward validation inside
+the 2023-2024 training window. The 2025 period is used only to report holdout
+metrics for the already-selected model.
+
+Diesel Share and pooled regional ML remain diagnostic/sensitivity candidates in
+the metrics tables, but they are not headline-eligible.
 """
 
 from __future__ import annotations
@@ -95,19 +97,29 @@ SHARE_FEATS = [
     *MANDATE_FEATS,
 ]
 
-CANDIDATE_COLS = [
+HEADLINE_CANDIDATE_COLS = [
     "SARIMA",
+    "SARIMAX",
+    "Logistic",
+    "Gompertz",
     "Ridge",
     "Random Forest",
     "XGBoost",
-    "Logistic",
-    "Gompertz",
+]
+DIAGNOSTIC_CANDIDATE_COLS = [
     "Diesel Share",
 ]
+CANDIDATE_COLS = HEADLINE_CANDIDATE_COLS + DIAGNOSTIC_CANDIDATE_COLS
 
 REGIONAL_TARGETS = [target for target in TARGETS if target != "Nacional"]
-REGIONAL_SELECTION_CANDIDATES = ["Logistic", "Gompertz"]
-MULTISTEP_MAX_HORIZON = 6
+MULTISTEP_MIN_ORIGIN = 12
+MULTISTEP_MAX_HORIZON = 12
+FORECAST_DEGENERACY_ATOL = 0.05
+FORECAST_MIN_RANGE_FLOOR = 1.0
+FORECAST_MIN_RANGE_RATIO = 0.005
+
+BASELINE_MODEL_COLS = ["SARIMA", "Logistic", "Gompertz"]
+DIRECT_FEATURE_MODEL_COLS = ["SARIMAX", "Ridge", "Random Forest", "XGBoost"]
 
 REGION_CODE_COLS = {target: f"Region_{idx}" for idx, target in enumerate(REGIONAL_TARGETS)}
 POOLED_ML_BASE_FEATS = [
@@ -137,6 +149,18 @@ POOLED_MODELS = [
 ]
 POOLED_LABELS = [label for label, _ in POOLED_MODELS]
 ALL_MODEL_COLS = CANDIDATE_COLS + POOLED_LABELS
+DIAGNOSTIC_ONLY_MODEL_COLS = DIAGNOSTIC_CANDIDATE_COLS + POOLED_LABELS
+
+SARIMAX_EXOG_FEATS = [
+    "sin_mes",
+    "cos_mes",
+    "IPI_original_lag1",
+    "IPC_var_anual_lag1",
+    "Tasa_paro_lag1",
+    "GasoleoA_Tm_lag1",
+    "GasoleoA_Tm_roll3_lag1",
+    *MANDATE_FEATS,
+]
 
 DEFAULT_SARIMA_ORDER = (1, 1, 1)
 DEFAULT_SARIMA_SEASONAL_ORDER = (1, 0, 0, 12)
@@ -157,21 +181,6 @@ SARIMA_GRID = [
     ((1, 1, 0), (0, 1, 0, 12)),
     ((1, 1, 1), (1, 0, 1, 12)),
 ]
-PHASE1_SELECTED_MODELS = {
-    TARGETS[0]: "SARIMA",
-    TARGETS[1]: "Gompertz",
-    TARGETS[2]: "Gompertz",
-    TARGETS[3]: "Logistic",
-    TARGETS[4]: "Gompertz",
-}
-
-# Final delivery policy: do not use pooled models in the production selected
-# model set. Cataluña is the only target where the previous Phase 2 gate selected
-# a pooled model; SARIMA is the best non-pooled 2025 validation alternative.
-NON_POOLED_FINAL_MODELS = {
-    "Cataluña": "SARIMA",
-}
-
 FORECAST_DATES = pd.date_range("2026-01-01", periods=24, freq="MS")
 
 
@@ -214,6 +223,31 @@ def compute_metrics(y_true: np.ndarray, y_pred: np.ndarray) -> dict[str, float]:
     return {"MAE": round(mae, 1), "RMSE": round(rmse, 1), "MAPE": round(mape, 1), "R2": round(r2, 3)}
 
 
+def repeating_cycle_period(values: np.ndarray, max_period: int = 12) -> int | None:
+    values = np.asarray(values, dtype=float)
+    if len(values) < 2:
+        return 1
+    for period in range(1, min(max_period, len(values) - 1) + 1):
+        if np.allclose(values[period:], values[:-period], atol=FORECAST_DEGENERACY_ATOL, rtol=0):
+            return period
+    return None
+
+
+def forecast_degeneracy_reason(values: np.ndarray) -> str:
+    values = np.asarray(values, dtype=float)
+    if len(values) == 0 or not np.isfinite(values).all():
+        return "non_finite_or_empty"
+    mean_level = max(float(np.mean(np.abs(values))), 1.0)
+    value_range = float(np.max(values) - np.min(values))
+    min_range = max(FORECAST_MIN_RANGE_FLOOR, FORECAST_MIN_RANGE_RATIO * mean_level)
+    if value_range <= min_range:
+        return f"near_flat_range_{value_range:.4f}"
+    period = repeating_cycle_period(values)
+    if period is not None:
+        return f"repeating_cycle_{period}"
+    return ""
+
+
 def train_sarima(
     y_train: np.ndarray,
     order: tuple[int, int, int] = DEFAULT_SARIMA_ORDER,
@@ -231,6 +265,27 @@ def train_sarima(
 
 def predict_sarima(result, n_steps: int) -> np.ndarray:
     return np.maximum(np.expm1(result.forecast(steps=n_steps)), 0)
+
+
+def train_sarimax(
+    train_df: pd.DataFrame,
+    order: tuple[int, int, int] = DEFAULT_SARIMA_ORDER,
+    seasonal_order: tuple[int, int, int, int] = DEFAULT_SARIMA_SEASONAL_ORDER,
+):
+    tr = train_df[SARIMAX_EXOG_FEATS + ["Consumo_Tm"]].dropna().copy()
+    if len(tr) < len(SARIMAX_EXOG_FEATS) + 6:
+        raise ValueError("Not enough non-null rows for SARIMAX training")
+    scaler = StandardScaler()
+    exog = scaler.fit_transform(tr[SARIMAX_EXOG_FEATS].values)
+    model = SARIMAX(
+        np.log1p(tr["Consumo_Tm"].values.astype(float)),
+        exog=exog,
+        order=order,
+        seasonal_order=seasonal_order,
+        enforce_stationarity=False,
+        enforce_invertibility=False,
+    )
+    return model.fit(disp=False), scaler
 
 
 def sarima_parameter_count(order: tuple[int, int, int], seasonal_order: tuple[int, int, int, int]) -> int:
@@ -280,17 +335,19 @@ def predict_growth_curve(model: dict, t: np.ndarray, mes: np.ndarray) -> np.ndar
     return np.maximum(trend_pred + a * sin_mes + b * cos_mes + c, 0)
 
 
-def train_ml(x_train: np.ndarray, y_train: np.ndarray, model_name: str):
+def train_ml(x_train: np.ndarray, y_train: np.ndarray, model_name: str, pooled: bool = False):
     scaler = StandardScaler()
     x_scaled = scaler.fit_transform(x_train)
     y_log = np.log1p(y_train)
     if model_name == "Ridge":
         model = Ridge(alpha=10.0).fit(x_scaled, y_log)
     elif model_name == "RandomForest":
+        max_depth = 6 if pooled else 3
+        min_samples_leaf = 1 if pooled else 3
         model = RandomForestRegressor(
             n_estimators=300,
-            max_depth=3,
-            min_samples_leaf=3,
+            max_depth=max_depth,
+            min_samples_leaf=min_samples_leaf,
             random_state=42,
         ).fit(x_scaled, y_log)
     elif model_name == "XGBoost":
@@ -354,6 +411,40 @@ def latest_complete_year_gasoleo(history: pd.DataFrame) -> dict[int, float]:
 def seasonal_naive_gasoleo(history: pd.DataFrame, dates: list[pd.Timestamp]) -> list[float]:
     base = latest_complete_year_gasoleo(history)
     return [base[int(dt.month)] for dt in dates]
+
+
+def build_sarimax_future_exog(history: pd.DataFrame, future_dates: list[pd.Timestamp]) -> pd.DataFrame:
+    hist_gaso = history["GasoleoA_Tm"].astype(float).tolist()
+    future_dates = list(future_dates)
+    future_gaso = seasonal_naive_gasoleo(history, future_dates)
+    macro_last = history.iloc[-1][["IPI_original", "IPC_var_anual", "Tasa_paro"]].to_dict()
+    rows = []
+
+    for dt, gaso_t in zip(future_dates, future_gaso):
+        mes = int(dt.month)
+        mandate = mandate_values_for_date(dt)
+        rows.append(
+            {
+                "sin_mes": np.sin(2 * np.pi * mes / 12),
+                "cos_mes": np.cos(2 * np.pi * mes / 12),
+                "IPI_original_lag1": macro_last["IPI_original"],
+                "IPC_var_anual_lag1": macro_last["IPC_var_anual"],
+                "Tasa_paro_lag1": macro_last["Tasa_paro"],
+                "GasoleoA_Tm_lag1": hist_gaso[-1],
+                "GasoleoA_Tm_roll3_lag1": float(np.mean(hist_gaso[-3:])),
+                **mandate,
+            }
+        )
+        hist_gaso.append(gaso_t)
+
+    return pd.DataFrame(rows)[SARIMAX_EXOG_FEATS]
+
+
+def predict_sarimax(result, scaler, history: pd.DataFrame, future_dates: list[pd.Timestamp]) -> np.ndarray:
+    exog = build_sarimax_future_exog(history, future_dates)
+    exog_scaled = scaler.transform(exog.values)
+    pred_log = result.forecast(steps=len(exog), exog=exog_scaled)
+    return np.maximum(np.expm1(np.clip(pred_log, None, 15.0)), 0)
 
 
 def recursive_forecast_ml(
@@ -485,6 +576,15 @@ def evaluate_models(
         except Exception as exc:
             print(f"  SARIMA failed for {target}: {exc}")
 
+        try:
+            res_x, scaler_x = train_sarimax(tr, sarima_order, sarima_seasonal_order)
+            pred = predict_sarimax(res_x, scaler_x, tr, test_dates)
+            all_metrics.append({"Target": target, "Model": "SARIMAX", **compute_metrics(y_true, pred)})
+            for fd, actual, pv in zip(te["Fecha"], y_true, pred):
+                all_preds.append({"Fecha": fd, "Target": target, "Actual": round(actual, 1), "Model": "SARIMAX", "Pred": round(float(pv), 1)})
+        except Exception as exc:
+            print(f"  SARIMAX failed for {target}: {exc}")
+
         for curve_type in ["Logistic", "Gompertz"]:
             try:
                 curve = train_growth_curve(tr["Tendencia"].values, tr["Consumo_Tm"].values, tr["Mes"].values, curve_type)
@@ -536,7 +636,7 @@ def sarima_walk_forward_score(
     target_df: pd.DataFrame,
     order: tuple[int, int, int],
     seasonal_order: tuple[int, int, int, int],
-    min_origin: int = 15,
+    min_origin: int = MULTISTEP_MIN_ORIGIN,
     max_horizon: int = MULTISTEP_MAX_HORIZON,
 ) -> tuple[float, int, int]:
     df = target_df.sort_values("Fecha").reset_index(drop=True)
@@ -576,6 +676,13 @@ def tune_sarima_orders(
         target_df = df_train[df_train["Target"] == target].sort_values("Fecha")
         for order, seasonal_order in SARIMA_GRID:
             score, error_count, successful_folds = sarima_walk_forward_score(target_df, order, seasonal_order)
+            degeneracy_reason = ""
+            try:
+                stability_fit = train_sarima(target_df["Consumo_Tm"].values, order, seasonal_order)
+                stability_forecast = predict_sarima(stability_fit, 24)
+                degeneracy_reason = forecast_degeneracy_reason(stability_forecast)
+            except Exception as exc:
+                degeneracy_reason = f"stability_check_failed_{type(exc).__name__}"
             p, d, q = order
             seasonal_p, seasonal_d, seasonal_q, m = seasonal_order
             rows.append(
@@ -592,12 +699,17 @@ def tune_sarima_orders(
                     "WalkForward_MAPE": round(score, 3) if np.isfinite(score) else np.inf,
                     "Error_Count": error_count,
                     "Successful_Folds": successful_folds,
+                    "Training_Origin_24m_Degenerate": bool(degeneracy_reason),
+                    "Training_Origin_24m_Degeneracy_Reason": degeneracy_reason,
                     "Selected": False,
                 }
             )
 
         target_rows = pd.DataFrame([row for row in rows if row["Target"] == target])
         finite = target_rows[np.isfinite(target_rows["WalkForward_MAPE"])].copy()
+        stable = finite[~finite["Training_Origin_24m_Degenerate"]].copy()
+        if not stable.empty:
+            finite = stable
         if finite.empty:
             selected_order = DEFAULT_SARIMA_ORDER
             selected_seasonal_order = DEFAULT_SARIMA_SEASONAL_ORDER
@@ -627,23 +739,7 @@ def tune_sarima_orders(
     return results, selected_orders
 
 
-def sarima_2025_mape(
-    df_train: pd.DataFrame,
-    df_test: pd.DataFrame,
-    target: str,
-    order: tuple[int, int, int],
-    seasonal_order: tuple[int, int, int, int],
-) -> float:
-    tr = df_train[df_train["Target"] == target].sort_values("Fecha")
-    te = df_test[df_test["Target"] == target].sort_values("Fecha")
-    res = train_sarima(tr["Consumo_Tm"].values, order, seasonal_order)
-    pred = predict_sarima(res, len(te))
-    return float(compute_metrics(te["Consumo_Tm"].values.astype(float), pred)["MAPE"])
-
-
-def accept_sarima_orders(
-    df_train: pd.DataFrame,
-    df_test: pd.DataFrame,
+def build_sarima_order_selection(
     df_sarima_grid: pd.DataFrame,
     grid_orders: dict[str, tuple[tuple[int, int, int], tuple[int, int, int, int]]],
 ) -> tuple[pd.DataFrame, dict[str, tuple[tuple[int, int, int], tuple[int, int, int, int]]]]:
@@ -658,36 +754,15 @@ def accept_sarima_orders(
         grid_row = df_sarima_grid[
             df_sarima_grid["Target"].eq(target) & df_sarima_grid["Selected"]
         ].iloc[0]
-
-        try:
-            default_mape = sarima_2025_mape(
-                df_train,
-                df_test,
-                target,
-                DEFAULT_SARIMA_ORDER,
-                DEFAULT_SARIMA_SEASONAL_ORDER,
-            )
-            grid_mape = sarima_2025_mape(df_train, df_test, target, grid_order, grid_seasonal_order)
-        except Exception as exc:
-            default_mape = np.inf
-            grid_mape = np.inf
-            print(f"SARIMA order acceptance failed for {target}: {exc}")
-
-        if grid_order == DEFAULT_SARIMA_ORDER and grid_seasonal_order == DEFAULT_SARIMA_SEASONAL_ORDER:
-            accepted = True
-            production_order = grid_order
-            production_seasonal_order = grid_seasonal_order
-            decision = "default_order_selected_by_grid"
-        elif grid_mape <= default_mape:
-            accepted = True
-            production_order = grid_order
-            production_seasonal_order = grid_seasonal_order
-            decision = "accepted_no_regression_vs_default_sarima"
-        else:
-            accepted = False
-            production_order = DEFAULT_SARIMA_ORDER
-            production_seasonal_order = DEFAULT_SARIMA_SEASONAL_ORDER
-            decision = "kept_default_sarima_no_regression"
+        rejected_degenerate = int(
+            df_sarima_grid[
+                df_sarima_grid["Target"].eq(target)
+                & df_sarima_grid["Training_Origin_24m_Degenerate"].astype(bool)
+            ].shape[0]
+        )
+        production_order = grid_order
+        production_seasonal_order = grid_seasonal_order
+        decision = "selected_by_training_walk_forward_grid"
 
         production_orders[target] = (production_order, production_seasonal_order)
         p, d, q = grid_order
@@ -702,8 +777,11 @@ def accept_sarima_orders(
                 "Grid_Selected_Order": str(grid_order),
                 "Grid_Selected_Seasonal_Order": str(grid_seasonal_order),
                 "Grid_WalkForward_MAPE": float(grid_row["WalkForward_MAPE"]),
-                "Default_2025_MAPE": round(default_mape, 1) if np.isfinite(default_mape) else np.inf,
-                "Grid_Selected_2025_MAPE": round(grid_mape, 1) if np.isfinite(grid_mape) else np.inf,
+                "Grid_Training_Origin_24m_Degenerate": bool(grid_row["Training_Origin_24m_Degenerate"]),
+                "Grid_Training_Origin_24m_Degeneracy_Reason": grid_row[
+                    "Training_Origin_24m_Degeneracy_Reason"
+                ],
+                "Degenerate_Orders_Rejected_Training_Only": rejected_degenerate,
                 "Production_Order": str(production_order),
                 "Production_Seasonal_Order": str(production_seasonal_order),
                 "Production_p": prod_p,
@@ -713,7 +791,7 @@ def accept_sarima_orders(
                 "Production_D": prod_d_seasonal,
                 "Production_Q": prod_q_seasonal,
                 "Production_m": prod_m,
-                "Accepted_Grid_Order": accepted,
+                "Selected_By_Training_WalkForward": True,
                 "Decision": decision,
                 "Grid_p": p,
                 "Grid_d": d,
@@ -729,16 +807,14 @@ def accept_sarima_orders(
 
 
 def selection_candidates_for_target(target: str) -> list[str]:
-    if target == "Nacional":
-        return CANDIDATE_COLS
-    return REGIONAL_SELECTION_CANDIDATES + POOLED_LABELS
+    return HEADLINE_CANDIDATE_COLS
 
 
 def walk_forward_scores(
     target_df: pd.DataFrame,
     sarima_order: tuple[int, int, int],
     sarima_seasonal_order: tuple[int, int, int, int],
-    min_origin: int = 15,
+    min_origin: int = MULTISTEP_MIN_ORIGIN,
     max_horizon: int = MULTISTEP_MAX_HORIZON,
 ) -> dict[str, float]:
     df = target_df.sort_values("Fecha").reset_index(drop=True)
@@ -756,6 +832,13 @@ def walk_forward_scores(
             res = train_sarima(fold_tr["Consumo_Tm"].values, sarima_order, sarima_seasonal_order)
             pred = predict_sarima(res, len(fold_te))
             _append_mape_errors(fold_errors["SARIMA"], y_true, pred)
+        except Exception:
+            pass
+
+        try:
+            res_x, scaler_x = train_sarimax(fold_tr, sarima_order, sarima_seasonal_order)
+            pred = predict_sarimax(res_x, scaler_x, fold_tr, future_dates)
+            _append_mape_errors(fold_errors["SARIMAX"], y_true, pred)
         except Exception:
             pass
 
@@ -801,7 +884,7 @@ def walk_forward_scores(
 
 def pooled_walk_forward_scores(
     df_train: pd.DataFrame,
-    min_origin: int = 15,
+    min_origin: int = MULTISTEP_MIN_ORIGIN,
     max_horizon: int = MULTISTEP_MAX_HORIZON,
 ) -> dict[str, dict[str, float]]:
     fold_errors = {target: {label: [] for label in POOLED_LABELS} for target in REGIONAL_TARGETS}
@@ -875,7 +958,8 @@ def run_walk_forward(
             {
                 "Target": target,
                 "Validation_Gate": f"recursive_{MULTISTEP_MAX_HORIZON}m_walk_forward",
-                "Selection_Candidate_Set": "all_non_pooled" if target == "Nacional" else "regional_curves_plus_pooled_ml",
+                "Selection_Candidate_Set": "seven_independent_target_models",
+                "Eligible_Final_Models": ", ".join(allowed),
                 **scores,
                 "Proposed_Model": proposed,
             }
@@ -898,7 +982,7 @@ def train_pooled_ml(df_train: pd.DataFrame, model_name: str):
     train_aug = train_aug[POOLED_ML_FEATS + ["Consumo_Tm"]].dropna()
     if len(train_aug) < 20:
         raise ValueError("Not enough rows for pooled regional ML training")
-    return train_ml(train_aug[POOLED_ML_FEATS].values, train_aug["Consumo_Tm"].values, model_name)
+    return train_ml(train_aug[POOLED_ML_FEATS].values, train_aug["Consumo_Tm"].values, model_name, pooled=True)
 
 
 def recursive_forecast_pooled_ml(
@@ -975,53 +1059,25 @@ def evaluate_pooled_ml_experiment(df_train: pd.DataFrame, df_test: pd.DataFrame)
     return pd.DataFrame(rows), pd.DataFrame(pred_rows)
 
 
-def build_model_acceptance(df_metrics: pd.DataFrame, df_wf: pd.DataFrame) -> pd.DataFrame:
+def build_model_acceptance(df_wf: pd.DataFrame) -> pd.DataFrame:
     rows = []
     for _, wf_row in df_wf.iterrows():
         target = wf_row["Target"]
-        proposed = wf_row["Proposed_Model"]
-        baseline = PHASE1_SELECTED_MODELS[target]
-        policy_model = NON_POOLED_FINAL_MODELS.get(target)
-
-        proposed_metric = df_metrics[(df_metrics["Target"] == target) & (df_metrics["Model"] == proposed)]
-        baseline_metric = df_metrics[(df_metrics["Target"] == target) & (df_metrics["Model"] == baseline)]
-        if proposed_metric.empty:
-            raise ValueError(f"No metric found for proposed model {target} / {proposed}")
-        if baseline_metric.empty:
-            raise ValueError(f"No metric found for Phase 1 model {target} / {baseline}")
-
-        proposed_mape = float(proposed_metric.iloc[0]["MAPE"])
-        baseline_mape = float(baseline_metric.iloc[0]["MAPE"])
-        policy_mape = np.nan
-
-        if policy_model is not None:
-            policy_metric = df_metrics[(df_metrics["Target"] == target) & (df_metrics["Model"] == policy_model)]
-            if policy_metric.empty:
-                raise ValueError(f"No metric found for non-pooled final model {target} / {policy_model}")
-            policy_mape = float(policy_metric.iloc[0]["MAPE"])
-            accepted = False
-            selected = policy_model
-            decision = "selected_non_pooled_final_policy"
-            source = "non_pooled_final_policy"
-        else:
-            accepted = proposed_mape <= baseline_mape
-            selected = proposed if accepted else baseline
-            decision = "accepted_no_regression" if accepted else "kept_phase1_no_regression"
-            source = "phase2_proposal" if accepted else "phase1_baseline"
+        selected = wf_row["Proposed_Model"]
+        eligible = selection_candidates_for_target(target)
+        selected_training_metric = float(wf_row.get(selected, np.inf))
+        if selected not in eligible or not np.isfinite(selected_training_metric):
+            raise ValueError(f"No finite training walk-forward selection for {target}: {selected}")
 
         rows.append(
             {
                 "Target": target,
-                "Phase1_Model": baseline,
-                "Phase1_MAPE": baseline_mape,
-                "Phase2_Proposed_Model": proposed,
-                "Phase2_Proposed_MAPE": proposed_mape,
-                "Non_Pooled_Final_Model": policy_model if policy_model is not None else "",
-                "Non_Pooled_Final_MAPE": policy_mape,
+                "Final_Eligibility_Rule": "all_seven_independent_target_models_are_eligible",
+                "Eligible_Final_Models": ", ".join(eligible),
                 "Selected_Model": selected,
-                "Final_Selection_Source": source,
-                "Accepted_Phase2_Proposal": accepted,
-                "Decision": decision,
+                "Selected_Model_Training_WalkForward_MAPE": selected_training_metric,
+                "Final_Selection_Source": "training_only_recursive_walk_forward",
+                "Decision": "selected_by_training_only_walk_forward",
             }
         )
     return pd.DataFrame(rows)
@@ -1041,19 +1097,15 @@ def build_pooling_decision(df_final: pd.DataFrame, df_pooled: pd.DataFrame) -> p
     decision = regional_final.merge(best_pooled, on="Target", how="left")
     decision["Best_Pooled_Beats_Production"] = decision["Best_Pooled_MAPE"] < decision["Production_MAPE"]
     decision["Production_Uses_Pooled_ML"] = decision["Production_Model"].isin(POOLED_LABELS)
-    decision["No_Pooling_Final_Policy"] = decision["Target"].isin(NON_POOLED_FINAL_MODELS)
+    decision["Final_Selection_Allows_Pooled_ML"] = False
     decision["Decision"] = np.select(
         [
-            decision["Production_Uses_Pooled_ML"],
-            decision["No_Pooling_Final_Policy"] & decision["Best_Pooled_Beats_Production"],
             decision["Best_Pooled_Beats_Production"],
         ],
         [
-            "accepted_for_target_by_training_gate_and_validation_no_regression",
-            "rejected_by_non_pooled_final_policy",
-            "rejected_for_production_training_gate_did_not_select_it",
+            "diagnostic_only_pooled_model_not_headline_eligible",
         ],
-        default="rejected_for_production_no_validation_improvement",
+        default="diagnostic_only_no_pooled_validation_improvement",
     )
     return decision
 
@@ -1078,6 +1130,13 @@ def final_forecasts(
                 rows.append({"Fecha": fecha, "Target": target, "Model": "SARIMA", "Forecast": round(float(val), 1)})
         except Exception as exc:
             print(f"Forecast SARIMA failed for {target}: {exc}")
+
+        try:
+            res_x, scaler_x = train_sarimax(full, sarima_order, sarima_seasonal_order)
+            for fecha, val in zip(forecast_labels, predict_sarimax(res_x, scaler_x, full, list(FORECAST_DATES))):
+                rows.append({"Fecha": fecha, "Target": target, "Model": "SARIMAX", "Forecast": round(float(val), 1)})
+        except Exception as exc:
+            print(f"Forecast SARIMAX failed for {target}: {exc}")
 
         future_t = np.arange(int(full["Tendencia"].max()) + 1, int(full["Tendencia"].max()) + 1 + len(forecast_labels))
         future_mes = np.array([d.month for d in FORECAST_DATES])
@@ -1138,6 +1197,19 @@ def build_final_metrics(df_metrics: pd.DataFrame, df_wf: pd.DataFrame) -> pd.Dat
             raise ValueError(f"No 2025 metric for selected {target} / {model}")
         rows.append(row.iloc[0].to_dict())
     return pd.DataFrame(rows)[["Target", "Model", "MAE", "RMSE", "MAPE", "R2"]]
+
+
+def build_selected_forecast(df_fc: pd.DataFrame, df_final: pd.DataFrame) -> pd.DataFrame:
+    selected = dict(zip(df_final["Target"], df_final["Model"]))
+    frames = [
+        df_fc[(df_fc["Target"] == target) & (df_fc["Model"] == model)].copy()
+        for target, model in selected.items()
+    ]
+    out = pd.concat(frames, ignore_index=True)
+    expected_rows = len(TARGETS) * len(FORECAST_DATES)
+    if len(out) != expected_rows:
+        raise ValueError(f"Selected forecast should have {expected_rows} rows, got {len(out)}")
+    return out.sort_values(["Target", "Fecha"]).reset_index(drop=True)
 
 
 def build_comparison_metrics(df_metrics: pd.DataFrame) -> pd.DataFrame:
@@ -1233,6 +1305,7 @@ def build_tableau_outputs(df_all: pd.DataFrame, df_preds: pd.DataFrame, df_fc: p
 
 def plot_outputs(df_all: pd.DataFrame, df_metrics: pd.DataFrame, df_preds: pd.DataFrame, df_fc: pd.DataFrame, df_final: pd.DataFrame) -> None:
     selected = dict(zip(df_final["Target"], df_final["Model"]))
+    selected_error = df_final.set_index("Target")[["MAPE", "RMSE"]].to_dict("index")
 
     plot_metrics = df_metrics[~df_metrics["Model"].isin(["Ridge", "Pooled Ridge", "Diesel Share"])].copy()
     fig, axes = plt.subplots(1, 2, figsize=(18, 6))
@@ -1269,13 +1342,24 @@ def plot_outputs(df_all: pd.DataFrame, df_metrics: pd.DataFrame, df_preds: pd.Da
             ax.plot(pred["Fecha_dt"], pred["Pred"], color=TARGET_COLORS[target], linestyle="--", linewidth=2, label=f"2025 prediction ({sel})")
         ax.plot(fc["Fecha_dt"], fc["Forecast"], color=TARGET_COLORS[target], linewidth=2.5, label=f"Forecast ({sel})")
         ax.axvline(pd.to_datetime("2026-01-01"), color="gray", linestyle=":", linewidth=1.5)
-        ax.fill_between(fc["Fecha_dt"], fc["Forecast"] * 0.8, fc["Forecast"] * 1.2, color=TARGET_COLORS[target], alpha=0.12, label="±20% band")
+        err = selected_error.get(target, {"MAPE": 20.0, "RMSE": 0.0})
+        pct_width = fc["Forecast"] * (float(err["MAPE"]) / 100.0)
+        abs_width = pd.Series(float(err["RMSE"]), index=fc.index)
+        band_width = np.maximum(pct_width.values, abs_width.values)
+        ax.fill_between(
+            fc["Fecha_dt"],
+            np.maximum(fc["Forecast"].values - band_width, 0),
+            fc["Forecast"].values + band_width,
+            color=TARGET_COLORS[target],
+            alpha=0.12,
+            label="2025 error band",
+        )
         ax.set_title(f"{target} - selected: {sel}", color=TARGET_COLORS[target], fontweight="bold")
         ax.set_ylabel("Consumo (Tm)")
         ax.grid(True, alpha=0.3)
         ax.legend(fontsize=7)
     axes[-1].set_visible(False)
-    fig.suptitle("Selected Non-Pooled 24-Month Biodiesel Demand Forecast (2026-2027)", fontweight="bold")
+    fig.suptitle("Selected 24-Month Biodiesel Demand Forecast (2026-2027)", fontweight="bold")
     plt.tight_layout()
     plt.savefig(FIGURES / "11_forecast_24m.png", dpi=150, bbox_inches="tight")
     plt.close(fig)
@@ -1284,53 +1368,61 @@ def plot_outputs(df_all: pd.DataFrame, df_metrics: pd.DataFrame, df_preds: pd.Da
 def main() -> None:
     df_all = pd.read_csv(DATA_FEATURES / "features_modelo_completo.csv")
     df_train = pd.read_csv(DATA_FEATURES / "features_train.csv")
-    df_test = pd.read_csv(DATA_FEATURES / "features_test.csv")
 
-    missing = [col for col in ML_FEATS + SHARE_FEATS if col not in df_all.columns]
+    required_features = sorted(set(ML_FEATS + SHARE_FEATS + SARIMAX_EXOG_FEATS + POOLED_ML_BASE_FEATS))
+    missing = [col for col in required_features if col not in df_all.columns and not col.startswith("log_")]
     if missing:
         raise ValueError(f"Missing required feature columns: {missing}")
     if (df_all["Fecha"] >= "2026-01").any():
         raise ValueError("features_modelo_completo contains 2026 rows; original forecast origin must stay 2025-12")
 
     df_sarima_grid, grid_sarima_orders = tune_sarima_orders(df_train)
-    df_sarima_acceptance, sarima_orders = accept_sarima_orders(
-        df_train,
-        df_test,
-        df_sarima_grid,
-        grid_sarima_orders,
+    df_sarima_acceptance, sarima_orders = build_sarima_order_selection(df_sarima_grid, grid_sarima_orders)
+    df_wf = run_walk_forward(df_train, sarima_orders)
+    df_acceptance = build_model_acceptance(df_wf)
+    df_wf = df_wf.merge(
+        df_acceptance[
+            [
+                "Target",
+                "Selected_Model",
+                "Selected_Model_Training_WalkForward_MAPE",
+                "Decision",
+            ]
+        ],
+        on="Target",
+        how="left",
     )
+
+    df_test = pd.read_csv(DATA_FEATURES / "features_test.csv")
     df_individual_metrics, df_individual_preds = evaluate_models(df_train, df_test, sarima_orders)
     df_pooled, df_pooled_preds = evaluate_pooled_ml_experiment(df_train, df_test)
     df_metrics = pd.concat([df_individual_metrics, df_pooled.drop(columns=["Status"])], ignore_index=True)
     df_preds = pd.concat([df_individual_preds, df_pooled_preds], ignore_index=True)
-    df_wf = run_walk_forward(df_train, sarima_orders)
-    df_acceptance = build_model_acceptance(df_metrics, df_wf)
-    df_wf = df_wf.merge(
-        df_acceptance[["Target", "Selected_Model", "Accepted_Phase2_Proposal", "Decision"]],
-        on="Target",
-        how="left",
-    )
     df_final = build_final_metrics(df_metrics, df_wf)
     df_pooling_decision = build_pooling_decision(df_final, df_pooled)
     df_fc = final_forecasts(df_all, sarima_orders)
+    df_selected_fc = build_selected_forecast(df_fc, df_final)
     df_comparison = build_comparison_metrics(df_metrics)
 
     df_metrics.to_csv(DATA_OUTPUTS / "metricas_modelos.csv", index=False, encoding="utf-8")
+    df_metrics.to_csv(DATA_OUTPUTS / "metricas_models.csv", index=False, encoding="utf-8")
     df_sarima_grid.to_csv(DATA_OUTPUTS / "sarima_grid_search_results.csv", index=False, encoding="utf-8")
     df_sarima_acceptance.to_csv(DATA_OUTPUTS / "sarima_order_acceptance.csv", index=False, encoding="utf-8")
     df_wf.to_csv(DATA_OUTPUTS / "model_selection_walkforward.csv", index=False, encoding="utf-8")
     df_final.to_csv(DATA_OUTPUTS / "metricas_final_seleccionado.csv", index=False, encoding="utf-8")
+    df_final.to_csv(DATA_OUTPUTS / "metricas_final_selected.csv", index=False, encoding="utf-8")
     df_pooled.to_csv(DATA_OUTPUTS / "phase2_pooling_experiment_metrics.csv", index=False, encoding="utf-8")
     df_pooling_decision.to_csv(DATA_OUTPUTS / "phase2_pooling_decision.csv", index=False, encoding="utf-8")
     df_acceptance.to_csv(DATA_OUTPUTS / "phase2_model_acceptance.csv", index=False, encoding="utf-8")
     df_preds.to_csv(DATA_OUTPUTS / "predicciones_test_2025.csv", index=False, encoding="utf-8")
     df_fc.to_csv(DATA_OUTPUTS / "forecast_24m_sarima_rf_xgb.csv", index=False, encoding="utf-8")
+    df_selected_fc.to_csv(DATA_OUTPUTS / "forecast_24m_selected.csv", index=False, encoding="utf-8")
     df_comparison.to_csv(DATA_OUTPUTS / "metricas_comparativa.csv", index=False, encoding="utf-8")
 
     build_tableau_outputs(df_all, df_preds, df_fc, df_final, df_metrics)
     plot_outputs(df_all, df_metrics, df_preds, df_fc, df_final)
 
-    print("\nMulti-step walk-forward selected models:")
+    print("\nTraining-only multi-step walk-forward selections:")
     print(df_wf[["Target", "Selection_Candidate_Set", "Proposed_Model", "Selected_Model", "Decision"]].to_string(index=False))
     print("\nSelected SARIMA orders from training-only grid search:")
     print(
@@ -1338,15 +1430,13 @@ def main() -> None:
             ["Target", "p", "d", "q", "P", "D", "Q", "m", "WalkForward_MAPE", "Successful_Folds"]
         ].to_string(index=False)
     )
-    print("\nProduction SARIMA order acceptance:")
+    print("\nProduction SARIMA orders selected by training-only grid:")
     print(
         df_sarima_acceptance[
             [
                 "Target",
                 "Grid_Selected_Order",
                 "Grid_Selected_Seasonal_Order",
-                "Default_2025_MAPE",
-                "Grid_Selected_2025_MAPE",
                 "Production_Order",
                 "Production_Seasonal_Order",
                 "Decision",
@@ -1358,13 +1448,8 @@ def main() -> None:
     print("\nPooled regional ML decision:")
     print(df_pooling_decision.to_string(index=False))
 
-    selected = dict(zip(df_final["Target"], df_final["Model"]))
-    selected_fc = pd.concat(
-        [df_fc[(df_fc["Target"] == target) & (df_fc["Model"] == model)] for target, model in selected.items()],
-        ignore_index=True,
-    )
-    selected_fc["year"] = selected_fc["Fecha"].str[:4].astype(int)
-    annual = selected_fc.groupby(["Target", "year"])["Forecast"].sum().unstack()
+    df_selected_fc["year"] = df_selected_fc["Fecha"].str[:4].astype(int)
+    annual = df_selected_fc.groupby(["Target", "year"])["Forecast"].sum().unstack()
     print("\nSelected forecast annual totals:")
     print(annual.to_string())
 
