@@ -1,26 +1,46 @@
 # Data Audit Report
 
-Generated / refreshed: 2026-06-23
+Generated / refreshed: 2026-06-24 (branch `sacha`)
 Scope: tracked production datasets, feature tables, outputs, and known optional artifacts.
 
 ## Executive Summary
 
 The production data pipeline is coherent at the dataset level: national demand
 reconciles to the sum of the CCAA rows, the five delivery targets are present, and
-the script path builds causal lag features for the modeling table.
+the script path builds causal lag features for the modeling table. This part of
+the pipeline (`scripts/02`, `scripts/03`, `scripts/04`) is unchanged from earlier
+audits and remains leakage-free.
 
-Phase 2 improves the modeling layer on branch `enrico`: model selection now uses
-recursive multi-step walk-forward validation, pooled regional ML is tested in the
-official script path, and a no-regression acceptance gate prevents Phase 2 changes
-from weakening the Phase 1 selected models on the 2025 validation period.
+The modeling layer was rebuilt on branch `sacha` around a stricter rule: every
+target independently runs an open seven-family competition (SARIMA, SARIMAX,
+Logistic, Gompertz, Ridge, Random Forest, XGBoost), and the winner is selected
+only by recursive multi-step walk-forward validation inside the 2023-2024
+training window. The 2025 period is read only after `Selected_Model` is already
+fixed, and is used solely to report an honest holdout metric. Pooled regional ML
+and Diesel Share remain in the metrics tables as diagnostics, but are not
+eligible for the headline forecast. See `PHASE2_MODELING_REPORT.md` for the full
+selection table and methodology history.
 
-The final delivery policy is no pooling. Pooled regional ML remains available as
-a documented sensitivity experiment, but the selected production forecast uses
-only non-pooled target-level models.
+This refresh also found and fixed three notebook-only regressions introduced by
+an earlier "translate notebook content to English" pass, which had renamed
+data-column string literals (not just prose) inside code cells:
 
-SARIMA parameters are now evaluated through a constrained training-only grid
-search. Grid winners are recorded, then accepted for production only if they do
-not regress versus the default SARIMA order on the 2025 acceptance period.
+- `'Tendencia'` (the real trend-index column built by `scripts/04`) had been
+  renamed to `'Trend'` inside notebooks 05, 07, 08, and 09, which crashed every
+  one of those notebooks with `KeyError: 'Trend'` against the real feature
+  tables.
+- The raw `Producto` values and the `gasolina95`/`gasolina98` price-feature
+  slugs had been renamed to `gasoline95`/`gasoline98` (and `'Diesel A
+  habitual'`/`'Diesel Premium'`) inside notebooks 06 and 08, which silently
+  failed to match the real `Producto`/column values.
+- Notebooks 10, 10.1, and 13 still referenced `Default_2025_MAPE` /
+  `Grid_Selected_2025_MAPE`, two columns that no longer exist in
+  `sarima_order_acceptance.csv` after the SARIMA order selection was rebuilt to
+  be training-only.
+
+All four have been fixed and the affected notebooks (05, 06, 07, 08, 09, 13)
+were re-executed end to end to confirm they run clean and to regenerate their
+figures. See `NOTEBOOKS_AUDIT.md` for the full notebook-by-notebook status.
 
 ## Production Inputs
 
@@ -59,7 +79,7 @@ Validation checks in the script path:
 |---|---:|---|---|
 | `data/features/features_modelo_completo.csv` | 180 x 36 | 2023-01 to 2025-12 | Five targets x 36 months. |
 | `data/features/features_train.csv` | 120 x 36 | 2023-01 to 2024-12 | Temporal train split. |
-| `data/features/features_test.csv` | 60 x 36 | 2025-01 to 2025-12 | Temporal validation / acceptance split. |
+| `data/features/features_test.csv` | 60 x 36 | 2025-01 to 2025-12 | Temporal holdout split; loaded only after model selection is fixed. |
 | `data/features/features_precios_combustibles.csv` | 36 x 81 | 2023-01 to 2025-12 | Optional price-ablation features. |
 
 Expected feature nulls:
@@ -77,16 +97,17 @@ Known data issues:
 
 | File | Current Role |
 |---|---|
-| `metricas_modelos.csv` | Metrics for the current CNMC-aware candidates, including pooled regional ML. |
-| `sarima_grid_search_results.csv` | Training-only walk-forward SARIMA grid-search diagnostics for each target. |
-| `sarima_order_acceptance.csv` | 2025 no-regression acceptance check comparing grid-selected SARIMA orders with the default SARIMA order. |
-| `model_selection_walkforward.csv` | Recursive multi-step model-selection scores over the training period. |
-| `metricas_final_seleccionado.csv` | 2025 validation metrics for the selected model per target. |
+| `metricas_modelos.csv` / `metricas_models.csv` | 2025 holdout metrics for all 7 headline candidates plus Diesel Share and pooled regional ML (duplicate filenames, same content). |
+| `sarima_grid_search_results.csv` | Training-only walk-forward SARIMA grid-search diagnostics for each target, including a degeneracy check on the training-window 24-month stability forecast. |
+| `sarima_order_acceptance.csv` | Records the training-only grid-selected SARIMA order adopted into production for each target. No 2025 data is used in this decision. |
+| `model_selection_walkforward.csv` | Recursive multi-step walk-forward scores for all 7 headline candidates per target, the training-only proposed model, and the final selected model. |
+| `metricas_final_seleccionado.csv` / `metricas_final_selected.csv` | 2025 holdout metrics for the model already selected by training-only walk-forward (duplicate filenames, same content). |
 | `predicciones_test_2025.csv` | 2025 predictions for all current candidates. |
 | `forecast_24m_sarima_rf_xgb.csv` | 2026-2027 forecasts for all current candidates. Legacy filename. |
-| `phase2_model_acceptance.csv` | Phase 1 model, Phase 2 proposed model, no-pooling final policy, final selected model, and acceptance decision. |
-| `phase2_pooling_experiment_metrics.csv` | 2025 validation metrics for pooled regional ML candidates. |
-| `phase2_pooling_decision.csv` | Target-level accept/reject explanation for pooled ML, including the no-pooling final policy. |
+| `forecast_24m_selected.csv` | The clean 24-month headline forecast: one model per target, the one selected by training-only walk-forward. |
+| `phase2_model_acceptance.csv` | Per-target eligible-model set, the training-only proposed model, the selected model, and the training-only walk-forward MAPE that justified selection. No 2025-based acceptance/rejection step remains. |
+| `phase2_pooling_experiment_metrics.csv` | 2025 holdout metrics for pooled regional ML sensitivity candidates (diagnostic only). |
+| `phase2_pooling_decision.csv` | Confirms pooled regional ML is never eligible for the headline forecast, and records whether a pooled candidate would have scored better on the 2025 holdout (for transparency only). |
 | `metricas_modelos_con_precios.csv` | Optional price-ablation metrics from notebook 08. |
 | `forecast_24m_con_precios.csv` | Optional price-ablation forecasts from notebook 08. |
 | `metricas_comparativa.csv` | Combined current metrics plus optional price-ablation metrics when available. |
@@ -97,23 +118,27 @@ Known data issues:
 
 ## Current Selected Model Quality
 
-| Target | Selected Model | 2025 MAPE | 2025 R2 | Readiness |
-|---|---|---:|---:|---|
-| Nacional | SARIMA | 29.0% | -0.009 | Kept from Phase 1; Phase 2 proposal regressed. |
-| Madrid | Logistic | 73.6% | -8.273 | Improved versus Phase 1 Gompertz. |
-| Cataluña | SARIMA | 47.2% | -5.620 | Best non-pooled validation alternative under the final no-pooling policy. |
-| Andalucía | Logistic | 48.4% | -1.555 | Kept from Phase 1; pooled proposal regressed slightly. |
-| Valencia | Gompertz | 34.2% | -1.246 | Weak but less severe. |
+| Target | Selected Model | Training Walk-Forward MAPE | 2025 Holdout MAPE | 2025 Holdout R2 |
+|---|---|---:|---:|---:|
+| Nacional | SARIMA | 39.7% | 29.0% | -0.009 |
+| Madrid | Logistic | 37.2% | 73.6% | -8.273 |
+| Cataluña | SARIMAX | 68.5% | 92.3% | -19.827 |
+| Andalucía | SARIMA | 53.9% | 49.7% | -1.662 |
+| Valencia | Gompertz | 57.3% | 34.2% | -1.246 |
 
-Average selected MAPE improved from 94.6% in Phase 1 to 46.5% after Phase 2 and
-the no-pooling final policy.
-Remaining risk: all selected R2 values are still negative except near-zero national
-SARIMA, so the forecasts should be presented as directional planning estimates.
+Average selected 2025 holdout MAPE is 55.8%. This is worse on average than the
+earlier (now superseded) policy-restricted selection's 46.5%, because that
+number partly reflected 2025-informed acceptance gates that have since been
+removed. Three of five targets (Nacional, Madrid, Valencia) select the exact
+same model either way; only Cataluña and Andalucía changed, and Cataluña's
+result is the weakest in the current set: SARIMAX won the training-only
+comparison by a very narrow margin over SARIMA (68.5 vs 69.6), but loses badly
+on the 2025 holdout. This is disclosed, not hidden, in notebook 10's summary
+cell.
 
-SARIMA grid-search note: the training-only grid selected alternative orders for
-Nacional and Cataluña, but both were rejected by the 2025 no-regression
-acceptance check. The production SARIMA order for both final SARIMA-selected
-targets remains `(1, 1, 1)(1, 0, 0, 12)`.
+All selected R2 values are negative except the near-zero Nacional SARIMA, so
+forecasts should be presented as directional planning estimates, not precision
+demand commitments.
 
 ## Dataset Lineage
 

@@ -5,6 +5,68 @@
 
 ---
 
+## 2026-06-24 Notebook Coherence Fixes (`sacha`)
+
+A coherence audit after the seven-candidate rebuild (below) found that an
+earlier "translate notebook content to English" pass had renamed real
+data-derived string literals inside *code* cells, not just prose. Renaming a
+column name or a raw source value breaks a notebook the moment it touches
+real data, since nothing else in the pipeline was renamed to match. Three
+distinct breakages were found, reproduced, and fixed:
+
+1. `'Tendencia'` (the real trend-index column from `scripts/04_build_features.py`)
+   had become `'Trend'` in notebooks 05, 07, 08, 09, causing `KeyError: 'Trend'`
+   against the real feature tables. Reverted to `'Tendencia'` in all four.
+2. The raw `Producto` values (`'Gasolina 95 E5'`, `'Gasolina 98 E5'`,
+   `'Gasóleo A habitual'`, `'Gasóleo Premium'`) and the `gasolina95`/`gasolina98`
+   slugs had become English (`'Gasoline 95 E5'`, `'Diesel A habitual'`,
+   `gasoline95`, ...) in notebook 06's `PRODUCT_MAP` and notebook 08's price-join
+   cell. Notebook 06 would have silently matched zero rows for all four fuel
+   products; notebook 08 crashed with `KeyError: 'PVP_gasoline95_nac_lag1'`.
+   Reverted to the real Spanish values in both.
+3. Notebooks 10, 10.1, and 13 still referenced `Default_2025_MAPE` /
+   `Grid_Selected_2025_MAPE`, columns removed from `sarima_order_acceptance.csv`
+   when the SARIMA order selection became training-only (see below). Fixed to
+   display `Grid_WalkForward_MAPE` / `Selected_By_Training_WalkForward` instead.
+
+Also fixed: literal `?` mojibake ("Catalu?a", "Andaluc?a") in notebooks 10,
+10.1, 13, likely from pasting console output into markdown instead of writing
+the string directly.
+
+Notebooks 05, 06, 07, 08, 09, and 13 were re-executed end to end (new Jupyter
+kernel `repsol-venv` registered against `.venv` so execution uses the pinned
+package versions) to confirm zero errors and to regenerate stale figures --
+notably the five `13_business_*_train_validation_forecast.png` charts, which
+had been a full day stale relative to the final model selection.
+
+**Important side-effect to remember:** notebook 05, if run, overwrites
+`data/features/features_*.csv` with its own older 27-column schema (no CNMC,
+no mandate features) instead of the current 36-column production schema.
+Notebooks 07 and 08, if run, overwrite several `data/outputs/*.csv` filenames
+that `scripts/05_modeling_with_cnmc.py` also owns (`model_selection_walkforward.csv`,
+`predicciones_test_2025.csv`, `forecast_24m_sarima_rf_xgb.csv`,
+`tableau_export_legacy.csv`, plus the English-named duplicates). After running
+any of notebooks 05/07/08, re-run `scripts/04_build_features.py` and
+`scripts/05_modeling_with_cnmc.py` (then `scripts/06_validate_outputs.py`) to
+restore the authoritative state. This was done after this fix round; the
+05/06/07/08/09/13 figure regeneration is the only intended side effect, and
+`scripts/06_validate_outputs.py` passes on the restored state.
+
+`DATA_AUDIT_REPORT.md`, `NOTEBOOKS_AUDIT.md`, and `AUDIT_FIX_PLAN.md` were also
+stale (still describing the superseded "Phase 2 / no-pooling" model table) and
+have been refreshed to match the current seven-model selection and this
+notebook fix round.
+
+**Lesson for any future bulk text edit (translation, renaming, formatting)
+across notebooks:** never apply it blindly to code cells. A find-and-replace
+that is safe in markdown prose can silently rename a column name, a raw
+source-data value, or a dict key in code, and the failure mode ranges from an
+immediate `KeyError` to a silent zero-match with no error at all. Diff
+code-cell changes separately from markdown-cell changes, and run every
+touched notebook before considering the edit done.
+
+---
+
 ## 2026-06-24 Training-Only Seven-Candidate Rebuild (`sacha`)
 
 This section supersedes the earlier 2026-06-24 feature-aware-only attempt and

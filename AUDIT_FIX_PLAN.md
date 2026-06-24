@@ -1,7 +1,7 @@
 # Audit Fix Plan
 
 Created: 2026-06-21
-Last updated: 2026-06-23
+Last updated: 2026-06-24
 
 ## Phase 1 Scope
 
@@ -79,13 +79,49 @@ Explicitly out of scope for Phase 1: changing the modeling methodology.
   changes should update `memory.md` in the same work session, pull request, or
   commit.
 
+## Completed In Sacha Branch Refresh (2026-06-24)
+
+The "final no-pooling policy" described above is superseded on branch `sacha`.
+The modeling layer was rebuilt around an open seven-model competition per
+target (SARIMA, SARIMAX, Logistic, Gompertz, Ridge, Random Forest, XGBoost),
+selected only by training-only recursive walk-forward validation -- no
+2025-informed acceptance gate remains anywhere in the selection path. Pooled
+regional ML and Diesel Share are diagnostics only, never headline-eligible.
+See `PHASE2_MODELING_REPORT.md` and `DATA_AUDIT_REPORT.md` for the current
+selected-model table and methodology.
+
+This refresh also found and fixed three notebook regressions left by an
+earlier "translate to English" pass that had renamed real data-column string
+literals inside code (not just prose), breaking notebooks 05, 06, 07, 08, 09,
+10, 10.1, and 13 to varying degrees:
+
+- `'Tendencia'` renamed to `'Trend'` in notebooks 05/07/08/09, causing
+  `KeyError: 'Trend'` against the real feature tables.
+- The raw `Producto` values and `gasolina95`/`gasolina98` slugs renamed to
+  English in notebooks 06/08, causing a silent zero-match in notebook 06 and
+  `KeyError` in notebook 08.
+- Stale `Default_2025_MAPE`/`Grid_Selected_2025_MAPE` column references in
+  notebooks 10/10.1/13, left over from the removed 2025-acceptance-gate design.
+
+All affected notebooks were fixed, re-executed end to end, and their figures
+regenerated. The shared-filename production outputs that notebooks 05/07/08
+overwrite when run (`data/features/*.csv`, several `data/outputs/*.csv`) were
+restored to the authoritative script-produced state afterward.
+
 ## Still Open After Final Cleanup
 
 - Treat the forecasts as directional planning scenarios because all selected
   target-level R2 values remain weak or negative.
-- Explain Catalonia's selected SARIMA as the final non-pooled choice and the
-  pooled Random Forest as a lower-MAPE sensitivity result rejected by policy.
+- Cataluña's current selected model is SARIMAX, chosen by training-only
+  walk-forward by a very narrow margin over SARIMA (68.5% vs 69.6%), but it
+  is the weakest result in the current set on the 2025 holdout (92.3% MAPE).
+  This is disclosed in notebook 10 rather than overridden.
 - Consider a stronger backtesting design if more historical data becomes
   available.
 - Keep HVO / renewable diesel outside the target unless new usable regional data
   becomes available.
+- Notebooks 07 and 08 still implement an older, smaller candidate set
+  (pre-SARIMAX, pre-CNMC features) than the production script. They are
+  fixed and runnable again, but reflect a previous modeling generation --
+  consider retiring them or refactoring them to mirror `scripts/05` if they
+  are kept as more than a historical reference.

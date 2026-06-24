@@ -6,18 +6,18 @@ Andalucía,Logistic,833.8,1006.7,48.4,-1.555
 Andalucía,Pooled XGBoost,826.8,992.3,48.4,-1.482
 Andalucía,SARIMA,853.5,1027.6,49.7,-1.662
 Andalucía,Random Forest,984.6,1172.1,56.6,-2.464
-Andalucía,RF+Precios,991.5,1172.9,57.6,
-Andalucía,XGB+Precios,1046.3,1194.4,65.1,
+Andalucía,RF+Prices,980.7,1160.2,57.0,
+Andalucía,XGB+Prices,1050.2,1196.8,65.5,
 Andalucía,XGBoost,1053.4,1202.9,65.5,-2.648
 Andalucía,Diesel Share,79229.8,82376.6,6275.1,-17105.946
 Andalucía,Pooled Ridge,1911686.1,2495349.1,103355.0,-15697373.088
 Andalucía,Ridge,2995471.9,3128349.3,238283.1,-24671458.892
 Cataluña,Pooled Random Forest,1190.6,1349.2,38.2,-3.627
 Cataluña,SARIMA,1532.1,1749.5,49.6,-6.781
-Cataluña,XGB+Precios,1709.9,1802.6,57.8,
+Cataluña,XGB+Prices,1698.3,1793.1,57.3,
 Cataluña,Pooled XGBoost,1738.2,1840.0,58.6,-7.606
 Cataluña,Random Forest,1767.4,1878.0,59.3,-7.965
-Cataluña,RF+Precios,1785.0,1879.2,60.4,
+Cataluña,RF+Prices,1760.9,1860.2,59.4,
 Cataluña,XGBoost,1825.5,1926.3,61.6,-8.432
 Cataluña,Logistic,2299.1,2498.6,80.2,-14.869
 Cataluña,SARIMAX,2722.3,2862.4,92.3,-19.827
@@ -27,10 +27,10 @@ Cataluña,Pooled Ridge,2724326.4,2981399.7,91390.8,-22594704.857
 Cataluña,Ridge,2725203.4,2981410.9,91437.5,-22594875.075
 Madrid,Pooled Random Forest,1031.4,1211.4,34.2,-2.215
 Madrid,Pooled XGBoost,1595.6,1720.5,56.3,-5.486
-Madrid,XGB+Precios,1710.9,1799.7,61.9,
+Madrid,XGB+Prices,1706.4,1795.9,61.7,
 Madrid,XGBoost,1743.3,1868.1,61.9,-6.647
-Madrid,RF+Precios,1797.6,1910.9,64.1,
 Madrid,Random Forest,1814.2,1938.2,64.5,-7.231
+Madrid,RF+Prices,1811.3,1923.3,64.7,
 Madrid,Logistic,1924.0,2057.2,73.6,-8.273
 Madrid,Gompertz,5538.4,6823.5,197.1,-101.018
 Madrid,Diesel Share,15472.0,24107.2,543.1,-1272.392
@@ -41,8 +41,8 @@ Madrid,Pooled Ridge,2747279.3,2982777.8,97649.1,-19494350.41
 Nacional,SARIMA,4278.0,4921.8,29.0,-0.009
 Nacional,Logistic,6228.7,6999.4,36.7,-1.041
 Nacional,Random Forest,10990.7,11986.5,56.8,-4.984
-Nacional,RF+Precios,10962.8,11922.4,56.9,
-Nacional,XGB+Precios,11451.1,12361.6,59.8,
+Nacional,RF+Prices,10941.1,11878.6,56.9,
+Nacional,XGB+Prices,11459.0,12363.4,59.9,
 Nacional,XGBoost,11937.4,12695.1,63.4,-5.713
 Nacional,Gompertz,15625.4,19146.0,82.7,-14.268
 Nacional,SARIMAX,28187.8,39544.9,137.2,-64.135
@@ -52,9 +52,9 @@ Valencia,Gompertz,360.3,446.6,34.2,-1.246
 Valencia,Logistic,365.4,453.3,34.7,-1.314
 Valencia,Pooled XGBoost,270.7,328.1,35.6,-0.212
 Valencia,XGBoost,527.7,610.0,52.8,-3.19
-Valencia,XGB+Precios,537.7,614.0,54.7,
+Valencia,XGB+Prices,533.5,612.5,53.9,
 Valencia,SARIMA,573.8,661.8,57.4,-3.932
-Valencia,RF+Precios,568.3,632.6,59.3,
+Valencia,RF+Prices,571.8,633.2,60.1,
 Valencia,Random Forest,586.6,648.6,61.7,-3.736
 Valencia,Pooled Random Forest,637.7,669.6,79.5,-4.048
 Valencia,SARIMAX,2846.4,4234.1,497.8,-200.868
