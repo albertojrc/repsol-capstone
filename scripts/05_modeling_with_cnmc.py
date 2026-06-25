@@ -537,23 +537,53 @@ def seasonal_naive_gasoleo(history: pd.DataFrame, dates: list[pd.Timestamp]) -> 
     return [base[int(dt.month)] for dt in dates]
 
 
-def build_sarimax_future_exog(history: pd.DataFrame, future_dates: list[pd.Timestamp]) -> pd.DataFrame:
+def true_macro_path(df: pd.DataFrame) -> list[dict]:
+    """
+    Per-step macro inputs for a multi-step recursive forecast, read from a
+    dataframe slice that already has the real, correctly-lagged
+    IPI_original_lag1/IPC_var_anual_lag1/Tasa_paro_lag1 columns for its own
+    dates (built by scripts/04_build_features.py's
+    add_lagged_exogenous_features -- a plain .shift(1) on exogenous macro
+    series, unrelated to the target, so no leakage risk). Used for the
+    training walk-forward folds and the 2025 holdout, where the "future"
+    relative to the fold's training cutoff is already-observed history.
+    Not used for the genuine 2026-2027 forecast, where no real future macro
+    data exists -- that caller keeps the frozen-last-known-value dict.
+    """
+    cols = {
+        "IPI_original_lag1": "IPI_original",
+        "IPC_var_anual_lag1": "IPC_var_anual",
+        "Tasa_paro_lag1": "Tasa_paro",
+    }
+    return [
+        {dict_key: row[col] for col, dict_key in cols.items()}
+        for row in df[list(cols)].to_dict("records")
+    ]
+
+
+def build_sarimax_future_exog(
+    history: pd.DataFrame,
+    future_dates: list[pd.Timestamp],
+    macro_path: list[dict] | None = None,
+) -> pd.DataFrame:
     hist_gaso = history["GasoleoA_Tm"].astype(float).tolist()
     future_dates = list(future_dates)
     future_gaso = seasonal_naive_gasoleo(history, future_dates)
-    macro_last = history.iloc[-1][["IPI_original", "IPC_var_anual", "Tasa_paro"]].to_dict()
+    if macro_path is None:
+        macro_last = history.iloc[-1][["IPI_original", "IPC_var_anual", "Tasa_paro"]].to_dict()
+        macro_path = [macro_last] * len(future_dates)
     rows = []
 
-    for dt, gaso_t in zip(future_dates, future_gaso):
+    for step, (dt, gaso_t) in enumerate(zip(future_dates, future_gaso)):
         mes = int(dt.month)
         mandate = mandate_values_for_date(dt)
         rows.append(
             {
                 "sin_mes": np.sin(2 * np.pi * mes / 12),
                 "cos_mes": np.cos(2 * np.pi * mes / 12),
-                "IPI_original_lag1": macro_last["IPI_original"],
-                "IPC_var_anual_lag1": macro_last["IPC_var_anual"],
-                "Tasa_paro_lag1": macro_last["Tasa_paro"],
+                "IPI_original_lag1": macro_path[step]["IPI_original"],
+                "IPC_var_anual_lag1": macro_path[step]["IPC_var_anual"],
+                "Tasa_paro_lag1": macro_path[step]["Tasa_paro"],
                 "GasoleoA_Tm_lag1": hist_gaso[-1],
                 "GasoleoA_Tm_roll3_lag1": float(np.mean(hist_gaso[-3:])),
                 **mandate,
@@ -564,8 +594,14 @@ def build_sarimax_future_exog(history: pd.DataFrame, future_dates: list[pd.Times
     return pd.DataFrame(rows)[SARIMAX_EXOG_FEATS]
 
 
-def predict_sarimax(result, scaler, history: pd.DataFrame, future_dates: list[pd.Timestamp]) -> np.ndarray:
-    exog = build_sarimax_future_exog(history, future_dates)
+def predict_sarimax(
+    result,
+    scaler,
+    history: pd.DataFrame,
+    future_dates: list[pd.Timestamp],
+    macro_path: list[dict] | None = None,
+) -> np.ndarray:
+    exog = build_sarimax_future_exog(history, future_dates, macro_path)
     exog_scaled = scaler.transform(exog.values)
     pred_log = result.forecast(steps=len(exog), exog=exog_scaled)
     return np.maximum(np.expm1(np.clip(pred_log, None, 15.0)), 0)
@@ -575,7 +611,7 @@ def recursive_forecast_ml(
     model,
     scaler,
     history: pd.DataFrame,
-    macro_last: dict,
+    macro_path: list[dict],
     n_steps: int = 24,
     future_dates: list[pd.Timestamp] | None = None,
     mandate_override: dict | None = None,
@@ -605,9 +641,9 @@ def recursive_forecast_ml(
             "Lag_3": hist_y[-3],
             "Roll_mean_3": float(np.mean(hist_y[-3:])),
             "Roll_mean_6": float(np.mean(hist_y[-6:])),
-            "IPI_original_lag1": macro_last["IPI_original"],
-            "IPC_var_anual_lag1": macro_last["IPC_var_anual"],
-            "Tasa_paro_lag1": macro_last["Tasa_paro"],
+            "IPI_original_lag1": macro_path[step]["IPI_original"],
+            "IPC_var_anual_lag1": macro_path[step]["IPC_var_anual"],
+            "Tasa_paro_lag1": macro_path[step]["Tasa_paro"],
             "GasoleoA_Tm_lag1": hist_gaso[-1],
             "GasoleoA_Tm_roll3_lag1": float(np.mean(hist_gaso[-3:])),
             "Biodiesel_GasoleoA_Ratio_lag1": hist_ratio[-1],
@@ -628,7 +664,7 @@ def recursive_forecast_share(
     model,
     scaler,
     history: pd.DataFrame,
-    macro_last: dict,
+    macro_path: list[dict],
     n_steps: int = 24,
     future_dates: list[pd.Timestamp] | None = None,
 ) -> list[float]:
@@ -651,9 +687,9 @@ def recursive_forecast_share(
             "Mes": mes,
             "sin_mes": np.sin(2 * np.pi * mes / 12),
             "cos_mes": np.cos(2 * np.pi * mes / 12),
-            "IPI_original_lag1": macro_last["IPI_original"],
-            "IPC_var_anual_lag1": macro_last["IPC_var_anual"],
-            "Tasa_paro_lag1": macro_last["Tasa_paro"],
+            "IPI_original_lag1": macro_path[step]["IPI_original"],
+            "IPC_var_anual_lag1": macro_path[step]["IPC_var_anual"],
+            "Tasa_paro_lag1": macro_path[step]["Tasa_paro"],
             "GasoleoA_Tm_lag1": hist_gaso[-1],
             "GasoleoA_Tm_roll3_lag1": float(np.mean(hist_gaso[-3:])),
             "Biodiesel_GasoleoA_Ratio_lag1": hist_ratio[-1],
@@ -706,7 +742,7 @@ def evaluate_models(
 
         try:
             res_x, scaler_x = train_sarimax(tr, sarima_order, sarima_seasonal_order)
-            pred = predict_sarimax(res_x, scaler_x, tr, test_dates)
+            pred = predict_sarimax(res_x, scaler_x, tr, test_dates, macro_path=true_macro_path(te))
             all_metrics.append({"Target": target, "Model": "SARIMAX", **compute_metrics(y_true, pred)})
             for fd, actual, pv in zip(te["Fecha"], y_true, pred):
                 all_preds.append({"Fecha": fd, "Target": target, "Actual": round(actual, 1), "Model": "SARIMAX", "Pred": round(float(pv), 1)})
@@ -729,8 +765,7 @@ def evaluate_models(
         for model_name, label in [("Ridge", "Ridge"), ("RandomForest", "Random Forest"), ("XGBoost", "XGBoost")]:
             try:
                 mdl, scaler = train_ml(tr_ml[ML_FEATS].values, tr_ml["Consumo_Tm"].values, model_name)
-                macro_last = tr.iloc[-1][["IPI_original", "IPC_var_anual", "Tasa_paro"]].to_dict()
-                pred = recursive_forecast_ml(mdl, scaler, tr, macro_last, len(te), test_dates)
+                pred = recursive_forecast_ml(mdl, scaler, tr, true_macro_path(te), len(te), test_dates)
                 all_metrics.append({"Target": target, "Model": label, **compute_metrics(y_true, pred)})
                 for fd, actual, pv in zip(te["Fecha"], y_true, pred):
                     all_preds.append({"Fecha": fd, "Target": target, "Actual": round(float(actual), 1), "Model": label, "Pred": round(float(pv), 1)})
@@ -743,8 +778,7 @@ def evaluate_models(
                 tr_share[SHARE_FEATS].values,
                 tr_share["Biodiesel_GasoleoA_Ratio"].values,
             )
-            macro_last = tr.iloc[-1][["IPI_original", "IPC_var_anual", "Tasa_paro"]].to_dict()
-            pred = recursive_forecast_share(share_model, share_scaler, tr, macro_last, len(te), test_dates)
+            pred = recursive_forecast_share(share_model, share_scaler, tr, true_macro_path(te), len(te), test_dates)
             all_metrics.append({"Target": target, "Model": "Diesel Share", **compute_metrics(y_true, pred)})
             for fd, actual, pv in zip(te["Fecha"], y_true, pred):
                 all_preds.append({"Fecha": fd, "Target": target, "Actual": round(float(actual), 1), "Model": "Diesel Share", "Pred": round(float(pv), 1)})
@@ -1037,7 +1071,7 @@ def walk_forward_scores(
 
         try:
             res_x, scaler_x = train_sarimax(fold_tr, sarima_order, sarima_seasonal_order)
-            pred = predict_sarimax(res_x, scaler_x, fold_tr, future_dates)
+            pred = predict_sarimax(res_x, scaler_x, fold_tr, future_dates, macro_path=true_macro_path(fold_te))
             _append_mape_errors(fold_errors["SARIMAX"], y_true, pred)
         except Exception:
             pass
@@ -1060,8 +1094,7 @@ def walk_forward_scores(
             for model_name, label in [("Ridge", "Ridge"), ("RandomForest", "Random Forest"), ("XGBoost", "XGBoost")]:
                 try:
                     mdl, scaler = train_ml(tr_ml[ML_FEATS].values, tr_ml["Consumo_Tm"].values, model_name)
-                    macro_last = fold_tr.iloc[-1][["IPI_original", "IPC_var_anual", "Tasa_paro"]].to_dict()
-                    pred = recursive_forecast_ml(mdl, scaler, fold_tr, macro_last, len(fold_te), future_dates)
+                    pred = recursive_forecast_ml(mdl, scaler, fold_tr, true_macro_path(fold_te), len(fold_te), future_dates)
                     _append_mape_errors(fold_errors[label], y_true, pred)
                 except Exception:
                     pass
@@ -1073,8 +1106,7 @@ def walk_forward_scores(
                     tr_share[SHARE_FEATS].values,
                     tr_share["Biodiesel_GasoleoA_Ratio"].values,
                 )
-                macro_last = fold_tr.iloc[-1][["IPI_original", "IPC_var_anual", "Tasa_paro"]].to_dict()
-                pred = recursive_forecast_share(share_model, share_scaler, fold_tr, macro_last, len(fold_te), future_dates)
+                pred = recursive_forecast_share(share_model, share_scaler, fold_tr, true_macro_path(fold_te), len(fold_te), future_dates)
                 _append_mape_errors(fold_errors["Diesel Share"], y_true, pred)
             except Exception:
                 pass
@@ -1117,10 +1149,9 @@ def pooled_walk_forward_scores(
                 if fold_te.empty:
                     continue
                 y_true = fold_te["Consumo_Tm"].values.astype(float)
-                macro_last = fold_tr.iloc[-1][["IPI_original", "IPC_var_anual", "Tasa_paro"]].to_dict()
                 future_dates = pd.to_datetime(fold_te["Fecha"]).tolist()
                 try:
-                    pred = recursive_forecast_pooled_ml(model, scaler, fold_tr, target, macro_last, future_dates)
+                    pred = recursive_forecast_pooled_ml(model, scaler, fold_tr, target, true_macro_path(fold_te), future_dates)
                     _append_mape_errors(fold_errors[target][label], y_true, pred)
                 except Exception:
                     pass
@@ -1190,7 +1221,7 @@ def recursive_forecast_pooled_ml(
     scaler,
     history: pd.DataFrame,
     target: str,
-    macro_last: dict,
+    macro_path: list[dict],
     future_dates: list[pd.Timestamp],
 ) -> list[float]:
     hist_y = history["Consumo_Tm"].astype(float).tolist()
@@ -1214,9 +1245,9 @@ def recursive_forecast_pooled_ml(
             "log_Lag_3": np.log1p(max(hist_y[-3], 0.0)),
             "log_Roll_mean_3": np.log1p(max(float(np.mean(hist_y[-3:])), 0.0)),
             "log_Roll_mean_6": np.log1p(max(float(np.mean(hist_y[-6:])), 0.0)),
-            "IPI_original_lag1": macro_last["IPI_original"],
-            "IPC_var_anual_lag1": macro_last["IPC_var_anual"],
-            "Tasa_paro_lag1": macro_last["Tasa_paro"],
+            "IPI_original_lag1": macro_path[step]["IPI_original"],
+            "IPC_var_anual_lag1": macro_path[step]["IPC_var_anual"],
+            "Tasa_paro_lag1": macro_path[step]["Tasa_paro"],
             "log_GasoleoA_Tm_lag1": np.log1p(max(hist_gaso[-1], 0.0)),
             "log_GasoleoA_Tm_roll3_lag1": np.log1p(max(float(np.mean(hist_gaso[-3:])), 0.0)),
             "Biodiesel_GasoleoA_Ratio_lag1": hist_ratio[-1],
@@ -1249,9 +1280,8 @@ def evaluate_pooled_ml_experiment(df_train: pd.DataFrame, df_test: pd.DataFrame)
         for target in REGIONAL_TARGETS:
             tr = df_train[df_train["Target"] == target].sort_values("Fecha")
             te = df_test[df_test["Target"] == target].sort_values("Fecha")
-            macro_last = tr.iloc[-1][["IPI_original", "IPC_var_anual", "Tasa_paro"]].to_dict()
             future_dates = pd.to_datetime(te["Fecha"]).tolist()
-            pred = recursive_forecast_pooled_ml(model, scaler, tr, target, macro_last, future_dates)
+            pred = recursive_forecast_pooled_ml(model, scaler, tr, target, true_macro_path(te), future_dates)
             metrics = compute_metrics(te["Consumo_Tm"].values, pred)
             rows.append({"Target": target, "Model": label, **metrics, "Status": "tested"})
             for fd, actual, pv in zip(te["Fecha"], te["Consumo_Tm"], pred):
@@ -1320,7 +1350,12 @@ def final_forecasts(
     forecast_labels = [d.strftime("%Y-%m") for d in FORECAST_DATES]
     for target in TARGETS:
         full = df_all[df_all["Target"] == target].sort_values("Fecha").copy()
+        # Genuine future forecast (2026-2027): no real macro data exists for these
+        # dates, so the last known value is frozen and repeated for every step --
+        # this is the one context where that's unavoidable, unlike the
+        # walk-forward folds and 2025 holdout (see true_macro_path).
         macro_last = full.iloc[-1][["IPI_original", "IPC_var_anual", "Tasa_paro"]].to_dict()
+        macro_path = [macro_last] * len(FORECAST_DATES)
         sarima_order, sarima_seasonal_order = sarima_orders.get(
             target,
             (DEFAULT_SARIMA_ORDER, DEFAULT_SARIMA_SEASONAL_ORDER),
@@ -1370,7 +1405,7 @@ def final_forecasts(
         for model_name, label in [("Ridge", "Ridge"), ("RandomForest", "Random Forest"), ("XGBoost", "XGBoost")]:
             try:
                 mdl, scaler = train_ml(tr_ml[ML_FEATS].values, tr_ml["Consumo_Tm"].values, model_name)
-                for fecha, val in zip(forecast_labels, recursive_forecast_ml(mdl, scaler, full, macro_last, len(forecast_labels))):
+                for fecha, val in zip(forecast_labels, recursive_forecast_ml(mdl, scaler, full, macro_path, len(forecast_labels))):
                     rows.append({"Fecha": fecha, "Target": target, "Model": label, "Forecast": round(float(val), 1)})
             except Exception as exc:
                 print(f"Forecast {label} failed for {target}: {exc}")
@@ -1381,7 +1416,7 @@ def final_forecasts(
                 tr_share[SHARE_FEATS].values,
                 tr_share["Biodiesel_GasoleoA_Ratio"].values,
             )
-            for fecha, val in zip(forecast_labels, recursive_forecast_share(share_model, share_scaler, full, macro_last, len(forecast_labels))):
+            for fecha, val in zip(forecast_labels, recursive_forecast_share(share_model, share_scaler, full, macro_path, len(forecast_labels))):
                 rows.append({"Fecha": fecha, "Target": target, "Model": "Diesel Share", "Forecast": round(float(val), 1)})
         except Exception as exc:
             print(f"Forecast Diesel Share failed for {target}: {exc}")
@@ -1396,8 +1431,9 @@ def final_forecasts(
         for target in REGIONAL_TARGETS:
             full = df_all[df_all["Target"] == target].sort_values("Fecha").copy()
             macro_last = full.iloc[-1][["IPI_original", "IPC_var_anual", "Tasa_paro"]].to_dict()
+            macro_path = [macro_last] * len(FORECAST_DATES)
             try:
-                forecast = recursive_forecast_pooled_ml(model, scaler, full, target, macro_last, list(FORECAST_DATES))
+                forecast = recursive_forecast_pooled_ml(model, scaler, full, target, macro_path, list(FORECAST_DATES))
                 for fecha, val in zip(forecast_labels, forecast):
                     rows.append({"Fecha": fecha, "Target": target, "Model": label, "Forecast": round(float(val), 1)})
             except Exception as exc:
@@ -1479,7 +1515,7 @@ def build_scenario_sensitivity(
             for scenario_name, macro_scenario, mandate_override in scenarios:
                 try:
                     forecast = recursive_forecast_ml(
-                        mdl, scaler, full, macro_scenario, len(forecast_labels),
+                        mdl, scaler, full, [macro_scenario] * len(forecast_labels), len(forecast_labels),
                         mandate_override=mandate_override,
                     )
                 except Exception as exc:
