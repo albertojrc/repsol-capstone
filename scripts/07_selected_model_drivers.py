@@ -169,6 +169,76 @@ def curve_driver_rows(target: str, curve_type: str) -> tuple[list[dict], list[di
     return param_rows, seasonal_rows
 
 
+def mini_model_curve_selection(target: str) -> dict:
+    """
+    Replicate notebooks/12_mini_trend_regulation_model.ipynb's curve choice
+    exactly: fit both Logistic and Gompertz on the full history and keep
+    whichever has the higher in-sample R2 (notebook 12's own selection rule,
+    not the production walk-forward gate). Reuses scripts/05's own curve
+    functions so the math is identical to both notebooks, not re-derived.
+    """
+    df_all = pd.read_csv(DATA_FEATURES / "features_modelo_completo.csv")
+    full = df_all[df_all["Target"].eq(target)].sort_values("Fecha")
+    t = full["Tendencia"].values.astype(float)
+    y = full["Consumo_Tm"].values.astype(float)
+    mes = full["Mes"].values.astype(float)
+
+    r2_by_curve: dict[str, float] = {}
+    for curve_type in ["Logistic", "Gompertz"]:
+        curve = modeling.train_growth_curve(t, y, mes, curve_type)
+        fn = modeling._logistic_fn if curve_type == "Logistic" else modeling._gompertz_fn
+        trend_pred = fn(t, *curve["params"])
+        a, b, c = curve["seasonal_coef"]
+        fitted = np.maximum(
+            trend_pred + a * np.sin(2 * np.pi * mes / 12) + b * np.cos(2 * np.pi * mes / 12) + c, 0
+        )
+        sst = float(np.sum((y - y.mean()) ** 2))
+        r2_by_curve[curve_type] = float(1 - np.sum((y - fitted) ** 2) / sst)
+
+    chosen = max(r2_by_curve, key=r2_by_curve.get)
+    return {
+        "Target": target,
+        "Mini_InSample_R2_Logistic": round(r2_by_curve["Logistic"], 4),
+        "Mini_InSample_R2_Gompertz": round(r2_by_curve["Gompertz"], 4),
+        "Mini_Chosen_Curve": chosen,
+    }
+
+
+def build_mini_model_cross_check() -> pd.DataFrame:
+    final = pd.read_csv(DATA_OUTPUTS / "metricas_final_selected.csv")
+    selected_fc = pd.read_csv(DATA_OUTPUTS / "forecast_24m_selected.csv")
+    mini_path = DATA_OUTPUTS / "mini_model_scenarios.csv"
+    if not mini_path.exists():
+        print(f"Skipping mini-model cross-check: {mini_path} not found (run notebooks/12 first)")
+        return pd.DataFrame()
+    mini = pd.read_csv(mini_path)
+
+    production_total = selected_fc.groupby("Target")["Forecast"].sum()
+    mini_total = mini.groupby(["Serie", "Scenario"])["Forecast_Tm"].sum().unstack()
+
+    rows = []
+    for target, production_model in zip(final["Target"], final["Model"]):
+        selection = mini_model_curve_selection(target)
+        same_family = bool(
+            production_model in ("Logistic", "Gompertz") and production_model == selection["Mini_Chosen_Curve"]
+        )
+        rows.append(
+            {
+                "Target": target,
+                "Production_Model": production_model,
+                "Production_24m_Total_Tm": round(float(production_total.get(target, np.nan)), 1),
+                "Mini_Conservative_24m_Total_Tm": round(float(mini_total.loc[target, "Conservative"]), 1),
+                "Mini_Central_24m_Total_Tm": round(float(mini_total.loc[target, "Central"]), 1),
+                "Mini_Optimistic_24m_Total_Tm": round(float(mini_total.loc[target, "Optimistic"]), 1),
+                "Mini_Chosen_Curve": selection["Mini_Chosen_Curve"],
+                "Mini_InSample_R2_Logistic": selection["Mini_InSample_R2_Logistic"],
+                "Mini_InSample_R2_Gompertz": selection["Mini_InSample_R2_Gompertz"],
+                "Same_Curve_Family_As_Production": same_family,
+            }
+        )
+    return pd.DataFrame(rows)
+
+
 def main() -> None:
     final = pd.read_csv(DATA_OUTPUTS / "metricas_final_selected.csv")
     selected = dict(zip(final["Target"], final["Model"]))
@@ -194,6 +264,10 @@ def main() -> None:
     df_curve_params.to_csv(DATA_OUTPUTS / "selected_model_curve_parameters.csv", index=False, encoding="utf-8")
     df_curve_seasonal.to_csv(DATA_OUTPUTS / "selected_model_curve_seasonal.csv", index=False, encoding="utf-8")
 
+    df_mini_check = build_mini_model_cross_check()
+    if not df_mini_check.empty:
+        df_mini_check.to_csv(DATA_OUTPUTS / "mini_model_cross_check.csv", index=False, encoding="utf-8")
+
     print("Selected model per target:", selected)
     print("\nSARIMA driver coefficients (selected-model targets only):")
     print(df_sarima.to_string(index=False) if not df_sarima.empty else "  none")
@@ -201,6 +275,8 @@ def main() -> None:
     print(df_curve_params.to_string(index=False) if not df_curve_params.empty else "  none")
     print("\nGrowth-curve seasonal decomposition (selected-model targets only):")
     print(df_curve_seasonal.to_string(index=False) if not df_curve_seasonal.empty else "  none")
+    print("\nMini trend model (notebook 12) cross-check:")
+    print(df_mini_check.to_string(index=False) if not df_mini_check.empty else "  skipped (mini_model_scenarios.csv not found)")
 
 
 if __name__ == "__main__":

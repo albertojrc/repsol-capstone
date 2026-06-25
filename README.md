@@ -55,6 +55,12 @@ This rebuilds:
   `notebooks/13_business_interpretation_and_recommendations.ipynb`. Re-run this script after
   `scripts/05` any time the headline selection changes; notebook 13 will raise a clear error if
   these files go stale relative to the current selection.
+- `data/outputs/mini_model_cross_check.csv`: compares the production forecast against
+  `notebooks/12_mini_trend_regulation_model.ipynb`'s independent Conservative/Central/Optimistic
+  scenarios, and records which curve family (Logistic vs. Gompertz) the mini model's own in-sample
+  R2 would have picked versus what production actually selected. Requires
+  `data/outputs/mini_model_scenarios.csv` to already exist (run notebook 12 first); the step is
+  skipped with a warning, not a hard failure, if that file is missing.
 
 `forecast_24m_sarima_rf_xgb.csv` is a legacy filename. It now contains all current
 candidate families used by the CNMC-aware script, including SARIMA, SARIMAX, Ridge,
