@@ -1,0 +1,16 @@
+Target,Curve_Type,Parameter,Meaning,Value
+Nacional,Logistic,L,Asymptote: long-run saturation level the curve approaches (Tm/month),27271.01
+Nacional,Logistic,k,Steepness: how fast demand approaches the asymptote,0.1993
+Nacional,Logistic,t0,Inflection point: month-index of fastest growth,26.111
+Nacional,Logistic,Observed_Max_Tm,Highest Consumo_Tm actually observed in 2023-2025,27001.0
+Nacional,Logistic,Asymptote_to_Observed_Max_Ratio,L divided by the observed historical maximum,1.01
+Madrid,Logistic,L,Asymptote: long-run saturation level the curve approaches (Tm/month),3892.54
+Madrid,Logistic,k,Steepness: how fast demand approaches the asymptote,0.2318
+Madrid,Logistic,t0,Inflection point: month-index of fastest growth,25.7217
+Madrid,Logistic,Observed_Max_Tm,Highest Consumo_Tm actually observed in 2023-2025,3854.0
+Madrid,Logistic,Asymptote_to_Observed_Max_Ratio,L divided by the observed historical maximum,1.01
+Valencia,Gompertz,L,Asymptote: long-run saturation level the curve approaches (Tm/month),1871.2111
+Valencia,Gompertz,b,Displacement: how far the curve starts below its asymptote,11.6398
+Valencia,Gompertz,k,Growth rate: how fast the curve closes the gap to its asymptote,0.0918
+Valencia,Gompertz,Observed_Max_Tm,Highest Consumo_Tm actually observed in 2023-2025,1448.0
+Valencia,Gompertz,Asymptote_to_Observed_Max_Ratio,L divided by the observed historical maximum,1.292

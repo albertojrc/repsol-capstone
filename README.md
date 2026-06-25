@@ -37,6 +37,7 @@ Run these commands from the repository root:
 .\.venv\Scripts\python scripts/04_build_features.py
 .\.venv\Scripts\python scripts/05_modeling_with_cnmc.py
 .\.venv\Scripts\python scripts/06_validate_outputs.py
+.\.venv\Scripts\python scripts/07_selected_model_drivers.py
 ```
 
 This rebuilds:
@@ -47,6 +48,13 @@ This rebuilds:
 - `data/features/features_train.csv`
 - `data/features/features_test.csv`
 - model metrics, SARIMA grid-search diagnostics, 2025 predictions, 2026-2027 forecasts, Tableau exports, and final figures
+- `data/outputs/selected_model_sarima_drivers.csv`, `selected_model_curve_parameters.csv`, and
+  `selected_model_curve_seasonal.csv`: interpretable coefficient/parameter detail for whichever
+  model is currently selected per target (SARIMA lag/seasonal-term significance, or Logistic/
+  Gompertz curve shape and seasonal decomposition), used by
+  `notebooks/13_business_interpretation_and_recommendations.ipynb`. Re-run this script after
+  `scripts/05` any time the headline selection changes; notebook 13 will raise a clear error if
+  these files go stale relative to the current selection.
 
 `forecast_24m_sarima_rf_xgb.csv` is a legacy filename. It now contains all current
 candidate families used by the CNMC-aware script, including SARIMA, SARIMAX, Ridge,

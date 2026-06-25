@@ -1,0 +1,4 @@
+Target,Curve_Type,Sin_Coef,Sin_P_Value,Cos_Coef,Cos_P_Value,Const_Offset_Tm,Const_P_Value,Any_Seasonal_Term_Significant_5pct,Seasonal_R2,Amplitude_Tm,Peak_Month,Trough_Month
+Nacional,Logistic,-349.646,0.4358,-972.255,0.0354,-175.3,0.5798,True,0.141,1033.2,7,1
+Madrid,Logistic,13.246,0.8667,-109.982,0.1695,-51.9,0.3553,False,0.057,110.8,6,12
+Valencia,Gompertz,-18.12,0.4858,-59.374,0.0273,6.0,0.7454,True,0.15,62.1,7,1
