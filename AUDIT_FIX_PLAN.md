@@ -208,6 +208,28 @@ own regional plots were updated to match. Re-ran `05 -> 06 -> 07` and
 re-executed notebook 13; `scripts/06_validate_outputs.py`'s CI checks are
 alpha-agnostic and still pass.
 
+## Completed: Fixed Independent Audit Findings M1 and M2 (2026-06-25)
+
+M1: `notebooks/02_data_cleaning.ipynb` and `notebooks/03_external_data.ipynb`
+claimed output paths under `data/processed/` that don't match what the code
+actually saves (`data/inputs/`). Fixed every markdown reference in both
+notebooks to the real `to_csv` paths; verified row counts against the
+current files rather than assuming the old numbers still held.
+
+M2: ~25 `except Exception` blocks around model-fitting calls in
+`scripts/05_modeling_with_cnmc.py` only persisted exceptions containing the
+literal string "degenerate"; everything else printed once and vanished.
+Added `log_model_exception()` and a new `data/outputs/model_fit_exceptions.csv`
+(aggregated by Target/Model/Stage/Exception with a Count) covering all 22
+except-blocks that weren't already self-logging via some other persisted
+column. Investigated what it found immediately: 226 occurrences, only 30
+non-degenerate across 2 explainable causes (an intentional SARIMAX
+not-enough-rows guard, and a statsmodels-internal edge case for
+heavily-differenced SARIMA orders on too few training rows) -- neither
+affects any winning candidate. Re-ran `05 -> 06`: every existing production
+output is byte-identical; the validator got a schema-only check for the new
+file. See `memory.md`'s "Audit Fixes M1/M2" entry for the full detail.
+
 ## Still Open After Final Cleanup
 
 - Treat the forecasts as directional planning scenarios because all selected

@@ -76,6 +76,9 @@ This rebuilds:
   shippability safety check described in Model Selection below -- the training-only winner,
   whether it failed the full-history safety check, and whether a reviewed
   `SARIMA_SAFETY_OVERRIDES` entry was used.
+- `data/outputs/model_fit_exceptions.csv`: every caught exception around a model-fitting call
+  during this run, not just the "degenerate" subset in `degenerate_fits.csv` -- see Model
+  Selection below.
 - `data/outputs/selected_model_sarima_drivers.csv`, `selected_model_curve_parameters.csv`, and
   `selected_model_curve_seasonal.csv`: interpretable coefficient/parameter detail for whichever
   model is currently selected per target (SARIMA lag/seasonal-term significance, or Logistic/
@@ -189,6 +192,22 @@ training rows) hit this for every target's 2025 holdout fit, and for 4 of the
 5 targets' full-history production-forecast fit -- it is excluded everywhere
 except where the fit genuinely converges. Every exclusion is written to
 `data/outputs/degenerate_fits.csv` with its target, stage, and reason.
+
+Every `except Exception` around a model-fitting call (~25 of them, mostly
+deliberate -- let a candidate fail and lose gracefully rather than crash the
+whole run) logs to `data/outputs/model_fit_exceptions.csv`, not just the
+ones whose message happens to contain "degenerate". Without this, a
+candidate failing for a real bug would print once to the console and vanish,
+indistinguishable from an unremarkable model loss. Rows are aggregated by
+(Target, Model, Stage, Exception) with a `Count`, since the training/pooled
+walk-forward stages call this once per fold and would otherwise repeat the
+same message dozens of times. Investigated after this fix shipped: every
+non-degenerate exception currently logged is an explainable, benign edge
+case, not a hidden bug -- an intentional `ValueError("Not enough non-null
+rows for SARIMAX training")` guard for early folds, and a statsmodels-internal
+`IndexError` when a heavily seasonally-differenced order (`D=1`, period 12)
+is fit on too few rows to leave any usable data after differencing. Neither
+order ever wins a target's walk-forward comparison.
 
 SARIMA order ranking is training-only: every candidate order in the grid is
 scored and filtered for degeneracy using only the 2023-2024 training window.

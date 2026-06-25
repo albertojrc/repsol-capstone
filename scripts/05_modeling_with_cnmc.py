@@ -193,6 +193,30 @@ SARIMA_GRID = [
 ]
 FORECAST_DATES = pd.date_range("2026-01-01", periods=24, freq="MS")
 
+# Every except Exception block around a model-fitting call appends here via
+# log_model_exception(), not just the ones whose message happens to contain
+# "degenerate" (those also still go to the existing degenerate_log/
+# degenerate_fits.csv -- this is a separate, strictly broader audit trail,
+# not a replacement). Without this, a candidate that fails for a real bug
+# (not the expected "too few rows" / "did not converge" reasons) would just
+# print once to the console and vanish, indistinguishable from an
+# unremarkable model loss. Reset at the top of main() since this module-level
+# list would otherwise accumulate across repeated in-process calls.
+MODEL_FIT_EXCEPTIONS: list[dict] = []
+
+
+def log_model_exception(target: str, model: str, stage: str, exc: Exception) -> None:
+    MODEL_FIT_EXCEPTIONS.append(
+        {
+            "Target": target,
+            "Model": model,
+            "Stage": stage,
+            "Exception": str(exc),
+            "Is_Degenerate": "degenerate" in str(exc).lower(),
+        }
+    )
+
+
 # Training-only SARIMA order selection (tune_sarima_orders) can produce a
 # winner whose production refit (the full 2023-2025 history) ships a
 # degenerate (near-flat or short-repeating) 24-month forecast. Catching that
@@ -737,6 +761,7 @@ def evaluate_models(
                 all_preds.append({"Fecha": fd, "Target": target, "Actual": round(actual, 1), "Model": "SARIMA", "Pred": round(float(pv), 1)})
         except Exception as exc:
             print(f"  SARIMA failed for {target}: {exc}")
+            log_model_exception(target, "SARIMA", "2025_holdout_evaluation", exc)
             if "degenerate" in str(exc):
                 degenerate_log.append({"Target": target, "Model": "SARIMA", "Stage": "2025_holdout_evaluation", "Reason": str(exc)})
 
@@ -748,6 +773,7 @@ def evaluate_models(
                 all_preds.append({"Fecha": fd, "Target": target, "Actual": round(actual, 1), "Model": "SARIMAX", "Pred": round(float(pv), 1)})
         except Exception as exc:
             print(f"  SARIMAX failed for {target}: {exc}")
+            log_model_exception(target, "SARIMAX", "2025_holdout_evaluation", exc)
             if "degenerate" in str(exc):
                 degenerate_log.append({"Target": target, "Model": "SARIMAX", "Stage": "2025_holdout_evaluation", "Reason": str(exc)})
 
@@ -760,6 +786,7 @@ def evaluate_models(
                     all_preds.append({"Fecha": fd, "Target": target, "Actual": round(actual, 1), "Model": curve_type, "Pred": round(float(pv), 1)})
             except Exception as exc:
                 print(f"  {curve_type} failed for {target}: {exc}")
+                log_model_exception(target, curve_type, "2025_holdout_evaluation", exc)
 
         tr_ml = tr[["Fecha"] + ML_FEATS + ["Consumo_Tm"]].dropna()
         for model_name, label in [("Ridge", "Ridge"), ("RandomForest", "Random Forest"), ("XGBoost", "XGBoost")]:
@@ -771,6 +798,7 @@ def evaluate_models(
                     all_preds.append({"Fecha": fd, "Target": target, "Actual": round(float(actual), 1), "Model": label, "Pred": round(float(pv), 1)})
             except Exception as exc:
                 print(f"  {label} failed for {target}: {exc}")
+                log_model_exception(target, label, "2025_holdout_evaluation", exc)
 
         tr_share = tr[["Fecha"] + SHARE_FEATS + ["Biodiesel_GasoleoA_Ratio"]].dropna()
         try:
@@ -784,6 +812,7 @@ def evaluate_models(
                 all_preds.append({"Fecha": fd, "Target": target, "Actual": round(float(actual), 1), "Model": "Diesel Share", "Pred": round(float(pv), 1)})
         except Exception as exc:
             print(f"  Diesel Share failed for {target}: {exc}")
+            log_model_exception(target, "Diesel Share", "2025_holdout_evaluation", exc)
 
     return pd.DataFrame(all_metrics), pd.DataFrame(all_preds), pd.DataFrame(degenerate_log)
 
@@ -800,6 +829,7 @@ def sarima_walk_forward_score(
     target_df: pd.DataFrame,
     order: tuple[int, int, int],
     seasonal_order: tuple[int, int, int, int],
+    target: str = "",
     min_origin: int = MULTISTEP_MIN_ORIGIN,
     max_horizon: int = MULTISTEP_MAX_HORIZON,
 ) -> tuple[float, int, int]:
@@ -820,7 +850,8 @@ def sarima_walk_forward_score(
             _append_mape_errors(errors, y_true, pred)
             if len(errors) > before:
                 successful_folds += 1
-        except Exception:
+        except Exception as exc:
+            log_model_exception(target, f"SARIMA{order}{seasonal_order}", "sarima_order_grid_walk_forward", exc)
             continue
 
     return (
@@ -858,7 +889,7 @@ def tune_sarima_orders(
         target_df = df_train[df_train["Target"] == target].sort_values("Fecha")
         full_df = df_all[df_all["Target"] == target].sort_values("Fecha")
         for order, seasonal_order in SARIMA_GRID:
-            score, error_count, successful_folds = sarima_walk_forward_score(target_df, order, seasonal_order)
+            score, error_count, successful_folds = sarima_walk_forward_score(target_df, order, seasonal_order, target=target)
 
             # Training-window-only stability check: does this order's 24m
             # forecast, fit on 2023-2024 alone, look degenerate? This never
@@ -1048,6 +1079,7 @@ def walk_forward_scores(
     target_df: pd.DataFrame,
     sarima_order: tuple[int, int, int],
     sarima_seasonal_order: tuple[int, int, int, int],
+    target: str = "",
     min_origin: int = MULTISTEP_MIN_ORIGIN,
     max_horizon: int = MULTISTEP_MAX_HORIZON,
 ) -> dict[str, float]:
@@ -1066,15 +1098,15 @@ def walk_forward_scores(
             res = train_sarima(fold_tr["Consumo_Tm"].values, sarima_order, sarima_seasonal_order)
             pred = predict_sarima(res, len(fold_te))
             _append_mape_errors(fold_errors["SARIMA"], y_true, pred)
-        except Exception:
-            pass
+        except Exception as exc:
+            log_model_exception(target, "SARIMA", "training_walk_forward", exc)
 
         try:
             res_x, scaler_x = train_sarimax(fold_tr, sarima_order, sarima_seasonal_order)
             pred = predict_sarimax(res_x, scaler_x, fold_tr, future_dates, macro_path=true_macro_path(fold_te))
             _append_mape_errors(fold_errors["SARIMAX"], y_true, pred)
-        except Exception:
-            pass
+        except Exception as exc:
+            log_model_exception(target, "SARIMAX", "training_walk_forward", exc)
 
         for curve_type in ["Logistic", "Gompertz"]:
             try:
@@ -1086,8 +1118,8 @@ def walk_forward_scores(
                 )
                 pred = predict_growth_curve(curve, fold_te["Tendencia"].values, fold_te["Mes"].values)
                 _append_mape_errors(fold_errors[curve_type], y_true, pred)
-            except Exception:
-                pass
+            except Exception as exc:
+                log_model_exception(target, curve_type, "training_walk_forward", exc)
 
         tr_ml = fold_tr[ML_FEATS + ["Consumo_Tm"]].dropna()
         if len(tr_ml) >= 5:
@@ -1096,8 +1128,8 @@ def walk_forward_scores(
                     mdl, scaler = train_ml(tr_ml[ML_FEATS].values, tr_ml["Consumo_Tm"].values, model_name)
                     pred = recursive_forecast_ml(mdl, scaler, fold_tr, true_macro_path(fold_te), len(fold_te), future_dates)
                     _append_mape_errors(fold_errors[label], y_true, pred)
-                except Exception:
-                    pass
+                except Exception as exc:
+                    log_model_exception(target, label, "training_walk_forward", exc)
 
         tr_share = fold_tr[SHARE_FEATS + ["Biodiesel_GasoleoA_Ratio"]].dropna()
         if len(tr_share) >= 5:
@@ -1108,8 +1140,8 @@ def walk_forward_scores(
                 )
                 pred = recursive_forecast_share(share_model, share_scaler, fold_tr, true_macro_path(fold_te), len(fold_te), future_dates)
                 _append_mape_errors(fold_errors["Diesel Share"], y_true, pred)
-            except Exception:
-                pass
+            except Exception as exc:
+                log_model_exception(target, "Diesel Share", "training_walk_forward", exc)
 
     return {model: float(np.median(errors)) if errors else np.inf for model, errors in fold_errors.items()}
 
@@ -1142,7 +1174,8 @@ def pooled_walk_forward_scores(
         for label, model_name in POOLED_MODELS:
             try:
                 model, scaler = train_pooled_ml(pooled_train, model_name)
-            except Exception:
+            except Exception as exc:
+                log_model_exception("All Regional", label, "pooled_training_walk_forward", exc)
                 continue
 
             for target, (fold_tr, fold_te) in fold_paths.items():
@@ -1153,8 +1186,8 @@ def pooled_walk_forward_scores(
                 try:
                     pred = recursive_forecast_pooled_ml(model, scaler, fold_tr, target, true_macro_path(fold_te), future_dates)
                     _append_mape_errors(fold_errors[target][label], y_true, pred)
-                except Exception:
-                    pass
+                except Exception as exc:
+                    log_model_exception(target, label, "pooled_training_walk_forward", exc)
 
     return {
         target: {
@@ -1180,6 +1213,7 @@ def run_walk_forward(
             df_train[df_train["Target"] == target],
             sarima_order,
             sarima_seasonal_order,
+            target=target,
         )
         for label in POOLED_LABELS:
             scores[label] = pooled_scores.get(target, {}).get(label, np.inf)
@@ -1379,6 +1413,7 @@ def final_forecasts(
                 )
         except Exception as exc:
             print(f"Forecast SARIMA failed for {target}: {exc}")
+            log_model_exception(target, "SARIMA", "production_24m_forecast", exc)
             if "degenerate" in str(exc):
                 degenerate_log.append({"Target": target, "Model": "SARIMA", "Stage": "production_24m_forecast", "Reason": str(exc)})
 
@@ -1388,6 +1423,7 @@ def final_forecasts(
                 rows.append({"Fecha": fecha, "Target": target, "Model": "SARIMAX", "Forecast": round(float(val), 1)})
         except Exception as exc:
             print(f"Forecast SARIMAX failed for {target}: {exc}")
+            log_model_exception(target, "SARIMAX", "production_24m_forecast", exc)
             if "degenerate" in str(exc):
                 degenerate_log.append({"Target": target, "Model": "SARIMAX", "Stage": "production_24m_forecast", "Reason": str(exc)})
 
@@ -1400,6 +1436,7 @@ def final_forecasts(
                     rows.append({"Fecha": fecha, "Target": target, "Model": curve_type, "Forecast": round(float(val), 1)})
             except Exception as exc:
                 print(f"Forecast {curve_type} failed for {target}: {exc}")
+                log_model_exception(target, curve_type, "production_24m_forecast", exc)
 
         tr_ml = full[ML_FEATS + ["Consumo_Tm"]].dropna()
         for model_name, label in [("Ridge", "Ridge"), ("RandomForest", "Random Forest"), ("XGBoost", "XGBoost")]:
@@ -1409,6 +1446,7 @@ def final_forecasts(
                     rows.append({"Fecha": fecha, "Target": target, "Model": label, "Forecast": round(float(val), 1)})
             except Exception as exc:
                 print(f"Forecast {label} failed for {target}: {exc}")
+                log_model_exception(target, label, "production_24m_forecast", exc)
 
         tr_share = full[SHARE_FEATS + ["Biodiesel_GasoleoA_Ratio"]].dropna()
         try:
@@ -1420,12 +1458,14 @@ def final_forecasts(
                 rows.append({"Fecha": fecha, "Target": target, "Model": "Diesel Share", "Forecast": round(float(val), 1)})
         except Exception as exc:
             print(f"Forecast Diesel Share failed for {target}: {exc}")
+            log_model_exception(target, "Diesel Share", "production_24m_forecast", exc)
 
     for label, model_name in POOLED_MODELS:
         try:
             model, scaler = train_pooled_ml(df_all, model_name)
         except Exception as exc:
             print(f"Forecast {label} failed during pooled training: {exc}")
+            log_model_exception("All Regional", label, "production_24m_forecast", exc)
             continue
 
         for target in REGIONAL_TARGETS:
@@ -1438,6 +1478,7 @@ def final_forecasts(
                     rows.append({"Fecha": fecha, "Target": target, "Model": label, "Forecast": round(float(val), 1)})
             except Exception as exc:
                 print(f"Forecast {label} failed for {target}: {exc}")
+                log_model_exception(target, label, "production_24m_forecast", exc)
 
     return pd.DataFrame(rows), pd.DataFrame(degenerate_log), pd.DataFrame(ci_rows)
 
@@ -1511,6 +1552,7 @@ def build_scenario_sensitivity(
                 mdl, scaler = train_ml(tr_ml[ML_FEATS].values, tr_ml["Consumo_Tm"].values, model_name)
             except Exception as exc:
                 print(f"Scenario sensitivity: training {label} failed for {target}: {exc}")
+                log_model_exception(target, label, "scenario_sensitivity", exc)
                 continue
             for scenario_name, macro_scenario, mandate_override in scenarios:
                 try:
@@ -1520,6 +1562,7 @@ def build_scenario_sensitivity(
                     )
                 except Exception as exc:
                     print(f"Scenario {scenario_name} forecast {label} failed for {target}: {exc}")
+                    log_model_exception(target, f"{label}/{scenario_name}", "scenario_sensitivity", exc)
                     continue
                 for fecha, val in zip(forecast_labels, forecast):
                     rows.append(
@@ -1747,6 +1790,7 @@ def plot_outputs(
 
 
 def main() -> None:
+    MODEL_FIT_EXCEPTIONS.clear()
     df_all = pd.read_csv(DATA_FEATURES / "features_modelo_completo.csv")
     df_train = pd.read_csv(DATA_FEATURES / "features_train.csv")
 
@@ -1814,6 +1858,25 @@ def main() -> None:
     df_degenerate.to_csv(DATA_OUTPUTS / "degenerate_fits.csv", index=False, encoding="utf-8")
     df_sarima_ci.to_csv(DATA_OUTPUTS / "forecast_24m_sarima_confidence_intervals.csv", index=False, encoding="utf-8")
     df_scenarios.to_csv(DATA_OUTPUTS / "scenario_sensitivity.csv", index=False, encoding="utf-8")
+
+    # Every except Exception block around a model-fitting call logs here via
+    # log_model_exception() -- not just the "degenerate" subset already in
+    # degenerate_fits.csv. Aggregated (Count) rather than one row per
+    # occurrence, since the training/pooled walk-forward stages call this once
+    # per fold and would otherwise repeat near-identical messages dozens of
+    # times for the same underlying failure.
+    if MODEL_FIT_EXCEPTIONS:
+        df_exceptions = (
+            pd.DataFrame(MODEL_FIT_EXCEPTIONS)
+            .groupby(["Target", "Model", "Stage", "Exception", "Is_Degenerate"], as_index=False)
+            .size()
+            .rename(columns={"size": "Count"})
+            .sort_values(["Stage", "Target", "Model"])
+        )
+    else:
+        df_exceptions = pd.DataFrame(columns=["Target", "Model", "Stage", "Exception", "Is_Degenerate", "Count"])
+    df_exceptions.to_csv(DATA_OUTPUTS / "model_fit_exceptions.csv", index=False, encoding="utf-8")
+    print(f"\nModel-fit exceptions logged for post-hoc audit: {len(df_exceptions)} distinct (Target, Model, Stage, Exception) groups, {df_exceptions['Count'].sum() if len(df_exceptions) else 0} total occurrences -- see data/outputs/model_fit_exceptions.csv")
 
     build_tableau_outputs(df_all, df_preds, df_fc, df_final, df_metrics)
     plot_outputs(df_all, df_metrics, df_preds, df_fc, df_final, df_sarima_ci)

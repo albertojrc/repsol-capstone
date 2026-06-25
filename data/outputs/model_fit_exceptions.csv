@@ -1,0 +1,157 @@
+Target,Model,Stage,Exception,Is_Degenerate,Count
+Andalucía,SARIMAX,2025_holdout_evaluation,degenerate SARIMAX fit: mle_did_not_converge,True,1
+Cataluña,SARIMAX,2025_holdout_evaluation,degenerate SARIMAX fit: mle_did_not_converge,True,1
+Madrid,SARIMAX,2025_holdout_evaluation,degenerate SARIMAX fit: mle_did_not_converge,True,1
+Nacional,SARIMAX,2025_holdout_evaluation,degenerate SARIMAX fit: mle_did_not_converge,True,1
+Valencia,SARIMAX,2025_holdout_evaluation,degenerate SARIMAX fit: mle_did_not_converge,True,1
+Andalucía,SARIMAX,production_24m_forecast,degenerate SARIMAX fit: mle_did_not_converge,True,1
+Cataluña,SARIMAX,production_24m_forecast,degenerate SARIMAX fit: mle_did_not_converge,True,1
+Madrid,SARIMAX,production_24m_forecast,degenerate SARIMAX fit: mle_did_not_converge,True,1
+Valencia,SARIMAX,production_24m_forecast,degenerate SARIMAX fit: mle_did_not_converge,True,1
+Andalucía,"SARIMA(0, 1, 1)(0, 1, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: mle_did_not_converge,True,1
+Andalucía,"SARIMA(0, 1, 1)(0, 1, 0, 12)",sarima_order_grid_walk_forward,"too many indices for array: array is 0-dimensional, but 1 were indexed",False,1
+Andalucía,"SARIMA(1, 0, 1)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: mle_did_not_converge,True,1
+Andalucía,"SARIMA(1, 1, 0)(0, 1, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: mle_did_not_converge,True,3
+Andalucía,"SARIMA(1, 1, 0)(0, 1, 0, 12)",sarima_order_grid_walk_forward,"too many indices for array: array is 0-dimensional, but 1 were indexed",False,1
+Andalucía,"SARIMA(1, 1, 0)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: degenerate_sigma2_4.3e-09,True,1
+Andalucía,"SARIMA(1, 1, 0)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: mle_did_not_converge,True,1
+Andalucía,"SARIMA(1, 1, 1)(0, 1, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: mle_did_not_converge,True,1
+Andalucía,"SARIMA(1, 1, 1)(0, 1, 0, 12)",sarima_order_grid_walk_forward,"too many indices for array: array is 0-dimensional, but 1 were indexed",False,1
+Andalucía,"SARIMA(1, 1, 1)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: degenerate_sigma2_1.31e-09,True,1
+Andalucía,"SARIMA(1, 1, 1)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: degenerate_sigma2_2.1e-09,True,1
+Andalucía,"SARIMA(1, 1, 1)(1, 0, 1, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: degenerate_sigma2_3.41e-07,True,1
+Andalucía,"SARIMA(1, 1, 1)(1, 0, 1, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: mle_did_not_converge,True,1
+Andalucía,"SARIMA(1, 1, 2)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: degenerate_sigma2_1.88e-09,True,1
+Andalucía,"SARIMA(1, 1, 2)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: mle_did_not_converge,True,2
+Andalucía,"SARIMA(2, 1, 0)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: degenerate_sigma2_3.81e-11,True,1
+Andalucía,"SARIMA(2, 1, 0)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: degenerate_sigma2_4.28e-08,True,1
+Andalucía,"SARIMA(2, 1, 0)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: mle_did_not_converge,True,1
+Andalucía,"SARIMA(2, 1, 1)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: degenerate_sigma2_3.12e-09,True,1
+Andalucía,"SARIMA(2, 1, 1)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: mle_did_not_converge,True,5
+Cataluña,"SARIMA(0, 1, 1)(0, 1, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: mle_did_not_converge,True,1
+Cataluña,"SARIMA(0, 1, 1)(0, 1, 0, 12)",sarima_order_grid_walk_forward,"too many indices for array: array is 0-dimensional, but 1 were indexed",False,1
+Cataluña,"SARIMA(0, 1, 1)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: degenerate_sigma2_0.000713,True,1
+Cataluña,"SARIMA(0, 1, 1)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: mle_did_not_converge,True,1
+Cataluña,"SARIMA(0, 1, 2)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: degenerate_sigma2_0.000282,True,1
+Cataluña,"SARIMA(0, 1, 2)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: mle_did_not_converge,True,1
+Cataluña,"SARIMA(1, 0, 1)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: degenerate_sigma2_4.07e-10,True,1
+Cataluña,"SARIMA(1, 0, 1)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: mle_did_not_converge,True,1
+Cataluña,"SARIMA(1, 1, 0)(0, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: mle_did_not_converge,True,3
+Cataluña,"SARIMA(1, 1, 0)(0, 1, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: mle_did_not_converge,True,3
+Cataluña,"SARIMA(1, 1, 0)(0, 1, 0, 12)",sarima_order_grid_walk_forward,"too many indices for array: array is 0-dimensional, but 1 were indexed",False,1
+Cataluña,"SARIMA(1, 1, 0)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: degenerate_sigma2_1.44e-11,True,1
+Cataluña,"SARIMA(1, 1, 1)(0, 1, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: mle_did_not_converge,True,2
+Cataluña,"SARIMA(1, 1, 1)(0, 1, 0, 12)",sarima_order_grid_walk_forward,"too many indices for array: array is 0-dimensional, but 1 were indexed",False,1
+Cataluña,"SARIMA(1, 1, 1)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: mle_did_not_converge,True,1
+Cataluña,"SARIMA(1, 1, 1)(1, 0, 1, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: degenerate_sigma2_2.15e-06,True,1
+Cataluña,"SARIMA(1, 1, 1)(1, 0, 1, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: degenerate_sigma2_9.82e-06,True,1
+Cataluña,"SARIMA(1, 1, 2)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: mle_did_not_converge,True,1
+Cataluña,"SARIMA(2, 1, 0)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: degenerate_sigma2_2.29e-10,True,1
+Cataluña,"SARIMA(2, 1, 0)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: mle_did_not_converge,True,1
+Cataluña,"SARIMA(2, 1, 1)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: degenerate_sigma2_0.000979,True,1
+Cataluña,"SARIMA(2, 1, 1)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: mle_did_not_converge,True,2
+Madrid,"SARIMA(0, 1, 1)(0, 1, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: mle_did_not_converge,True,1
+Madrid,"SARIMA(0, 1, 1)(0, 1, 0, 12)",sarima_order_grid_walk_forward,"too many indices for array: array is 0-dimensional, but 1 were indexed",False,1
+Madrid,"SARIMA(0, 1, 1)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: degenerate_sigma2_0.000698,True,1
+Madrid,"SARIMA(0, 1, 1)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: mle_did_not_converge,True,1
+Madrid,"SARIMA(0, 1, 2)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: degenerate_sigma2_0.000368,True,1
+Madrid,"SARIMA(0, 1, 2)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: degenerate_sigma2_0.000634,True,1
+Madrid,"SARIMA(0, 1, 2)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: mle_did_not_converge,True,1
+Madrid,"SARIMA(1, 0, 1)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: degenerate_sigma2_8.92e-12,True,1
+Madrid,"SARIMA(1, 1, 0)(0, 1, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: mle_did_not_converge,True,3
+Madrid,"SARIMA(1, 1, 0)(0, 1, 0, 12)",sarima_order_grid_walk_forward,"too many indices for array: array is 0-dimensional, but 1 were indexed",False,1
+Madrid,"SARIMA(1, 1, 0)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: mle_did_not_converge,True,1
+Madrid,"SARIMA(1, 1, 1)(0, 1, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: degenerate_sigma2_1.44e-05,True,1
+Madrid,"SARIMA(1, 1, 1)(0, 1, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: mle_did_not_converge,True,1
+Madrid,"SARIMA(1, 1, 1)(0, 1, 0, 12)",sarima_order_grid_walk_forward,"too many indices for array: array is 0-dimensional, but 1 were indexed",False,1
+Madrid,"SARIMA(1, 1, 1)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: mle_did_not_converge,True,2
+Madrid,"SARIMA(1, 1, 1)(1, 0, 1, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: degenerate_sigma2_3.42e-08,True,1
+Madrid,"SARIMA(1, 1, 1)(1, 0, 1, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: mle_did_not_converge,True,1
+Madrid,"SARIMA(1, 1, 2)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: degenerate_sigma2_3.23e-09,True,1
+Madrid,"SARIMA(1, 1, 2)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: mle_did_not_converge,True,2
+Madrid,"SARIMA(2, 1, 0)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: degenerate_sigma2_1.72e-11,True,1
+Madrid,"SARIMA(2, 1, 0)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: degenerate_sigma2_8.05e-11,True,1
+Madrid,"SARIMA(2, 1, 0)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: mle_did_not_converge,True,1
+Madrid,"SARIMA(2, 1, 1)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: degenerate_sigma2_0.000185,True,1
+Madrid,"SARIMA(2, 1, 1)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: degenerate_sigma2_1.17e-08,True,1
+Madrid,"SARIMA(2, 1, 1)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: mle_did_not_converge,True,1
+Nacional,"SARIMA(0, 1, 1)(0, 1, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: degenerate_sigma2_0.000623,True,1
+Nacional,"SARIMA(0, 1, 1)(0, 1, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: mle_did_not_converge,True,1
+Nacional,"SARIMA(0, 1, 1)(0, 1, 0, 12)",sarima_order_grid_walk_forward,"too many indices for array: array is 0-dimensional, but 1 were indexed",False,1
+Nacional,"SARIMA(0, 1, 1)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: mle_did_not_converge,True,1
+Nacional,"SARIMA(0, 1, 2)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: mle_did_not_converge,True,1
+Nacional,"SARIMA(1, 0, 1)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: degenerate_sigma2_9.66e-05,True,1
+Nacional,"SARIMA(1, 0, 1)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: mle_did_not_converge,True,2
+Nacional,"SARIMA(1, 1, 0)(0, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: mle_did_not_converge,True,2
+Nacional,"SARIMA(1, 1, 0)(0, 1, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: degenerate_sigma2_4.65e-07,True,1
+Nacional,"SARIMA(1, 1, 0)(0, 1, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: mle_did_not_converge,True,3
+Nacional,"SARIMA(1, 1, 0)(0, 1, 0, 12)",sarima_order_grid_walk_forward,"too many indices for array: array is 0-dimensional, but 1 were indexed",False,1
+Nacional,"SARIMA(1, 1, 0)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: degenerate_sigma2_0.00071,True,1
+Nacional,"SARIMA(1, 1, 0)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: degenerate_sigma2_2.21e-10,True,1
+Nacional,"SARIMA(1, 1, 0)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: mle_did_not_converge,True,1
+Nacional,"SARIMA(1, 1, 1)(0, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: mle_did_not_converge,True,5
+Nacional,"SARIMA(1, 1, 1)(0, 1, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: mle_did_not_converge,True,3
+Nacional,"SARIMA(1, 1, 1)(0, 1, 0, 12)",sarima_order_grid_walk_forward,"too many indices for array: array is 0-dimensional, but 1 were indexed",False,1
+Nacional,"SARIMA(1, 1, 1)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: degenerate_sigma2_0.000247,True,1
+Nacional,"SARIMA(1, 1, 1)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: degenerate_sigma2_9.2e-10,True,1
+Nacional,"SARIMA(1, 1, 1)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: mle_did_not_converge,True,1
+Nacional,"SARIMA(1, 1, 1)(1, 0, 1, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: degenerate_sigma2_6.83e-08,True,1
+Nacional,"SARIMA(1, 1, 1)(1, 0, 1, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: mle_did_not_converge,True,2
+Nacional,"SARIMA(1, 1, 2)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: degenerate_sigma2_0.000103,True,1
+Nacional,"SARIMA(1, 1, 2)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: degenerate_sigma2_1.14e-10,True,1
+Nacional,"SARIMA(1, 1, 2)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: degenerate_sigma2_9.17e-08,True,1
+Nacional,"SARIMA(2, 1, 0)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: degenerate_sigma2_6.36e-10,True,1
+Nacional,"SARIMA(2, 1, 0)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: mle_did_not_converge,True,2
+Nacional,"SARIMA(2, 1, 1)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: degenerate_sigma2_2.63e-10,True,1
+Nacional,"SARIMA(2, 1, 1)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: degenerate_sigma2_6.51e-11,True,1
+Nacional,"SARIMA(2, 1, 1)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: mle_did_not_converge,True,3
+Valencia,"SARIMA(0, 1, 1)(0, 1, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: degenerate_sigma2_3.75e-07,True,1
+Valencia,"SARIMA(0, 1, 1)(0, 1, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: mle_did_not_converge,True,1
+Valencia,"SARIMA(0, 1, 1)(0, 1, 0, 12)",sarima_order_grid_walk_forward,"too many indices for array: array is 0-dimensional, but 1 were indexed",False,1
+Valencia,"SARIMA(0, 1, 1)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: mle_did_not_converge,True,1
+Valencia,"SARIMA(0, 1, 2)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: mle_did_not_converge,True,1
+Valencia,"SARIMA(1, 0, 1)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: mle_did_not_converge,True,1
+Valencia,"SARIMA(1, 1, 0)(0, 1, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: mle_did_not_converge,True,2
+Valencia,"SARIMA(1, 1, 0)(0, 1, 0, 12)",sarima_order_grid_walk_forward,"too many indices for array: array is 0-dimensional, but 1 were indexed",False,1
+Valencia,"SARIMA(1, 1, 0)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: degenerate_sigma2_1.62e-10,True,1
+Valencia,"SARIMA(1, 1, 0)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: degenerate_sigma2_4.72e-11,True,1
+Valencia,"SARIMA(1, 1, 1)(0, 1, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: degenerate_sigma2_1.09e-06,True,1
+Valencia,"SARIMA(1, 1, 1)(0, 1, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: degenerate_sigma2_1.97e-05,True,1
+Valencia,"SARIMA(1, 1, 1)(0, 1, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: degenerate_sigma2_1e-10,True,1
+Valencia,"SARIMA(1, 1, 1)(0, 1, 0, 12)",sarima_order_grid_walk_forward,"too many indices for array: array is 0-dimensional, but 1 were indexed",False,1
+Valencia,"SARIMA(1, 1, 1)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: mle_did_not_converge,True,2
+Valencia,"SARIMA(1, 1, 1)(1, 0, 1, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: degenerate_sigma2_0.000659,True,1
+Valencia,"SARIMA(1, 1, 1)(1, 0, 1, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: mle_did_not_converge,True,1
+Valencia,"SARIMA(1, 1, 2)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: mle_did_not_converge,True,2
+Valencia,"SARIMA(2, 1, 0)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: degenerate_sigma2_2.51e-11,True,1
+Valencia,"SARIMA(2, 1, 0)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: mle_did_not_converge,True,3
+Valencia,"SARIMA(2, 1, 1)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: degenerate_sigma2_5.93e-11,True,1
+Valencia,"SARIMA(2, 1, 1)(1, 0, 0, 12)",sarima_order_grid_walk_forward,degenerate SARIMA fit: mle_did_not_converge,True,1
+Andalucía,SARIMA,training_walk_forward,degenerate SARIMA fit: degenerate_sigma2_1.88e-09,True,1
+Andalucía,SARIMA,training_walk_forward,degenerate SARIMA fit: mle_did_not_converge,True,2
+Andalucía,SARIMAX,training_walk_forward,Not enough non-null rows for SARIMAX training,False,3
+Andalucía,SARIMAX,training_walk_forward,degenerate SARIMAX fit: degenerate_sigma2_4.95e-10,True,1
+Andalucía,SARIMAX,training_walk_forward,degenerate SARIMAX fit: mle_did_not_converge,True,6
+Cataluña,SARIMA,training_walk_forward,degenerate SARIMA fit: degenerate_sigma2_0.000282,True,1
+Cataluña,SARIMA,training_walk_forward,degenerate SARIMA fit: mle_did_not_converge,True,1
+Cataluña,SARIMAX,training_walk_forward,Not enough non-null rows for SARIMAX training,False,3
+Cataluña,SARIMAX,training_walk_forward,degenerate SARIMAX fit: degenerate_sigma2_1.7e-07,True,1
+Cataluña,SARIMAX,training_walk_forward,degenerate SARIMAX fit: mle_did_not_converge,True,7
+Madrid,SARIMA,training_walk_forward,degenerate SARIMA fit: mle_did_not_converge,True,2
+Madrid,SARIMAX,training_walk_forward,Not enough non-null rows for SARIMAX training,False,3
+Madrid,SARIMAX,training_walk_forward,degenerate SARIMAX fit: degenerate_sigma2_3.24e-10,True,1
+Madrid,SARIMAX,training_walk_forward,degenerate SARIMAX fit: degenerate_sigma2_8.29e-09,True,1
+Madrid,SARIMAX,training_walk_forward,degenerate SARIMAX fit: mle_did_not_converge,True,5
+Nacional,SARIMA,training_walk_forward,degenerate SARIMA fit: degenerate_sigma2_0.00071,True,1
+Nacional,SARIMA,training_walk_forward,degenerate SARIMA fit: degenerate_sigma2_2.21e-10,True,1
+Nacional,SARIMA,training_walk_forward,degenerate SARIMA fit: mle_did_not_converge,True,1
+Nacional,SARIMAX,training_walk_forward,Not enough non-null rows for SARIMAX training,False,3
+Nacional,SARIMAX,training_walk_forward,degenerate SARIMAX fit: degenerate_sigma2_1.88e-08,True,1
+Nacional,SARIMAX,training_walk_forward,degenerate SARIMAX fit: degenerate_sigma2_4.72e-09,True,1
+Nacional,SARIMAX,training_walk_forward,degenerate SARIMAX fit: mle_did_not_converge,True,5
+Valencia,SARIMA,training_walk_forward,degenerate SARIMA fit: degenerate_sigma2_5.93e-11,True,1
+Valencia,SARIMA,training_walk_forward,degenerate SARIMA fit: mle_did_not_converge,True,1
+Valencia,SARIMAX,training_walk_forward,Not enough non-null rows for SARIMAX training,False,3
+Valencia,SARIMAX,training_walk_forward,degenerate SARIMAX fit: degenerate_sigma2_1.7e-10,True,1
+Valencia,SARIMAX,training_walk_forward,degenerate SARIMAX fit: degenerate_sigma2_4.09e-10,True,1
+Valencia,SARIMAX,training_walk_forward,degenerate SARIMAX fit: mle_did_not_converge,True,4

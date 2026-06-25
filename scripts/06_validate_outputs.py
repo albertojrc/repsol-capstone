@@ -194,6 +194,20 @@ def validate_model_outputs() -> None:
     selected_forecasts = read_csv(DATA_OUTPUTS / "forecast_24m_selected.csv")
     pivot = read_csv(DATA_OUTPUTS / "tableau_forecast_pivot.csv")
     degenerate = read_csv(DATA_OUTPUTS / "degenerate_fits.csv")
+    exceptions = read_csv(DATA_OUTPUTS / "model_fit_exceptions.csv")
+
+    # model_fit_exceptions.csv is a broader, post-hoc audit trail of every
+    # caught exception around a model-fitting call (M2 audit fix) -- not
+    # just the "degenerate" subset already in degenerate_fits.csv above.
+    # Schema check only; its row count legitimately varies run to run with
+    # the training window length, so it has no fixed-shape expectation.
+    expected_exception_cols = {"Target", "Model", "Stage", "Exception", "Is_Degenerate", "Count"}
+    require(
+        set(exceptions.columns) == expected_exception_cols,
+        f"model_fit_exceptions.csv schema mismatch: {sorted(exceptions.columns)}",
+    )
+    if not exceptions.empty:
+        require((exceptions["Count"] >= 1).all(), "model_fit_exceptions.csv has a non-positive Count")
 
     selected = dict(zip(final["Target"], final["Model"]))
     require(set(selected) == set(TARGETS), f"Final selected target set mismatch: {selected}")

@@ -5,6 +5,62 @@
 
 ---
 
+## 2026-06-25 Audit Fixes M1/M2: Notebook Path Claims, and a Complete Model-Fit Exception Log
+
+**M1 (notebook narrative paths didn't match the code):**
+`notebooks/02_data_cleaning.ipynb` claimed outputs under `data/processed/`
+with different filenames than the code actually writes; the code overwrites
+`data/inputs/consumo_biodiesel_{provincial,ccaa}.csv` in place and writes a
+new `data/inputs/consumo_biodiesel_targets.csv`. `notebooks/03_external_data.ipynb`
+claimed `data/processed/macro_features.csv`; the code saves
+`data/inputs/macro_indicadores_ine.csv`. Fixed every markdown reference in
+both notebooks (5 cells total) to match the actual `to_csv` calls, and
+verified the row-count claims (1,872 / 720 / 180 / 36) against the current
+files rather than just carrying the old numbers forward -- they were still
+correct, only the paths were wrong.
+
+**M2 (broad exception handling could mask real bugs as "model failures"):**
+`scripts/05_modeling_with_cnmc.py` has ~25 `except Exception` blocks around
+model-fitting calls, mostly deliberate (let a candidate lose gracefully).
+Previously only exceptions whose message contained the literal string
+"degenerate" were persisted (to `degenerate_fits.csv`); everything else
+printed once to the console and vanished -- indistinguishable from an
+unremarkable model loss even if the real cause was a genuine bug. Added
+`log_model_exception()` (module-level `MODEL_FIT_EXCEPTIONS` list, reset at
+the top of `main()`) and called it from all 22 except-blocks that weren't
+already self-logging via some other persisted column (3 of the 25 already
+were: `sarima_shippability_reason`'s return value, `tune_sarima_orders`'
+`train_reason` column, and `evaluate_pooled_ml_experiment`'s `Status`
+column -- left untouched). Written to the new
+`data/outputs/model_fit_exceptions.csv`, aggregated by (Target, Model,
+Stage, Exception) with a `Count`, since the training/pooled walk-forward
+stages call this once per fold and would otherwise repeat an identical
+message dozens of times for the same underlying failure.
+
+**What it found, investigated immediately:** 226 total exception
+occurrences across the full pipeline run, only 30 of them non-degenerate
+(2 distinct messages). Both are explainable, benign edge cases, not hidden
+bugs: (1) `"Not enough non-null rows for SARIMAX training"` is an existing,
+intentional `ValueError` guard for early walk-forward folds; (2) a
+statsmodels-internal `IndexError` ("too many indices for array: array is
+0-dimensional") occurs when a heavily seasonally-differenced SARIMA order
+(`D=1`, period 12) is fit on a training fold with too few rows to leave any
+usable data after differencing (reproduced directly: `fold_tr` of 14 rows,
+order `(1,1,1)(0,1,0,12)`, fails inside statsmodels' own
+`_conditional_sum_squares`). Neither affected order/candidate ever wins a
+target's walk-forward comparison, so this is a visibility improvement, not
+a result change. Re-ran `05 -> 06`: every existing production output file
+is byte-identical except for the new file itself; `06_validate_outputs.py`
+got a new schema-only check for it (row count legitimately varies with
+training window length, so no fixed-shape check is appropriate).
+
+**How to apply:** if a future change to the modeling script adds a new
+`except Exception` around a model-fitting call, call `log_model_exception()`
+from it too (per-occurrence if it runs once per target, or accept that the
+aggregation step in `main()` will collapse per-fold repeats automatically).
+
+---
+
 ## 2026-06-25 SARIMA Chart/Export Confidence Level Changed From 95% to 50% (Display Only)
 
 The calibrated SARIMA prediction interval added earlier the same day (see
