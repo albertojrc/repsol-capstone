@@ -214,6 +214,19 @@ unchanged from before this disclosure existed.
 | Andalucía | SARIMA | 48.8% | 52.6% |
 | Valencia | Gompertz | 57.3% | 34.2% |
 
+As a robustness check, this comparison was re-run after fixing a fairness
+bug in how the macro-aware candidates (SARIMAX, Ridge, Random Forest,
+XGBoost) were evaluated: their macro inputs had been frozen at the
+training cutoff and reused for every step of the walk-forward and
+2025-holdout horizons, instead of the true historical values for those
+months (already available in both contexts, not leakage -- see
+`true_macro_path` in `scripts/05_modeling_with_cnmc.py`). The fix moved
+some scores substantially (Nacional's SARIMAX training walk-forward MAPE
+improved from 103.6% to 49.3%), but none of the four macro-aware
+candidates beat the model already winning for any of the 5 targets --
+Nacional's improved SARIMAX still loses to Logistic's 43.1%. The selected
+models above are unchanged.
+
 Cataluña's SARIMAX result from an earlier version of this pipeline (92.3%
 holdout MAPE) is gone: that fit never converged and has been excluded, and
 plain SARIMA -- a real, converged fit -- now wins on the same leak-free
