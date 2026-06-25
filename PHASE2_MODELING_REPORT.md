@@ -59,8 +59,8 @@ holdout MAPE -- the weakest result in the project. Direct investigation of the
 refit model found `sigma2` had collapsed to 5.07e-7 and statsmodels reported
 `Maximum Likelihood optimization failed to converge` plus a near-singular
 covariance matrix (condition number 4.85e+22). Checking all 5 targets showed
-this is not Cataluña-specific: SARIMAX's 9 exogenous regressors plus
-ARMA/seasonal terms (~11 parameters) against only ~22-34 usable training rows
+this is not Cataluña-specific: SARIMAX's 8 exogenous regressors plus
+ARMA/seasonal terms (~10 parameters) against only ~22-34 usable training rows
 produced the same non-convergence/near-zero-sigma2 signature for 4 of 5
 targets (Nacional, Madrid, Cataluña, Valencia); only Andalucía's fit was
 numerically healthy.
@@ -184,4 +184,4 @@ directional planning inputs, not high-precision operational commitments.
 `SARIMAX_EXOG_FEATS` was deliberately left unchanged rather than trimmed to
 make SARIMAX artificially competitive. If it is revisited, size it relative to
 the smallest target's usable training rows (~22), not independently of
-sample size the way the current 9-feature list was chosen.
+sample size the way the current 8-feature list was chosen.

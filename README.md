@@ -140,9 +140,10 @@ A SARIMA/SARIMAX fit is also rejected outright (treated the same as any other
 training failure, never eligible to be scored or selected) if it is
 numerically degenerate: the optimizer did not converge, or the fitted
 residual variance has collapsed to near zero. This is the same overfitting
-signature as a model having too many parameters for too few rows. SARIMAX's 9
-exogenous regressors plus ARMA/seasonal terms (~11 parameters against ~22-34
-training rows) hit this for 4 of the 5 targets -- it is excluded everywhere
+signature as a model having too many parameters for too few rows. SARIMAX's 8
+exogenous regressors plus ARMA/seasonal terms (~10 parameters against ~22-34
+training rows) hit this for every target's 2025 holdout fit, and for 4 of the
+5 targets' full-history production-forecast fit -- it is excluded everywhere
 except where the fit genuinely converges. Every exclusion is written to
 `data/outputs/degenerate_fits.csv` with its target, stage, and reason.
 
