@@ -97,8 +97,17 @@ The clean headline forecast is exported as `forecast_24m_selected.csv`.
 
 ## Data Sources
 
-- CNMC petroleum-consumption data: biodiesel target reconciliation and diesel-market context
-- CORES / certified biofuel source files: cleaned biodiesel target inputs
+- CNMC petroleum-consumption data: this is the reproducible-from-raw lineage for the
+  biodiesel target itself, not just diesel-market context. `data/raw/consumos_mensuales_petroleo/ds_*.csv`
+  -> `scripts/03_clean_cnmc_petroleum.py` -> `cnmc_diesel_market_features.csv`'s
+  `CNMC_Biodiesel_Tm` column reconciles exactly (0.0 Tm max diff) against
+  `consumo_biodiesel_ccaa.csv`'s `Consumo_Tm` for the full 2023-2025 window, verified
+  on every pipeline run.
+- CORES / certified biofuel source files (`ESTADISTICAS-BIOS CERT DEFINITIVAS *.xlsx`):
+  CORES/CNMC's original biofuel-certification files, kept as historical/supplementary
+  reference material. No notebook or script parses them, no 2025-dated file of that
+  type exists in the repo, and they are not required to reproduce any current pipeline
+  output -- see `memory.md`'s "Target Lineage Clarified" entry.
 - INE: macroeconomic indicators
 - BOE mandate schedule: deterministic biofuel mandate features
 - Fuel price files: optional price-ablation notebook outputs

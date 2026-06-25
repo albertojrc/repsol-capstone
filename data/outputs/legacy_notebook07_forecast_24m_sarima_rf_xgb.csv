@@ -1,0 +1,721 @@
+Fecha,Target,Model,Forecast
+2026-01,Nacional,SARIMA,23573.8
+2026-02,Nacional,SARIMA,24179.0
+2026-03,Nacional,SARIMA,24942.1
+2026-04,Nacional,SARIMA,25500.7
+2026-05,Nacional,SARIMA,26363.1
+2026-06,Nacional,SARIMA,26981.2
+2026-07,Nacional,SARIMA,27404.4
+2026-08,Nacional,SARIMA,26632.6
+2026-09,Nacional,SARIMA,26499.7
+2026-10,Nacional,SARIMA,26677.7
+2026-11,Nacional,SARIMA,26693.5
+2026-12,Nacional,SARIMA,26987.3
+2027-01,Nacional,SARIMA,27095.2
+2027-02,Nacional,SARIMA,27162.4
+2027-03,Nacional,SARIMA,27244.5
+2027-04,Nacional,SARIMA,27303.2
+2027-05,Nacional,SARIMA,27391.4
+2027-06,Nacional,SARIMA,27452.9
+2027-07,Nacional,SARIMA,27494.4
+2027-08,Nacional,SARIMA,27418.4
+2027-09,Nacional,SARIMA,27405.2
+2027-10,Nacional,SARIMA,27423.0
+2027-11,Nacional,SARIMA,27424.5
+2027-12,Nacional,SARIMA,27453.6
+2026-01,Nacional,Logistic,23286.0
+2026-02,Nacional,Logistic,23975.5
+2026-03,Nacional,Logistic,24806.2
+2026-04,Nacional,Logistic,25669.1
+2026-05,Nacional,Logistic,26429.7
+2026-06,Nacional,Logistic,26966.0
+2026-07,Nacional,Logistic,27203.1
+2026-08,Nacional,Logistic,27135.0
+2026-09,Nacional,Logistic,26828.2
+2026-10,Nacional,Logistic,26404.7
+2026-11,Nacional,Logistic,26011.2
+2026-12,Nacional,Logistic,25780.6
+2027-01,Nacional,Logistic,25797.4
+2027-02,Nacional,Logistic,26075.7
+2027-03,Nacional,Logistic,26556.5
+2027-04,Nacional,Logistic,27123.5
+2027-05,Nacional,Logistic,27635.4
+2027-06,Nacional,Logistic,27963.4
+2027-07,Nacional,Logistic,28026.8
+2027-08,Nacional,Logistic,27814.4
+2027-09,Nacional,Logistic,27387.8
+2027-10,Nacional,Logistic,26865.2
+2027-11,Nacional,Logistic,26389.9
+2027-12,Nacional,Logistic,26091.8
+2026-01,Nacional,Gompertz,22525.4
+2026-02,Nacional,Gompertz,23200.3
+2026-03,Nacional,Gompertz,24055.1
+2026-04,Nacional,Gompertz,24979.8
+2026-05,Nacional,Gompertz,25833.7
+2026-06,Nacional,Gompertz,26484.1
+2026-07,Nacional,Gompertz,26842.7
+2026-08,Nacional,Gompertz,26890.4
+2026-09,Nacional,Gompertz,26682.8
+2026-10,Nacional,Gompertz,26336.9
+2026-11,Nacional,Gompertz,25999.6
+2026-12,Nacional,Gompertz,25809.7
+2027-01,Nacional,Gompertz,25861.0
+2027-02,Nacional,Gompertz,26178.0
+2027-03,Nacional,Gompertz,26709.4
+2027-04,Nacional,Gompertz,27342.9
+2027-05,Nacional,Gompertz,27935.2
+2027-06,Nacional,Gompertz,28351.2
+2027-07,Nacional,Gompertz,28500.1
+2027-08,Nacional,Gompertz,28360.5
+2027-09,Nacional,Gompertz,27985.9
+2027-10,Nacional,Gompertz,27491.2
+2027-11,Nacional,Gompertz,27021.7
+2027-12,Nacional,Gompertz,26714.2
+2026-01,Nacional,Ridge,3269016.4
+2026-02,Nacional,Ridge,3269016.4
+2026-03,Nacional,Ridge,3269016.4
+2026-04,Nacional,Ridge,3269016.4
+2026-05,Nacional,Ridge,3269016.4
+2026-06,Nacional,Ridge,3269016.4
+2026-07,Nacional,Ridge,3269016.4
+2026-08,Nacional,Ridge,3269016.4
+2026-09,Nacional,Ridge,3269016.4
+2026-10,Nacional,Ridge,3269016.4
+2026-11,Nacional,Ridge,3269016.4
+2026-12,Nacional,Ridge,3269016.4
+2027-01,Nacional,Ridge,3269016.4
+2027-02,Nacional,Ridge,3269016.4
+2027-03,Nacional,Ridge,3269016.4
+2027-04,Nacional,Ridge,3269016.4
+2027-05,Nacional,Ridge,3269016.4
+2027-06,Nacional,Ridge,3269016.4
+2027-07,Nacional,Ridge,3269016.4
+2027-08,Nacional,Ridge,3269016.4
+2027-09,Nacional,Ridge,3269016.4
+2027-10,Nacional,Ridge,3269016.4
+2027-11,Nacional,Ridge,3269016.4
+2027-12,Nacional,Ridge,3269016.4
+2026-01,Nacional,Random Forest,7063.3
+2026-02,Nacional,Random Forest,7063.3
+2026-03,Nacional,Random Forest,6976.3
+2026-04,Nacional,Random Forest,6830.1
+2026-05,Nacional,Random Forest,6786.4
+2026-06,Nacional,Random Forest,6914.1
+2026-07,Nacional,Random Forest,7147.2
+2026-08,Nacional,Random Forest,7391.8
+2026-09,Nacional,Random Forest,7480.4
+2026-10,Nacional,Random Forest,7612.7
+2026-11,Nacional,Random Forest,7612.7
+2026-12,Nacional,Random Forest,7548.6
+2027-01,Nacional,Random Forest,7063.3
+2027-02,Nacional,Random Forest,7063.3
+2027-03,Nacional,Random Forest,6976.3
+2027-04,Nacional,Random Forest,6830.1
+2027-05,Nacional,Random Forest,6786.4
+2027-06,Nacional,Random Forest,6914.1
+2027-07,Nacional,Random Forest,7147.2
+2027-08,Nacional,Random Forest,7391.8
+2027-09,Nacional,Random Forest,7480.4
+2027-10,Nacional,Random Forest,7612.7
+2027-11,Nacional,Random Forest,7612.7
+2027-12,Nacional,Random Forest,7548.6
+2026-01,Nacional,XGBoost,5269.3
+2026-02,Nacional,XGBoost,5285.3
+2026-03,Nacional,XGBoost,5270.3
+2026-04,Nacional,XGBoost,5487.4
+2026-05,Nacional,XGBoost,5962.5
+2026-06,Nacional,XGBoost,6435.4
+2026-07,Nacional,XGBoost,6930.6
+2026-08,Nacional,XGBoost,7090.1
+2026-09,Nacional,XGBoost,7079.6
+2026-10,Nacional,XGBoost,7300.5
+2026-11,Nacional,XGBoost,7300.5
+2026-12,Nacional,XGBoost,7300.5
+2027-01,Nacional,XGBoost,5269.3
+2027-02,Nacional,XGBoost,5285.3
+2027-03,Nacional,XGBoost,5270.3
+2027-04,Nacional,XGBoost,5487.4
+2027-05,Nacional,XGBoost,5962.5
+2027-06,Nacional,XGBoost,6435.4
+2027-07,Nacional,XGBoost,6930.6
+2027-08,Nacional,XGBoost,7090.1
+2027-09,Nacional,XGBoost,7079.6
+2027-10,Nacional,XGBoost,7300.5
+2027-11,Nacional,XGBoost,7300.5
+2027-12,Nacional,XGBoost,7300.5
+2026-01,Madrid,SARIMA,3106.4
+2026-02,Madrid,SARIMA,3234.6
+2026-03,Madrid,SARIMA,3361.2
+2026-04,Madrid,SARIMA,3478.4
+2026-05,Madrid,SARIMA,3588.2
+2026-06,Madrid,SARIMA,3691.7
+2026-07,Madrid,SARIMA,3780.5
+2026-08,Madrid,SARIMA,3848.3
+2026-09,Madrid,SARIMA,3923.4
+2026-10,Madrid,SARIMA,3987.8
+2026-11,Madrid,SARIMA,4055.5
+2026-12,Madrid,SARIMA,4109.4
+2027-01,Madrid,SARIMA,4161.6
+2027-02,Madrid,SARIMA,4209.1
+2027-03,Madrid,SARIMA,4252.2
+2027-04,Madrid,SARIMA,4291.2
+2027-05,Madrid,SARIMA,4326.6
+2027-06,Madrid,SARIMA,4358.5
+2027-07,Madrid,SARIMA,4387.3
+2027-08,Madrid,SARIMA,4413.1
+2027-09,Madrid,SARIMA,4436.5
+2027-10,Madrid,SARIMA,4457.6
+2027-11,Madrid,SARIMA,4476.7
+2027-12,Madrid,SARIMA,4493.7
+2026-01,Madrid,Logistic,3486.4
+2026-02,Madrid,Logistic,3583.4
+2026-03,Madrid,Logistic,3682.4
+2026-04,Madrid,Logistic,3769.9
+2026-05,Madrid,Logistic,3832.9
+2026-06,Madrid,Logistic,3863.1
+2026-07,Madrid,Logistic,3859.6
+2026-08,Madrid,Logistic,3828.7
+2026-09,Madrid,Logistic,3783.2
+2026-10,Madrid,Logistic,3739.1
+2026-11,Madrid,Logistic,3710.9
+2026-12,Madrid,Logistic,3708.5
+2027-01,Madrid,Logistic,3734.4
+2027-02,Madrid,Logistic,3783.1
+2027-03,Madrid,Logistic,3842.8
+2027-04,Madrid,Logistic,3898.3
+2027-05,Madrid,Logistic,3935.5
+2027-06,Madrid,Logistic,3945.1
+2027-07,Madrid,Logistic,3924.9
+2027-08,Madrid,Logistic,3880.7
+2027-09,Madrid,Logistic,3824.6
+2027-10,Madrid,Logistic,3772.0
+2027-11,Madrid,Logistic,3737.0
+2027-12,Madrid,Logistic,3729.3
+2026-01,Madrid,Gompertz,3378.6
+2026-02,Madrid,Gompertz,3480.7
+2026-03,Madrid,Gompertz,3590.3
+2026-04,Madrid,Gompertz,3692.0
+2026-05,Madrid,Gompertz,3770.8
+2026-06,Madrid,Gompertz,3816.3
+2026-07,Madrid,Gompertz,3825.3
+2026-08,Madrid,Gompertz,3803.5
+2026-09,Madrid,Gompertz,3763.4
+2026-10,Madrid,Gompertz,3721.9
+2026-11,Madrid,Gompertz,3695.0
+2026-12,Madrid,Gompertz,3694.3
+2027-01,Madrid,Gompertz,3723.9
+2027-02,Madrid,Gompertz,3779.0
+2027-03,Madrid,Gompertz,3847.6
+2027-04,Madrid,Gompertz,3913.8
+2027-05,Madrid,Gompertz,3961.8
+2027-06,Madrid,Gompertz,3980.6
+2027-07,Madrid,Gompertz,3966.6
+2027-08,Madrid,Gompertz,3924.8
+2027-09,Madrid,Gompertz,3867.7
+2027-10,Madrid,Gompertz,3811.3
+2027-11,Madrid,Gompertz,3771.7
+2027-12,Madrid,Gompertz,3760.2
+2026-01,Madrid,Ridge,3269016.4
+2026-02,Madrid,Ridge,3269016.4
+2026-03,Madrid,Ridge,3269016.4
+2026-04,Madrid,Ridge,3269016.4
+2026-05,Madrid,Ridge,3269016.4
+2026-06,Madrid,Ridge,3269016.4
+2026-07,Madrid,Ridge,3269016.4
+2026-08,Madrid,Ridge,3269016.4
+2026-09,Madrid,Ridge,3269016.4
+2026-10,Madrid,Ridge,3269016.4
+2026-11,Madrid,Ridge,3269016.4
+2026-12,Madrid,Ridge,3269016.4
+2027-01,Madrid,Ridge,3269016.4
+2027-02,Madrid,Ridge,3269016.4
+2027-03,Madrid,Ridge,3269016.4
+2027-04,Madrid,Ridge,3269016.4
+2027-05,Madrid,Ridge,3269016.4
+2027-06,Madrid,Ridge,3269016.4
+2027-07,Madrid,Ridge,3269016.4
+2027-08,Madrid,Ridge,3269016.4
+2027-09,Madrid,Ridge,3269016.4
+2027-10,Madrid,Ridge,3269016.4
+2027-11,Madrid,Ridge,3269016.4
+2027-12,Madrid,Ridge,3269016.4
+2026-01,Madrid,Random Forest,868.2
+2026-02,Madrid,Random Forest,868.2
+2026-03,Madrid,Random Forest,847.3
+2026-04,Madrid,Random Forest,816.4
+2026-05,Madrid,Random Forest,800.6
+2026-06,Madrid,Random Forest,820.3
+2026-07,Madrid,Random Forest,820.3
+2026-08,Madrid,Random Forest,838.5
+2026-09,Madrid,Random Forest,902.1
+2026-10,Madrid,Random Forest,924.4
+2026-11,Madrid,Random Forest,922.3
+2026-12,Madrid,Random Forest,922.3
+2027-01,Madrid,Random Forest,868.2
+2027-02,Madrid,Random Forest,868.2
+2027-03,Madrid,Random Forest,847.3
+2027-04,Madrid,Random Forest,816.4
+2027-05,Madrid,Random Forest,800.6
+2027-06,Madrid,Random Forest,820.3
+2027-07,Madrid,Random Forest,820.3
+2027-08,Madrid,Random Forest,838.5
+2027-09,Madrid,Random Forest,902.1
+2027-10,Madrid,Random Forest,924.4
+2027-11,Madrid,Random Forest,922.3
+2027-12,Madrid,Random Forest,922.3
+2026-01,Madrid,XGBoost,707.0
+2026-02,Madrid,XGBoost,702.8
+2026-03,Madrid,XGBoost,707.5
+2026-04,Madrid,XGBoost,702.8
+2026-05,Madrid,XGBoost,828.5
+2026-06,Madrid,XGBoost,905.8
+2026-07,Madrid,XGBoost,909.6
+2026-08,Madrid,XGBoost,909.6
+2026-09,Madrid,XGBoost,963.5
+2026-10,Madrid,XGBoost,992.3
+2026-11,Madrid,XGBoost,1001.2
+2026-12,Madrid,XGBoost,996.2
+2027-01,Madrid,XGBoost,707.0
+2027-02,Madrid,XGBoost,702.8
+2027-03,Madrid,XGBoost,707.5
+2027-04,Madrid,XGBoost,702.8
+2027-05,Madrid,XGBoost,828.5
+2027-06,Madrid,XGBoost,905.8
+2027-07,Madrid,XGBoost,909.6
+2027-08,Madrid,XGBoost,909.6
+2027-09,Madrid,XGBoost,963.5
+2027-10,Madrid,XGBoost,992.3
+2027-11,Madrid,XGBoost,1001.2
+2027-12,Madrid,XGBoost,996.2
+2026-01,Cataluña,SARIMA,3497.8
+2026-02,Cataluña,SARIMA,3628.5
+2026-03,Cataluña,SARIMA,3754.7
+2026-04,Cataluña,SARIMA,3876.2
+2026-05,Cataluña,SARIMA,3987.9
+2026-06,Cataluña,SARIMA,4088.8
+2026-07,Cataluña,SARIMA,4181.7
+2026-08,Cataluña,SARIMA,4254.5
+2026-09,Cataluña,SARIMA,4324.4
+2026-10,Cataluña,SARIMA,4406.3
+2026-11,Cataluña,SARIMA,4465.2
+2026-12,Cataluña,SARIMA,4526.6
+2027-01,Cataluña,SARIMA,4581.1
+2027-02,Cataluña,SARIMA,4630.7
+2027-03,Cataluña,SARIMA,4676.0
+2027-04,Cataluña,SARIMA,4717.1
+2027-05,Cataluña,SARIMA,4754.5
+2027-06,Cataluña,SARIMA,4788.3
+2027-07,Cataluña,SARIMA,4819.0
+2027-08,Cataluña,SARIMA,4846.7
+2027-09,Cataluña,SARIMA,4871.8
+2027-10,Cataluña,SARIMA,4894.7
+2027-11,Cataluña,SARIMA,4915.3
+2027-12,Cataluña,SARIMA,4933.9
+2026-01,Cataluña,Logistic,3564.4
+2026-02,Cataluña,Logistic,3634.8
+2026-03,Cataluña,Logistic,3710.2
+2026-04,Cataluña,Logistic,3780.1
+2026-05,Cataluña,Logistic,3833.6
+2026-06,Cataluña,Logistic,3862.5
+2026-07,Cataluña,Logistic,3863.9
+2026-08,Cataluña,Logistic,3841.3
+2026-09,Cataluña,Logistic,3803.9
+2026-10,Cataluña,Logistic,3764.0
+2026-11,Cataluña,Logistic,3734.3
+2026-12,Cataluña,Logistic,3724.2
+2027-01,Cataluña,Logistic,3737.6
+2027-02,Cataluña,Logistic,3771.8
+2027-03,Cataluña,Logistic,3818.4
+2027-04,Cataluña,Logistic,3865.4
+2027-05,Cataluña,Logistic,3900.8
+2027-06,Cataluña,Logistic,3915.3
+2027-07,Cataluña,Logistic,3905.3
+2027-08,Cataluña,Logistic,3873.8
+2027-09,Cataluña,Logistic,3829.4
+2027-10,Cataluña,Logistic,3784.0
+2027-11,Cataluña,Logistic,3750.0
+2027-12,Cataluña,Logistic,3736.5
+2026-01,Cataluña,Gompertz,3484.5
+2026-02,Cataluña,Gompertz,3566.6
+2026-03,Cataluña,Gompertz,3656.4
+2026-04,Cataluña,Gompertz,3741.2
+2026-05,Cataluña,Gompertz,3807.9
+2026-06,Cataluña,Gompertz,3846.8
+2026-07,Cataluña,Gompertz,3854.6
+2026-08,Cataluña,Gompertz,3835.2
+2026-09,Cataluña,Gompertz,3798.8
+2026-10,Cataluña,Gompertz,3759.5
+2026-11,Cataluña,Gompertz,3731.6
+2026-12,Cataluña,Gompertz,3725.7
+2027-01,Cataluña,Gompertz,3745.9
+2027-02,Cataluña,Gompertz,3789.2
+2027-03,Cataluña,Gompertz,3845.7
+2027-04,Cataluña,Gompertz,3902.1
+2027-05,Cataluña,Gompertz,3944.5
+2027-06,Cataluña,Gompertz,3962.8
+2027-07,Cataluña,Gompertz,3952.9
+2027-08,Cataluña,Gompertz,3918.5
+2027-09,Cataluña,Gompertz,3869.4
+2027-10,Cataluña,Gompertz,3819.3
+2027-11,Cataluña,Gompertz,3782.3
+2027-12,Cataluña,Gompertz,3768.6
+2026-01,Cataluña,Ridge,707682.2
+2026-02,Cataluña,Ridge,3269016.4
+2026-03,Cataluña,Ridge,3269016.4
+2026-04,Cataluña,Ridge,3269016.4
+2026-05,Cataluña,Ridge,3269016.4
+2026-06,Cataluña,Ridge,3269016.4
+2026-07,Cataluña,Ridge,3269016.4
+2026-08,Cataluña,Ridge,3269016.4
+2026-09,Cataluña,Ridge,3269016.4
+2026-10,Cataluña,Ridge,3269016.4
+2026-11,Cataluña,Ridge,3269016.4
+2026-12,Cataluña,Ridge,3269016.4
+2027-01,Cataluña,Ridge,3269016.4
+2027-02,Cataluña,Ridge,3269016.4
+2027-03,Cataluña,Ridge,3269016.4
+2027-04,Cataluña,Ridge,3269016.4
+2027-05,Cataluña,Ridge,3269016.4
+2027-06,Cataluña,Ridge,3269016.4
+2027-07,Cataluña,Ridge,3269016.4
+2027-08,Cataluña,Ridge,3269016.4
+2027-09,Cataluña,Ridge,3269016.4
+2027-10,Cataluña,Ridge,3269016.4
+2027-11,Cataluña,Ridge,3269016.4
+2027-12,Cataluña,Ridge,3269016.4
+2026-01,Cataluña,Random Forest,1128.6
+2026-02,Cataluña,Random Forest,1128.6
+2026-03,Cataluña,Random Forest,1100.6
+2026-04,Cataluña,Random Forest,1099.7
+2026-05,Cataluña,Random Forest,1099.7
+2026-06,Cataluña,Random Forest,1099.7
+2026-07,Cataluña,Random Forest,1099.7
+2026-08,Cataluña,Random Forest,1099.7
+2026-09,Cataluña,Random Forest,1110.5
+2026-10,Cataluña,Random Forest,1148.9
+2026-11,Cataluña,Random Forest,1148.9
+2026-12,Cataluña,Random Forest,1148.9
+2027-01,Cataluña,Random Forest,1128.6
+2027-02,Cataluña,Random Forest,1128.6
+2027-03,Cataluña,Random Forest,1100.6
+2027-04,Cataluña,Random Forest,1099.7
+2027-05,Cataluña,Random Forest,1099.7
+2027-06,Cataluña,Random Forest,1099.7
+2027-07,Cataluña,Random Forest,1099.7
+2027-08,Cataluña,Random Forest,1099.7
+2027-09,Cataluña,Random Forest,1110.5
+2027-10,Cataluña,Random Forest,1148.9
+2027-11,Cataluña,Random Forest,1148.9
+2027-12,Cataluña,Random Forest,1148.9
+2026-01,Cataluña,XGBoost,1060.8
+2026-02,Cataluña,XGBoost,1060.8
+2026-03,Cataluña,XGBoost,1060.8
+2026-04,Cataluña,XGBoost,1060.8
+2026-05,Cataluña,XGBoost,1029.8
+2026-06,Cataluña,XGBoost,1013.8
+2026-07,Cataluña,XGBoost,1109.7
+2026-08,Cataluña,XGBoost,1145.6
+2026-09,Cataluña,XGBoost,973.8
+2026-10,Cataluña,XGBoost,1145.6
+2026-11,Cataluña,XGBoost,1145.6
+2026-12,Cataluña,XGBoost,1145.6
+2027-01,Cataluña,XGBoost,1060.8
+2027-02,Cataluña,XGBoost,1060.8
+2027-03,Cataluña,XGBoost,1060.8
+2027-04,Cataluña,XGBoost,1060.8
+2027-05,Cataluña,XGBoost,1029.8
+2027-06,Cataluña,XGBoost,1013.8
+2027-07,Cataluña,XGBoost,1109.7
+2027-08,Cataluña,XGBoost,1145.6
+2027-09,Cataluña,XGBoost,973.8
+2027-10,Cataluña,XGBoost,1145.6
+2027-11,Cataluña,XGBoost,1145.6
+2027-12,Cataluña,XGBoost,1145.6
+2026-01,Andalucía,SARIMA,2122.2
+2026-02,Andalucía,SARIMA,2236.0
+2026-03,Andalucía,SARIMA,2221.1
+2026-04,Andalucía,SARIMA,2224.0
+2026-05,Andalucía,SARIMA,2167.2
+2026-06,Andalucía,SARIMA,2135.2
+2026-07,Andalucía,SARIMA,2112.8
+2026-08,Andalucía,SARIMA,2157.3
+2026-09,Andalucía,SARIMA,2172.0
+2026-10,Andalucía,SARIMA,2170.3
+2026-11,Andalucía,SARIMA,2175.7
+2026-12,Andalucía,SARIMA,2152.3
+2027-01,Andalucía,SARIMA,2140.2
+2027-02,Andalucía,SARIMA,2134.2
+2027-03,Andalucía,SARIMA,2134.9
+2027-04,Andalucía,SARIMA,2134.8
+2027-05,Andalucía,SARIMA,2137.8
+2027-06,Andalucía,SARIMA,2139.5
+2027-07,Andalucía,SARIMA,2140.7
+2027-08,Andalucía,SARIMA,2138.3
+2027-09,Andalucía,SARIMA,2137.5
+2027-10,Andalucía,SARIMA,2137.6
+2027-11,Andalucía,SARIMA,2137.3
+2027-12,Andalucía,SARIMA,2138.6
+2026-01,Andalucía,Logistic,1992.8
+2026-02,Andalucía,Logistic,2112.8
+2026-03,Andalucía,Logistic,2265.1
+2026-04,Andalucía,Logistic,2426.1
+2026-05,Andalucía,Logistic,2567.9
+2026-06,Andalucía,Logistic,2665.8
+2026-07,Andalucía,Logistic,2705.0
+2026-08,Andalucía,Logistic,2685.0
+2026-09,Andalucía,Logistic,2619.5
+2026-10,Andalucía,Logistic,2533.2
+2026-11,Andalucía,Logistic,2455.5
+2026-12,Andalucía,Logistic,2412.1
+2027-01,Andalucía,Logistic,2419.2
+2027-02,Andalucía,Logistic,2478.3
+2027-03,Andalucía,Logistic,2576.7
+2027-04,Andalucía,Logistic,2690.5
+2027-05,Andalucía,Logistic,2791.4
+2027-06,Andalucía,Logistic,2854.1
+2027-07,Andalucía,Logistic,2863.2
+2027-08,Andalucía,Logistic,2817.5
+2027-09,Andalucía,Logistic,2730.3
+2027-10,Andalucía,Logistic,2625.7
+2027-11,Andalucía,Logistic,2532.6
+2027-12,Andalucía,Logistic,2476.3
+2026-01,Andalucía,Gompertz,1913.2
+2026-02,Andalucía,Gompertz,2030.0
+2026-03,Andalucía,Gompertz,2185.2
+2026-04,Andalucía,Gompertz,2355.6
+2026-05,Andalucía,Gompertz,2512.5
+2026-06,Andalucía,Gompertz,2629.7
+2026-07,Andalucía,Gompertz,2690.6
+2026-08,Andalucía,Gompertz,2692.5
+2026-09,Andalucía,Gompertz,2647.3
+2026-10,Andalucía,Gompertz,2578.9
+2026-11,Andalucía,Gompertz,2516.1
+2026-12,Andalucía,Gompertz,2485.6
+2027-01,Andalucía,Gompertz,2504.4
+2027-02,Andalucía,Gompertz,2575.9
+2027-03,Andalucía,Gompertz,2688.2
+2027-04,Andalucía,Gompertz,2818.2
+2027-05,Andalucía,Gompertz,2937.2
+2027-06,Andalucía,Gompertz,3019.1
+2027-07,Andalucía,Gompertz,3047.1
+2027-08,Andalucía,Gompertz,3018.5
+2027-09,Andalucía,Gompertz,2945.1
+2027-10,Andalucía,Gompertz,2850.5
+2027-11,Andalucía,Gompertz,2763.7
+2027-12,Andalucía,Gompertz,2711.1
+2026-01,Andalucía,Ridge,3269016.4
+2026-02,Andalucía,Ridge,3269016.4
+2026-03,Andalucía,Ridge,3269016.4
+2026-04,Andalucía,Ridge,3269016.4
+2026-05,Andalucía,Ridge,3269016.4
+2026-06,Andalucía,Ridge,3269016.4
+2026-07,Andalucía,Ridge,3269016.4
+2026-08,Andalucía,Ridge,3269016.4
+2026-09,Andalucía,Ridge,3269016.4
+2026-10,Andalucía,Ridge,3269016.4
+2026-11,Andalucía,Ridge,3269016.4
+2026-12,Andalucía,Ridge,3269016.4
+2027-01,Andalucía,Ridge,3269016.4
+2027-02,Andalucía,Ridge,3269016.4
+2027-03,Andalucía,Ridge,3269016.4
+2027-04,Andalucía,Ridge,3269016.4
+2027-05,Andalucía,Ridge,3269016.4
+2027-06,Andalucía,Ridge,3269016.4
+2027-07,Andalucía,Ridge,3269016.4
+2027-08,Andalucía,Ridge,3269016.4
+2027-09,Andalucía,Ridge,3269016.4
+2027-10,Andalucía,Ridge,3269016.4
+2027-11,Andalucía,Ridge,3269016.4
+2027-12,Andalucía,Ridge,3269016.4
+2026-01,Andalucía,Random Forest,514.7
+2026-02,Andalucía,Random Forest,514.8
+2026-03,Andalucía,Random Forest,511.9
+2026-04,Andalucía,Random Forest,512.2
+2026-05,Andalucía,Random Forest,513.0
+2026-06,Andalucía,Random Forest,515.7
+2026-07,Andalucía,Random Forest,522.1
+2026-08,Andalucía,Random Forest,524.5
+2026-09,Andalucía,Random Forest,524.2
+2026-10,Andalucía,Random Forest,528.3
+2026-11,Andalucía,Random Forest,529.9
+2026-12,Andalucía,Random Forest,523.4
+2027-01,Andalucía,Random Forest,514.8
+2027-02,Andalucía,Random Forest,514.8
+2027-03,Andalucía,Random Forest,511.9
+2027-04,Andalucía,Random Forest,512.2
+2027-05,Andalucía,Random Forest,513.0
+2027-06,Andalucía,Random Forest,515.7
+2027-07,Andalucía,Random Forest,522.1
+2027-08,Andalucía,Random Forest,524.5
+2027-09,Andalucía,Random Forest,524.2
+2027-10,Andalucía,Random Forest,528.3
+2027-11,Andalucía,Random Forest,529.9
+2027-12,Andalucía,Random Forest,523.4
+2026-01,Andalucía,XGBoost,338.9
+2026-02,Andalucía,XGBoost,326.7
+2026-03,Andalucía,XGBoost,369.2
+2026-04,Andalucía,XGBoost,413.7
+2026-05,Andalucía,XGBoost,422.2
+2026-06,Andalucía,XGBoost,441.2
+2026-07,Andalucía,XGBoost,473.3
+2026-08,Andalucía,XGBoost,475.2
+2026-09,Andalucía,XGBoost,473.0
+2026-10,Andalucía,XGBoost,476.1
+2026-11,Andalucía,XGBoost,476.1
+2026-12,Andalucía,XGBoost,472.6
+2027-01,Andalucía,XGBoost,340.6
+2027-02,Andalucía,XGBoost,327.7
+2027-03,Andalucía,XGBoost,369.2
+2027-04,Andalucía,XGBoost,413.7
+2027-05,Andalucía,XGBoost,422.2
+2027-06,Andalucía,XGBoost,441.2
+2027-07,Andalucía,XGBoost,473.3
+2027-08,Andalucía,XGBoost,475.2
+2027-09,Andalucía,XGBoost,473.0
+2027-10,Andalucía,XGBoost,476.1
+2027-11,Andalucía,XGBoost,476.1
+2027-12,Andalucía,XGBoost,472.6
+2026-01,Valencia,SARIMA,1286.6
+2026-02,Valencia,SARIMA,1279.8
+2026-03,Valencia,SARIMA,1275.3
+2026-04,Valencia,SARIMA,1258.4
+2026-05,Valencia,SARIMA,1239.4
+2026-06,Valencia,SARIMA,1225.7
+2026-07,Valencia,SARIMA,1201.9
+2026-08,Valencia,SARIMA,1232.5
+2026-09,Valencia,SARIMA,1236.8
+2026-10,Valencia,SARIMA,1232.4
+2026-11,Valencia,SARIMA,1218.0
+2026-12,Valencia,SARIMA,1211.3
+2027-01,Valencia,SARIMA,1210.6
+2027-02,Valencia,SARIMA,1211.0
+2027-03,Valencia,SARIMA,1211.2
+2027-04,Valencia,SARIMA,1212.2
+2027-05,Valencia,SARIMA,1213.3
+2027-06,Valencia,SARIMA,1214.1
+2027-07,Valencia,SARIMA,1215.6
+2027-08,Valencia,SARIMA,1213.7
+2027-09,Valencia,SARIMA,1213.5
+2027-10,Valencia,SARIMA,1213.7
+2027-11,Valencia,SARIMA,1214.6
+2027-12,Valencia,SARIMA,1215.0
+2026-01,Valencia,Logistic,1199.8
+2026-02,Valencia,Logistic,1245.4
+2026-03,Valencia,Logistic,1298.3
+2026-04,Valencia,Logistic,1352.0
+2026-05,Valencia,Logistic,1398.8
+2026-06,Valencia,Logistic,1431.8
+2026-07,Valencia,Logistic,1447.1
+2026-08,Valencia,Logistic,1444.8
+2026-09,Valencia,Logistic,1429.0
+2026-10,Valencia,Logistic,1406.8
+2026-11,Valencia,Logistic,1386.7
+2026-12,Valencia,Logistic,1376.3
+2027-01,Valencia,Logistic,1379.9
+2027-02,Valencia,Logistic,1398.1
+2027-03,Valencia,Logistic,1427.2
+2027-04,Valencia,Logistic,1460.4
+2027-05,Valencia,Logistic,1489.7
+2027-06,Valencia,Logistic,1507.8
+2027-07,Valencia,Logistic,1510.5
+2027-08,Valencia,Logistic,1497.6
+2027-09,Valencia,Logistic,1472.8
+2027-10,Valencia,Logistic,1443.2
+2027-11,Valencia,Logistic,1417.0
+2027-12,Valencia,Logistic,1401.3
+2026-01,Valencia,Gompertz,1212.4
+2026-02,Valencia,Gompertz,1271.5
+2026-03,Valencia,Gompertz,1340.3
+2026-04,Valencia,Gompertz,1411.5
+2026-05,Valencia,Gompertz,1476.5
+2026-06,Valencia,Gompertz,1527.8
+2026-07,Valencia,Gompertz,1560.8
+2026-08,Valencia,Gompertz,1575.5
+2026-09,Valencia,Gompertz,1575.9
+2026-10,Valencia,Gompertz,1569.5
+2026-11,Valencia,Gompertz,1564.9
+2026-12,Valencia,Gompertz,1569.9
+2027-01,Valencia,Gompertz,1589.2
+2027-02,Valencia,Gompertz,1623.0
+2027-03,Valencia,Gompertz,1667.6
+2027-04,Valencia,Gompertz,1715.7
+2027-05,Valencia,Gompertz,1758.8
+2027-06,Valencia,Gompertz,1789.3
+2027-07,Valencia,Gompertz,1802.9
+2027-08,Valencia,Gompertz,1799.2
+2027-09,Valencia,Gompertz,1782.4
+2027-10,Valencia,Gompertz,1759.9
+2027-11,Valencia,Gompertz,1740.4
+2027-12,Valencia,Gompertz,1731.5
+2026-01,Valencia,Ridge,3269016.4
+2026-02,Valencia,Ridge,3269016.4
+2026-03,Valencia,Ridge,3269016.4
+2026-04,Valencia,Ridge,3269016.4
+2026-05,Valencia,Ridge,3269016.4
+2026-06,Valencia,Ridge,3269016.4
+2026-07,Valencia,Ridge,3269016.4
+2026-08,Valencia,Ridge,3269016.4
+2026-09,Valencia,Ridge,3269016.4
+2026-10,Valencia,Ridge,3269016.4
+2026-11,Valencia,Ridge,3269016.4
+2026-12,Valencia,Ridge,3269016.4
+2027-01,Valencia,Ridge,3269016.4
+2027-02,Valencia,Ridge,3269016.4
+2027-03,Valencia,Ridge,3269016.4
+2027-04,Valencia,Ridge,3269016.4
+2027-05,Valencia,Ridge,3269016.4
+2027-06,Valencia,Ridge,3269016.4
+2027-07,Valencia,Ridge,3269016.4
+2027-08,Valencia,Ridge,3269016.4
+2027-09,Valencia,Ridge,3269016.4
+2027-10,Valencia,Ridge,3269016.4
+2027-11,Valencia,Ridge,3269016.4
+2027-12,Valencia,Ridge,3269016.4
+2026-01,Valencia,Random Forest,294.1
+2026-02,Valencia,Random Forest,291.1
+2026-03,Valencia,Random Forest,290.8
+2026-04,Valencia,Random Forest,287.5
+2026-05,Valencia,Random Forest,285.6
+2026-06,Valencia,Random Forest,319.8
+2026-07,Valencia,Random Forest,338.2
+2026-08,Valencia,Random Forest,347.0
+2026-09,Valencia,Random Forest,350.5
+2026-10,Valencia,Random Forest,351.2
+2026-11,Valencia,Random Forest,350.3
+2026-12,Valencia,Random Forest,338.2
+2027-01,Valencia,Random Forest,291.1
+2027-02,Valencia,Random Forest,291.1
+2027-03,Valencia,Random Forest,290.4
+2027-04,Valencia,Random Forest,287.5
+2027-05,Valencia,Random Forest,285.6
+2027-06,Valencia,Random Forest,319.8
+2027-07,Valencia,Random Forest,338.2
+2027-08,Valencia,Random Forest,347.0
+2027-09,Valencia,Random Forest,350.5
+2027-10,Valencia,Random Forest,351.2
+2027-11,Valencia,Random Forest,350.3
+2027-12,Valencia,Random Forest,338.2
+2026-01,Valencia,XGBoost,313.4
+2026-02,Valencia,XGBoost,315.9
+2026-03,Valencia,XGBoost,320.2
+2026-04,Valencia,XGBoost,403.2
+2026-05,Valencia,XGBoost,352.7
+2026-06,Valencia,XGBoost,323.9
+2026-07,Valencia,XGBoost,344.6
+2026-08,Valencia,XGBoost,398.7
+2026-09,Valencia,XGBoost,392.7
+2026-10,Valencia,XGBoost,404.4
+2026-11,Valencia,XGBoost,399.9
+2026-12,Valencia,XGBoost,418.0
+2027-01,Valencia,XGBoost,313.4
+2027-02,Valencia,XGBoost,315.9
+2027-03,Valencia,XGBoost,320.2
+2027-04,Valencia,XGBoost,403.2
+2027-05,Valencia,XGBoost,352.7
+2027-06,Valencia,XGBoost,323.9
+2027-07,Valencia,XGBoost,344.6
+2027-08,Valencia,XGBoost,398.7
+2027-09,Valencia,XGBoost,392.7
+2027-10,Valencia,XGBoost,404.4
+2027-11,Valencia,XGBoost,399.9
+2027-12,Valencia,XGBoost,418.0

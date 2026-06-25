@@ -55,12 +55,22 @@ inspection against the current `sarima_order_acceptance.csv` schema.
 **Caution for future edits:** notebook 05, if run, overwrites
 `data/features/features_*.csv` with its own (older, 27-column) schema instead
 of the current 36-column CNMC-and-mandate-aware schema that
-`scripts/04_build_features.py` produces. Notebooks 07 and 08, if run, overwrite
-several `data/outputs/*.csv` filenames that `scripts/05_modeling_with_cnmc.py`
-also owns. Always re-run `scripts/04_build_features.py` and
-`scripts/05_modeling_with_cnmc.py` (then `scripts/06_validate_outputs.py`)
-after running any of notebooks 05/07/08 to restore the authoritative
-production state.
+`scripts/04_build_features.py` produces -- always re-run
+`scripts/04_build_features.py` and `scripts/05_modeling_with_cnmc.py` (then
+`scripts/06_validate_outputs.py`) after running notebook 05 to restore the
+authoritative production state.
+
+**Fixed 2026-06-25:** notebooks 07 and 08 previously wrote to several of the
+same `data/outputs/*.csv` filenames that `scripts/05_modeling_with_cnmc.py`
+owns (`metricas_models.csv`, `model_selection_walkforward.csv`,
+`metricas_final_selected.csv`, `predicciones_test_2025.csv`,
+`forecast_24m_sarima_rf_xgb.csv`, `tableau_export_legacy.csv`,
+`metricas_comparativa.csv`), so running either could silently overwrite
+production outputs with an older, narrower candidate set. Every colliding
+output in both notebooks now writes to a `legacy_notebook07_`/
+`legacy_notebook08_`-prefixed filename instead, so this can no longer
+happen regardless of run order. See `AUDIT_FIX_PLAN.md`'s "Notebooks 07/08
+No Longer Share Output Filenames With scripts/05" entry.
 
 ## Inventory
 
@@ -72,8 +82,8 @@ production state.
 | `04_master_dataset.ipynb` | Superseded by script | Use `scripts/02_master_dataset_builder.py` for the CNMC-aware 22-column master dataset. Unaffected by the bugs above. |
 | `05_feature_engineering.ipynb` | Superseded by script; fixed and re-verified | Use `scripts/04_build_features.py` for the CNMC-aware 36-column feature table. Fixed the `'Trend'` literal; runs clean, but still produces a smaller, older feature schema than the script -- do not let its output overwrite `data/features/`. |
 | `06_price_features.ipynb` | Optional ablation support; fixed and re-verified | Builds optional price features for notebook 08. Fixed the `gasolina`/`Gasóleo` mistranslation in `PRODUCT_MAP`; re-run confirms its output is byte-identical to the existing `features_precios_combustibles.csv`. |
-| `07_modeling.ipynb` | Superseded by script; fixed and re-verified | Use `scripts/05_modeling_with_cnmc.py` for current modeling outputs. Implements an older 6-candidate design (no SARIMAX, no CNMC features) -- its numbers will not match the current production selection. Fixed the `'Trend'` literal; runs clean. |
-| `08_modeling_with_prices.ipynb` | Optional ablation support; fixed and re-verified | Price-region mapping bug fixed previously; this round fixed the `'Trend'` and `gasolina95` literals. Not the production modeling path. |
+| `07_modeling.ipynb` | Superseded by script; fixed and re-verified | Use `scripts/05_modeling_with_cnmc.py` for current modeling outputs. Implements an older 6-candidate design (no SARIMAX, no CNMC features) -- its numbers will not match the current production selection. Fixed the `'Trend'` literal; all 6 outputs now save under a `legacy_notebook07_` prefix so it can never overwrite production outputs; runs clean. |
+| `08_modeling_with_prices.ipynb` | Optional ablation support; fixed and re-verified | Price-region mapping bug fixed previously; this round fixed the `'Trend'` and `gasolina95` literals, and its one colliding output (`metricas_comparativa.csv`) now saves as `legacy_notebook08_metricas_comparativa.csv`. Not the production modeling path. |
 | `09_evaluation.ipynb` | Superseded by script; fixed and re-verified | Script now writes the final figures and dashboard outputs. Fixed the `'Trend'` literal; runs clean. Its auto-rebuild guard (which reruns `scripts/02`/`scripts/04` if expected columns are missing) cannot fix a renamed-literal bug like this one, only a genuinely stale feature table -- keep that distinction in mind for any future translation-style edit. |
 | `10_final_models.ipynb` | Narrative summary; fixed | Documents the current seven-model open-competition selection and 2025 holdout metrics. Fixed the stale `Default_2025_MAPE`/`Grid_Selected_2025_MAPE` column reference and the `?` mojibake. |
 | `10_1_final_models.ipynb` | Cataluña detail; fixed | Same fixes as notebook 10. |

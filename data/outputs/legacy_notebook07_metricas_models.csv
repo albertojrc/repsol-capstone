@@ -1,0 +1,31 @@
+Target,Model,MAE,RMSE,MAPE,R2
+Nacional,SARIMA,4277.7,4921.5,29.0,-0.009
+Nacional,Logistic,6228.7,6999.4,36.7,-1.041
+Nacional,Gompertz,15625.4,19146.0,82.7,-14.268
+Nacional,Ridge,438559.1,606296.8,2155.0,-15310.023
+Nacional,Random Forest,11080.6,12024.2,57.6,-5.022
+Nacional,XGBoost,11872.3,12598.3,63.2,-5.611
+Madrid,SARIMA,9097.9,11968.7,318.7,-312.876
+Madrid,Logistic,1924.0,2057.2,73.6,-8.273
+Madrid,Gompertz,5538.4,6823.5,197.1,-101.018
+Madrid,Ridge,19715.6,28188.0,674.1,-1739.984
+Madrid,Random Forest,1840.2,1955.4,65.7,-7.378
+Madrid,XGBoost,1788.0,1871.6,64.9,-6.675
+Cataluña,SARIMA,1428.6,1613.8,47.2,-5.62
+Cataluña,Logistic,2299.1,2498.6,80.2,-14.869
+Cataluña,Gompertz,4929.6,6024.8,164.2,-91.269
+Cataluña,Ridge,98752.4,134821.2,3226.7,-46203.32
+Cataluña,Random Forest,1766.6,1868.1,59.5,-7.871
+Cataluña,XGBoost,1743.0,1835.5,59.0,-7.564
+Andalucía,SARIMA,897.9,1077.0,52.5,-1.924
+Andalucía,Logistic,833.8,1006.7,48.4,-1.555
+Andalucía,Gompertz,830.4,1002.4,48.3,-1.533
+Andalucía,Ridge,636357.6,1012854.3,37004.3,-2586176.279
+Andalucía,Random Forest,969.3,1153.0,55.8,-2.351
+Andalucía,XGBoost,1045.8,1198.7,64.6,-2.622
+Valencia,SARIMA,573.8,661.8,57.4,-3.932
+Valencia,Logistic,365.4,453.3,34.7,-1.314
+Valencia,Gompertz,360.3,446.6,34.2,-1.246
+Valencia,Ridge,1529993.4,2155833.1,146213.3,-52333177.466
+Valencia,Random Forest,572.4,635.0,60.0,-3.54
+Valencia,XGBoost,550.6,622.7,56.8,-3.366

@@ -173,10 +173,25 @@ overfitting), not something further pipeline engineering resolves.
 
 ## Dataset Lineage
 
+`consumo_biodiesel_ccaa.csv` (and the equivalent provincial/targets files)
+are committed as already-processed artifacts with no notebook or script
+that derives them from a raw source. They are reproducible anyway:
+`scripts/03_clean_cnmc_petroleum.py`'s `reconcile_biodiesel()` independently
+verifies, on every run, that CNMC's `CNMC_Biodiesel_Tm` -- built entirely
+from `data/raw/consumos_mensuales_petroleo/ds_*.csv` -- reconciles exactly
+(0.0 Tm max diff) against `consumo_biodiesel_ccaa.csv`'s `Consumo_Tm` for
+every CCAA, every month, 2023-2025. CNMC is therefore the project's real
+reproducible-from-raw lineage for the target; the `ESTADISTICAS-BIOS CERT
+DEFINITIVAS *.xlsx` files in `data/` are historical/supplementary CORES
+material only -- no current script reads them, no 2025-dated file of that
+type exists, and they are not required to reproduce any output below. See
+`memory.md`'s "Target Lineage Clarified" entry.
+
 ```text
-CNMC raw CSVs
+data/raw/consumos_mensuales_petroleo/ds_*.csv
   -> scripts/03_clean_cnmc_petroleum.py
   -> data/processed/cnmc_*.csv
+  -> (CNMC_Biodiesel_Tm reconciles exactly against consumo_biodiesel_ccaa.csv)
 
 consumo_biodiesel_ccaa.csv
 macro_indicadores_ine.csv

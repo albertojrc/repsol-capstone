@@ -131,6 +131,50 @@ as a silent default.
 
 ---
 
+## 2026-06-25 Target Lineage Clarified: CNMC, Not the BIOS CERT Excel Files, Is the Reproducible Source
+
+An audit found that no notebook or script in the repo actually reads the
+three `ESTADISTICAS-BIOS CERT DEFINITIVAS *.xlsx` files sitting in `data/`
+(2020-2022/2023/2024), and that no 2025-dated file of that type exists at
+all -- meaning the target variable's raw-to-processed derivation looked
+unreproducible from the committed repo, since `consumo_biodiesel_ccaa.csv`
+just existed as an already-processed artifact with no visible upstream code.
+
+**Resolved, not by writing new extraction code, but by recognizing an
+already-coded, already-verified equivalence:** `scripts/03_clean_cnmc_petroleum.py`'s
+`reconcile_biodiesel()` (and `scripts/02_master_dataset_builder.py`'s merge
+check) already assert that CNMC's `CNMC_Biodiesel_Tm` -- built from the raw,
+fully-coded `data/raw/consumos_mensuales_petroleo/ds_*.csv` files -- reconciles
+**exactly** (max abs diff 0.0 Tm) against `consumo_biodiesel_ccaa.csv`'s
+`Consumo_Tm` for every CCAA, every month, across the entire 2023-2025 modeled
+window. CNMC raw data covers 2023-01 through 2026-02, fully spanning what
+this project needs. That makes CNMC the project's real reproducible-from-raw
+lineage for the target, independent of the BIOS CERT Excel files.
+
+**Decision:** document CNMC as the canonical lineage (see the corrected
+Section 3 entry below) and keep the BIOS CERT Excel files as historical/
+supplementary reference material, not a reproducibility requirement. Did
+**not** attempt to open and parse those Excel files' 30+ sheets (`Balance
+biodiésel`, `% Cumplimiento obligación`, several sustainability breakdowns,
+etc.) to wire them in as an alternative source -- there was no confirmed
+need (CNMC already covers the full modeled window) and no confirmation those
+sheets even contain a matching CCAA-level monthly breakdown, so that would
+have been speculative engineering effort with a real chance of being a dead
+end, not a fix to a problem that still exists once CNMC is recognized as
+sufficient.
+
+**How to apply:** if `consumo_biodiesel_ccaa.csv` is ever lost or needs
+independent verification, it (and the equivalent provincial/targets files)
+can be regenerated for 2023-2025 from `data/processed/cnmc_diesel_market_features.csv`'s
+`CNMC_Biodiesel_Tm` column (filter to `Fecha <= 2025-12`, rename to
+`Consumo_Tm`) -- this is the same equality the pipeline already checks on
+every run, not a new claim. Do not describe the BIOS CERT Excel files as
+"the" source of this target in future documentation without first actually
+opening their data sheets and confirming what they contain; until then,
+describe them only as historical/supplementary material.
+
+---
+
 ## 2026-06-25 Audit Fixes: Mandate Data Integrity, Residual Diagnostics, Calibrated Intervals, Sensitivity Analysis (`sacha`)
 
 A formal 11-section audit (user-supplied prompt, full report delivered 2026-06-24)
@@ -939,7 +983,7 @@ This is a capstone project (IE Master in Business Analytics and Data Science) bu
 
 | Source | What it provides | Where it lands in the pipeline |
 |---|---|---|
-| **CORES** (Corporación de Reservas Estratégicas de Productos Petrolíferos) | Monthly biodiesel consumption (`Consumo_Tm`, metric tonnes) by province/CCAA/national. This is the **target variable**. Original raw certification files (`ESTADISTICAS-BIOS CERT DEFINITIVAS *.xlsx`) sit in `data/`; CORES is also the likely origin of the stray root-level files (`4247.csv`, `50934.csv`, `ds_14200_1.csv`, `ds_14201_1.csv`, `ds_14202_1.csv`, `ESTADISTICA*-BIOS*.xls/xlsx`) which appear to be early manual downloads, not yet wired into the automated notebook pipeline. | `consumo_biodiesel_ccaa.csv`, `consumo_biodiesel_provincial.csv`, `consumo_biodiesel_targets.csv` (via notebook 02) |
+| **CORES/CNMC** (Corporación de Reservas Estratégicas de Productos Petrolíferos / Comisión Nacional de los Mercados y la Competencia) | Monthly biodiesel consumption (`Consumo_Tm`, metric tonnes) by province/CCAA/national. This is the **target variable**. The reproducible-from-raw lineage is via CNMC: `data/raw/consumos_mensuales_petroleo/ds_*.csv` → `scripts/03_clean_cnmc_petroleum.py` → `cnmc_diesel_market_features.csv`'s `CNMC_Biodiesel_Tm` column, which `scripts/03`'s `reconcile_biodiesel()` (and `scripts/02`'s merge check) verify reconciles **exactly** (max abs diff 0.0 Tm, every CCAA, every month) against `consumo_biodiesel_ccaa.csv` for the full 2023-2025 modeled window. The three `ESTADISTICAS-BIOS CERT DEFINITIVAS *.xlsx` files (2020-2022/2023/2024) sitting in `data/` are CORES/CNMC's original biofuel-certification system files, kept as historical/supplementary reference material -- no notebook or script parses them, no 2025-dated file of that type exists in the repo, and they are **not required to reproduce any current pipeline output**. (The previously-noted stray root-level files `4247.csv`/`50934.csv`/loose `ds_*.csv` no longer exist; they were removed in the 2026-06-21 Phase 1 cleanup -- the canonical CNMC raw files now live only under `data/raw/consumos_mensuales_petroleo/`.) | `consumo_biodiesel_ccaa.csv`, `consumo_biodiesel_provincial.csv`, `consumo_biodiesel_targets.csv` (via notebook 02; independently reproducible via `scripts/03`+`scripts/02`) |
 | **INE** (Instituto Nacional de Estadística) | Macroeconomic indicators: Industrial Production Index (original + seasonally adjusted), CPI annual variation, unemployment rate (EPA, quarterly). Fetched live via the INE Tempus3 API. | `macro_indicadores_ine.csv` (via notebook 03) |
 | **DGT** (Dirección General de Tráfico) | Vehicle fleet / registration statistics. **Planned but not implemented** — DGT has no public JSON API, requires manual Excel/PDF download. A placeholder cell exists in notebook 03 (commented out) waiting for `data/raw/dgt_parque_vehiculos.xlsx` and `data/raw/dgt_matriculaciones.xlsx` to be manually sourced. |  Not yet in `master_dataset.csv`. |
 | **Brent crude oil price** | Monthly Brent price (USD/barrel), used as a macro/cost driver. | `brent_oil_price_monthly_2023_onwards.csv`, merged into master dataset |

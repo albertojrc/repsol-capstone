@@ -1,0 +1,6 @@
+Target,Model,MAE,RMSE,MAPE,R2
+Nacional,SARIMA,4277.7,4921.5,29.0,-0.009
+Madrid,Gompertz,5538.4,6823.5,197.1,-101.018
+Cataluña,Gompertz,4929.6,6024.8,164.2,-91.269
+Andalucía,Logistic,833.8,1006.7,48.4,-1.555
+Valencia,Gompertz,360.3,446.6,34.2,-1.246

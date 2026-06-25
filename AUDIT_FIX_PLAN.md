@@ -157,6 +157,36 @@ audit trail was added. Updated `README.md`, `memory.md`,
 and 13 to match. See `memory.md`'s "2026-06-25 SARIMA Order Selection No
 Longer Touches 2025 Data" entry for the full investigation.
 
+## Completed: Target Lineage Documented as Reproducible via CNMC (2026-06-25)
+
+An audit found that the target variable's raw-to-processed derivation
+looked unreproducible: no notebook or script reads the three
+`ESTADISTICAS-BIOS CERT DEFINITIVAS *.xlsx` files in `data/`, and no
+2025-dated file of that type exists at all. Resolved without writing new
+extraction code: `scripts/03_clean_cnmc_petroleum.py` and
+`scripts/02_master_dataset_builder.py` already assert, on every run, that
+CNMC's `CNMC_Biodiesel_Tm` (built entirely from the raw, fully-coded
+`data/raw/consumos_mensuales_petroleo/ds_*.csv` files) reconciles exactly
+against `consumo_biodiesel_ccaa.csv`'s `Consumo_Tm` for the full 2023-2025
+window. CNMC is therefore documented as the canonical, reproducible
+lineage; the BIOS CERT Excel files are now described as historical/
+supplementary reference material, not a reproducibility requirement.
+Deliberately did not attempt to wire up the Excel files themselves (30+
+sheets, no confirmed CCAA-level monthly breakdown, no need once CNMC is
+recognized as sufficient). Updated `memory.md`, `README.md`, and
+`DATA_AUDIT_REPORT.md`.
+
+## Completed: Notebooks 07/08 No Longer Share Output Filenames With scripts/05 (2026-06-25)
+
+Notebooks 07 and 08 previously wrote to several of the same `data/outputs/*.csv`
+filenames that `scripts/05_modeling_with_cnmc.py` owns, so running either
+notebook would silently overwrite production outputs with an older,
+narrower candidate set. Fixed by redirecting every colliding `to_csv`/figure
+path in both notebooks to a `legacy_notebook07_`/`legacy_notebook08_`-prefixed
+filename, so they can never again clobber the production script's outputs
+no matter what order anything is run in. See `NOTEBOOKS_AUDIT.md` for the
+updated per-notebook status.
+
 ## Still Open After Final Cleanup
 
 - Treat the forecasts as directional planning scenarios because all selected
