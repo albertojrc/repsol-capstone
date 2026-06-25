@@ -171,9 +171,9 @@ def curve_driver_rows(target: str, curve_type: str) -> tuple[list[dict], list[di
 
 def mini_model_curve_selection(target: str) -> dict:
     """
-    Replicate notebooks/12_mini_trend_regulation_model.ipynb's curve choice
+    Replicate notebooks/11_mini_trend_regulation_model.ipynb's curve choice
     exactly: fit both Logistic and Gompertz on the full history and keep
-    whichever has the higher in-sample R2 (notebook 12's own selection rule,
+    whichever has the higher in-sample R2 (notebook 11's own selection rule,
     not the production walk-forward gate). Reuses scripts/05's own curve
     functions so the math is identical to both notebooks, not re-derived.
     """
@@ -209,7 +209,7 @@ def build_mini_model_cross_check() -> pd.DataFrame:
     selected_fc = pd.read_csv(DATA_OUTPUTS / "forecast_24m_selected.csv")
     mini_path = DATA_OUTPUTS / "mini_model_scenarios.csv"
     if not mini_path.exists():
-        print(f"Skipping mini-model cross-check: {mini_path} not found (run notebooks/12 first)")
+        print(f"Skipping mini-model cross-check: {mini_path} not found (run notebooks/11 first)")
         return pd.DataFrame()
     mini = pd.read_csv(mini_path)
 
@@ -275,7 +275,7 @@ def main() -> None:
     print(df_curve_params.to_string(index=False) if not df_curve_params.empty else "  none")
     print("\nGrowth-curve seasonal decomposition (selected-model targets only):")
     print(df_curve_seasonal.to_string(index=False) if not df_curve_seasonal.empty else "  none")
-    print("\nMini trend model (notebook 12) cross-check:")
+    print("\nMini trend model (notebook 11) cross-check:")
     print(df_mini_check.to_string(index=False) if not df_mini_check.empty else "  skipped (mini_model_scenarios.csv not found)")
 
 

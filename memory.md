@@ -5,6 +5,69 @@
 
 ---
 
+## 2026-06-25 Notebooks 12 and 13 Renumbered to 11 and 12
+
+`11_mini_demand_model.ipynb` was removed upstream long before this session
+(superseded by what was then notebook 12), leaving a permanent gap in the
+notebook sequence: 10, [gap], 12, 13. User asked to close the gap.
+
+**Action taken:** `git mv notebooks/12_mini_trend_regulation_model.ipynb
+notebooks/11_mini_trend_regulation_model.ipynb`, then `git mv
+notebooks/13_business_interpretation_and_recommendations.ipynb
+notebooks/12_business_interpretation_and_recommendations.ipynb`. The
+business-interpretation notebook (now 12) names its own figure outputs
+after its number (`13_business_{region}_*.png`), so those 5 files were
+also `git mv`'d to `12_business_{region}_*.png`, and the f-string that
+constructs that filename was updated to match. The mini-trend notebook
+(now 11) saves no figures to disk.
+
+**Every internal self-reference was fixed, not just the filenames:**
+- Notebook 11's own title cell ("# 12 -- Mini Trend...") and its two
+  cross-references to the business-interpretation notebook ("see
+  `notebooks/13_business_interpretation_and_recommendations.ipynb` Section
+  4.4" / "see Section 4.4 of notebook 13").
+- Notebook 12's own title cell ("# 13 -- Business Interpretation..."), its
+  error message pointing at the mini-trend notebook, its Section 4.4
+  header and body text ("notebook 12" / `notebooks/12_mini_trend...`), and
+  the 5 markdown image-embed cells referencing the old `13_business_*.png`
+  paths.
+
+**Every external reference was also fixed:** `README.md` (7 spots),
+`NOTEBOOKS_AUDIT.md` (inventory table rows + the "Remaining Caveat"
+section's navigational pointer), `AUDIT_FIX_PLAN.md` (2 spots, plus a new
+"Completed" entry), `scripts/07_selected_model_drivers.py` (4 spots --
+this one is live code, not docs), and
+`notebooks/05_feature_engineering.ipynb` (1 spot).
+
+**What was deliberately left unchanged:** bare retrospective mentions like
+"fixed the stale column reference in notebooks 10, 10.1, and 13" in
+`NOTEBOOKS_AUDIT.md`, `AUDIT_FIX_PLAN.md`, and `DATA_AUDIT_REPORT.md` --
+these are accurate historical records of work done while the files still
+had those numbers, not navigational pointers, so relabeling them would
+just be rewriting history for no reader benefit. The distinction applied:
+literal file paths and "see/run notebook N" pointers get fixed everywhere
+(a wrong pointer actively misleads), bare number labels in purely
+retrospective "what we did" narrative do not. `INDEPENDENT_AUDIT_REPORT.md`
+was left entirely untouched per the earlier explicit instruction not to
+edit that file.
+
+`NOTEBOOKS_AUDIT.md`'s inventory table now has two consecutive rows both
+starting with "11_" -- the old, removed `11_mini_demand_model.ipynb` and
+the current `11_mini_trend_regulation_model.ipynb`. This looks odd but is
+correct: the row for the removed file explicitly says it shares a number
+with an unrelated, later-renumbered file, specifically so a future reader
+doesn't confuse the two.
+
+**Verification:** executed both renamed notebooks end to end (clean, no
+errors) before deleting/renaming anything downstream, then re-ran
+`scripts/06_validate_outputs.py` (this was a docs/notebooks-only change,
+so no production output was touched).
+
+**How to apply:** if a future audit asks "where did notebook 13 go," this
+entry is the answer -- it is now notebook 12.
+
+---
+
 ## 2026-06-25 notebooks/10_1_final_models.ipynb Deleted, Consolidated Into 10
 
 User asked why two near-identical "final models" notebooks existed.
@@ -205,8 +268,10 @@ figure -- this is a display choice for the shipped artifacts, not a
 retraction of the 95% finding.
 
 **Also updated to match:**
-`notebooks/13_business_interpretation_and_recommendations.ipynb`'s own
-regional plots (Section 1.4, added earlier the same day) now build the
+`notebooks/12_business_interpretation_and_recommendations.ipynb`'s own
+(renumbered from 13 on 2026-06-25, see this file's "Notebooks 12 and 13
+Renumbered" entry) regional plots (Section 1.4, added earlier the same
+day) now build the
 identical calibrated/heuristic band distinction at the same 50% level, for
 all 5 targets, with an explanatory paragraph stating plainly that this is
 a legibility choice, not a smaller uncertainty estimate. `README.md`'s
@@ -215,7 +280,7 @@ a legibility choice, not a smaller uncertainty estimate. `README.md`'s
 **Verification:** re-ran `scripts/05_modeling_with_cnmc.py` ->
 `scripts/06_validate_outputs.py` (alpha-agnostic checks: `CI_Lower <=
 Forecast <= CI_Upper` and `CI_Lower >= 0` both still pass at any
-confidence level) -> re-executed notebook 13 end to end and visually
+confidence level) -> re-executed notebook 12 end to end and visually
 inspected the regenerated Cataluña and Nacional charts. Cataluña's 50%
 band now reaches roughly 14,000-15,000 Tm by month 24 (versus ~232,000 Tm
 at 95%) -- a legible, readable chart that still shows real, calibrated,
@@ -224,7 +289,7 @@ and substantial uncertainty, not a falsely narrow one.
 **How to apply:** if the SARIMA chart/export confidence level is ever
 changed again, change `SARIMA_CHART_CI_ALPHA` in
 `scripts/05_modeling_with_cnmc.py` and the matching local constant in
-notebook 13's Section 1.4 cell together, and update this entry (or add a
+notebook 12's Section 1.4 cell together, and update this entry (or add a
 new one) rather than letting the two drift apart.
 
 ---
@@ -235,8 +300,10 @@ Confirmed directly with the Repsol representative: the project's target (`Consum
 is **biodiesel sold/reported as its own distinct product line**, not the biodiesel
 blended at low concentration into ordinary diesel under the national mandate. This
 is the correct, intended scope -- not a bug -- but it had only ever been written
-down explicitly in `notebooks/12_mini_trend_regulation_model.ipynb`'s intro markdown.
-Every other document (this file, `README.md`, notebook 13) described the target only
+down explicitly in `notebooks/11_mini_trend_regulation_model.ipynb`'s intro markdown
+(renumbered from 12 on 2026-06-25, see this file's "Notebooks 12 and 13
+Renumbered" entry). Every other document (this file, `README.md`, notebook 12,
+itself renumbered from 13) described the target only
 as "total market biodiesel demand" with no caveat, which could be misread as covering
 the much larger mandate-blended volume.
 
@@ -258,8 +325,8 @@ gradually, 10.5% -> 11% -> 11.5% -> 14%, tracking the mandate schedule, not 135x
 
 **Fixed:** added this section, updated the Section 2 scope bullet below, updated
 `README.md`'s intro with a new "Target Definition" section, updated
-`notebooks/13_business_interpretation_and_recommendations.ipynb` Section 1, added a
-confirmation note to `notebooks/12_mini_trend_regulation_model.ipynb`'s intro, and
+`notebooks/12_business_interpretation_and_recommendations.ipynb` Section 1, added a
+confirmation note to `notebooks/11_mini_trend_regulation_model.ipynb`'s intro, and
 corrected a mandate-causality overstatement in
 `notebooks/05_feature_engineering.ipynb` Section 6 (it previously implied the
 mandate directly floors this target; the mandate floors the blended-into-Gasóleo-A

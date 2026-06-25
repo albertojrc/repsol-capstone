@@ -65,7 +65,8 @@ Explicitly out of scope for Phase 1: changing the modeling methodology.
   - `09_evaluation.ipynb` pandas frequency aliases.
   - `09_evaluation.ipynb` stale ML feature list.
   - preserved the upstream removal of `11_mini_demand_model.ipynb`, which is
-    superseded by notebook 12.
+    superseded by what is now notebook 11 (renumbered from 12 on 2026-06-25,
+    see `memory.md`).
 - Cleared notebook outputs and execution counts again after content updates.
 - Added `scripts/06_validate_outputs.py` to assert dataset shapes, temporal
   split boundaries, lag causality, no-pooled final selection, and dashboard
@@ -203,9 +204,9 @@ with `SARIMA_CHART_CI_ALPHA = 0.5` for the shipped chart and
 `data/outputs/forecast_24m_sarima_confidence_intervals.csv`; the chart
 legend is computed from this constant rather than hardcoded. The function
 still defaults to `alpha=0.05` and the true 95% figure remains on the
-record in `memory.md`. `notebooks/13_business_interpretation_and_recommendations.ipynb`'s
+record in `memory.md`. `notebooks/12_business_interpretation_and_recommendations.ipynb`'s
 own regional plots were updated to match. Re-ran `05 -> 06 -> 07` and
-re-executed notebook 13; `scripts/06_validate_outputs.py`'s CI checks are
+re-executed notebook 12; `scripts/06_validate_outputs.py`'s CI checks are
 alpha-agnostic and still pass.
 
 ## Completed: Fixed Independent Audit Findings M1 and M2 (2026-06-25)
@@ -229,6 +230,24 @@ heavily-differenced SARIMA orders on too few training rows) -- neither
 affects any winning candidate. Re-ran `05 -> 06`: every existing production
 output is byte-identical; the validator got a schema-only check for the new
 file. See `memory.md`'s "Audit Fixes M1/M2" entry for the full detail.
+
+## Completed: Notebooks 12 and 13 Renumbered to 11 and 12 (2026-06-25)
+
+`11_mini_demand_model.ipynb` was removed upstream long ago, leaving a gap
+in the notebook sequence (10, [gap], 12, 13). Renumbered
+`12_mini_trend_regulation_model.ipynb` -> `11_mini_trend_regulation_model.ipynb`
+and `13_business_interpretation_and_recommendations.ipynb` ->
+`12_business_interpretation_and_recommendations.ipynb` via `git mv` to close
+it, so the sequence is now 10, 11, 12 with no gap. Also renamed that
+notebook's own `13_business_*.png` figure outputs to `12_business_*.png` to
+match, and fixed every internal self-reference (titles, the cross-reference
+each notebook makes to the other, the figure-filename-construction code)
+plus every external cross-reference in `README.md`, `NOTEBOOKS_AUDIT.md`,
+`scripts/07_selected_model_drivers.py`, and `notebooks/05_feature_engineering.ipynb`.
+Re-executed both renamed notebooks end to end and re-ran
+`scripts/06_validate_outputs.py` to confirm nothing broke. See `memory.md`'s
+dated entry for the full file-by-file accounting, including which
+historical mentions of the old numbers were deliberately left alone.
 
 ## Still Open After Final Cleanup
 

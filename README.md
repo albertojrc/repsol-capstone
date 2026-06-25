@@ -23,9 +23,9 @@ numerically: national `GasoleoA_Tm` runs ~1.7-1.9M Tm/month against `Consumo_Tm`
 ~10-27K Tm/month, and `Biodiesel_GasoleoA_Ratio` sits at 0.5-1.4%, far below the
 11.5-14% mandate level it would track if it included the blended portion. Every
 reference to "total market biodiesel demand" elsewhere in this repository (this
-file, `memory.md`, notebook 13) means this distinct-product-line definition, not
+file, `memory.md`, notebook 12) means this distinct-product-line definition, not
 an estimate of all biodiesel content in Spain's fuel mix. See
-`notebooks/12_mini_trend_regulation_model.ipynb` for the original technical
+`notebooks/11_mini_trend_regulation_model.ipynb` for the original technical
 writeup of this distinction.
 
 The required delivery scope is:
@@ -83,14 +83,14 @@ This rebuilds:
   `selected_model_curve_seasonal.csv`: interpretable coefficient/parameter detail for whichever
   model is currently selected per target (SARIMA lag/seasonal-term significance, or Logistic/
   Gompertz curve shape and seasonal decomposition), used by
-  `notebooks/13_business_interpretation_and_recommendations.ipynb`. Re-run this script after
-  `scripts/05` any time the headline selection changes; notebook 13 will raise a clear error if
+  `notebooks/12_business_interpretation_and_recommendations.ipynb`. Re-run this script after
+  `scripts/05` any time the headline selection changes; notebook 12 will raise a clear error if
   these files go stale relative to the current selection.
 - `data/outputs/mini_model_cross_check.csv`: compares the production forecast against
-  `notebooks/12_mini_trend_regulation_model.ipynb`'s independent Conservative/Central/Optimistic
+  `notebooks/11_mini_trend_regulation_model.ipynb`'s independent Conservative/Central/Optimistic
   scenarios, and records which curve family (Logistic vs. Gompertz) the mini model's own in-sample
   R2 would have picked versus what production actually selected. Requires
-  `data/outputs/mini_model_scenarios.csv` to already exist (run notebook 12 first); the step is
+  `data/outputs/mini_model_scenarios.csv` to already exist (run notebook 11 first); the step is
   skipped with a warning, not a hard failure, if that file is missing.
 
 `forecast_24m_sarima_rf_xgb.csv` is a legacy filename. It now contains all current
@@ -135,7 +135,7 @@ The notebooks are retained for exploration and narrative context. The scripts in
 are intentionally cleared to avoid stale local paths, warnings, and old results being
 mistaken for a fresh run.
 
-`notebooks/13_business_interpretation_and_recommendations.ipynb` adds the
+`notebooks/12_business_interpretation_and_recommendations.ipynb` adds the
 business-facing interpretation layer: selected-model results by region, regional
 train/validation/forecast plots, model limitations, feature interpretation, Repsol
 internal-data needs, and recommendations.
@@ -368,7 +368,7 @@ textbook-default 95%. This is a deliberate display-legibility choice, not
 a claim that the true 24-month uncertainty is smaller than the 95% figure
 -- that figure remains derivable from the same function
 (`predict_sarima_with_ci(result, n_steps, alpha=0.05)`) and is kept on the
-record in `memory.md`. `notebooks/13_business_interpretation_and_recommendations.ipynb`'s
+record in `memory.md`. `notebooks/12_business_interpretation_and_recommendations.ipynb`'s
 own regional plots (Section 1.4) now build the identical calibrated/
 heuristic band distinction for all 5 targets, at the same 50% level.
 
