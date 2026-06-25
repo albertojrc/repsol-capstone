@@ -350,6 +350,20 @@ def predict_sarima(result, n_steps: int) -> np.ndarray:
     return np.maximum(np.expm1(result.forecast(steps=n_steps)), 0)
 
 
+# The chart/export confidence level for predict_sarima_with_ci(). The interval
+# is genuinely calibrated at any alpha -- 0.05 (95%) is the textbook default
+# and remains available to any caller that wants it -- but at a 24-month
+# horizon on a log1p-fit model, the 95% interval's *upper* bound explodes
+# asymmetrically after back-transformation (e.g. Cataluna: a ~3,400 Tm point
+# forecast against a 95% upper bound of ~232,000 Tm by month 24), which is
+# mathematically honest but makes the chart unreadable and the number not
+# practically useful for a planning conversation. 0.5 (50%) is used for the
+# shipped chart/export instead -- a deliberate display choice, not a claim
+# that the true 24-month uncertainty is actually smaller than the 95% figure;
+# that figure is still derivable from the same function with alpha=0.05.
+SARIMA_CHART_CI_ALPHA = 0.5
+
+
 def predict_sarima_with_ci(result, n_steps: int, alpha: float = 0.05) -> pd.DataFrame:
     """
     Calibrated prediction interval from the SARIMA fit's own forecast-error
@@ -357,6 +371,9 @@ def predict_sarima_with_ci(result, n_steps: int, alpha: float = 0.05) -> pd.Data
     log1p space. Unlike the heuristic MAPE/RMSE-scaled "error band" used
     elsewhere in this script for the forecast chart, this interval reflects
     the fitted model's own uncertainty estimate, not a post-hoc accuracy proxy.
+    The default alpha=0.05 (95%) is the statistical default for this function;
+    callers building the shipped chart/export use SARIMA_CHART_CI_ALPHA instead
+    -- see that constant's comment for why.
     """
     forecast_obj = result.get_forecast(steps=n_steps)
     # predicted_mean/conf_int return plain ndarrays here (the model was fit on
@@ -1313,7 +1330,7 @@ def final_forecasts(
             res = train_sarima(full["Consumo_Tm"].values, sarima_order, sarima_seasonal_order)
             for fecha, val in zip(forecast_labels, predict_sarima(res, len(forecast_labels))):
                 rows.append({"Fecha": fecha, "Target": target, "Model": "SARIMA", "Forecast": round(float(val), 1)})
-            ci_df = predict_sarima_with_ci(res, len(forecast_labels))
+            ci_df = predict_sarima_with_ci(res, len(forecast_labels), alpha=SARIMA_CHART_CI_ALPHA)
             for fecha, ci_row in zip(forecast_labels, ci_df.itertuples(index=False)):
                 ci_rows.append(
                     {
@@ -1647,18 +1664,23 @@ def plot_outputs(
         ax.axvline(pd.to_datetime("2026-01-01"), color="gray", linestyle=":", linewidth=1.5)
 
         if sel == "SARIMA":
-            # Calibrated 95% prediction interval from the SARIMA fit itself,
-            # not a post-hoc accuracy proxy (see predict_sarima_with_ci).
+            # Calibrated prediction interval from the SARIMA fit itself, not a
+            # post-hoc accuracy proxy (see predict_sarima_with_ci). The level
+            # shown matches whatever alpha final_forecasts() actually used
+            # (SARIMA_CHART_CI_ALPHA) -- computed from the constant rather than
+            # hardcoded, so the label can never silently drift out of sync with
+            # the real confidence level if that constant is ever changed again.
             ci = df_sarima_ci[df_sarima_ci["Target"] == target].copy()
             ci["Fecha_dt"] = pd.to_datetime(ci["Fecha"])
             ci = ci.sort_values("Fecha_dt")
+            ci_level_pct = round((1 - SARIMA_CHART_CI_ALPHA) * 100)
             ax.fill_between(
                 ci["Fecha_dt"],
                 ci["CI_Lower"],
                 ci["CI_Upper"],
                 color=TARGET_COLORS[target],
                 alpha=0.15,
-                label="95% prediction interval (calibrated)",
+                label=f"{ci_level_pct}% prediction interval (calibrated)",
             )
         else:
             # No native calibrated interval for curve-fit models (Logistic/

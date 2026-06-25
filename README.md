@@ -266,13 +266,20 @@ reviewer. All are now fixed and re-verified end to end:
   (none of the 5 selected models use price features).
 - **Calibrated SARIMA prediction intervals.** The forecast chart used only a
   heuristic MAPE/RMSE-scaled visual band, explicitly not a statistical
-  interval. SARIMA-selected targets (Cataluña, Andalucía) now get a real 95%
-  prediction interval from the fit's own forecast-error variance
-  (`data/outputs/forecast_24m_sarima_confidence_intervals.csv`). The
-  calibrated interval is dramatically wider than the old heuristic band by
-  month 24 -- an honest finding, not a bug: see `predict_sarima_with_ci` in
-  `scripts/05_modeling_with_cnmc.py`. Logistic/Gompertz targets keep the
-  heuristic band, now labeled "illustrative, not calibrated."
+  interval. SARIMA-selected targets (Cataluña, Andalucía) now get a real
+  calibrated prediction interval from the fit's own forecast-error variance
+  (`data/outputs/forecast_24m_sarima_confidence_intervals.csv`,
+  `predict_sarima_with_ci` in `scripts/05_modeling_with_cnmc.py`). The
+  textbook-default 95% level was tried first and is dramatically wider than
+  the old heuristic band by month 24 -- an honest finding, not a bug, and
+  still on the record (Cataluña: a ~3,400 Tm point forecast against a
+  ~232,000 Tm 95% upper bound by month 24) -- but it explodes asymmetrically
+  enough after back-transforming out of log1p space to make the chart
+  unreadable. The shipped chart/export now use 50%
+  (`SARIMA_CHART_CI_ALPHA`) instead: the same calibrated method, just a
+  less conservative, legible level, not a smaller estimate of the true
+  uncertainty. Logistic/Gompertz targets keep the heuristic band, labeled
+  "illustrative, not calibrated."
 - **Sensitivity analysis for the macro/mandate assumptions.** The 24-month
   forecast previously held macro and mandate inputs at one fixed scenario
   with no alternative. Added `build_scenario_sensitivity()`, which re-runs the
@@ -308,6 +315,30 @@ Cataluña is the one target whose training-only winner fails the safety
 check; it now uses a recorded, reviewed override to the same order it was
 already shipping, with the reasoning written into
 `data/outputs/sarima_safety_check.csv` instead of being invisible.
+
+## Audit Fixes (2026-06-25, third pass)
+
+The Cataluña and Andalucía SARIMA forecast charts looked visually broken:
+the calibrated 95% prediction interval (added in the first audit-fixes
+round above) explodes asymmetrically by month 24 once back-transformed out
+of log1p space, e.g. Cataluña's ~3,400 Tm point forecast against a
+~232,000 Tm 95% upper bound. That is mathematically honest, not a bug -- a
+24-month-ahead interval from a model fit on ~30 monthly points really is
+that uncertain -- but it makes the chart unreadable and the number not
+practically usable for a planning conversation. Changing the underlying
+model to produce a tidier-looking interval was rejected as the fix: that
+would reopen the test-set-selection question this project has otherwise
+been careful about, for a cosmetic reason. Instead, `scripts/05_modeling_with_cnmc.py`'s
+`predict_sarima_with_ci` now defaults its caller to a 50% interval
+(`SARIMA_CHART_CI_ALPHA`) for the shipped chart and
+`data/outputs/forecast_24m_sarima_confidence_intervals.csv`, instead of the
+textbook-default 95%. This is a deliberate display-legibility choice, not
+a claim that the true 24-month uncertainty is smaller than the 95% figure
+-- that figure remains derivable from the same function
+(`predict_sarima_with_ci(result, n_steps, alpha=0.05)`) and is kept on the
+record in `memory.md`. `notebooks/13_business_interpretation_and_recommendations.ipynb`'s
+own regional plots (Section 1.4) now build the identical calibrated/
+heuristic band distinction for all 5 targets, at the same 50% level.
 
 ## Repository Layout
 

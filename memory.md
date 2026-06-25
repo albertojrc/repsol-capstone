@@ -5,6 +5,62 @@
 
 ---
 
+## 2026-06-25 SARIMA Chart/Export Confidence Level Changed From 95% to 50% (Display Only)
+
+The calibrated SARIMA prediction interval added earlier the same day (see
+"Audit Fixes: ... Calibrated Intervals" below) made the Cataluña and
+Andalucía forecast charts look visually broken: at the textbook-default
+95% level, the interval explodes asymmetrically by month 24 once
+back-transformed out of log1p space -- Cataluña's ~3,400 Tm point forecast
+sat against a ~232,000 Tm 95% upper bound. That finding is still accurate
+and still on the record below; it has not been retracted or found wrong.
+It is mathematically honest (a 24-month-ahead interval from ~30 monthly
+training points really is that uncertain), but it made the chart unusable
+for a planning conversation, and the user explicitly asked for the charts
+to "look better" for both regions.
+
+**Decision: change the *display* level, not the model.** Re-fitting or
+re-selecting SARIMA to produce a tidier-looking interval was rejected --
+that would reopen the test-set-selection question this project has
+otherwise been careful about, purely for a cosmetic reason, and the
+explosive interval is a true property of the fitted model, not evidence
+something is mis-specified. Instead, `scripts/05_modeling_with_cnmc.py`'s
+`predict_sarima_with_ci` is now called with a 50% alpha
+(`SARIMA_CHART_CI_ALPHA = 0.5`) for the shipped chart and
+`data/outputs/forecast_24m_sarima_confidence_intervals.csv`, instead of the
+default 95%. The chart's legend label is now computed from this constant
+(`f"{ci_level_pct}% prediction interval (calibrated)"`) rather than
+hardcoded, so it cannot silently drift out of sync if the alpha is changed
+again. The function itself still defaults to `alpha=0.05` and remains
+available at that level to any caller that wants the more conservative
+figure -- this is a display choice for the shipped artifacts, not a
+retraction of the 95% finding.
+
+**Also updated to match:**
+`notebooks/13_business_interpretation_and_recommendations.ipynb`'s own
+regional plots (Section 1.4, added earlier the same day) now build the
+identical calibrated/heuristic band distinction at the same 50% level, for
+all 5 targets, with an explanatory paragraph stating plainly that this is
+a legibility choice, not a smaller uncertainty estimate. `README.md`'s
+"Audit Fixes" section (third pass) documents the same change.
+
+**Verification:** re-ran `scripts/05_modeling_with_cnmc.py` ->
+`scripts/06_validate_outputs.py` (alpha-agnostic checks: `CI_Lower <=
+Forecast <= CI_Upper` and `CI_Lower >= 0` both still pass at any
+confidence level) -> re-executed notebook 13 end to end and visually
+inspected the regenerated Cataluña and Nacional charts. Cataluña's 50%
+band now reaches roughly 14,000-15,000 Tm by month 24 (versus ~232,000 Tm
+at 95%) -- a legible, readable chart that still shows real, calibrated,
+and substantial uncertainty, not a falsely narrow one.
+
+**How to apply:** if the SARIMA chart/export confidence level is ever
+changed again, change `SARIMA_CHART_CI_ALPHA` in
+`scripts/05_modeling_with_cnmc.py` and the matching local constant in
+notebook 13's Section 1.4 cell together, and update this entry (or add a
+new one) rather than letting the two drift apart.
+
+---
+
 ## 2026-06-25 Target Definition Clarification: Distinct-Product-Line Biodiesel Only
 
 Confirmed directly with the Repsol representative: the project's target (`Consumo_Tm`)

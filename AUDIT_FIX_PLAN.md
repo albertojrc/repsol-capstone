@@ -187,6 +187,27 @@ filename, so they can never again clobber the production script's outputs
 no matter what order anything is run in. See `NOTEBOOKS_AUDIT.md` for the
 updated per-notebook status.
 
+## Completed: SARIMA Chart/Export Confidence Level Changed From 95% to 50% (2026-06-25)
+
+The calibrated SARIMA prediction interval (added above) made the Cataluña
+and Andalucía forecast charts look visually broken: at the textbook-default
+95% level, the interval explodes asymmetrically by month 24 once
+back-transformed out of log1p space (Cataluña: a ~3,400 Tm point forecast
+against a ~232,000 Tm 95% upper bound). Mathematically honest, not a bug,
+but unusable for a planning conversation. Rejected re-fitting/re-selecting
+SARIMA to produce a tidier interval, since that would reopen the
+test-set-selection question this project has otherwise been careful about,
+for a cosmetic reason. Fixed instead by changing the *display* level:
+`scripts/05_modeling_with_cnmc.py`'s `predict_sarima_with_ci` is now called
+with `SARIMA_CHART_CI_ALPHA = 0.5` for the shipped chart and
+`data/outputs/forecast_24m_sarima_confidence_intervals.csv`; the chart
+legend is computed from this constant rather than hardcoded. The function
+still defaults to `alpha=0.05` and the true 95% figure remains on the
+record in `memory.md`. `notebooks/13_business_interpretation_and_recommendations.ipynb`'s
+own regional plots were updated to match. Re-ran `05 -> 06 -> 07` and
+re-executed notebook 13; `scripts/06_validate_outputs.py`'s CI checks are
+alpha-agnostic and still pass.
+
 ## Still Open After Final Cleanup
 
 - Treat the forecasts as directional planning scenarios because all selected
