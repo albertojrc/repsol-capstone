@@ -5,6 +5,51 @@
 
 ---
 
+## 2026-06-25 Post-Session Audit: Fixed notebooks/02_data_cleaning.ipynb's 'Province'/'Provincia' Bug; Noted a Kernel Gap
+
+Ran a full audit of everything from this session: full pipeline rebuild
+from scratch (`03 -> 02 -> 04 -> 05 -> 06 -> 07`), every touched notebook
+executed end to end, a repo-wide grep sweep for stale references, and a
+cross-file consistency check. Pipeline and docs all checked out -- the only
+real finding was that **notebooks/02_data_cleaning.ipynb crashes** on a
+`KeyError: 'Province'` in its mojibake-repair cell; the real column is
+`'Provincia'`. Traced to commit `f3e4259` ("Translate notebook content to
+English"), predating this session -- the same bug class as the
+`'Tendencia'`->`'Trend'` and `gasolina95`->`gasoline95` mistranslations
+already fixed elsewhere (`NOTEBOOKS_AUDIT.md`), just missed for notebook 02
+in that pass.
+
+**Fixed:** changed `'Province'` -> `'Provincia'` in cell-6 (2 code
+occurrences) plus the matching prose in cell-5 and cell-15. Confirmed no
+repercussions: no production script references this filename or column
+(grepped `scripts/`, zero matches), and notebook 04's own data-source
+inventory explicitly documents `consumo_biodiesel_provincial.csv` as "not
+merged" into the master dataset, used only by notebooks 01 and 02 --
+notebook 01 doesn't share the bug. The committed CSV was already correctly
+encoded (no mojibake found), so the cell had presumably been crashing
+before ever reaching the save step for as long as the bug existed; this
+fix restores the notebook's ability to run, it does not change any
+committed data (re-saved CSVs verified byte-identical).
+
+**Separately noted, not fixed:** every notebook in this repo has a generic
+`"python3"` kernelspec, which resolves to system Anaconda on this machine,
+not the project's pinned `.venv` (a `repsol-venv` kernel is registered and
+does point at `.venv`, but no notebook's metadata selects it). This didn't
+change any result discovered this session -- re-running the affected
+notebooks with `repsol-venv` explicitly forced reproduced the same outputs
+-- but it means casual "run this notebook" executions on this machine
+silently use the wrong environment. Worth setting each notebook's
+kernelspec to `repsol-venv` at some point; not done here since it's
+unrelated to anything actually broken.
+
+**How to apply:** if `consumo_biodiesel_provincial.csv` or
+`consumo_biodiesel_ccaa.csv` are ever genuinely re-derived from new raw
+CORES exports (not just re-running notebook 02 on the same file), re-check
+that the raw export's column is still named `Provincia`, not some other
+variant, before trusting this cell to run silently correct.
+
+---
+
 ## 2026-06-25 Notebooks 12 and 13 Renumbered to 11 and 12
 
 `11_mini_demand_model.ipynb` was removed upstream long before this session
