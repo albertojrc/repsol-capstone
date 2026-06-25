@@ -1,8 +1,32 @@
 # Repsol Eco-Fuels Demand Forecasting
 
 This repository forecasts monthly biodiesel demand in Spain for a 24-month horizon
-from a forecast origin of 2025-12. The modeled target is total market biodiesel
-demand (`Consumo_Tm`, metric tonnes), not Repsol sales.
+from a forecast origin of 2025-12. The modeled target is total market demand for
+biodiesel sold/reported as its own distinct product (`Consumo_Tm`, metric tonnes),
+not Repsol sales.
+
+## Target Definition (read first)
+
+Spanish fuel statistics report two separate things under "biodiesel":
+
+1. Biodiesel blended at low concentration (~10.5-14%, per the national mandate)
+   into ordinary Gasóleo A diesel. CNMC reports this volume as part of `GASÓLEO A`
+   consumption, not separately.
+2. Biodiesel sold/reported as its own distinct product line (the CNMC `BIODIESEL`
+   category) -- e.g. higher-concentration blends sold to specific fleets/users.
+
+`Consumo_Tm`, the target modeled throughout this project, is **#2**. This was
+confirmed directly with the Repsol representative: the team was explicitly asked
+to forecast biodiesel sold/reported as its own distinct product line, not the
+biodiesel content embedded in the national diesel pool. It is also confirmed
+numerically: national `GasoleoA_Tm` runs ~1.7-1.9M Tm/month against `Consumo_Tm`'s
+~10-27K Tm/month, and `Biodiesel_GasoleoA_Ratio` sits at 0.5-1.4%, far below the
+11.5-14% mandate level it would track if it included the blended portion. Every
+reference to "total market biodiesel demand" elsewhere in this repository (this
+file, `memory.md`, notebook 13) means this distinct-product-line definition, not
+an estimate of all biodiesel content in Spain's fuel mix. See
+`notebooks/12_mini_trend_regulation_model.ipynb` for the original technical
+writeup of this distinction.
 
 The required delivery scope is:
 
@@ -48,6 +72,10 @@ This rebuilds:
 - `data/features/features_train.csv`
 - `data/features/features_test.csv`
 - model metrics, SARIMA grid-search diagnostics, 2025 predictions, 2026-2027 forecasts, Tableau exports, and final figures
+- `data/outputs/sarima_safety_check.csv`: per-target audit trail for the post-hoc SARIMA
+  shippability safety check described in Model Selection below -- the training-only winner,
+  whether it failed the full-history safety check, and whether a reviewed
+  `SARIMA_SAFETY_OVERRIDES` entry was used.
 - `data/outputs/selected_model_sarima_drivers.csv`, `selected_model_curve_parameters.csv`, and
   `selected_model_curve_seasonal.csv`: interpretable coefficient/parameter detail for whichever
   model is currently selected per target (SARIMA lag/seasonal-term significance, or Logistic/
@@ -153,6 +181,22 @@ training rows) hit this for every target's 2025 holdout fit, and for 4 of the
 except where the fit genuinely converges. Every exclusion is written to
 `data/outputs/degenerate_fits.csv` with its target, stage, and reason.
 
+SARIMA order ranking is training-only: every candidate order in the grid is
+scored and filtered for degeneracy using only the 2023-2024 training window.
+The single training-only winner per target then goes through one additional,
+disclosed step: a post-hoc shippability safety check fits that winner on the
+full 2023-2025 history (the same data the production forecast actually ships
+with) and verifies the resulting 24-month forecast is not degenerate. This is
+the only place 2025 data is used anywhere in SARIMA order selection, and it
+can only veto the single winner -- it never ranks or filters the candidate
+grid. If the winner fails it, the pipeline does not auto-substitute another
+candidate or silently fall back to the plain default order; it requires an
+explicit, reviewed entry in `SARIMA_SAFETY_OVERRIDES`
+(`scripts/05_modeling_with_cnmc.py`), or it raises. Cataluña's training-only
+winner currently fails this check and uses such a reviewed override -- see
+`data/outputs/sarima_safety_check.csv` -- but the resulting order is
+unchanged from before this disclosure existed.
+
 | Target | Selected model | Training walk-forward MAPE | 2025 holdout MAPE |
 |---|---|---:|---:|
 | Nacional | Logistic | 43.1% | 36.7% |
@@ -234,6 +278,27 @@ reviewer. All are now fixed and re-verified end to end:
   prediction did not move). None of the 5 currently-selected production
   models use macro/mandate features at all, so the production forecast itself
   remains scenario-invariant regardless.
+
+## Audit Fixes (2026-06-25, second pass)
+
+A separate, independent audit pass found that the SARIMA order grid's
+full-history degeneracy check -- added in the fixes above to catch a
+literal flat-line forecast -- was applied as a filter across all 15
+candidate orders, using each candidate's fit on the full 2023-2025 history
+(including 2025) to decide which orders were even eligible to win. That
+contradicts this project's own hard rule that no 2025 data is ever used in
+model selection. Fixed: SARIMA order ranking is now training-only with zero
+exceptions, and the full-history check runs exactly once, on the single
+training-only winner, as a disclosed post-hoc safety veto rather than a
+selection criterion (see the Model Selection section above and
+`scripts/05_modeling_with_cnmc.py`'s `SARIMA_SAFETY_OVERRIDES`). Re-running
+the full pipeline end to end after this fix produced byte-identical
+forecasts, metrics, and selected models for all 5 targets -- the fix changes
+only how the methodology is structured and disclosed, not any result.
+Cataluña is the one target whose training-only winner fails the safety
+check; it now uses a recorded, reviewed override to the same order it was
+already shipping, with the reasoning written into
+`data/outputs/sarima_safety_check.csv` instead of being invisible.
 
 ## Repository Layout
 

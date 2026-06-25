@@ -259,6 +259,42 @@ def validate_model_outputs() -> None:
     require(set(sarima_acceptance["Target"].unique()) == set(TARGETS), "SARIMA acceptance target set mismatch")
     require(len(sarima_acceptance) == len(TARGETS), "SARIMA acceptance should have one row per target")
 
+    # SARIMA order ranking must stay training-only. The full 2023-2025 history
+    # is allowed to veto (never rank or filter) the single training-only
+    # winner via a post-hoc shippability safety check -- sarima_safety_check.csv
+    # is that check's audit trail. Any target where the safety check failed
+    # must have an explicit, recorded override; a silent/undocumented
+    # substitution is exactly the leak this gate exists to prevent.
+    sarima_safety = read_csv(DATA_OUTPUTS / "sarima_safety_check.csv")
+    required_safety_cols = {
+        "Target",
+        "Training_Only_Order",
+        "Safety_Check_Degenerate",
+        "Safety_Check_Reason",
+        "Override_Applied",
+        "Override_Reason",
+        "Final_Order",
+    }
+    missing_safety_cols = required_safety_cols.difference(sarima_safety.columns)
+    require(not missing_safety_cols, f"sarima_safety_check missing columns: {sorted(missing_safety_cols)}")
+    require(set(sarima_safety["Target"].unique()) == set(TARGETS), "SARIMA safety check target set mismatch")
+    require(len(sarima_safety) == len(TARGETS), "SARIMA safety check should have one row per target")
+    undisclosed_failures = sarima_safety[
+        sarima_safety["Safety_Check_Degenerate"].astype(bool) & ~sarima_safety["Override_Applied"].astype(bool)
+    ]
+    require(
+        undisclosed_failures.empty,
+        "SARIMA safety check failed without a recorded override for: "
+        f"{undisclosed_failures['Target'].tolist()} -- add a reviewed entry to "
+        "SARIMA_SAFETY_OVERRIDES in scripts/05_modeling_with_cnmc.py.",
+    )
+    require(
+        bool((sarima_acceptance["Override_Applied"] == sarima_safety.set_index("Target").loc[
+            sarima_acceptance["Target"], "Override_Applied"
+        ].values).all()),
+        "sarima_order_acceptance Override_Applied disagrees with sarima_safety_check.csv",
+    )
+
     required_acceptance_cols = {
         "Target",
         "Final_Eligibility_Rule",

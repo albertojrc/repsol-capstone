@@ -193,6 +193,56 @@ SARIMA_GRID = [
 ]
 FORECAST_DATES = pd.date_range("2026-01-01", periods=24, freq="MS")
 
+# Training-only SARIMA order selection (tune_sarima_orders) can produce a
+# winner whose production refit (the full 2023-2025 history) ships a
+# degenerate (near-flat or short-repeating) 24-month forecast. Catching that
+# necessarily requires fitting on the full history, which includes 2025. To
+# keep that 2025-touching check from ever influencing *which* order wins --
+# the actual leak this project's training-only rule exists to prevent -- it
+# runs only once, on the single training-only winner, as a post-hoc safety
+# check (see sarima_shippability_reason / tune_sarima_orders), never as a
+# filter across the candidate grid. If the winner fails it, this script does
+# not automatically substitute another candidate (that would just
+# reintroduce the same 2025-touching selection one step removed) or silently
+# fall back to the plain SARIMA default order (which can score far worse on
+# the only leak-free metric available -- verified: Cataluna's default order
+# scores 87.4% training MAPE vs. the 66.9% shipped below). It raises, and
+# only an explicit, reviewed entry here -- added after a human inspects
+# sarima_grid_search_results.csv and sarima_safety_check.csv -- lets the
+# pipeline proceed. Same "decided explicitly, not defaulted" pattern already
+# used for the mandate-ratchet and SARIMAX-feature-set decisions (memory.md).
+SARIMA_SAFETY_OVERRIDES: dict[str, tuple[tuple[int, int, int], tuple[int, int, int, int]]] = {
+    # 2026-06-25 audit (C2 fix): Cataluna's pure training-only walk-forward
+    # winner, (0,1,1)(1,0,0,12) at 63.66% training MAPE, ships a near-flat
+    # (range 0.0105) 2026-2027 forecast when refit on the full 2023-2025
+    # history. The next-best training-only candidate, (0,1,2)(1,0,0,12) at
+    # 66.90% training MAPE, does not degenerate -- it is the same order this
+    # pipeline was already shipping for Cataluna before this fix, now
+    # reached through a disclosed, reviewed safety override instead of an
+    # undisclosed full-history filter applied across all 15 candidates.
+    "Cataluña": ((0, 1, 2), (1, 0, 0, 12)),
+}
+
+
+def sarima_shippability_reason(
+    full_history_df: pd.DataFrame,
+    order: tuple[int, int, int],
+    seasonal_order: tuple[int, int, int, int],
+) -> str:
+    """
+    Single-candidate post-hoc safety check: fit on the full history (the
+    same data final_forecasts() actually refits on) and check whether the
+    resulting 24-month forecast is degenerate. Callers must use this on at
+    most one candidate per target -- see tune_sarima_orders' module comment
+    above for why.
+    """
+    try:
+        fit = train_sarima(full_history_df["Consumo_Tm"].values, order, seasonal_order)
+        forecast = predict_sarima(fit, 24)
+        return forecast_degeneracy_reason(forecast)
+    except Exception as exc:
+        return f"safety_check_failed_{exc}"
+
 
 def load_mandate_schedule() -> pd.DataFrame:
     mandates = pd.read_csv(DATA_INPUTS / "mandato_biocarburantes.csv")
@@ -732,9 +782,26 @@ def sarima_walk_forward_score(
 def tune_sarima_orders(
     df_train: pd.DataFrame,
     df_all: pd.DataFrame,
-) -> tuple[pd.DataFrame, dict[str, tuple[tuple[int, int, int], tuple[int, int, int, int]]]]:
+) -> tuple[pd.DataFrame, dict[str, tuple[tuple[int, int, int], tuple[int, int, int, int]]], pd.DataFrame]:
+    """
+    Order ranking is training-only: every candidate in SARIMA_GRID is scored
+    by sarima_walk_forward_score() and the training-window 24m stability
+    check below, both using df_train (2023-2024) exclusively. Neither ever
+    touches df_all/2025.
+
+    df_all (the full 2023-2025 history) is used exactly once per target,
+    after the training-only winner is fixed: sarima_shippability_reason()
+    runs a single post-hoc safety check verifying that winner's
+    production-equivalent refit does not ship a degenerate 24-month
+    forecast. See the SARIMA_SAFETY_OVERRIDES module comment for what
+    happens when it fails -- this function never lets that check rank or
+    filter candidates.
+
+    Returns (grid_results, selected_orders, safety_log).
+    """
     rows = []
     selected_orders: dict[str, tuple[tuple[int, int, int], tuple[int, int, int, int]]] = {}
+    safety_rows = []
 
     for target in TARGETS:
         target_df = df_train[df_train["Target"] == target].sort_values("Fecha")
@@ -742,13 +809,9 @@ def tune_sarima_orders(
         for order, seasonal_order in SARIMA_GRID:
             score, error_count, successful_folds = sarima_walk_forward_score(target_df, order, seasonal_order)
 
-            # Two independent stability checks. The training-window check
-            # matches the 2025 holdout evaluation; the full-history check
-            # matches what scripts/05's final_forecasts() actually refits and
-            # ships as the 2026-2027 forecast. An order can pass one and fail
-            # the other -- both must be checked, since only the full-history
-            # check sees the degeneracy that the production forecast itself
-            # would have shipped with.
+            # Training-window-only stability check: does this order's 24m
+            # forecast, fit on 2023-2024 alone, look degenerate? This never
+            # touches 2025.
             train_reason = ""
             try:
                 stability_fit = train_sarima(target_df["Consumo_Tm"].values, order, seasonal_order)
@@ -756,14 +819,6 @@ def tune_sarima_orders(
                 train_reason = forecast_degeneracy_reason(stability_forecast)
             except Exception as exc:
                 train_reason = f"stability_check_failed_{exc}"
-
-            full_history_reason = ""
-            try:
-                full_history_fit = train_sarima(full_df["Consumo_Tm"].values, order, seasonal_order)
-                full_history_forecast = predict_sarima(full_history_fit, 24)
-                full_history_reason = forecast_degeneracy_reason(full_history_forecast)
-            except Exception as exc:
-                full_history_reason = f"stability_check_failed_{exc}"
 
             p, d, q = order
             seasonal_p, seasonal_d, seasonal_q, m = seasonal_order
@@ -783,29 +838,81 @@ def tune_sarima_orders(
                     "Successful_Folds": successful_folds,
                     "Training_Origin_24m_Degenerate": bool(train_reason),
                     "Training_Origin_24m_Degeneracy_Reason": train_reason,
-                    "FullHistory_Origin_24m_Degenerate": bool(full_history_reason),
-                    "FullHistory_Origin_24m_Degeneracy_Reason": full_history_reason,
                     "Selected": False,
                 }
             )
 
+        # --- Training-only selection: rank by training-window evidence alone. ---
         target_rows = pd.DataFrame([row for row in rows if row["Target"] == target])
         finite = target_rows[np.isfinite(target_rows["WalkForward_MAPE"])].copy()
-        stable = finite[
-            ~finite["Training_Origin_24m_Degenerate"] & ~finite["FullHistory_Origin_24m_Degenerate"]
-        ].copy()
+        stable = finite[~finite["Training_Origin_24m_Degenerate"]].copy()
         if not stable.empty:
             finite = stable
         if finite.empty:
-            selected_order = DEFAULT_SARIMA_ORDER
-            selected_seasonal_order = DEFAULT_SARIMA_SEASONAL_ORDER
+            training_only_order = DEFAULT_SARIMA_ORDER
+            training_only_seasonal_order = DEFAULT_SARIMA_SEASONAL_ORDER
+            training_only_mape = np.inf
         else:
             best = finite.sort_values(
                 ["WalkForward_MAPE", "Parameter_Count", "p", "d", "q", "P", "D", "Q", "m"]
             ).iloc[0]
-            selected_order = (int(best["p"]), int(best["d"]), int(best["q"]))
-            selected_seasonal_order = (int(best["P"]), int(best["D"]), int(best["Q"]), int(best["m"]))
-        selected_orders[target] = (selected_order, selected_seasonal_order)
+            training_only_order = (int(best["p"]), int(best["d"]), int(best["q"]))
+            training_only_seasonal_order = (int(best["P"]), int(best["D"]), int(best["Q"]), int(best["m"]))
+            training_only_mape = float(best["WalkForward_MAPE"])
+
+        # --- Post-hoc safety check on the single training-only winner only.
+        # This is the one place this function looks at 2025 data; it can
+        # veto the winner, but it never ranks or filters candidates with it. ---
+        safety_reason = sarima_shippability_reason(full_df, training_only_order, training_only_seasonal_order)
+        override_applied = False
+        override_order = None
+        override_seasonal_order = None
+        override_reason = ""
+        final_order, final_seasonal_order = training_only_order, training_only_seasonal_order
+
+        if safety_reason:
+            override = SARIMA_SAFETY_OVERRIDES.get(target)
+            if override is None:
+                raise ValueError(
+                    f"{target}: training-only SARIMA winner "
+                    f"{training_only_order}{training_only_seasonal_order} fails the full-history "
+                    f"shippability safety check ({safety_reason}). This requires an explicit, "
+                    "reviewed decision, not an automatic substitution -- inspect "
+                    "sarima_grid_search_results.csv and sarima_safety_check.csv, then add a "
+                    "reviewed entry to SARIMA_SAFETY_OVERRIDES with the reasoning."
+                )
+            override_order, override_seasonal_order = override
+            override_check_reason = sarima_shippability_reason(full_df, override_order, override_seasonal_order)
+            if override_check_reason:
+                raise ValueError(
+                    f"{target}: SARIMA_SAFETY_OVERRIDES entry {override_order}{override_seasonal_order} "
+                    f"also fails the safety check ({override_check_reason}) -- it does not resolve the "
+                    "shippability problem it was added for. Review and update the override."
+                )
+            override_applied = True
+            override_reason = (
+                f"training-only winner {training_only_order}{training_only_seasonal_order} "
+                f"failed safety check ({safety_reason}); using reviewed override"
+            )
+            final_order, final_seasonal_order = override_order, override_seasonal_order
+
+        safety_rows.append(
+            {
+                "Target": target,
+                "Training_Only_Order": str(training_only_order),
+                "Training_Only_Seasonal_Order": str(training_only_seasonal_order),
+                "Training_Only_WalkForward_MAPE": training_only_mape,
+                "Safety_Check_Degenerate": bool(safety_reason),
+                "Safety_Check_Reason": safety_reason,
+                "Override_Applied": override_applied,
+                "Override_Order": str(override_order) if override_order else "",
+                "Override_Seasonal_Order": str(override_seasonal_order) if override_seasonal_order else "",
+                "Override_Reason": override_reason,
+                "Final_Order": str(final_order),
+                "Final_Seasonal_Order": str(final_seasonal_order),
+            }
+        )
+        selected_orders[target] = (final_order, final_seasonal_order)
 
     results = pd.DataFrame(rows)
     for target, (order, seasonal_order) in selected_orders.items():
@@ -821,82 +928,65 @@ def tune_sarima_orders(
             & results["Q"].eq(seasonal_q)
             & results["m"].eq(m)
         )
+        if not mask.any():
+            raise ValueError(
+                f"{target}: final order {order}{seasonal_order} is not in SARIMA_GRID, so it cannot be "
+                "marked Selected in the grid results -- SARIMA_SAFETY_OVERRIDES entries must point to an "
+                "order already present in SARIMA_GRID."
+            )
         results.loc[mask, "Selected"] = True
-    return results, selected_orders
+    return results, selected_orders, pd.DataFrame(safety_rows)
 
 
 def build_sarima_order_selection(
     df_sarima_grid: pd.DataFrame,
-    grid_orders: dict[str, tuple[tuple[int, int, int], tuple[int, int, int, int]]],
-) -> tuple[pd.DataFrame, dict[str, tuple[tuple[int, int, int], tuple[int, int, int, int]]]]:
+    safety_log: pd.DataFrame,
+) -> pd.DataFrame:
+    """
+    Purely a reporting step: turns the per-target safety_log produced by
+    tune_sarima_orders() into the sarima_order_acceptance.csv shape. Does
+    not make any selection decision itself -- that already happened in
+    tune_sarima_orders().
+    """
     rows = []
-    production_orders: dict[str, tuple[tuple[int, int, int], tuple[int, int, int, int]]] = {}
+    safety_by_target = safety_log.set_index("Target").to_dict("index")
 
     for target in TARGETS:
-        grid_order, grid_seasonal_order = grid_orders.get(
-            target,
-            (DEFAULT_SARIMA_ORDER, DEFAULT_SARIMA_SEASONAL_ORDER),
+        safety = safety_by_target[target]
+        override_applied = bool(safety["Override_Applied"])
+        decision = (
+            "manual_safety_override_approved_2026-06-25"
+            if override_applied
+            else "selected_by_training_walk_forward_grid"
         )
-        grid_row = df_sarima_grid[
-            df_sarima_grid["Target"].eq(target) & df_sarima_grid["Selected"]
-        ].iloc[0]
-        rejected_degenerate = int(
+        rejected_training_degenerate = int(
             df_sarima_grid[
                 df_sarima_grid["Target"].eq(target)
-                & (
-                    df_sarima_grid["Training_Origin_24m_Degenerate"].astype(bool)
-                    | df_sarima_grid["FullHistory_Origin_24m_Degenerate"].astype(bool)
-                )
+                & df_sarima_grid["Training_Origin_24m_Degenerate"].astype(bool)
             ].shape[0]
         )
-        production_order = grid_order
-        production_seasonal_order = grid_seasonal_order
-        decision = "selected_by_training_walk_forward_grid"
 
-        production_orders[target] = (production_order, production_seasonal_order)
-        p, d, q = grid_order
-        seasonal_p, seasonal_d, seasonal_q, m = grid_seasonal_order
-        prod_p, prod_d, prod_q = production_order
-        prod_p_seasonal, prod_d_seasonal, prod_q_seasonal, prod_m = production_seasonal_order
         rows.append(
             {
                 "Target": target,
                 "Default_Order": str(DEFAULT_SARIMA_ORDER),
                 "Default_Seasonal_Order": str(DEFAULT_SARIMA_SEASONAL_ORDER),
-                "Grid_Selected_Order": str(grid_order),
-                "Grid_Selected_Seasonal_Order": str(grid_seasonal_order),
-                "Grid_WalkForward_MAPE": float(grid_row["WalkForward_MAPE"]),
-                "Grid_Training_Origin_24m_Degenerate": bool(grid_row["Training_Origin_24m_Degenerate"]),
-                "Grid_Training_Origin_24m_Degeneracy_Reason": grid_row[
-                    "Training_Origin_24m_Degeneracy_Reason"
-                ],
-                "Grid_FullHistory_Origin_24m_Degenerate": bool(grid_row["FullHistory_Origin_24m_Degenerate"]),
-                "Grid_FullHistory_Origin_24m_Degeneracy_Reason": grid_row[
-                    "FullHistory_Origin_24m_Degeneracy_Reason"
-                ],
-                "Degenerate_Orders_Rejected": rejected_degenerate,
-                "Production_Order": str(production_order),
-                "Production_Seasonal_Order": str(production_seasonal_order),
-                "Production_p": prod_p,
-                "Production_d": prod_d,
-                "Production_q": prod_q,
-                "Production_P": prod_p_seasonal,
-                "Production_D": prod_d_seasonal,
-                "Production_Q": prod_q_seasonal,
-                "Production_m": prod_m,
-                "Selected_By_Training_WalkForward": True,
+                "Grid_Selected_Order": safety["Training_Only_Order"],
+                "Grid_Selected_Seasonal_Order": safety["Training_Only_Seasonal_Order"],
+                "Grid_WalkForward_MAPE": float(safety["Training_Only_WalkForward_MAPE"]),
+                "Training_Degenerate_Orders_Rejected": rejected_training_degenerate,
+                "Safety_Check_Degenerate": bool(safety["Safety_Check_Degenerate"]),
+                "Safety_Check_Reason": safety["Safety_Check_Reason"],
+                "Override_Applied": override_applied,
+                "Override_Reason": safety["Override_Reason"],
+                "Production_Order": safety["Final_Order"],
+                "Production_Seasonal_Order": safety["Final_Seasonal_Order"],
+                "Selected_By_Training_WalkForward": not override_applied,
                 "Decision": decision,
-                "Grid_p": p,
-                "Grid_d": d,
-                "Grid_q": q,
-                "Grid_P": seasonal_p,
-                "Grid_D": seasonal_d,
-                "Grid_Q": seasonal_q,
-                "Grid_m": m,
             }
         )
 
-    return pd.DataFrame(rows), production_orders
+    return pd.DataFrame(rows)
 
 
 def selection_candidates_for_target(target: str) -> list[str]:
@@ -1609,8 +1699,8 @@ def main() -> None:
     if (df_all["Fecha"] >= "2026-01").any():
         raise ValueError("features_modelo_completo contains 2026 rows; original forecast origin must stay 2025-12")
 
-    df_sarima_grid, grid_sarima_orders = tune_sarima_orders(df_train, df_all)
-    df_sarima_acceptance, sarima_orders = build_sarima_order_selection(df_sarima_grid, grid_sarima_orders)
+    df_sarima_grid, sarima_orders, df_sarima_safety = tune_sarima_orders(df_train, df_all)
+    df_sarima_acceptance = build_sarima_order_selection(df_sarima_grid, df_sarima_safety)
     df_wf = run_walk_forward(df_train, sarima_orders)
     df_acceptance = build_model_acceptance(df_wf)
     df_wf = df_wf.merge(
@@ -1652,6 +1742,7 @@ def main() -> None:
     df_metrics.to_csv(DATA_OUTPUTS / "metricas_models.csv", index=False, encoding="utf-8")
     df_sarima_grid.to_csv(DATA_OUTPUTS / "sarima_grid_search_results.csv", index=False, encoding="utf-8")
     df_sarima_acceptance.to_csv(DATA_OUTPUTS / "sarima_order_acceptance.csv", index=False, encoding="utf-8")
+    df_sarima_safety.to_csv(DATA_OUTPUTS / "sarima_safety_check.csv", index=False, encoding="utf-8")
     df_wf.to_csv(DATA_OUTPUTS / "model_selection_walkforward.csv", index=False, encoding="utf-8")
     df_final.to_csv(DATA_OUTPUTS / "metricas_final_seleccionado.csv", index=False, encoding="utf-8")
     df_final.to_csv(DATA_OUTPUTS / "metricas_final_selected.csv", index=False, encoding="utf-8")
@@ -1690,6 +1781,19 @@ def main() -> None:
             ]
         ].to_string(index=False)
     )
+    print("\nSARIMA full-history shippability safety check (post-hoc, single winner per target only):")
+    print(
+        df_sarima_safety[
+            ["Target", "Training_Only_Order", "Safety_Check_Degenerate", "Override_Applied", "Final_Order"]
+        ].to_string(index=False)
+    )
+    if df_sarima_safety["Override_Applied"].any():
+        print(
+            "  Note: an Override_Applied=True row means the pure training-only winner failed the "
+            "safety check and a reviewed SARIMA_SAFETY_OVERRIDES entry was used instead -- see "
+            "sarima_safety_check.csv for the reasoning."
+        )
+
     print("\nFinal selected 2025 validation metrics:")
     print(df_final.to_string(index=False))
     print("\nPooled regional ML decision:")

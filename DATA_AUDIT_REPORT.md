@@ -54,6 +54,19 @@ through every existing call site automatically. See "Current Selected Model
 Quality" below and `PHASE2_MODELING_REPORT.md` for the full investigation and
 the resulting model changes.
 
+A second, independent audit pass then found that the SARIMA order grid's
+full-history degeneracy check (added above to catch a literal flat-line
+forecast) had itself been applied as a filter across all 15 candidate
+orders using full-2023-2025-history fits, contradicting the project's own
+"never select using test-set performance" rule. Fixed: SARIMA order ranking
+is now training-only with zero exceptions, and the full-history check runs
+exactly once, on the single training-only winner, as a disclosed post-hoc
+safety veto (`sarima_safety_check.csv`) rather than a selection criterion.
+Re-running the full pipeline produced byte-identical results for every
+target; see `PHASE2_MODELING_REPORT.md`'s "SARIMA Order Selection:
+Training-Only Ranking With a Disclosed Safety Veto" section for the full
+investigation.
+
 ## Production Inputs
 
 | File | Shape | Date Range | Notes |
@@ -110,8 +123,9 @@ Known data issues:
 | File | Current Role |
 |---|---|
 | `metricas_modelos.csv` / `metricas_models.csv` | 2025 holdout metrics for all 7 headline candidates plus Diesel Share and pooled regional ML (duplicate filenames, same content). |
-| `sarima_grid_search_results.csv` | Training-only walk-forward SARIMA grid-search diagnostics for each target, including two independent degeneracy checks: one on the training-window 24-month stability forecast, one on the full-36-month-history 24-month stability forecast (the shape that actually ships). An order must pass both to be treated as stable. |
-| `sarima_order_acceptance.csv` | Records the training-only grid-selected SARIMA order adopted into production for each target. No 2025 data is used in this decision. |
+| `sarima_grid_search_results.csv` | Training-only walk-forward SARIMA grid-search diagnostics for each target, including the training-window 24-month stability check. Ranking and filtering across all 15 candidates uses only 2023-2024 data. |
+| `sarima_order_acceptance.csv` | Records the training-only SARIMA order selected for each target, plus whether that single winner failed the post-hoc full-history shippability safety check (`Safety_Check_Degenerate`) and whether a reviewed override was used (`Override_Applied`/`Override_Reason`). The safety check is the only place 2025 data is used anywhere in SARIMA order selection, and it can only veto the already-chosen winner -- it never ranks or filters the candidate grid. See `sarima_safety_check.csv` for the full per-target audit trail. |
+| `sarima_safety_check.csv` | Per-target record of the post-hoc SARIMA shippability safety check: the training-only winning order, whether its full-history refit is degenerate, and whether a reviewed `SARIMA_SAFETY_OVERRIDES` entry was applied. |
 | `model_selection_walkforward.csv` | Recursive multi-step walk-forward scores for all 7 headline candidates per target, the training-only proposed model, and the final selected model. |
 | `metricas_final_seleccionado.csv` / `metricas_final_selected.csv` | 2025 holdout metrics for the model already selected by training-only walk-forward (duplicate filenames, same content). |
 | `predicciones_test_2025.csv` | 2025 predictions for all current candidates. |

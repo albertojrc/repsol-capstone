@@ -1,0 +1,6 @@
+Target,Training_Only_Order,Training_Only_Seasonal_Order,Training_Only_WalkForward_MAPE,Safety_Check_Degenerate,Safety_Check_Reason,Override_Applied,Override_Order,Override_Seasonal_Order,Override_Reason,Final_Order,Final_Seasonal_Order
+Nacional,"(1, 1, 0)","(1, 0, 0, 12)",48.919,False,,False,,,,"(1, 1, 0)","(1, 0, 0, 12)"
+Madrid,"(1, 1, 1)","(1, 0, 0, 12)",42.898,False,,False,,,,"(1, 1, 1)","(1, 0, 0, 12)"
+Cataluña,"(0, 1, 1)","(1, 0, 0, 12)",63.66,True,near_flat_range_0.0105,True,"(0, 1, 2)","(1, 0, 0, 12)","training-only winner (0, 1, 1)(1, 0, 0, 12) failed safety check (near_flat_range_0.0105); using reviewed override","(0, 1, 2)","(1, 0, 0, 12)"
+Andalucía,"(1, 1, 2)","(1, 0, 0, 12)",48.834,False,,False,,,,"(1, 1, 2)","(1, 0, 0, 12)"
+Valencia,"(2, 1, 1)","(1, 0, 0, 12)",66.863,False,,False,,,,"(2, 1, 1)","(1, 0, 0, 12)"

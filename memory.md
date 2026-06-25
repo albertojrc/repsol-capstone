@@ -5,6 +5,132 @@
 
 ---
 
+## 2026-06-25 Target Definition Clarification: Distinct-Product-Line Biodiesel Only
+
+Confirmed directly with the Repsol representative: the project's target (`Consumo_Tm`)
+is **biodiesel sold/reported as its own distinct product line**, not the biodiesel
+blended at low concentration into ordinary diesel under the national mandate. This
+is the correct, intended scope -- not a bug -- but it had only ever been written
+down explicitly in `notebooks/12_mini_trend_regulation_model.ipynb`'s intro markdown.
+Every other document (this file, `README.md`, notebook 13) described the target only
+as "total market biodiesel demand" with no caveat, which could be misread as covering
+the much larger mandate-blended volume.
+
+**The distinction, in detail:** Spanish fuel statistics (CNMC) report two separate
+things under "biodiesel":
+1. Biodiesel blended at ~10.5-14% (the legislated mandate) into ordinary Gasóleo A
+   diesel -- reported by CNMC as part of `GASÓLEO A` consumption, never broken out
+   separately.
+2. Biodiesel sold/reported as its own distinct product (the CNMC `BIODIESEL`
+   category) -- e.g. higher-concentration blends sold to specific fleets/users.
+
+`Consumo_Tm` is #2. Confirmed numerically: national `GasoleoA_Tm` runs ~1.7-1.9M
+Tm/month against `Consumo_Tm`'s ~10-27K Tm/month, and `Biodiesel_GasoleoA_Ratio`
+sits at 0.5-1.4%, far below the 11.5-14% mandate level it would track if it included
+the blended portion. This also explains why the target grows ~135x from 2023 to
+2025: that is the ramp-up of a small, distinct, newly-reported product line, not
+overall mandate-driven biodiesel penetration of the diesel pool (which moves
+gradually, 10.5% -> 11% -> 11.5% -> 14%, tracking the mandate schedule, not 135x).
+
+**Fixed:** added this section, updated the Section 2 scope bullet below, updated
+`README.md`'s intro with a new "Target Definition" section, updated
+`notebooks/13_business_interpretation_and_recommendations.ipynb` Section 1, added a
+confirmation note to `notebooks/12_mini_trend_regulation_model.ipynb`'s intro, and
+corrected a mandate-causality overstatement in
+`notebooks/05_feature_engineering.ipynb` Section 6 (it previously implied the
+mandate directly floors this target; the mandate floors the blended-into-Gasóleo-A
+volume, a different series this project does not model).
+
+**How to apply:** any future text describing `Consumo_Tm` / the project's
+"biodiesel demand" target must use this precise distinct-product-line language,
+never an unqualified "total biodiesel demand."
+
+---
+
+## 2026-06-25 SARIMA Order Selection No Longer Touches 2025 Data (`sacha`)
+
+A second, independent audit pass found that `tune_sarima_orders()` in
+`scripts/05_modeling_with_cnmc.py` violated this project's own hard rule
+("never select a model family using test-set performance," Section 10 below)
+for SARIMA order selection specifically. The "full-history degeneracy check"
+added in the 2026-06-25 audit-fixes round above (to catch the original
+Cataluña flat-forecast bug) fit every one of the 15 candidate orders on the
+full 2023-2025 history -- including 2025 -- and used the result to filter
+which orders were even eligible to win, before ranking survivors by
+training-only walk-forward MAPE. That is genuine test-period data use in a
+model-selection decision, not just an accuracy comparison against 2025: the
+fitted SARIMA coefficients for that check are estimated using 2025's actual
+values, and the eligible-candidate pool (and therefore the winner) depended
+on it.
+
+**Concrete proof it was material, not theoretical:** for Cataluña, the order
+with the single best training-only score, (0,1,1)(1,0,0,12) at 63.66% MAPE,
+was excluded *solely* because its full-history refit produces a near-flat
+(range 0.0105) 2026-2027 forecast. The next-best training-only order,
+(0,1,2)(1,0,0,12) at 66.90% MAPE, was selected instead. For the other 4
+targets, the best training-only order already happened to pass the
+full-history check too, so the mechanism ran but didn't change the outcome
+there -- this was a real, live issue for exactly 1 of 5 targets, not a
+hypothetical one.
+
+**The fix, agreed with the user after weighing two options:**
+1. *Make the stability check itself training-only* (e.g. analytical AR/MA
+   root-margin checks) was considered and rejected: Cataluña's problem order
+   already passes its own training-window-only stability check (fit on just
+   2023-2024) -- the fragility only appears once 2025 is included in the
+   fit. A check that never looks at 2025 cannot, by definition, catch a
+   failure mode that only manifests once 2025 is added, so this option would
+   not have actually protected against the bug it needs to protect against.
+2. *Separate training-only selection from a one-time post-hoc safety check*
+   was adopted. `tune_sarima_orders()` now ranks candidates purely by
+   training-only `WalkForward_MAPE` (filtering only training-window
+   degeneracy, computed on 2023-2024 alone) to get a single winner. The full
+   2023-2025 history is then used exactly once, on that single winner only,
+   via the new `sarima_shippability_reason()` check -- it can veto the
+   winner but never ranks or filters the candidate grid. If the winner fails
+   it, the function does not auto-substitute the next-best training-only
+   candidate (mathematically identical to the original bug, just relabeled)
+   and does not silently fall back to the plain default order either
+   (verified: Cataluña's default order, (1,1,1)(1,0,0,12), scores 87.4%
+   training MAPE -- a real, measurable regression versus the 66.9% shipped).
+   It raises, requiring an explicit, reviewed entry in the new
+   `SARIMA_SAFETY_OVERRIDES` dict, the same "decided explicitly, not
+   defaulted" pattern already used for the mandate-ratchet and
+   SARIMAX-feature-set decisions. One override is currently recorded, for
+   Cataluña, pointing at the same order it was already shipping.
+
+**Verification:** re-ran `scripts/05_modeling_with_cnmc.py` ->
+`scripts/06_validate_outputs.py` -> `scripts/07_selected_model_drivers.py`
+end to end and diffed every file in `data/outputs/` and `reports/figures/`
+against the pre-fix state. Result: every selected model, SARIMA order, 2025
+holdout metric, forecast value, and figure is byte-identical to before.
+Only `sarima_grid_search_results.csv` (lost the `FullHistory_*` columns,
+since that check is no longer run per-candidate) and
+`sarima_order_acceptance.csv` (gained `Safety_Check_Degenerate`/
+`Override_Applied`/`Override_Reason` columns) changed shape, plus the new
+`data/outputs/sarima_safety_check.csv` audit trail was added. This fix is
+purely a methodology-and-disclosure correction, not a results change.
+`scripts/06_validate_outputs.py` was also extended to fail loudly if any
+target's safety check ever fails without a matching recorded override --
+the original bug (a silent, undisclosed substitution) can no longer recur
+unnoticed.
+
+Updated alongside this fix: `README.md` (Model Selection section + new
+"Audit Fixes, second pass" section), `PHASE2_MODELING_REPORT.md` (Selection
+Rule section), `DATA_AUDIT_REPORT.md` (`sarima_order_acceptance.csv`
+description), `AUDIT_FIX_PLAN.md` (new completed-fix entry), and notebooks
+10, 10.1, and 13 (SARIMA order check cells and displayed acceptance
+columns).
+
+**How to apply:** any future change to SARIMA order selection must keep the
+full-history check scoped to a single already-chosen candidate, never used
+to rank or filter the grid. If a future override is needed for a new
+target, add it to `SARIMA_SAFETY_OVERRIDES` with the same reasoning
+discipline (what failed, what alternative was checked, why it's safe), not
+as a silent default.
+
+---
+
 ## 2026-06-25 Audit Fixes: Mandate Data Integrity, Residual Diagnostics, Calibrated Intervals, Sensitivity Analysis (`sacha`)
 
 A formal 11-section audit (user-supplied prompt, full report delivered 2026-06-24)
@@ -803,7 +929,7 @@ This is a capstone project (IE Master in Business Analytics and Data Science) bu
   - **Valencia** (Comunitat Valenciana)
 - These 4 regions + national total are the **only modelling targets**, selected because together they account for the large majority of national biodiesel consumption.
 - **Forecast horizon:** 24 months ahead, monthly granularity (2026-01 through 2027-12).
-- **What "demand" means here:** This is **total market demand** for biodiesel in each region/nationally (i.e., CORES-reported aggregate consumption), **not Repsol's own sales or market share**. There is no Repsol-specific sales data in this project — it is a macro demand forecast that Repsol can use as external market context.
+- **What "demand" means here:** This is **total market demand for biodiesel sold/reported as its own distinct product line** in each region/nationally (i.e., the CORES/CNMC `BIODIESEL` category), **not Repsol's own sales or market share, and not the biodiesel blended at low concentration into ordinary Gasóleo A diesel under the national mandate** (that blended volume is reported separately, under `GASÓLEO A`, and is not part of this target — see the dated entry near the top of this file). This scope was confirmed directly with the Repsol representative. There is no Repsol-specific sales data in this project — it is a macro demand forecast that Repsol can use as external market context.
 - **Historical data window:** 2023-01 to 2025-12 (36 months). This is the full window for which CORES consumption data, INE macro indicators, and daily fuel price data are all available and aligned.
 - **Train/test convention used throughout modelling:** Train = 2023-01 → 2024-12 (24 months), Test = 2025-01 → 2025-12 (12 months, held out). The 24-month 2026-2027 forecast is generated by refitting the chosen model on the full 36-month history.
 

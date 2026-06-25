@@ -120,6 +120,43 @@ from 92.3%); Nacional's selection also changed (SARIMA to Logistic) as a
 consistency side effect of applying the same check to plain SARIMA. See
 `memory.md` and `PHASE2_MODELING_REPORT.md` for the full investigation.
 
+## Completed: SARIMA Order Selection No Longer Touches 2025 Data (2026-06-25, second pass)
+
+A second, independent audit pass found that the full-history degeneracy
+check added in the SARIMAX-degeneracy fix above had itself been implemented
+as a filter across all 15 candidate SARIMA orders, using each candidate's
+fit on the full 2023-2025 history (including 2025) to decide eligibility
+before ranking by training-only MAPE -- a genuine violation of this
+project's "never select using test-set performance" rule, not just a close
+call. Concretely, Cataluña's best training-only order, (0,1,1)(1,0,0,12) at
+63.66% MAPE, was excluded solely because its full-history refit ships a
+near-flat forecast; the next-best training-only order, (0,1,2)(1,0,0,12) at
+66.90%, was used instead. The other 4 targets were unaffected in practice
+(their best training-only order already passed the full-history check too).
+
+Fixed: `tune_sarima_orders()` in `scripts/05_modeling_with_cnmc.py` now
+ranks every candidate purely by training-only `WalkForward_MAPE`. The full
+2023-2025 history is used exactly once, on the single training-only winner,
+via a new post-hoc safety check (`sarima_shippability_reason()`) that can
+veto but never rank or filter the grid. On failure it requires an explicit,
+reviewed entry in the new `SARIMA_SAFETY_OVERRIDES` dict rather than
+auto-substituting another candidate or silently falling back to the plain
+default order (verified worse: 87.4% training MAPE for Cataluña's default
+order vs. 66.9% shipped). One override is recorded, for Cataluña, pointing
+at the same order already in production. `scripts/06_validate_outputs.py`
+now also fails if any target's safety check fails without a matching
+recorded override.
+
+Re-ran the full `05 -> 06 -> 07` pipeline and diffed every output file
+against the pre-fix state: every selected model, SARIMA order, 2025 holdout
+metric, forecast value, and figure is byte-identical. Only
+`sarima_grid_search_results.csv` and `sarima_order_acceptance.csv` changed
+shape (disclosure columns), and a new `data/outputs/sarima_safety_check.csv`
+audit trail was added. Updated `README.md`, `memory.md`,
+`PHASE2_MODELING_REPORT.md`, `DATA_AUDIT_REPORT.md`, and notebooks 10, 10.1,
+and 13 to match. See `memory.md`'s "2026-06-25 SARIMA Order Selection No
+Longer Touches 2025 Data" entry for the full investigation.
+
 ## Still Open After Final Cleanup
 
 - Treat the forecasts as directional planning scenarios because all selected
