@@ -86,7 +86,7 @@ No Longer Share Output Filenames With scripts/05" entry.
 | `08_modeling_with_prices.ipynb` | Optional ablation support; fixed and re-verified | Price-region mapping bug fixed previously; this round fixed the `'Trend'` and `gasolina95` literals, and its one colliding output (`metricas_comparativa.csv`) now saves as `legacy_notebook08_metricas_comparativa.csv`. Not the production modeling path. |
 | `09_evaluation.ipynb` | Superseded by script; fixed and re-verified | Script now writes the final figures and dashboard outputs. Fixed the `'Trend'` literal; runs clean. Its auto-rebuild guard (which reruns `scripts/02`/`scripts/04` if expected columns are missing) cannot fix a renamed-literal bug like this one, only a genuinely stale feature table -- keep that distinction in mind for any future translation-style edit. |
 | `10_final_models.ipynb` | Narrative summary; fixed | Documents the current seven-model open-competition selection and 2025 holdout metrics. Fixed the stale `Default_2025_MAPE`/`Grid_Selected_2025_MAPE` column reference and the `?` mojibake. |
-| `10_1_final_models.ipynb` | Cataluña detail; fixed | Same fixes as notebook 10. |
+| `10_1_final_models.ipynb` | Removed (2026-06-25) | Consolidated into `10_final_models.ipynb`. Despite its "Cataluña detail" description above (itself stale -- the file never contained anything Cataluña-specific), it was a near-duplicate of notebook 10: identical setup code, identical SARIMA-order-check section, identical pooled-diagnostics table, identical plots, for all 5 targets in both. The one genuinely unique sentence (why pooled regional ML is kept as a diagnostic rather than deleted) was folded into notebook 10's Summary section before deletion. See `memory.md`'s dated entry for the full before/after diff. |
 | `11_mini_demand_model.ipynb` | Removed upstream | Superseded by notebook 12 in the latest `main`; not part of the current notebook set. |
 | `12_mini_trend_regulation_model.ipynb` | Mini regulation model | Narrative regulation/trend scenario model, independent of the main per-region pipeline. Not affected by the translation bugs (no `'Trend'`/`gasolina` literals found). Its own scenario forecasts are not reconciled with `forecast_24m_selected.csv` -- the two should not be confused for the same deliverable. |
 | `13_business_interpretation_and_recommendations.ipynb` | Business interpretation; fixed and re-verified | Reads production outputs, restates selected results by target, shows the training-only SARIMA grid, generates regional train/validation/forecast plots, and documents model limitations, feature interpretation, internal Repsol data needs, and recommendations. Fixed the stale SARIMA-acceptance columns and the `?` mojibake; re-executed to regenerate all 5 regional figures, which were previously a day stale relative to the final model selection. |
@@ -118,5 +118,6 @@ are fully refactored to mirror the scripts. For final delivery, use:
 Notebooks 07 and 08 are exploratory snapshots of an earlier modeling design
 (pre-SARIMAX, pre-CNMC features). They run cleanly again after this refresh,
 but their candidate set and numbers should not be quoted as the current
-production result -- only `scripts/05_modeling_with_cnmc.py` and notebooks 10,
-10.1, and 13 reflect the current selection.
+production result -- only `scripts/05_modeling_with_cnmc.py` and notebooks 10
+and 13 reflect the current selection (10.1 was consolidated into 10, see the
+Inventory table above).

@@ -5,6 +5,45 @@
 
 ---
 
+## 2026-06-25 notebooks/10_1_final_models.ipynb Deleted, Consolidated Into 10
+
+User asked why two near-identical "final models" notebooks existed.
+`NOTEBOOKS_AUDIT.md`'s own inventory described 10.1 as "Cataluña detail" --
+investigated and found that description was itself stale/wrong: 10.1
+contained nothing Cataluña-specific. A full cell-by-cell diff of both
+notebooks showed they were a near-duplicate: identical setup code,
+identical SARIMA-order-check section and code, identical pooled-diagnostics
+table and code, identical 2025-holdout and 24-month-forecast plotting code,
+for all 5 targets in both. Neither notebook saves any figures to disk
+(`plt.show()` only, no `savefig`), so there was no figure-dependency risk.
+
+The only genuinely unique content in 10.1, found via the diff, was one
+sentence in its Summary section: "pooled diagnostics show whether sharing
+regional information would have helped on the 2025 holdout" -- a clearer
+justification for *why* pooled regional ML is kept around as a diagnostic
+than notebook 10 had. Notebook 10's own Summary was otherwise more complete
+than 10.1's (it has "Honest limits" and a detailed "SARIMAX is excluded
+almost everywhere" bullet that 10.1 lacked entirely).
+
+**Action taken:** folded that one sentence into notebook 10's Summary
+section as a new bullet ("Why pooled regional ML is kept around as a
+diagnostic, not deleted"), verified notebook 10 still executes end to end
+with that change, then deleted `notebooks/10_1_final_models.ipynb` via
+`git rm`. Updated `NOTEBOOKS_AUDIT.md`'s inventory table (replaced the 10.1
+row with a removal note) and its "Remaining Caveat" section (removed the
+"10.1" reference, which was a current-state claim, not history). Left
+every *historical* mention of "10, 10.1, and 13" elsewhere in
+`NOTEBOOKS_AUDIT.md`, `AUDIT_FIX_PLAN.md`, `DATA_AUDIT_REPORT.md`, and
+`INDEPENDENT_AUDIT_REPORT.md` untouched -- those are accurate records of
+what was fixed in past sessions while 10.1 still existed, not current-state
+claims, and `INDEPENDENT_AUDIT_REPORT.md` specifically was committed
+as-is per an earlier explicit instruction not to edit it.
+
+**How to apply:** if a future audit asks "why are there two notebook 10s,"
+this entry is the answer -- there is now only one.
+
+---
+
 ## 2026-06-25 Audit Finding M4: BIOS CERT Excel Files Stay in the Repo, Deliberately
 
 M4 flagged the `ESTADISTICAS-BIOS CERT DEFINITIVAS *.xlsx` files (~24MB,
