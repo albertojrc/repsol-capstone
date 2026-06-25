@@ -5,6 +5,79 @@
 
 ---
 
+## 2026-06-25 Audit Finding M4: BIOS CERT Excel Files Stay in the Repo, Deliberately
+
+M4 flagged the `ESTADISTICAS-BIOS CERT DEFINITIVAS *.xlsx` files (~24MB,
+`data/` root) as dead, oversized, and undocumented: no code reads them, and
+they contradict `.gitignore`'s blanket `*.xlsx` rule (tracked anyway,
+pre-dating that rule). The recommendation was either wire them into the
+pipeline (resolving H5) or document them explicitly as historical reference
+material. H5 was already resolved a different way earlier this session --
+CNMC's raw `consumos_mensuales_petroleo` files were established as the
+reproducible target lineage instead, making these Excel files unnecessary
+to wire in -- and README.md's Data Sources section already calls them out
+as "historical/supplementary reference material... not required to
+reproduce any current pipeline."
+
+**Decision (explicit, user-confirmed): keep them in the repo as-is.** Not
+moved to `data/raw/`, not added to a `.gitignore` exception, not deleted.
+They stay at `data/` root, still technically contradicting the blanket
+`*.xlsx` rule, still unread by any script or notebook -- this is now a
+deliberate, accepted state, not an oversight. The remaining "housekeeping"
+half of M4's recommendation (move/exempt them) was considered and
+explicitly declined in favor of leaving them where they are, since they are
+already documented in README.md and the team did not want to spend effort
+relocating files with no functional role.
+
+**How to apply:** if a future audit re-flags these files as dead weight or
+an undocumented `.gitignore` contradiction, this entry is the answer -- it
+is a known, decided state, not a new finding.
+
+---
+
+## 2026-06-25 Audit Finding M3 Investigated: Andalucía's 2023-04 Outlier Is Genuine, Not an Error
+
+M3 flagged Andalucía's 2023 series as having an unexplained isolated
+outlier: `Consumo_Tm = 0, 0, 0, 46, 0, 0, 0, 0, 19, 43, 159, 85...` -- a
+single 46 Tm blip in April, isolated between two four-month runs of exact
+zero, before the real ramp-up starts in September.
+
+**Investigated, no fix needed.** Traced the value through every layer of
+the pipeline (`data/raw/consumos_mensuales_petroleo/ds_14200_1.csv` ->
+`data/inputs/consumo_biodiesel_ccaa.csv` ->
+`data/features/features_modelo_completo.csv`) -- identical at each one, so
+it is not a processing artifact (not a merge bug, encoding issue, or
+mis-dated record introduced by this repo's own code).
+
+Broke Andalucía's CCAA-level total down by province in the raw CNMC file:
+the entire 46 Tm in April 2023 comes from **Córdoba alone**; every other
+province reports exactly 0 that month. This fits the general character of
+Andalucía's 2023 data -- each province starts reporting biodiesel
+sporadically and independently (Jaén in September, Cádiz in October,
+Granada in November, Huelva for one month only in October, etc.); Córdoba's
+April blip is just the first instance of that same province-by-province
+rollout pattern, not an outlier relative to it.
+
+Pulled Córdoba's full BIODIESEL trajectory across all three raw files for
+additional confirmation:
+- 2023: `0,0,0,46,0,0,0,0,0,0,0,0`
+- 2024: `7,0,12,4,8,0,0,5,4,20,25,28`
+- 2025: `37,22,90,80,218,274,395,223,197,228,198,238`
+
+A coherent story: April 2023 was Córdoba's first-ever recorded biodiesel
+sale (likely one distributor's pilot/test batch), a gap while supply wasn't
+yet consistent, intermittent low volumes through 2024, then a real,
+steadily growing, established trend by 2025. Nothing about the shape
+resembles a typo or data-entry error -- it looks exactly like an early
+market establishing itself at the province level before regional
+infrastructure catches up.
+
+**How to apply:** if this point is ever re-flagged as a mystery in a future
+audit pass, this entry is the answer -- no further investigation needed
+unless new raw source files change the underlying numbers.
+
+---
+
 ## 2026-06-25 Audit Fixes M1/M2: Notebook Path Claims, and a Complete Model-Fit Exception Log
 
 **M1 (notebook narrative paths didn't match the code):**
