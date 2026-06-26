@@ -5,6 +5,20 @@
 
 ---
 
+## 2026-06-25 Deleted Stale Remote Branch `codex/translate-notebooks`
+
+Repo had one branch besides `main`: the remote-only `origin/codex/translate-notebooks`,
+pointing at a single commit, `f3e4259` ("Translate notebook content to
+English"). That commit is the same one already traced as the source of
+notebook 02's `'Province'`/`'Provincia'` bug (see the entry below). Confirmed
+`f3e4259` is already an ancestor of `main` (`git merge-base --is-ancestor`),
+so the branch had nothing unmerged, and confirmed no open or closed PR
+referenced it (`gh pr list --head codex/translate-notebooks` returned
+nothing) before deleting it via `git push origin --delete`. `main` is now
+the only branch, local or remote.
+
+---
+
 ## 2026-06-25 Post-Session Audit: Fixed notebooks/02_data_cleaning.ipynb's 'Province'/'Provincia' Bug; Noted a Kernel Gap
 
 Ran a full audit of everything from this session: full pipeline rebuild
