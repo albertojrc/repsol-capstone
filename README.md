@@ -92,6 +92,11 @@ This rebuilds:
   R2 would have picked versus what production actually selected. Requires
   `data/outputs/mini_model_scenarios.csv` to already exist (run notebook 11 first); the step is
   skipped with a warning, not a hard failure, if that file is missing.
+- `data/outputs/selected_model_mase.csv`: scores each selected model's 2025 holdout against a
+  seasonal-naive forecast (same month one year earlier) instead of the holdout-period mean that
+  R2 implicitly uses -- the in-sample seasonal-naive MAE, the out-of-sample seasonal-naive MAE,
+  the model's own out-of-sample MAE, MASE, and the percentage MAE reduction versus seasonal-naive.
+  Also used by notebook 12; subject to the same staleness check as the driver-detail files above.
 
 `forecast_24m_sarima_rf_xgb.csv` is a legacy filename. It now contains all current
 candidate families used by the CNMC-aware script, including SARIMA, SARIMAX, Ridge,
