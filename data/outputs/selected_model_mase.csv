@@ -1,0 +1,6 @@
+Target,Model,In_Sample_Seasonal_Naive_MAE,OOS_Seasonal_Naive_MAE_2025,Model_OOS_MAE_2025,MASE,Pct_MAE_Reduction_Vs_Seasonal_Naive
+Nacional,Logistic,5058.9,12744.8,6228.7,1.231,51.1
+Madrid,Logistic,645.0,2024.3,1924.0,2.983,5.0
+Cataluña,SARIMA,665.4,2093.4,1557.8,2.341,25.6
+Andalucía,SARIMA,357.2,1094.8,898.8,2.516,17.9
+Valencia,Gompertz,242.8,636.5,360.3,1.484,43.4

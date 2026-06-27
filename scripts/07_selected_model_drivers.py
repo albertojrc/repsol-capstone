@@ -169,6 +169,45 @@ def curve_driver_rows(target: str, curve_type: str) -> tuple[list[dict], list[di
     return param_rows, seasonal_rows
 
 
+def mase_vs_seasonal_naive(target: str, model: str) -> dict:
+    """
+    Score the selected model against a seasonal-naive forecast (predict each
+    2025 month as the same month in 2024) instead of the holdout-period mean
+    that R2 implicitly uses. The mean is not a forecast anyone would use on a
+    series still in its growth phase, so it makes every model's R2 negative
+    regardless of forecast quality; seasonal-naive is the defensible baseline
+    for a series this short. MASE divides the model's 2025 MAE by the
+    in-sample (2023-2024 only) seasonal-naive MAE, per Hyndman & Koehler (2006).
+    """
+    df_all = pd.read_csv(DATA_FEATURES / "features_modelo_completo.csv")
+    full = df_all[df_all["Target"].eq(target)].sort_values("Fecha")
+    train = full[full["Fecha"] < "2025-01"]
+    y_train = train["Consumo_Tm"].values.astype(float)
+
+    in_sample_naive_mae = float(np.mean(np.abs(y_train[12:] - y_train[:12])))
+    naive_2025 = y_train[-12:]
+
+    pred = pd.read_csv(DATA_OUTPUTS / "predicciones_test_2025.csv")
+    pred_sel = pred[pred["Target"].eq(target) & pred["Model"].eq(model)].sort_values("Fecha")
+    actual_2025 = pred_sel["Actual"].values.astype(float)
+    model_pred_2025 = pred_sel["Pred"].values.astype(float)
+
+    model_oos_mae = float(np.mean(np.abs(actual_2025 - model_pred_2025)))
+    naive_oos_mae = float(np.mean(np.abs(actual_2025 - naive_2025)))
+
+    return {
+        "Target": target,
+        "Model": model,
+        "In_Sample_Seasonal_Naive_MAE": round(in_sample_naive_mae, 1),
+        "OOS_Seasonal_Naive_MAE_2025": round(naive_oos_mae, 1),
+        "Model_OOS_MAE_2025": round(model_oos_mae, 1),
+        "MASE": round(model_oos_mae / in_sample_naive_mae, 3),
+        "Pct_MAE_Reduction_Vs_Seasonal_Naive": round(
+            (naive_oos_mae - model_oos_mae) / naive_oos_mae * 100, 1
+        ),
+    }
+
+
 def mini_model_curve_selection(target: str) -> dict:
     """
     Replicate notebooks/11_mini_trend_regulation_model.ipynb's curve choice
@@ -246,6 +285,7 @@ def main() -> None:
     sarima_rows: list[dict] = []
     curve_param_rows: list[dict] = []
     curve_seasonal_rows: list[dict] = []
+    mase_rows: list[dict] = []
     for target, model in selected.items():
         if model == "SARIMA":
             sarima_rows.extend(sarima_driver_rows(target))
@@ -255,14 +295,17 @@ def main() -> None:
             curve_seasonal_rows.extend(seasonal)
         else:
             print(f"No driver extraction implemented for {target} / {model} (not SARIMA/Logistic/Gompertz)")
+        mase_rows.append(mase_vs_seasonal_naive(target, model))
 
     df_sarima = pd.DataFrame(sarima_rows)
     df_curve_params = pd.DataFrame(curve_param_rows)
     df_curve_seasonal = pd.DataFrame(curve_seasonal_rows)
+    df_mase = pd.DataFrame(mase_rows)
 
     df_sarima.to_csv(DATA_OUTPUTS / "selected_model_sarima_drivers.csv", index=False, encoding="utf-8")
     df_curve_params.to_csv(DATA_OUTPUTS / "selected_model_curve_parameters.csv", index=False, encoding="utf-8")
     df_curve_seasonal.to_csv(DATA_OUTPUTS / "selected_model_curve_seasonal.csv", index=False, encoding="utf-8")
+    df_mase.to_csv(DATA_OUTPUTS / "selected_model_mase.csv", index=False, encoding="utf-8")
 
     df_mini_check = build_mini_model_cross_check()
     if not df_mini_check.empty:
@@ -277,6 +320,8 @@ def main() -> None:
     print(df_curve_seasonal.to_string(index=False) if not df_curve_seasonal.empty else "  none")
     print("\nMini trend model (notebook 11) cross-check:")
     print(df_mini_check.to_string(index=False) if not df_mini_check.empty else "  skipped (mini_model_scenarios.csv not found)")
+    print("\nMASE and seasonal-naive comparison (selected model per target):")
+    print(df_mase.to_string(index=False))
 
 
 if __name__ == "__main__":

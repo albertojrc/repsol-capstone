@@ -2,5 +2,5 @@ Target,Production_Model,Production_24m_Total_Tm,Mini_Conservative_24m_Total_Tm,M
 Nacional,Logistic,634223.1,593573.1,634091.8,674610.3,Gompertz,0.9539,0.956,False
 Madrid,Logistic,90855.8,86248.7,90541.1,94833.1,Gompertz,0.9369,0.9468,False
 Cataluña,SARIMA,81432.4,87818.0,91110.0,94401.8,Gompertz,0.9527,0.9593,False
-Andalucía,SARIMA,50481.1,56054.5,63116.2,70177.1,Gompertz,0.905,0.9055,False
+Andalucía,SARIMA,50481.1,56054.5,63116.2,70177.2,Gompertz,0.905,0.9055,False
 Valencia,Gompertz,38416.4,33922.8,38416.4,42910.3,Gompertz,0.9383,0.9403,True
